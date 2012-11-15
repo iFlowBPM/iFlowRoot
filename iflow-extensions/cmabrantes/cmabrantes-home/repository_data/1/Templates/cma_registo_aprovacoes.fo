@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fop:root xmlns:fop="http://www.w3.org/1999/XSL/Format"
+          xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0">
+   <fop:layout-master-set>
+      <fop:simple-page-master master-name="pm1" margin-top="2cm" margin-bottom="2cm" margin-left="2cm"
+                              margin-right="2cm"
+                              page-width="20.999cm"
+                              page-height="29.699cm"
+                              border="none">
+         <fop:region-body/>
+      </fop:simple-page-master>
+   </fop:layout-master-set>
+   <fop:page-sequence master-reference="pm1">
+      <fop:static-content flow-name="xsl-footnote-separator">
+         <fop:block>
+            <fop:leader leader-pattern="rule" leader-length="100%" rule-style="solid"
+                        rule-thickness="0.5pt"/>
+         </fop:block>
+      </fop:static-content>
+      <fop:flow flow-name="xsl-region-body">
+         <fop:block>
+            <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                       language="pt"
+                       country="PT"
+                       font-size="8pt"
+                       font-family="'Trebuchet MS',sans-serif">
+               <fop:leader/>
+            </fop:block>
+            <fop:table background-color="transparent">
+               <fop:table-column column-width="2.833cm"/>
+               <fop:table-column column-width="14.166cm"/>
+               <fop:table-body>
+                  <fop:table-row keep-together.within-column="always" background-color="transparent">
+                     <fop:table-cell padding="0.097cm" border="none" background-color="#0066cc" display-align="end">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="'Trebuchet MS',sans-serif"
+                                   color="#ffffff">Processo </fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border="none" background-color="#0066cc" display-align="end">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="'Trebuchet MS',sans-serif"
+                                   color="#ffffff">$num_processo:t$</fop:block>
+                     </fop:table-cell>
+                  </fop:table-row>
+                  <fop:table-row keep-together.within-column="always">
+                     <fop:table-cell padding="0.097cm" border="none">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="'Trebuchet MS',sans-serif">Assunto:</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border="none">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="'Trebuchet MS',sans-serif"
+                                   text-align="end"
+                                   font-weight="bold">$assunto:t$</fop:block>
+                     </fop:table-cell>
+                  </fop:table-row>
+                  <fop:table-row keep-together.within-column="always">
+                     <fop:table-cell padding="0.097cm" border="none">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="'Trebuchet MS',sans-serif">Data de Criação:</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border="none">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="'Trebuchet MS',sans-serif"
+                                   text-align="end"
+                                   font-weight="bold">$str_data_criacao:t$</fop:block>
+                     </fop:table-cell>
+                  </fop:table-row>
+                  <fop:table-row keep-together.within-column="always">
+                     <fop:table-cell padding="0.097cm" border="none">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="'Trebuchet MS',sans-serif">Processo de:</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border="none">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="'Trebuchet MS',sans-serif"
+                                   text-align="end"
+                                   font-weight="bold">$processo_de:t$</fop:block>
+                     </fop:table-cell>
+                  </fop:table-row>
+                  <fop:table-row keep-together.within-column="always">
+                     <fop:table-cell padding="0.097cm" border="none">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="'Trebuchet MS',sans-serif">Comentário:</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border="none">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="'Trebuchet MS',sans-serif"
+                                   text-align="end"
+                                   font-weight="bold">$comentario_inicial:t$</fop:block>
+                     </fop:table-cell>
+                  </fop:table-row>
+               </fop:table-body>
+            </fop:table>
+            <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                       language="pt"
+                       country="PT"
+                       font-size="8pt"
+                       font-family="'Trebuchet MS',sans-serif">
+               <fop:leader/>
+            </fop:block>
+            <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                       language="pt"
+                       country="PT"
+                       font-size="10pt"
+                       font-family="'Trebuchet MS',sans-serif"
+                       space-before="0cm"
+                       space-after="0.212cm"
+                       font-weight="bold">Registo de Intervenções</fop:block>
+            <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                       language="pt"
+                       country="PT"
+                       font-size="8pt"
+                       font-family="'Courier New',monospace"
+                       font-weight="normal">#atable:i:0:accoes.length:1#</fop:block>
+            <fop:table margin-left="0.007cm" background-color="transparent">
+               <fop:table-column column-width="1.111cm"/>
+               <fop:table-column column-width="2.646cm"/>
+               <fop:table-column column-width="4.128cm"/>
+               <fop:table-column column-width="1.588cm"/>
+               <fop:table-column column-width="5.133cm"/>
+               <fop:table-column column-width="2.381cm"/>
+               <fop:table-body>
+                  <fop:table-row keep-together.within-column="always">
+                     <fop:table-cell padding="0.097cm" border="none">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="en"
+                                   country="GB"
+                                   font-size="8pt"
+                                   font-family="'Courier New',monospace">#if:true#</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border="none">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="en"
+                                   country="GB"
+                                   font-size="8pt"
+                                   font-family="'Courier New',monospace">#if:true#</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border="none">
+                        <fop:block line-height="115%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="en"
+                                   country="GB"
+                                   font-size="8pt"
+                                   font-family="'Courier New',monospace"
+                                   space-before="0cm"
+                                   space-after="0.353cm">#if:true#</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border="none">
+                        <fop:block line-height="115%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="en"
+                                   country="GB"
+                                   font-size="8pt"
+                                   font-family="'Courier New',monospace"
+                                   space-before="0cm"
+                                   space-after="0.353cm">#if:true#</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border="none">
+                        <fop:block line-height="115%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="en"
+                                   country="GB"
+                                   font-size="8pt"
+                                   font-family="'Courier New',monospace"
+                                   space-before="0cm"
+                                   space-after="0.353cm">#if:true#</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border="none">
+                        <fop:block line-height="115%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="en"
+                                   country="GB"
+                                   font-size="8pt"
+                                   font-family="'Courier New',monospace"
+                                   space-before="0cm"
+                                   space-after="0.353cm">#if:true#</fop:block>
+                     </fop:table-cell>
+                  </fop:table-row>
+                  <fop:table-row keep-together.within-column="always" background-color="transparent">
+                     <fop:table-cell padding="0.097cm" border="none" background-color="#0066cc" display-align="end">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="'Trebuchet MS',sans-serif"
+                                   color="#ffffff">Ordem</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border="none" background-color="#0066cc" display-align="end">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="'Trebuchet MS',sans-serif"
+                                   color="#ffffff">Acção</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border="none" background-color="#0066cc" display-align="end">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="'Trebuchet MS',sans-serif"
+                                   color="#ffffff">Por</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border="none" background-color="#0066cc" display-align="end">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="'Trebuchet MS',sans-serif"
+                                   color="#ffffff">Em</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border="none" background-color="#0066cc" display-align="end">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="'Trebuchet MS',sans-serif"
+                                   color="#ffffff">Comentário</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border="none" background-color="#0066cc" display-align="end">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="'Trebuchet MS',sans-serif"
+                                   color="#ffffff">Ficheiro</fop:block>
+                     </fop:table-cell>
+                  </fop:table-row>
+                  <fop:table-row keep-together.within-column="always">
+                     <fop:table-cell padding="0.097cm" border="none">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="'Trebuchet MS',sans-serif">$ordens_intervencao[i]:t$</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border="none">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="'Trebuchet MS',sans-serif">$accoes[i]:t$</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border="none">
+                        <fop:block line-height="115%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="'Trebuchet MS',sans-serif"
+                                   space-before="0cm"
+                                   space-after="0.353cm">$intervenientes[i]:t$</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border="none">
+                        <fop:block line-height="115%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="'Trebuchet MS',sans-serif"
+                                   space-before="0cm"
+                                   space-after="0.353cm">$datas_intervencao[i]:t$</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border="none">
+                        <fop:block line-height="115%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="'Trebuchet MS',sans-serif"
+                                   space-before="0cm"
+                                   space-after="0.353cm">$comentarios[i]:t$</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border="none">
+                        <fop:block line-height="115%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="12pt"
+                                   font-family="'Trebuchet MS',sans-serif"
+                                   space-before="0cm"
+                                   space-after="0.353cm">
+                           <fop:leader/>
+                        </fop:block>
+                     </fop:table-cell>
+                  </fop:table-row>
+               </fop:table-body>
+            </fop:table>
+            <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                       language="pt"
+                       country="PT"
+                       font-size="10pt"
+                       font-family="'Trebuchet MS',sans-serif">
+               <fop:leader/>
+            </fop:block>
+         </fop:block>
+         <fop:block id="last-page"/>
+      </fop:flow>
+   </fop:page-sequence>
+</fop:root>

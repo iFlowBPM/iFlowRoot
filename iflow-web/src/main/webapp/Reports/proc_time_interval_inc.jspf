@@ -1,0 +1,49 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
+%><%
+/* vars that must be defined to include this fragment:
+- String onChange
+- String fromtoDateOnChange
+  */
+   %>
+   <li>
+		<if:formSelect name="<%=AuditChartServlet.PARAM_DISPLAY_TIME%>"
+			edit="true" value='<%=AuditChartServlet.behindMonth()%>' noli="true"
+			labelkey="proc_stats.field.time" onchange='<%=onChange%>'>
+			<if:formOption value='<%=AuditChartServlet.thisYear()%>'
+				label="<%=displayDesc.get(AuditChartServlet.THIS_YEAR)%>" />
+			<if:formOption value='<%=AuditChartServlet.lastYear()%>'
+				label="<%=displayDesc.get(AuditChartServlet.LAST_YEAR)%>" />
+			<if:formOption value='<%=AuditChartServlet.thisMonth()%>'
+				label="<%=displayDesc.get(AuditChartServlet.THIS_MONTH)%>" />
+			<if:formOption value='<%=AuditChartServlet.lastMonth()%>'
+				label="<%=displayDesc.get(AuditChartServlet.LAST_MONTH)%>" />
+			<if:formOption value='<%=AuditChartServlet.behindMonth()%>' 
+				label="<%=displayDesc.get(AuditChartServlet.BEHIND_MONTH)%>" />
+			<if:formOption value='<%=AuditChartServlet.behindYear()%>'
+				label="<%=displayDesc.get(AuditChartServlet.BEHIND_YEAR)%>" />
+			<if:formOption value="const.choose"
+				label='<%=messages.getString("const.choose")%>' />
+		</if:formSelect>
+	  </li>
+	  <li>
+		<div id="<%=AuditChartServlet.PARAM_DISPLAY_DATE%>" style="display: none;">
+		 <table border="0"><tr><td>
+		  <div class="item_indent">
+			<p><%=messages.getString("proc_stats.date.from")%>:</p>
+			<input class="calendaricon" id="f_date_a" type="text" size="12" name="dtAfter" 
+				value="<%if (Utils.getFormDate(request, "dtafter") != null) {%><%=DateUtility.formatFormDate(userInfo, Utils.getFormDate(request, "dtafter"))%><%} else {%><%=AuditChartServlet.getBehindDate()%><%}%>"
+				onchange='<%=fromtoDateOnChange %>'
+				onmouseover="caltasks(this.id);this.onmouseover=null;" />
+		  </div>
+		  </td><td>
+		  <div class="item_indent">
+			<p><%=messages.getString("proc_stats.date.to")%>:</p>
+			<input class="calendaricon" id="f_date_c" type="text" size="12" name="dtbefore" 
+				value="<%if (Utils.getFormDate(request, "dtbefore") != null) {%><%=DateUtility.formatFormDate(userInfo, Utils.getFormDate(request, "dtbefore"))%><%} else {%><%=AuditChartServlet.getTodayDate()%><%}%>"
+				onchange='<%=fromtoDateOnChange %>'
+				onmouseover="caltasks(this.id);this.onmouseover=null;" />
+		  </div>
+		  </td></tr>
+		 </table>
+		</div>
+	  </li> 

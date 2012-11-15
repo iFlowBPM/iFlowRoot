@@ -1,0 +1,71 @@
+<userInput>
+	<!-- Database Panel -->
+	<panel order="0">
+		<field type="title" id="databasetitle.label" bold="true" size="1" />
+		<field type="staticText" align="left" id="databaseusertitle.label" />
+		<field type="divider" align="top" />
+		<field type="combo" variable="database.type">
+			<description align="left" id="databasetype.label" />
+			<spec>
+				<choice txt="MySql" value="mysql" set="true" />
+<!--				<choice txt="Oracle" value="oracle" />-->
+<!--				<choice txt="SQL Server" value="sql_server" />-->
+			</spec>
+		</field>
+		<field type="space" />
+		<field type="text" variable="database.username">
+			<spec id="databaseusername.label" size="40" set="" />
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" id="databaseusername.validator" />
+		</field>
+		<field type="password" align="left" variable="database.password">
+			<spec>
+				<pwd id="databasepassword.label" size="40" set="" />
+			</spec>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" id="databasepassword.validator" />
+		</field>
+		<field type="text" variable="database.schema">
+			<spec id="databaseschema.label" size="40" set="iflow" /> <!-- Set Value Can be changed -->
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" id="databaseschema.validator" />
+		</field>
+		<field type="text" variable="database.hostname">
+			<spec id="databasehostname.label" size="40" set="localhost" />
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" id="databasehostname.validator" />
+		</field>
+		<field type="text" variable="database.port">
+			<spec id="databaseport.label" size="4" set="3306" />
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" id="databaseport.validator" />
+		</field>
+
+		<field type="space" />
+		<field type="space" />
+		<field type="staticText" align="left" id="databaseadmintitle.label" txt="Admin Credentials" />
+		<field type="divider" align="top" />
+		<field type="text" variable="databaseadmin.username">
+			<spec id="databaseusername.label" size="40" set="root" />
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" id="databaseusername.validator" />
+		</field>
+		<field type="password" align="left" variable="databaseadmin.password">
+			<spec>
+				<pwd id="databasepassword.label" size="40" set="" />
+			</spec>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" id="databasepassword.validator" />
+		</field>
+	</panel>
+
+	<!-- Application Server Panel -->
+	<panel order="1">
+		<field type="title" id="appservertitle.label" bold="true" size="1" />
+		<field type="divider" align="top" />
+		<field type="text" variable="appserver.enginename">
+			<spec id="appserverenginename.label" size="40" set="Catalina" />
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" id="appserverenginename.validator" />
+		</field>
+		<field type="text" variable="appserver.hostname">
+			<spec id="appserverhostname.label" size="40" set="localhost" />
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" id="appserverhostname.validator" />
+		</field>
+		<field type="dir" align="left" variable="appserver.path">
+			<spec id="appserverpath.label" size="29" set="" />
+		</field>
+	</panel>
+</userInput>

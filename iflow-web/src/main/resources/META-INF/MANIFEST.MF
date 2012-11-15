@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Class-Path: iFlowCommon.jar 
+ iFlowEJB.jar 
+ iUtils.jar
+

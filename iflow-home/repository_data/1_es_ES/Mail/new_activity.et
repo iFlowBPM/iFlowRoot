@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<emailtemplate>
+  <emailsubject>$flowname: nueva tarea</emailsubject>
+  <emailhtml>true</emailhtml>
+  <emailbody><![CDATA[
+<html>
+<head>
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="expires" content="0">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<style>
+
+body {
+	background: white;
+	padding: 10px;
+	font: 1em verdana;
+}
+
+img {
+	vertical-align: text-bottom;
+	border:none;
+}
+
+p {
+	font: 0.8em verdana;
+}
+
+p.title {
+	font: bold 1.0em verdana;
+}
+
+em {
+	font-weight: bold;
+	font-style: italic;
+}
+
+</style>
+</head>
+
+<body>
+	<img src="http://$app_host:$app_port/iFlow/images/logo_iflow.png" alt="iFlow"/>
+	<p class="title">iFlow - Nueva Tarea en $flowname</p>
+	<p>Tiene una nueva tarea pendiente en la aplicación <em>$flowname</em>, con la descripción <em>$description</em>.</p>
+	<p>Para acceder a ella, haga clic <a href="$url">aquí</a> o, alternativamente, en la ficha Tareas <em> </em> en la página principal de <a href="http://$app_host:$app_port/iFlow/main.jsp">iFlow</a>.</p>
+</body>
+</html>
+  ]]></emailbody>
+</emailtemplate>

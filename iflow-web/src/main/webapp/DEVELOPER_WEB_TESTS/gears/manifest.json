@@ -1,0 +1,10 @@
+{
+  "betaManifestVersion": 1,
+  "version": "0.5",
+  "entries": [
+      { "url": "ifoff.js"},
+      { "url": "gears_init.js"},
+	  { "url": "../../javascript/mootools.js"},
+      { "url": "main.jsp"}
+    ]
+}

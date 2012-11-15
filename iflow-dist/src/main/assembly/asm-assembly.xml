@@ -1,0 +1,23 @@
+<assembly>
+	<includeBaseDirectory>true</includeBaseDirectory>
+	<baseDirectory>iflow-${iflow.version}</baseDirectory>
+	<formats>
+		<format>zip</format>
+	</formats>
+	<files>
+		<file>
+			<source>src/main/resources/version.properties</source>
+			<outputDirectory>iflow-home-${iflow.version}/repository_data/1/Classes/pt/iflow/</outputDirectory>
+			<filtered>true</filtered>
+	    </file>
+	</files>
+	<fileSets>
+		<fileSet>
+			<directory>target/copy</directory>
+			<outputDirectory>/</outputDirectory>
+			<includes>
+				<include>**</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+</assembly>

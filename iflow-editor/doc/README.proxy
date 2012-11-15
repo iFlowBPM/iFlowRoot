@@ -1,0 +1,8 @@
+UPDATE: Proxy is now configurated in the login window. Proxy parameters are stored in
+iFlowEditor configuration file
+
+If you must access internet via proxy, copy the file proxy.properties to ~/.floweditor
+Then, configure it with a text editor.
+
+A better description of parameters will come in time.
+

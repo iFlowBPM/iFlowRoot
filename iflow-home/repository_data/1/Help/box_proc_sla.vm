@@ -1,0 +1,13 @@
+	
+	<div class="help_item_img">
+		<h2><img class="icon" src="images/report.png"/>$messages.getString("reports_nav.title") $navSep $messages.getString("reports_nav.section.sla.title") $navSep $messages.getString("reports_nav.section.sla.link")</h2>
+	</div>
+	<p />
+	<p>$messages.getString("help.box_proc_sla.concept.p1")</p>
+	<p>$messages.getString("help.box_proc_sla.concept.p2", $messages.getString("proc_sla.field.checkbox"), $messages.getString("proc_sla.field.flow"))</p>
+	
+	<p>$messages.getString("help.box_proc_sla.chart")</p>
+	<h3>$messages.getString("help.box_proc_sla.chart.pie.title")</h3>
+	<p>$messages.getString("help.box_proc_sla.chart.pie.content", [$messages.getString("proc_sla.field.units"), $messages.getString("AuditChartServlet.6"), $messages.getString("AuditChartServlet.7"), $messages.getString("AuditChartServlet.8"), $messages.getString("AuditChartServlet.9")])</p>
+	<h3>$messages.getString("help.box_proc_sla.chart.bar.title")</h3>
+	<p>$messages.getString("help.box_proc_sla.chart.bar.content", [$messages.getString("AuditChartServlet.51"), $messages.getString("AuditChartServlet.52")])</p>

@@ -1,0 +1,10 @@
+﻿
+update cma.cma_requerimento r
+left join iflow.process p on r.id_processo = ExtractValue(p.procdata, '//a[@n="numero_processo"]') and r.id_requerimento = ExtractValue(p.procdata, '//a[@n="numero_requerimento"]')
+set r.pid = p.pid;
+
+
+
+
+
+

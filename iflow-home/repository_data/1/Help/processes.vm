@@ -1,0 +1,20 @@
+#set ( $emProc = "<em>" + $messages.getString("help.processes.title") + "</em>" )
+    <h2>$messages.getString("help.processes.title")</h2>
+    <p>$messages.getString("help.processes.concept.p1")</p>
+    <p>$messages.getString("help.processes.concept.p2")</p>
+
+    <p>$messages.getString("help.processes.concept.p3")</p>
+    <p>$messages.getString("help.processes.concept.p4")</p>
+    
+    <h3>$messages.getString("help.processes.window.title")</h3>
+    <p>$messages.getString("help.processes.window.concept.p1", $emProc)</p>
+    <p>$messages.getString("help.processes.window.concept.p2")</p>
+    
+    <h3>$messages.getString("help.processes.close.title")</h3>
+    <p>$messages.getString("help.processes.close.concept")</p>
+      
+	<h3>$messages.getString("help.processes.signature.p1")</h3>
+	 <p>$messages.getString("help.processes.signature.p2")</p>
+	 <p>$messages.getString("help.processes.signature.p3")</p>
+	 <p>$messages.getString("help.processes.signature.p4")</p>
+	 <p>$messages.getString("help.processes.signature.p5")</p>

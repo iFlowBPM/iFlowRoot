@@ -1,0 +1,35 @@
+#set( $emDashboard = "<em>" + $messages.getString("help.title.dashboard") + "</em>" )
+#set( $emProcesses = "<em>" + $messages.getString("help.title.processes") + "</em>" )
+#set( $linkTasks = "<a href=javascript:tabber('help','','sel=2','','');show_help('help_tasks');>" + $messages.getString("help.title.tasks") + "</a>" )
+#set( $linkDelegations = "<a href=javascript:tabber('help','','sel=5','','');show_help('help_delegations');>" + $messages.getString("help.title.delegations") + "</a>" )
+#set( $linkNotifications = "<a href=javascript:tabber('help','','sel=10','','');show_help('help_notifications');>" + $messages.getString("help.title.notifications") + "</a>" )
+#set( $linkProcesses = "<a href=javascript:tabber('help','','sel=4','','');show_help('help_processes');>" + $messages.getString("help.title.processes") + "</a>"  )
+
+<h2>$messages.getString("main.tab.dashboard")</h2>
+    <p>$messages.getString("help.dashboard.subtitle", $emDashboard)</p>
+    <p>$messages.getString("help.dashboard.concept", $emDashboard)</p>
+    <ul>
+      <li>$messages.getString("help.dashboard.concept.tasks")</li>
+      <li>$messages.getString("help.dashboard.concept.notifications")</li>
+      <li>$messages.getString("help.dashboard.concept.delegations")</li>
+      <li>$messages.getString("help.dashboard.concept.processes")</li>
+    </ul>
+
+    <h3>$messages.getString("help.dashboard.concept.tasks")</h3>
+	    <p>$messages.getString("help.dashboard.concept.tasks.p1", $emDashboard)</p>
+	    <p>$messages.getString("help.dashboard.concept.tasks.p2", $emProcesses)</p>
+		<p>$messages.getString("help.dashboard.concept.tasks.p3", $linkTasks)</p>
+
+    <h3>$messages.getString("help.dashboard.concept.notifications")</h3>
+    	<p>$messages.getString("help.dashboard.concept.notifications.p1")</p>
+    	<p>$messages.getString("help.dashboard.concept.notifications.p2", $linkNotifications)</p>
+
+    <h3>$messages.getString("help.dashboard.concept.delegations")</h3>
+    	<p>$messages.getString("help.dashboard.concept.delegations.p1")</p>
+    	<p>$messages.getString("help.dashboard.concept.delegations.p2", $linkDelegations)</p>
+
+    <h3>$messages.getString("help.dashboard.concept.processes")</h3>
+	    <p>$messages.getString("help.dashboard.concept.processes.p1")</p>
+	    <p>$messages.getString("help.dashboard.concept.processes.p2", $emProcesses)</p>
+	    <p>$messages.getString("help.dashboard.concept.processes.p3", $linkProcesses)</p>
+

@@ -1,0 +1,42 @@
+# Chart stuff
+chart.type=LAYERED
+chart.image.format=png
+chart.title=Default Title
+chart.generate.lengend=true
+chart.generate.tooltips=false
+chart.no.data.message=No Data Available
+chart.ignore.zeros=false
+chart.currency.values=false
+chart.number.format=#,##0
+chart.percentage.format=#,##0%
+chart.grouping.separator=.
+chart.decimal.separator=,
+
+
+# Bar/Stacked Bar specific stuff
+chart.bar.label.rotate=true
+# Maximum bar width (percentage of chart size)
+chart.bar.max.width=0.15
+# Display values
+chart.bar.show.values=true
+# Value format
+# {2} valor real, {3} valor em percentagem
+chart.bar.value.format={2}
+#chart.bar.value.format={3}
+# yy axis name
+chart.bar.yy.axis=Totais Anuais
+# axis name
+chart.bar.xx.axis=Produtos
+chart.bar.render.percentage=true
+chart.bar.tick.unit=10
+
+
+###
+## Styling stuff
+###
+
+## Load style from repository file
+chart.style.loader=repos
+## retrieve Charts/common.style
+chart.style.name=enterprise
+

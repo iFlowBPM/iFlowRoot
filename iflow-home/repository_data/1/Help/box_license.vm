@@ -1,0 +1,5 @@
+	<h2>$messages.getString("admin_nav.title") $navSep $messages.getString("admin_nav.section.organization.title") $navSep $messages.getString("admin_nav.section.organization.link.license")</h2>
+	
+	<p>$messages.getString("help.box_license.concept")</p>
+	
+	

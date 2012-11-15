@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!DOCTYPE note SYSTEM "../../src/izpack/installation.dtd">
+	<!--
+		iFlow installation file. To compile it : - go in the bin directory where you installed IzPack - call "compile
+		../sample/install.xml -b ../sample"
+	-->
+<installation version="1.0">
+
+	<!--
+		The info section. The meaning of the tags should be natural ...
+	-->
+	<info>
+		<appname>iFlow</appname>
+		<appversion>@APP_VER@</appversion> <!-- Change according to iFlow version -->
+		<authors>
+			<author name="Infosistema" email="geral@infosistema.com" />
+		</authors>
+		<url>http://www.iflow.pt</url>
+		<javaversion>1.5</javaversion> <!-- Minimum Required -->
+	</info>
+
+	<!--
+		The static variables section. Sets the variables to use in other
+		sections ...
+	-->
+	<variables>
+		<variable name="iflow.package" value="../copy" />
+		<variable name="iflow.home" value="iflow-home-@APP_VER@" />
+		<variable name="jndiloader.file" value="jniloader-1.0.jar" />
+		<variable name="dbconnector.file" value="mysql-connector-java-5.1.6-bin.jar" />
+	</variables>
+
+
+	<!--
+		The GUI preferences indication. Sets the installer window to 640x480.
+	-->
+	<guiprefs width="640" height="480" resizable="no">
+<!--		<modifier key="showDebugWindow" value="true" />--> <!-- Turn on Debug Mode -->
+		<modifier key="useFlags" value="no" /> <!-- I don't like the br flag! -->
+		<modifier key="langDisplayType" value="native" />
+		<modifier key="headingPanelCounter" value="progressbar" />
+		<modifier key="headingPanelCounterPos" value="inNavigationPanel" />
+		<laf name="looks">
+			<os family="unix" />
+		</laf>
+	</guiprefs>
+
+	<!--
+		The locale section. Asks here to include the English and Portuguese
+		Langpacks.
+	-->
+	<locale>
+		<langpack iso3="por" />
+		<langpack iso3="eng" />
+	</locale>
+
+	<!--
+		The resources section. The ids must be these ones if you want to use
+		the LicencePanel and/or the InfoPanel.
+	-->
+	<resources>
+		<res id="installer.langsel.img" src="res/logo_iflow_language_select.png" />
+		<res id="HTMLLicencePanel.licence" src="doc/License.html" />
+		<res id="HTMLInfoPanel.info" src="doc/Readme.html" />
+		<res id="userInputSpec.xml" src="userInputSpec.xml" />
+		<res id="userInputLang.xml_eng" src="res/userInputLang.xml_eng" />
+
+		<!-- No Portuguese Language pack, so we have to cheat. -->
+		<res id="userInputLang.xml_por" src="res/userInputLang.xml_prt" />
+		<res id="CustomLangpack.xml_por" src="res/prt.xml" />
+	</resources>
+
+	<!--
+		The panels section. We indicate here which panels we want to use. The
+		order will be respected.
+	-->
+	<panels>
+		<panel classname="HelloPanel" />
+		<panel classname="HTMLInfoPanel" />
+		<panel classname="HTMLLicencePanel" />
+		<panel classname="UserInputPanel" id="UserInputPanel.0" /> <!-- Database User Panel -->
+		<panel classname="UserInputPanel" id="UserInputPanel.1" /> <!-- Application Server User Panel -->
+		<panel classname="TargetPanel" />
+		<panel classname="PacksPanel" />
+		<panel classname="InstallPanel" />
+		<panel classname="SimpleFinishPanel" />
+	</panels>
+
+	<!--
+		The packs section. We specify here our packs.
+	-->
+	<packs>
+		<pack name="iFlow Core" required="yes">
+			<description>Instalação base</description>
+			<!-- iFlow Home Dir -->
+			<file src="$iflow.package/$iflow.home" targetdir="$INSTALL_PATH" />
+			<!-- WAR File -->
+			<singlefile src="$iflow.package/war/iFlow.war" target="$appserver.path/webapps/iFlow.war" />
+			<!-- DB Install Scripts -->
+			<file src="$iflow.package/db-install" targetdir="$INSTALL_PATH" /> <!-- Take care of this path -->
+			<!-- Datasource -->
+			<singlefile src="tomcat/iFlow.xml" target="$appserver.path/conf/$appserver.enginename/$appserver.hostname/iFlow.xml" />
+			<!-- Libraries -->
+			<singlefile src="$iflow.package/library/$jndiloader.file" target="$appserver.path/lib/$jndiloader.file" />
+			<singlefile src="$iflow.package/library/$dbconnector.file" target="$appserver.path/lib/$dbconnector.file" />
+			<!-- Environment Variable -->
+			<singlefile src="tomcat/setenv.sh" target="$appserver.path/bin/setenv.sh" os="unix" />
+			<singlefile src="tomcat/setenv.bat" target="$appserver.path/bin/setenv.bat" os="windows" />
+			<!-- MySQL Script -->
+			<singlefile src="res/run_mysql_script.sh" target="$INSTALL_PATH/run_mysql_script.sh" os="unix" />
+			<singlefile src="res/run_mysql_script.bat" target="$INSTALL_PATH/run_mysql_script.bat" os="windows" />
+
+			<!-- Parsable Files -->
+			<parsable targetfile="$appserver.path/conf/$appserver.enginename/$appserver.hostname/iFlow.xml" />
+			<parsable targetfile="$appserver.path/bin/setenv.sh" os="unix" />
+			<parsable targetfile="$appserver.path/bin/setenv.bat" os="windows" />
+			<parsable targetfile="$INSTALL_PATH/run_mysql_script.sh" os="unix" />
+			<parsable targetfile="$INSTALL_PATH/run_mysql_script.bat" os="windows" />
+
+			<!-- Executable Files -->
+			<executable targetfile="$INSTALL_PATH/run_mysql_script.sh" stage="postinstall" type="bin" keep="false" os="unix" />
+			<executable targetfile="$INSTALL_PATH/run_mysql_script.bat" stage="postinstall" type="bin" keep="false" os="windows" />
+		</pack>
+		<pack name="Docs" required="no">
+			<description>Documentação</description>
+			<file src="doc" targetdir="$INSTALL_PATH" />
+		</pack>
+	</packs>
+</installation>

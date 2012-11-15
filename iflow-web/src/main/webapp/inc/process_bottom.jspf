@@ -1,0 +1,10 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%><%
+	java.util.Hashtable<String,Object> hsSubstBottom = new java.util.Hashtable<String,Object>();
+
+	String sFlowID = fdFormData.getParameter("flowid");
+	if (sFlowID != null) {
+		hsSubstBottom.put("flowid", fdFormData.getParameter("flowid"));
+	}
+	hsSubstBottom.put("url_prefix", sURL_PREFIX.substring(0, sURL_PREFIX.length() - 1));
+
+%><%=PresentationManager.buildPage(response, userInfo, hsSubstBottom, "process_bottom")%>

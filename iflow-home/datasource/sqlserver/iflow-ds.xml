@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datasources>
+	<no-tx-datasource>
+		<jndi-name>iFlowDS</jndi-name>
+		<connection-url>jdbc:sqlserver://localhost\SQLEXPRESS;DatabaseName=iflow4</connection-url>
+		<driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+		<user-name>iflow</user-name>
+		<password>iflow</password>
+	</no-tx-datasource>
+</datasources>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XmlColorLibrary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="D:\JMV\Development\IRIS\library.xsd">
+	<XmlColor>
+			<item>background</item>
+			<color>white</color>
+	</XmlColor>
+	<XmlColor>
+			<item>component</item>
+			<color>black</color>
+	</XmlColor>
+	<XmlColor>
+			<item>active</item>
+			<color>blue</color>
+	</XmlColor>
+	<XmlColor>
+			<item>dot</item>
+			<color>black</color>
+	</XmlColor>
+	<XmlColor>
+			<item>circle</item>
+			<color>red</color>
+	</XmlColor>
+	<XmlColor>
+			<item>rectangle</item>
+			<color>blue</color>
+	</XmlColor>
+	<XmlColor>
+			<item>cross</item>
+			<color>red</color>
+	</XmlColor>
+</XmlColorLibrary>

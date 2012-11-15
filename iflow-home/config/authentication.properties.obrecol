@@ -1,0 +1,31 @@
+# Authentication properties
+
+#AUTH_IMPL_CLASS = pt.iknow.authentication.ldap.LDAPAuthentication
+#AUTH_CONFIG = ldap.properties
+#AUTH_IMPL_CLASS = pt.iknow.authentication.db.DBAuthentication
+#AUTH_CONFIG = mappings/db_user_mapping.properties
+AUTH_IMPL_CLASS = pt.iflow.authentication.ad.ADAuthentication
+AUTH_CONFIG = ad.properties
+
+
+SYSTEM_USER_DATA_IMPL_CLASS = pt.iflow.authentication.db.DBSystemAuthentication
+SYSTEM_AUTH_CONFIG = mappings/db_system_user_mapping.properties
+
+#USER_DATA_IMPL_CLASS = pt.iknow.userdata.ldap.LDAPUserDataAccess
+#USER_DATA_CONFIG = ldap.properties
+#USER_DATA_IMPL_CLASS = pt.iknow.userdata.db.DBUserDataAccess
+#USER_DATA_CONFIG = mappings/db_user_mapping.properties
+USER_DATA_IMPL_CLASS = pt.iflow.userdata.ad.ADUserDataAccess
+USER_DATA_CONFIG = ad.properties
+
+
+#ORGANIZATION_DATA_IMPL_CLASS = pt.iknow.userdata.ldap.LDAPOrganizationDataAccess
+#ORGANIZATION_DATA_CONFIG = ldap.properties
+#ORGANIZATION_DATA_IMPL_CLASS = pt.iknow.userdata.db.DBOrganizationDataAccess
+#ORGANIZATION_DATA_CONFIG = mappings/db_org_mapping.properties
+ORGANIZATION_DATA_IMPL_CLASS = pt.iflow.userdata.ad.ADOrganizationDataAccess
+ORGANIZATION_DATA_CONFIG = ad.properties
+
+
+
+APPLICATION_DATA_IMPL_CLASS = pt.iflow.applicationdata.db.DBApplicationDataAccess

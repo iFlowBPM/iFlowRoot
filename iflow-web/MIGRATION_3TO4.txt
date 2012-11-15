@@ -1,0 +1,75 @@
+
+
+ #1: DB Upgrade
+   Either build a new iFlow4 DB or execute "upgrade_3.3_to_4.0.0.sql" (as well as any other 
+   required scripts) in order to upgrade a previously existent DB to the current version.
+ 
+ 
+ 
+ #2: Flow Migration
+   Run "iFlowMigrator" to make all flows and processes stored in the DB iFlow4 compatible.
+   Usage: "migrator <type> <src db config properties file>"
+   Where type is "3to4", leaving the properties file path to be personalized. 
+   
+   
+   
+ #3: Flow Customization
+   Most of the migration is completed automatically through the 2 first steps, however,
+   it might still be required to modify each flow individually through iFlow4 FlowEditor.
+   For each of the following situations in which a flow falls, the annexed steps are required:
+   
+  #3.1: -"My flow has a DB connection and/or requires that a DataSource be specified at some
+         point for some reason, what do I do?"
+    Well! You need to locate where exactly this is required in the flow, and make sure
+    the variable JNDIName/DataSource/Other(use common sense here!) is properly set.
+    The usual problem here is that this value is not set at all (i.e.: it is left as
+    blank by the migrator), so simply set it to the DS of your choice (for example:
+    "java:/comp/env/jdbc/iFlowMyDS", make sure to include the quotes "" in the inserted
+    value, as they are required by the expression Interpreter).
+     
+  #3.2: -"I use script expressions somewhere in my flow (through a condition block, a 
+         disable condition or somewhere else), what do I do?"
+    Make sure the variables you are using in the script are defined in the Block Start
+    Catalogue, and if they are, make sure they have the proper type attributed to them.
+    Most of the variables used throughout the flow are compiled directly into the catalogue
+    by the migrator, doing most of the work in this area, but in script areas it becomes
+    unreasonable to parse and extract variables, so you will often need to define them manually.
+    
+  #3.3: -"I use documents in my flow, what do I do?"
+    Make sure the variable which contains the document is properly defined in the
+    Block Start Catalogue. It is possible that the variable is stills on it's default
+    setting "Text", simply change this to "Document".
+    
+  #3.4: -"I have a table with links in my flow, what now?"
+    1st: Make sure the link variable is defined in the flow catalogue, for example
+         purposes the variable will be called <link> here.
+    2nd: If the link has extra properties, make sure these are also defined in the
+         flow catalogue (ignore <vardep> itself though, the same as in iFlow3).
+    3rd: In order to mark which row of the table the link is in when pressed, a
+         variable called "<link>_row" is defined. Make sure you have defined the
+         variable "<link>_row" in the flow catalogue as an Integer (it is also 
+         recommended, though not strictly necessary, to give it default value '0').
+    4th: To access the table information afterwards, it is necessary to access the array
+         that filled the table with the index "<link>_row" (for example, when applicable:
+         "<array>[<link>_row]").
+    5th: In the event that the form containing the table is followed by condition blocks,
+         make sure all comparisons involving the links are set as "1".equals(...) instead
+         of "".equals(...). A pressed link carries the text value "1", others carry the
+         text value "0".
+   
+   
+   
+ #4: Frequently Encountered Problems
+ 
+  #4.1: Error importing SQL attributes
+    * See #3.1
+    * Make sure all SQL statements are encapsulated by quotations - "<query>" 
+  
+  #4.2: Illegal use of undefined variable, class, or 'void' literal
+    * See #3.2
+  
+  #4.3: Caught exception: null (java.lang.NullPointerException)
+    * If you are using documents in your flow, see #3.3
+
+  #4.4: Operator <> inappropriate for objects
+    * See #3.2

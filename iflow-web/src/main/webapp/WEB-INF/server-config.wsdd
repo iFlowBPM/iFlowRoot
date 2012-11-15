@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+	<globalConfiguration>
+		<parameter name="adminPassword" value="admin"/>
+		<parameter name="sendXsiTypes" value="true"/>
+		<!-- <parameter name="sendMultiRefs" value="true"/> -->
+		<parameter name="sendXMLDeclaration" value="true"/>
+		<parameter name="axis.sendMinimizedElements" value="true"/>
+		 		
+		<parameter name="axis.servicesPath" value="/ws/"/>
+		<parameter name="disablePrettyXML" value="true"/>
+		<parameter name="attachments.Directory" value="WEB-INF/attachments"/>
+		<parameter name="dotNetSoapEncFix" value="true"/>
+		<parameter name="enableNamespacePrefixOptimization" value="true"/>
+		<parameter name="attachments.implementation" value="org.apache.axis.attachments.AttachmentsImpl"/>
+		
+		<requestFlow>
+			<handler type="java:org.apache.axis.handlers.JWSHandler">
+				<parameter name="scope" value="session"/>
+			</handler>
+			<handler type="java:org.apache.axis.handlers.JWSHandler">
+				<parameter name="scope" value="request"/>
+				<parameter name="extension" value=".jwr"/>
+			</handler>
+		</requestFlow>
+	</globalConfiguration>
+	
+	<handler name="URLMapper" type="java:org.apache.axis.handlers.http.URLMapper"/>
+	<handler name="LocalResponder" type="java:org.apache.axis.transport.local.LocalResponder"/>
+	<handler name="Authenticate" type="java:org.apache.axis.handlers.SimpleAuthenticationHandler"/>
+	
+	<requestFlow name="checks">
+		<handler type="java:org.apache.axis.handlers.SimpleAuthenticationHandler"/>
+		<handler type="java:org.apache.axis.handlers.SimpleAuthorizationHandler"/>
+	</requestFlow>
+	
+	<service name="AdminService" provider="java:MSG">
+		<parameter name="allowedMethods" value="AdminService"/>
+		<parameter name="enableRemoteAdmin" value="false"/>
+		<parameter name="className" value="org.apache.axis.utils.Admin"/>
+		<namespace>http://xml.apache.org/axis/wsdd/</namespace>
+	</service>
+	
+	<service name="Version" provider="java:RPC">
+		<parameter name="allowedMethods" value="getVersion"/>
+		<parameter name="className" value="org.apache.axis.Version"/>
+	</service>
+
+
+	<service name="EventManagerRemote" provider="java:RPC">
+		<parameter name="allowedMethods" value="deRegisterEvent,registerEvent,setReadyToProcess"/>
+		<parameter name="className" value="pt.iflow.services.EventManagerRemote"/>
+	</service>
+	   
+	<service name="iFlowRemote" provider="java:RPC">
+        <namespace>http://webservices.iknow.pt</namespace>
+		<parameter name="allowedMethods" value="*"/>
+		<parameter name="className" value="pt.iflow.services.IFlowRemote"/>
+	</service>	
+	
+	<beanMapping xmlns:ns='http://types.services.api.iflow.pt'
+             qname='ns:FlowDataConvert'
+             type='java:pt.iflow.api.services.types.FlowDataConvert'/>
+
+	<beanMapping xmlns:ns='http://types.services.api.iflow.pt'
+             qname='ns:DataElement'
+             type='java:pt.iflow.api.services.types.DataElement'/>
+             
+    <beanMapping xmlns:ns='http://iflow.iknow.pt'
+             qname='ns:Activity'
+             type='java:pt.iflow.api.core.Activity'/>
+             
+	<arrayMapping xmlns:ns='http://types.services.api.iflow.pt'
+             qname='ns:FlowDataConvertArray'
+             type='java:pt.iflow.api.services.types.FlowDataConvert[]'
+             innerType="ns:FlowDataConvert"
+             />
+             
+    <arrayMapping xmlns:ns='http://types.services.api.iflow.pt'
+             qname='ns:DataElementArray'
+             type='java:pt.iflow.api.services.types.DataElement[]'
+             innerType="ns:DataElement"
+             />
+             
+    <arrayMapping xmlns:ns='http://iflow.iknow.pt'
+             qname='ns:ActivityArray'
+             type='java:pt.iflow.api.core.Activity[]'
+             innerType="ns:Activity"
+             />
+
+    <arrayMapping 
+			qname='ns:StringArray'
+			xmlns:ns='http://lang.java'
+			languageSpecificType='java:java.lang.String[]'
+			innerType="ns2:string"
+			xmlns:ns2='http://lang.java.strarr'
+			encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			
+    <beanMapping xmlns:ns='http://types.services.api.iflow.pt'
+             qname='ns:FlowDataConvertSet'
+             type='java:pt.iflow.api.services.types.FlowDataConvertSet'/>
+                
+	<beanMapping xmlns:ns='http://types.services.api.iflow.pt'
+             qname='ns:DataElementSet'
+             type='java:pt.iflow.api.services.types.DataElementSet'/>
+                          
+    <beanMapping xmlns:ns='http://types.services.api.iflow.pt'
+             qname='ns:ActivitySet'
+             type='java:pt.iflow.api.services.types.ActivitySet'/>
+             
+    <beanMapping xmlns:ns='http://types.services.api.iflow.pt'
+             qname='ns:StringSet'
+             type='java:pt.iflow.api.services.types.StringSet'/>
+
+	<!--<beanMapping xmlns:ns='http://sql.java'
+             qname='ns:Timestamp'
+             type='java:java.sql.Timestamp'/>-->
+		    
+	<transport name="http">
+		<requestFlow>
+			<handler type="URLMapper"/>
+			<handler type="java:org.apache.axis.handlers.http.HTTPAuthHandler"/>
+		</requestFlow>
+		<parameter name="qs:list" value="org.apache.axis.transport.http.QSListHandler"/>
+		<parameter name="qs:wsdl" value="org.apache.axis.transport.http.QSWSDLHandler"/>
+		<parameter name="qs.list" value="org.apache.axis.transport.http.QSListHandler"/>
+		<parameter name="qs.method" value="org.apache.axis.transport.http.QSMethodHandler"/>
+		<parameter name="qs:method" value="org.apache.axis.transport.http.QSMethodHandler"/>
+		<parameter name="qs.wsdl" value="org.apache.axis.transport.http.QSWSDLHandler"/>
+	</transport>
+	
+	<transport name="local">
+		<responseFlow>
+			<handler type="LocalResponder"/>
+		</responseFlow>
+	</transport>
+	
+</deployment>

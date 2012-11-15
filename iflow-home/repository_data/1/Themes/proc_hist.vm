@@ -1,0 +1,30 @@
+  <div class="table_inc">
+    <div class="tab_title">$messages.getString('proc_hist.header.hist')</div> 
+    <table class="item_list">
+      <tr class="tab_header">
+        <td>$messages.getString('proc_hist.field.id')</td>
+        <td>$messages.getString('proc_hist.field.start')</td>
+        <td>$messages.getString('proc_hist.field.description')</td>
+        <td>$messages.getString('proc_hist.field.result')</td>
+        <td>$messages.getString('proc_hist.field.end')</td>
+        <td>$messages.getString('proc_hist.field.duration')</td>
+      </tr>
+	  #set($odd="odd")
+	  #foreach($sState in $alStates)
+		#if($odd == 'odd')
+			#set($odd="even")
+		#else
+			#set($odd="odd")
+		#end
+		#set($hmState=$hmHist.get($sState))
+        <tr class="tab_row_$odd">
+          <td>$sState</td>
+          <td>$hmState.get('start')</td>
+          <td>$hmState.get('description')</td>
+          <td>$hmState.get('result')</td>
+          <td>$hmState.get('stop')</td>
+          <td>$hmState.get('duration')</td>
+        </tr>
+	  #end
+    </table>
+  </div>

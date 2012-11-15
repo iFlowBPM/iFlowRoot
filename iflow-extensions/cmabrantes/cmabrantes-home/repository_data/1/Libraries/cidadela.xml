@@ -1,0 +1,1185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XmlLibrary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="library.xsd">
+	<name>Cidadela</name>
+	<version>1.0</version>
+	<author>iKnow</author>
+	<description>Cidadela</description>
+
+	<XmlBlock>
+		<class>BlockFicha_Produto_Read</class>
+		<XmlPort>
+			<name>portIn</name>
+			<description>portIn</description>
+			<in_out>in</in_out>
+			<position>
+				<x>-5</x>
+				<y>25</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portOk</name>
+			<description>portOk</description>
+			<in_out>out</in_out>
+			<position>
+				<x>55</x>
+				<y>10</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portError</name>
+			<description>portError</description>
+			<in_out>out</in_out>
+			<position>
+				<x>55</x>
+				<y>40</y>
+			</position>
+		</XmlPort>
+		<XmlAttribute>
+			<name>In_No</name>
+			<description>In_No</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_No</name>
+			<description>Out_No</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Description</name>
+			<description>Out_Description</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Base_Unit_of_Measure</name>
+			<description>Out_Base_Unit_of_Measure</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Bill_of_Materials</name>
+			<description>Out_Bill_of_Materials</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Shelf_No</name>
+			<description>Out_Shelf_No</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Automatic_Ext_Texts</name>
+			<description>Out_Automatic_Ext_Texts</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Created_From_Nonstock_Item</name>
+			<description>Out_Created_From_Nonstock_Item</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Item_Category_Code</name>
+			<description>Out_Item_Category_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Product_Group_Code</name>
+			<description>Out_Product_Group_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Search_Description</name>
+			<description>Out_Search_Description</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Inventory</name>
+			<description>Out_Inventory</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Qty_on_Purch_Order</name>
+			<description>Out_Qty_on_Purch_Order</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Qty_on_Prod_Order</name>
+			<description>Out_Qty_on_Prod_Order</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Qty_on_Component_Lines</name>
+			<description>Out_Qty_on_Component_Lines</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Qty_on_Sales_Order</name>
+			<description>Out_Qty_on_Sales_Order</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Qty_on_Service_Order</name>
+			<description>Out_Qty_on_Service_Order</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Service_Item_Group</name>
+			<description>Out_Service_Item_Group</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Blocked</name>
+			<description>Out_Blocked</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Last_Date_Modified</name>
+			<description>Out_Last_Date_Modified</description>
+			<value />
+		</XmlAttribute>
+			<XmlAttribute> <name>Out_Costing_Method</name>
+			<description>Out_Costing_Method</description> <value />
+			</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Cost_is_Adjusted</name>
+			<description>Out_Cost_is_Adjusted</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Cost_is_Posted_to_G_L</name>
+			<description>Out_Cost_is_Posted_to_G_L</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Standard_Cost</name>
+			<description>Out_Standard_Cost</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Unit_Cost</name>
+			<description>Out_Unit_Cost</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Overhead_Rate</name>
+			<description>Out_Overhead_Rate</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Indirect_Cost_Percent</name>
+			<description>Out_Indirect_Cost_Percent</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Last_Direct_Cost</name>
+			<description>Out_Last_Direct_Cost</description>
+			<value />
+		</XmlAttribute>
+			<XmlAttribute> <name>Out_Price_Profit_Calculation</name>
+			<description>Out_Price_Profit_Calculation</description> <value />
+			</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Profit_Percent</name>
+			<description>Out_Profit_Percent</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Unit_Price</name>
+			<description>Out_Unit_Price</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Gen_Prod_Posting_Group</name>
+			<description>Out_Gen_Prod_Posting_Group</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_VAT_Prod_Posting_Group</name>
+			<description>Out_VAT_Prod_Posting_Group</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Inventory_Posting_Group</name>
+			<description>Out_Inventory_Posting_Group</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Net_Invoiced_Qty</name>
+			<description>Out_Net_Invoiced_Qty</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Allow_Invoice_Disc</name>
+			<description>Out_Allow_Invoice_Disc</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Item_Disc_Group</name>
+			<description>Out_Item_Disc_Group</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Sales_Unit_of_Measure</name>
+			<description>Out_Sales_Unit_of_Measure</description>
+			<value />
+		</XmlAttribute>
+			<XmlAttribute> <name>Out_Replenishment_System</name>
+			<description>Out_Replenishment_System</description> <value />
+			</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Vendor_No</name>
+			<description>Out_Vendor_No</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Vendor_Item_No</name>
+			<description>Out_Vendor_Item_No</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Purch_Unit_of_Measure</name>
+			<description>Out_Purch_Unit_of_Measure</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Lead_Time_Calculation</name>
+			<description>Out_Lead_Time_Calculation</description>
+			<value />
+		</XmlAttribute>
+			<XmlAttribute> <name>Out_Manufacturing_Policy</name>
+			<description>Out_Manufacturing_Policy</description> <value />
+			</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Routing_No</name>
+			<description>Out_Routing_No</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Production_BOM_No</name>
+			<description>Out_Production_BOM_No</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Rounding_Precision</name>
+			<description>Out_Rounding_Precision</description>
+			<value />
+		</XmlAttribute>
+			<XmlAttribute> <name>Out_Flushing_Method</name>
+			<description>Out_Flushing_Method</description> <value />
+			</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Scrap_Percent</name>
+			<description>Out_Scrap_Percent</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Lot_Size</name>
+			<description>Out_Lot_Size</description>
+			<value />
+		</XmlAttribute>
+			<XmlAttribute> <name>Out_Reordering_Policy</name>
+			<description>Out_Reordering_Policy</description> <value />
+			</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Include_Inventory</name>
+			<description>Out_Include_Inventory</description>
+			<value />
+		</XmlAttribute>
+			<XmlAttribute> <name>Out_Reserve</name>
+			<description>Out_Reserve</description> <value /> 
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Order_Tracking_Policy</name>
+			<description>Out_Order_Tracking_Policy</description> <value />
+			</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Stockkeeping_Unit_Exists</name>
+			<description>Out_Stockkeeping_Unit_Exists</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Critical</name>
+			<description>Out_Critical</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Reorder_Cycle</name>
+			<description>Out_Reorder_Cycle</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Safety_Lead_Time</name>
+			<description>Out_Safety_Lead_Time</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Safety_Stock_Quantity</name>
+			<description>Out_Safety_Stock_Quantity</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Reorder_Point</name>
+			<description>Out_Reorder_Point</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Reorder_Quantity</name>
+			<description>Out_Reorder_Quantity</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Maximum_Inventory</name>
+			<description>Out_Maximum_Inventory</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Minimum_Order_Quantity</name>
+			<description>Out_Minimum_Order_Quantity</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Maximum_Order_Quantity</name>
+			<description>Out_Maximum_Order_Quantity</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Order_Multiple</name>
+			<description>Out_Order_Multiple</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Tariff_No</name>
+			<description>Out_Tariff_No</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Country_Region_of_Origin_Code</name>
+			<description>Out_Country_Region_of_Origin_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Net_Weight</name>
+			<description>Out_Net_Weight</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Gross_Weight</name>
+			<description>Out_Gross_Weight</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Item_Tracking_Code</name>
+			<description>Out_Item_Tracking_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Serial_Nos</name>
+			<description>Out_Serial_Nos</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Lot_Nos</name>
+			<description>Out_Lot_Nos</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Expiration_Calculation</name>
+			<description>Out_Expiration_Calculation</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Common_Item_No</name>
+			<description>Out_Common_Item_No</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Special_Equipment_Code</name>
+			<description>Out_Special_Equipment_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Put_away_Template_Code</name>
+			<description>Out_Put_away_Template_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Put_away_Unit_of_Measure_Code</name>
+			<description>Out_Put_away_Unit_of_Measure_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Phys_Invt_Counting_Period_Code</name>
+			<description>Out_Phys_Invt_Counting_Period_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Last_Phys_Invt_Date</name>
+			<description>Out_Last_Phys_Invt_Date</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Last_Counting_Period_Update</name>
+			<description>Out_Last_Counting_Period_Update</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Next_Counting_Period</name>
+			<description>Out_Next_Counting_Period</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Identifier_Code</name>
+			<description>Out_Identifier_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Out_Use_Cross_Docking</name>
+			<description>Out_Use_Cross_Docking</description>
+			<value />
+		</XmlAttribute>
+		<image>webservicesinc.png</image>
+		<className>pt.iknow.floweditor.blocks.AlteraAtributos</className>
+		<description>Ler Ficha Produto</description>
+	</XmlBlock>
+
+	<XmlBlock>
+		<class>BlockLista_Produtos_ReadMultiple</class>
+		<XmlPort>
+			<name>portIn</name>
+			<description>portIn</description>
+			<in_out>in</in_out>
+			<position>
+				<x>-5</x>
+				<y>25</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portOk</name>
+			<description>portOk</description>
+			<in_out>out</in_out>
+			<position>
+				<x>55</x>
+				<y>10</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portError</name>
+			<description>portError</description>
+			<in_out>out</in_out>
+			<position>
+				<x>55</x>
+				<y>40</y>
+			</position>
+		</XmlPort>
+		<XmlAttribute>
+			<name>in_filter_field</name>
+			<description>in_filter_field</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_filter_criteria</name>
+			<description>in_filter_criteria</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_setSize</name>
+			<description>in_setSize</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_key</name>
+			<description>out_key</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_no</name>
+			<description>out_no</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_name</name>
+			<description>out_name</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_responsibility_Center</name>
+			<description>out_responsibility_Center</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_location_Code</name>
+			<description>out_location_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_post_Code</name>
+			<description>out_post_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_country_Region_Code</name>
+			<description>out_country_Region_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_phone_No</name>
+			<description>out_phone_No</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_fax_No</name>
+			<description>out_fax_No</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_IC_Partner_Code</name>
+			<description>out_IC_Partner_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_contact</name>
+			<description>out_contact</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_salesperson_Code</name>
+			<description>out_salesperson_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_customer_Posting_Group</name>
+			<description>out_customer_Posting_Group</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_gen_Bus_Posting_Group</name>
+			<description>out_gen_Bus_Posting_Group</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_VAT_Bus_Posting_Group</name>
+			<description>out_VAT_Bus_Posting_Group</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_customer_Price_Group</name>
+			<description>out_customer_Price_Group</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_customer_Disc_Group</name>
+			<description>out_customer_Disc_Group</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_payment_Terms_Code</name>
+			<description>out_payment_Terms_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_reminder_Terms_Code</name>
+			<description>out_reminder_Terms_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_fin_Charge_Terms_Code</name>
+			<description>out_fin_Charge_Terms_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_currency_Code</name>
+			<description>out_currency_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_language_Code</name>
+			<description>out_language_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_search_Name</name>
+			<description>out_search_Name</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_credit_Limit_LCY</name>
+			<description>out_credit_Limit_LCY</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_blocked</name>
+			<description>out_blocked</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_last_Date_Modified</name>
+			<description>out_last_Date_Modified</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_application_Method</name>
+			<description>out_application_Method</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_combine_Shipments</name>
+			<description>out_combine_Shipments</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_reserve</name>
+			<description>out_reserve</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_shipping_Advice</name>
+			<description>out_shipping_Advice</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_shipping_Agent_Code</name>
+			<description>out_shipping_Agent_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_base_Calendar_Code</name>
+			<description>out_base_Calendar_Code</description>
+			<value />
+		</XmlAttribute>
+
+		<image>webservicesinc.png</image>
+		<className>pt.iknow.floweditor.blocks.AlteraAtributos</className>
+		<description>Ler Lista de Produtos</description>
+	</XmlBlock>
+
+	<XmlBlock>
+		<class>BlockReqInternaMaterial_Create</class>
+		<XmlPort>
+			<name>portIn</name>
+			<description>portIn</description>
+			<in_out>in</in_out>
+			<position>
+				<x>-5</x>
+				<y>25</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portOk</name>
+			<description>portOk</description>
+			<in_out>out</in_out>
+			<position>
+				<x>55</x>
+				<y>10</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portError</name>
+			<description>portError</description>
+			<in_out>out</in_out>
+			<position>
+				<x>55</x>
+				<y>40</y>
+			</position>
+		</XmlPort>
+		<XmlAttribute>
+			<name>in_key</name>
+			<description>in_key</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_no</name>
+			<description>in_no</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_service</name>
+			<description>in_service</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_ship_to_Name</name>
+			<description>in_ship_to_Name</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_ship_to_Address</name>
+			<description>in_ship_to_Address</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_ship_to_Address_2</name>
+			<description>in_ship_to_Address_2</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_ship_to_Post_Code</name>
+			<description>in_ship_to_Post_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_ship_to_City</name>
+			<description>in_ship_to_City</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_ship_to_County</name>
+			<description>in_ship_to_County</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_ship_to_Contact</name>
+			<description>in_ship_to_Contact</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_posting_</name>
+			<description>in_posting_</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_document_</name>
+			<description>in_document_</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_user</name>
+			<description>in_user</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_location_Code</name>
+			<description>in_location_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_shipment_Method_Code</name>
+			<description>in_shipment_Method_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_shipment_</name>
+			<description>in_shipment_</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_STRSUBSTNO__x0027__Percent1__x0027__x002C_SalesInfoPaneMgt_CalcNoOfShipToAddr_Sell_to_Customer_No
+			</name>
+			<description>in_STRSUBSTNO__x0027__Percent1__x0027__x002C_SalesInfoPaneMgt_CalcNoOfShipToAddr_Sell_to_Customer_No
+			</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_STRSUBSTNO__x0027__Percent1__x0027__x002C_SalesInfoPaneMgt_CalcNoOfContacts_Rec
+			</name>
+			<description>in_STRSUBSTNO__x0027__Percent1__x0027__x002C_SalesInfoPaneMgt_CalcNoOfContacts_Rec
+			</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_salesLines_key</name>
+			<description>in_salesLines_key</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_salesLines_type</name>
+			<description>in_salesLines_type</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_salesLines_sub_Type_Item</name>
+			<description>in_salesLines_sub_Type_Item</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_salesLines_no</name>
+			<description>in_salesLines_no</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_salesLines_description</name>
+			<description>in_salesLines_description</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_salesLines_description_2</name>
+			<description>in_salesLines_description_2</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_salesLines_quantity</name>
+			<description>in_salesLines_quantity</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_salesLines_no_More_Quantities</name>
+			<description>in_salesLines_no_More_Quantities</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_salesLines_location_Code</name>
+			<description>in_salesLines_location_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_salesLines_not_in_Vat_Report</name>
+			<description>in_salesLines_not_in_Vat_Report</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_salesLines_unit_of_Measure_Code</name>
+			<description>in_salesLines_unit_of_Measure_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_salesLines_unit_of_Measure</name>
+			<description>in_salesLines_unit_of_Measure</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_salesLines_use_Duplication_List</name>
+			<description>in_salesLines_use_Duplication_List</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_salesLines_appl_from_Item_Entry</name>
+			<description>in_salesLines_appl_from_Item_Entry</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_salesLines_appl_to_Item_Entry</name>
+			<description>in_salesLines_appl_to_Item_Entry</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_salesLines_shortcut_Dimension_1_Code</name>
+			<description>in_salesLines_shortcut_Dimension_1_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_salesLines_shortcut_Dimension_2_Code</name>
+			<description>in_salesLines_shortcut_Dimension_2_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_salesLines_shortcutDimCode_x005B_3_x005D_</name>
+			<description>in_salesLines_shortcutDimCode_x005B_3_x005D_
+			</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_salesLines_shortcutDimCode_x005B_4_x005D_</name>
+			<description>in_salesLines_shortcutDimCode_x005B_4_x005D_
+			</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_salesLines_DRF_Code</name>
+			<description>in_salesLines_DRF_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_salesLines_budget_Dimension_1_Code</name>
+			<description>in_salesLines_budget_Dimension_1_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_salesLines_budget_Dimension_2_Code</name>
+			<description>in_salesLines_budget_Dimension_2_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_salesLines_budget_Dimension_3_Code</name>
+			<description>in_salesLines_budget_Dimension_3_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_salesLines_budget_Dimension_4_Code</name>
+			<description>in_salesLines_budget_Dimension_4_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_salesLines_treasury_Operation</name>
+			<description>in_salesLines_treasury_Operation</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_salesLines_STRSUBSTNO__x0027__Percent1__x0027__x002C_SalesInfoPaneMgt_CalcAvailability_Rec
+			</name>
+			<description>in_salesLines_STRSUBSTNO__x0027__Percent1__x0027__x002C_SalesInfoPaneMgt_CalcAvailability_Rec
+			</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_salesLines_STRSUBSTNO__x0027__Percent1__x0027__x002C_SalesInfoPaneMgt_CalcNoOfSubstitutions_Rec
+			</name>
+			<description>in_salesLines_STRSUBSTNO__x0027__Percent1__x0027__x002C_SalesInfoPaneMgt_CalcNoOfSubstitutions_Rec
+			</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_salesLines_STRSUBSTNO__x0027__Percent1__x0027__x002C_SalesInfoPaneMgt_CalcNoOfSalesPrices_Rec
+			</name>
+			<description>in_salesLines_STRSUBSTNO__x0027__Percent1__x0027__x002C_SalesInfoPaneMgt_CalcNoOfSalesPrices_Rec
+			</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>in_salesLines_STRSUBSTNO__x0027__Percent1__x0027__x002C_SalesInfoPaneMgt_CalcNoOfSalesLineDisc_Rec
+			</name>
+			<description>in_salesLines_STRSUBSTNO__x0027__Percent1__x0027__x002C_SalesInfoPaneMgt_CalcNoOfSalesLineDisc_Rec
+			</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_key</name>
+			<description>out_key</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_no</name>
+			<description>out_no</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_service</name>
+			<description>out_service</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_ship_to_Name</name>
+			<description>out_ship_to_Name</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_ship_to_Address</name>
+			<description>out_ship_to_Address</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_ship_to_Address_2</name>
+			<description>out_ship_to_Address_2</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_ship_to_Post_Code</name>
+			<description>out_ship_to_Post_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_ship_to_City</name>
+			<description>out_ship_to_City</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_ship_to_County</name>
+			<description>out_ship_to_County</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_ship_to_Contact</name>
+			<description>out_ship_to_Contact</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_posting_</name>
+			<description>out_posting_</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_document_</name>
+			<description>out_document_</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_user</name>
+			<description>out_user</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_location_Code</name>
+			<description>out_location_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_shipment_Method_Code</name>
+			<description>out_shipment_Method_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_shipment_</name>
+			<description>out_shipment_</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_STRSUBSTNO__x0027__Percent1__x0027__x002C_SalesInfoPaneMgt_CalcNoOfShipToAddr_Sell_to_Customer_No
+			</name>
+			<description>out_STRSUBSTNO__x0027__Percent1__x0027__x002C_SalesInfoPaneMgt_CalcNoOfShipToAddr_Sell_to_Customer_No
+			</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_STRSUBSTNO__x0027__Percent1__x0027__x002C_SalesInfoPaneMgt_CalcNoOfContacts_Rec
+			</name>
+			<description>out_STRSUBSTNO__x0027__Percent1__x0027__x002C_SalesInfoPaneMgt_CalcNoOfContacts_Rec
+			</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_salesLines_key</name>
+			<description>out_salesLines_key</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_salesLines_type</name>
+			<description>out_salesLines_type</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_salesLines_sub_Type_Item</name>
+			<description>out_salesLines_sub_Type_Item</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_salesLines_no</name>
+			<description>out_salesLines_no</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_salesLines_description</name>
+			<description>out_salesLines_description</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_salesLines_description_2</name>
+			<description>out_salesLines_description_2</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_salesLines_quantity</name>
+			<description>out_salesLines_quantity</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_salesLines_no_More_Quantities</name>
+			<description>out_salesLines_no_More_Quantities</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_salesLines_location_Code</name>
+			<description>out_salesLines_location_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_salesLines_not_in_Vat_Report</name>
+			<description>out_salesLines_not_in_Vat_Report</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_salesLines_unit_of_Measure_Code</name>
+			<description>out_salesLines_unit_of_Measure_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_salesLines_unit_of_Measure</name>
+			<description>out_salesLines_unit_of_Measure</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_salesLines_use_Duplication_List</name>
+			<description>out_salesLines_use_Duplication_List</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_salesLines_appl_from_Item_Entry</name>
+			<description>out_salesLines_appl_from_Item_Entry</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_salesLines_appl_to_Item_Entry</name>
+			<description>out_salesLines_appl_to_Item_Entry</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_salesLines_shortcut_Dimension_1_Code</name>
+			<description>out_salesLines_shortcut_Dimension_1_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_salesLines_shortcut_Dimension_2_Code</name>
+			<description>out_salesLines_shortcut_Dimension_2_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_salesLines_shortcutDimCode_x005B_3_x005D_</name>
+			<description>out_salesLines_shortcutDimCode_x005B_3_x005D_
+			</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_salesLines_shortcutDimCode_x005B_4_x005D_</name>
+			<description>out_salesLines_shortcutDimCode_x005B_4_x005D_
+			</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_salesLines_DRF_Code</name>
+			<description>out_salesLines_DRF_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_salesLines_budget_Dimension_1_Code</name>
+			<description>out_salesLines_budget_Dimension_1_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_salesLines_budget_Dimension_2_Code</name>
+			<description>out_salesLines_budget_Dimension_2_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_salesLines_budget_Dimension_3_Code</name>
+			<description>out_salesLines_budget_Dimension_3_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_salesLines_budget_Dimension_4_Code</name>
+			<description>out_salesLines_budget_Dimension_4_Code</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_salesLines_treasury_Operation</name>
+			<description>out_salesLines_treasury_Operation</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_salesLines_STRSUBSTNO__x0027__Percent1__x0027__x002C_SalesInfoPaneMgt_CalcAvailability_Rec
+			</name>
+			<description>out_salesLines_STRSUBSTNO__x0027__Percent1__x0027__x002C_SalesInfoPaneMgt_CalcAvailability_Rec
+			</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_salesLines_STRSUBSTNO__x0027__Percent1__x0027__x002C_SalesInfoPaneMgt_CalcNoOfSubstitutions_Rec
+			</name>
+			<description>out_salesLines_STRSUBSTNO__x0027__Percent1__x0027__x002C_SalesInfoPaneMgt_CalcNoOfSubstitutions_Rec
+			</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_salesLines_STRSUBSTNO__x0027__Percent1__x0027__x002C_SalesInfoPaneMgt_CalcNoOfSalesPrices_Rec
+			</name>
+			<description>out_salesLines_STRSUBSTNO__x0027__Percent1__x0027__x002C_SalesInfoPaneMgt_CalcNoOfSalesPrices_Rec
+			</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>out_salesLines_STRSUBSTNO__x0027__Percent1__x0027__x002C_SalesInfoPaneMgt_CalcNoOfSalesLineDisc_Rec
+			</name>
+			<description>out_salesLines_STRSUBSTNO__x0027__Percent1__x0027__x002C_SalesInfoPaneMgt_CalcNoOfSalesLineDisc_Rec
+			</description>
+			<value />
+		</XmlAttribute>
+		<image>webservicesinc.png</image>
+		<className>pt.iknow.floweditor.blocks.AlteraAtributos</className>
+		<description>Criar Req. Int. Material</description>
+	</XmlBlock>
+
+</XmlLibrary>

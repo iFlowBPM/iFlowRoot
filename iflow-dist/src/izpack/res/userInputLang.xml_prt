@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+
+<!-- User Input Language Portuguese -->
+
+<langpack>
+	<!-- Database Panel -->
+	<!--<str id="userdata.title" txt="Dados do Utilizador"/>-->
+	<!-- Database Inputs -->
+	<str id="databasetitle.label" txt="Instância do Servidor de Base de Dados"/>
+	<str id="databaseusertitle.label" txt="Credenciais do Utilizador"/>
+	<str id="databasetype.label" txt="Base de Dados"/>
+	<str id="databaseusername.label" txt="Utilizador"/>
+	<str id="databasepassword.label" txt="Palavra Passe"/>
+	<str id="databaseschema.label" txt="Schema"/>
+	<str id="databasehostname.label" txt="Host"/>
+	<str id="databaseport.label" txt="Porto"/>
+	<str id="databaseadmintitle.label" txt="Credenciais do Administrador"/>
+	<!-- Validators -->
+	<!--<str id="databasehostname.validator" txt="O campo Host do Servidor é obrigatório."/>-->
+	<str id="databaseusername.validator" txt="O campo Utilizador é obrigatório."/>
+	<str id="databasepassword.validator" txt="O campo Palavra Passe é obrigatório."/>
+	<str id="databaseschema.validator" txt="O campo Schema é obrigatório."/>
+	<str id="databasehostname.validator" txt="O campo Host é obrigatório."/>
+	<str id="databaseport.validator" txt="O campo Porto é obrigatório."/>
+	
+	<!-- Application Server Panel -->
+	<!-- Server Inputs -->
+	<str id="appservertitle.label" txt="Instancia do Servidor Aplicacional"/>
+	<str id="appserverenginename.label" txt="Engine Name"/>
+	<str id="appserverhostname.label" txt="Hostname"/>
+	<str id="appserverpath.label" txt="Pasta"/>
+	<!-- Validators -->
+	<str id="appserverenginename.validator" txt="O campo Engine Name é obrigatório."/>
+	<str id="appserverhostname.validator" txt="O campo Hostname é obrigatório."/>
+</langpack>

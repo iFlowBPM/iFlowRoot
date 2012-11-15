@@ -1,0 +1,425 @@
+<wsdl:definitions xmlns:apachesoap="http://xml.apache.org/xml-soap"
+	xmlns:impl="http://mobicomp.com/smsexpress/webservice/server/message"
+	xmlns:intf="http://mobicomp.com/smsexpress/webservice/server/message"
+	xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns1="http://common.server.webservice.smsexpress.mobicomp.com"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://mobicomp.com/smsexpress/webservice/server/message">
+	<!--
+		WSDL created by Apache Axis version: 1.4 Built on Apr 22, 2006
+		(06:55:48 PDT)
+	-->
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema"
+			targetNamespace="http://common.server.webservice.smsexpress.mobicomp.com">
+			<import namespace="http://mobicomp.com/smsexpress/webservice/server/message" />
+			<import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+			<complexType name="AuthenticationInfo">
+				<sequence>
+					<element name="application" nillable="true" type="soapenc:string" />
+					<element name="password" nillable="true" type="soapenc:string" />
+					<element name="username" nillable="true" type="soapenc:string" />
+				</sequence>
+			</complexType>
+		</schema>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema"
+			targetNamespace="http://mobicomp.com/smsexpress/webservice/server/message">
+			<import namespace="http://common.server.webservice.smsexpress.mobicomp.com" />
+			<import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+			<complexType name="ArrayOf_soapenc_string">
+				<complexContent>
+					<restriction base="soapenc:Array">
+						<attribute ref="soapenc:arrayType" wsdl:arrayType="soapenc:string[]" />
+					</restriction>
+				</complexContent>
+			</complexType>
+			<complexType abstract="true" name="Submission">
+				<sequence>
+					<element name="contactLists" nillable="true"
+						type="impl:ArrayOf_soapenc_string" />
+					<element name="deliveryDate" nillable="true" type="xsd:dateTime" />
+					<element name="notification" type="xsd:boolean" />
+					<element name="notificationRecipient" nillable="true"
+						type="soapenc:string" />
+					<element name="notificationType" nillable="true" type="soapenc:string" />
+					<element name="recipients" nillable="true"
+						type="impl:ArrayOf_soapenc_string" />
+					<element name="sender" nillable="true" type="soapenc:string" />
+					<element name="validity" type="xsd:int" />
+				</sequence>
+			</complexType>
+			<complexType name="ArrayOfArrayOf_soapenc_string">
+				<complexContent>
+					<restriction base="soapenc:Array">
+						<attribute ref="soapenc:arrayType" wsdl:arrayType="soapenc:string[][]" />
+					</restriction>
+				</complexContent>
+			</complexType>
+			<complexType name="SmsSubmission">
+				<complexContent>
+					<extension base="impl:Submission">
+						<sequence>
+							<element name="alphabet" nillable="true" type="soapenc:string" />
+							<element name="message" nillable="true" type="soapenc:string" />
+							<element name="substitutions" nillable="true"
+								type="impl:ArrayOfArrayOf_soapenc_string" />
+							<element name="useSubstitutions" type="xsd:boolean" />
+						</sequence>
+					</extension>
+				</complexContent>
+			</complexType>
+			<complexType name="SmsPullSubmission">
+				<complexContent>
+					<extension base="impl:SmsSubmission">
+						<sequence>
+							<element name="acceptNonAddresseesResponses" type="xsd:boolean" />
+							<element name="billingId" nillable="true" type="soapenc:string" />
+							<element name="responseAcceptedMessage" nillable="true"
+								type="soapenc:string" />
+							<element name="submissionCode" nillable="true" type="soapenc:string" />
+							<element name="validUntil" nillable="true" type="xsd:dateTime" />
+						</sequence>
+					</extension>
+				</complexContent>
+			</complexType>
+			<complexType name="SubmissionStatus">
+				<sequence>
+					<element name="id" nillable="true" type="soapenc:string" />
+					<element name="message" nillable="true" type="soapenc:string" />
+					<element name="status" type="xsd:int" />
+				</sequence>
+			</complexType>
+			<complexType name="ContentItem">
+				<complexContent>
+					<extension base="impl:Submission">
+						<sequence>
+							<element name="data" nillable="true" type="soapenc:base64Binary" />
+							<element name="name" nillable="true" type="soapenc:string" />
+						</sequence>
+					</extension>
+				</complexContent>
+			</complexType>
+			<complexType name="ArrayOfContentItem">
+				<complexContent>
+					<restriction base="soapenc:Array">
+						<attribute ref="soapenc:arrayType" wsdl:arrayType="impl:ContentItem[]" />
+					</restriction>
+				</complexContent>
+			</complexType>
+			<complexType name="MmsSubmission">
+				<complexContent>
+					<extension base="impl:Submission">
+						<sequence>
+							<element name="contentItems" nillable="true"
+								type="impl:ArrayOfContentItem" />
+							<element name="messageClass" nillable="true" type="soapenc:string" />
+							<element name="smil" nillable="true" type="soapenc:string" />
+							<element name="subject" nillable="true" type="soapenc:string" />
+						</sequence>
+					</extension>
+				</complexContent>
+			</complexType>
+			<complexType name="WapPushSubmission">
+				<complexContent>
+					<extension base="impl:Submission">
+						<sequence>
+							<element name="link" nillable="true" type="soapenc:string" />
+							<element name="message" nillable="true" type="soapenc:string" />
+						</sequence>
+					</extension>
+				</complexContent>
+			</complexType>
+			<complexType name="SmsPullSubmissionResponse">
+				<sequence>
+					<element name="date" nillable="true" type="xsd:dateTime" />
+					<element name="message" nillable="true" type="soapenc:string" />
+					<element name="nonAddressee" type="xsd:boolean" />
+					<element name="originator" nillable="true" type="soapenc:string" />
+				</sequence>
+			</complexType>
+			<complexType name="ArrayOfSmsPullSubmissionResponse">
+				<complexContent>
+					<restriction base="soapenc:Array">
+						<attribute ref="soapenc:arrayType" wsdl:arrayType="impl:SmsPullSubmissionResponse[]" />
+					</restriction>
+				</complexContent>
+			</complexType>
+			<complexType name="SubmissionStatus2">
+				<sequence>
+					<element name="canceledMessages" type="xsd:int" />
+					<element name="endDate" nillable="true" type="xsd:dateTime" />
+					<element name="failedMessages" type="xsd:int" />
+					<element name="messageType" type="xsd:int" />
+					<element name="notifWaitMessages" type="xsd:int" />
+					<element name="processStatus" type="xsd:int" />
+					<element name="sentMessages" type="xsd:int" />
+					<element name="startDate" nillable="true" type="xsd:dateTime" />
+					<element name="status" type="xsd:int" />
+					<element name="submissionId" nillable="true" type="soapenc:string" />
+					<element name="totalMessages" type="xsd:int" />
+					<element name="waitMessages" type="xsd:int" />
+				</sequence>
+			</complexType>
+			<complexType name="RecipientsStatus">
+				<sequence>
+					<element name="canceled" nillable="true"
+						type="impl:ArrayOf_soapenc_string" />
+					<element name="delivered" nillable="true"
+						type="impl:ArrayOf_soapenc_string" />
+					<element name="failed" nillable="true"
+						type="impl:ArrayOf_soapenc_string" />
+					<element name="sent" nillable="true" type="impl:ArrayOf_soapenc_string" />
+					<element name="waiting" nillable="true"
+						type="impl:ArrayOf_soapenc_string" />
+				</sequence>
+			</complexType>
+			<complexType name="SubmissionDetails">
+				<sequence>
+					<element name="canceledMessages" type="xsd:int" />
+					<element name="creationDate" nillable="true" type="xsd:dateTime" />
+					<element name="endDate" nillable="true" type="xsd:dateTime" />
+					<element name="failedMessages" type="xsd:int" />
+					<element name="link" nillable="true" type="soapenc:string" />
+					<element name="message" nillable="true" type="soapenc:string" />
+					<element name="messageType" type="xsd:int" />
+					<element name="notifWaitMessages" type="xsd:int" />
+					<element name="notificationRequested" type="xsd:boolean" />
+					<element name="originator" nillable="true" type="soapenc:string" />
+					<element name="processStatus" type="xsd:int" />
+					<element name="recipientsStatus" nillable="true"
+						type="impl:RecipientsStatus" />
+					<element name="sender" nillable="true" type="soapenc:string" />
+					<element name="sentMessages" type="xsd:int" />
+					<element name="startDate" nillable="true" type="xsd:dateTime" />
+					<element name="status" type="xsd:int" />
+					<element name="submissionId" nillable="true" type="soapenc:string" />
+					<element name="totalMessages" type="xsd:int" />
+					<element name="waitMessages" type="xsd:int" />
+				</sequence>
+			</complexType>
+		</schema>
+	</wsdl:types>
+	<wsdl:message name="cancelSubmissionRequest">
+		<wsdl:part name="authentication" type="tns1:AuthenticationInfo" />
+		<wsdl:part name="submissionId" type="soapenc:string" />
+	</wsdl:message>
+	<wsdl:message name="sendMmsSubmissionRequest">
+		<wsdl:part name="authentication" type="tns1:AuthenticationInfo" />
+		<wsdl:part name="submission" type="impl:MmsSubmission" />
+	</wsdl:message>
+	<wsdl:message name="sendWapPushSubmissionRequest">
+		<wsdl:part name="authentication" type="tns1:AuthenticationInfo" />
+		<wsdl:part name="submission" type="impl:WapPushSubmission" />
+	</wsdl:message>
+	<wsdl:message name="getSubmissionDetailsResponse">
+		<wsdl:part name="getSubmissionDetailsReturn" type="impl:SubmissionDetails" />
+	</wsdl:message>
+	<wsdl:message name="getSubmissionDetailsRequest">
+		<wsdl:part name="authentication" type="tns1:AuthenticationInfo" />
+		<wsdl:part name="submissionId" type="soapenc:string" />
+		<wsdl:part name="getRecipientsStatus" type="xsd:boolean" />
+	</wsdl:message>
+	<wsdl:message name="sendSmsPullSubmissionResponse">
+		<wsdl:part name="sendSmsPullSubmissionReturn" type="impl:SubmissionStatus" />
+	</wsdl:message>
+	<wsdl:message name="getSubmissionStatusRequest">
+		<wsdl:part name="authentication" type="tns1:AuthenticationInfo" />
+		<wsdl:part name="submissionId" type="soapenc:string" />
+	</wsdl:message>
+	<wsdl:message name="cancelSubmissionResponse"></wsdl:message>
+	<wsdl:message name="sendSmsSubmissionRequest">
+		<wsdl:part name="authentication" type="tns1:AuthenticationInfo" />
+		<wsdl:part name="submission" type="impl:SmsSubmission" />
+	</wsdl:message>
+	<wsdl:message name="sendMmsSubmissionResponse">
+		<wsdl:part name="sendMmsSubmissionReturn" type="impl:SubmissionStatus" />
+	</wsdl:message>
+	<wsdl:message name="sendWapPushSubmissionResponse">
+		<wsdl:part name="sendWapPushSubmissionReturn" type="impl:SubmissionStatus" />
+	</wsdl:message>
+	<wsdl:message name="sendSmsPullSubmissionRequest">
+		<wsdl:part name="authentication" type="tns1:AuthenticationInfo" />
+		<wsdl:part name="submission" type="impl:SmsPullSubmission" />
+	</wsdl:message>
+	<wsdl:message name="getSubmissionStatusResponse">
+		<wsdl:part name="getSubmissionStatusReturn" type="impl:SubmissionStatus2" />
+	</wsdl:message>
+	<wsdl:message name="sendSmsSubmissionResponse">
+		<wsdl:part name="sendSmsSubmissionReturn" type="impl:SubmissionStatus" />
+	</wsdl:message>
+	<wsdl:message name="getSmsPullSubmissionResponsesRequest">
+		<wsdl:part name="authentication" type="tns1:AuthenticationInfo" />
+		<wsdl:part name="submissionId" type="soapenc:string" />
+	</wsdl:message>
+	<wsdl:message name="getSmsPullSubmissionResponsesResponse">
+		<wsdl:part name="getSmsPullSubmissionResponsesReturn" type="impl:ArrayOfSmsPullSubmissionResponse" />
+	</wsdl:message>
+	<wsdl:portType name="SubmissionManager">
+		<wsdl:operation name="cancelSubmission" parameterOrder="authentication submissionId">
+			<wsdl:input message="impl:cancelSubmissionRequest" name="cancelSubmissionRequest" />
+			<wsdl:output message="impl:cancelSubmissionResponse"
+				name="cancelSubmissionResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="sendSmsSubmission"
+			parameterOrder="authentication submission">
+			<wsdl:input message="impl:sendSmsSubmissionRequest" name="sendSmsSubmissionRequest" />
+			<wsdl:output message="impl:sendSmsSubmissionResponse"
+				name="sendSmsSubmissionResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="sendMmsSubmission"
+			parameterOrder="authentication submission">
+			<wsdl:input message="impl:sendMmsSubmissionRequest" name="sendMmsSubmissionRequest" />
+			<wsdl:output message="impl:sendMmsSubmissionResponse"
+				name="sendMmsSubmissionResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="sendWapPushSubmission"
+			parameterOrder="authentication submission">
+			<wsdl:input message="impl:sendWapPushSubmissionRequest"
+				name="sendWapPushSubmissionRequest" />
+			<wsdl:output message="impl:sendWapPushSubmissionResponse"
+				name="sendWapPushSubmissionResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="sendSmsPullSubmission"
+			parameterOrder="authentication submission">
+			<wsdl:input message="impl:sendSmsPullSubmissionRequest"
+				name="sendSmsPullSubmissionRequest" />
+			<wsdl:output message="impl:sendSmsPullSubmissionResponse"
+				name="sendSmsPullSubmissionResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="getSmsPullSubmissionResponses"
+			parameterOrder="authentication submissionId">
+			<wsdl:input message="impl:getSmsPullSubmissionResponsesRequest"
+				name="getSmsPullSubmissionResponsesRequest" />
+			<wsdl:output message="impl:getSmsPullSubmissionResponsesResponse"
+				name="getSmsPullSubmissionResponsesResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="getSubmissionStatus"
+			parameterOrder="authentication submissionId">
+			<wsdl:input message="impl:getSubmissionStatusRequest"
+				name="getSubmissionStatusRequest" />
+			<wsdl:output message="impl:getSubmissionStatusResponse"
+				name="getSubmissionStatusResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="getSubmissionDetails"
+			parameterOrder="authentication submissionId getRecipientsStatus">
+			<wsdl:input message="impl:getSubmissionDetailsRequest"
+				name="getSubmissionDetailsRequest" />
+			<wsdl:output message="impl:getSubmissionDetailsResponse"
+				name="getSubmissionDetailsResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="SubmissionManager2SoapBinding" type="impl:SubmissionManager">
+		<wsdlsoap:binding style="rpc"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="cancelSubmission">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="cancelSubmissionRequest">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://mobicomp.com/smsexpress/webservice/server/message"
+					use="encoded" />
+			</wsdl:input>
+			<wsdl:output name="cancelSubmissionResponse">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://mobicomp.com/smsexpress/webservice/server/message"
+					use="encoded" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="sendSmsSubmission">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="sendSmsSubmissionRequest">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://mobicomp.com/smsexpress/webservice/server/message"
+					use="encoded" />
+			</wsdl:input>
+			<wsdl:output name="sendSmsSubmissionResponse">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://mobicomp.com/smsexpress/webservice/server/message"
+					use="encoded" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="sendMmsSubmission">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="sendMmsSubmissionRequest">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://mobicomp.com/smsexpress/webservice/server/message"
+					use="encoded" />
+			</wsdl:input>
+			<wsdl:output name="sendMmsSubmissionResponse">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://mobicomp.com/smsexpress/webservice/server/message"
+					use="encoded" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="sendWapPushSubmission">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="sendWapPushSubmissionRequest">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://mobicomp.com/smsexpress/webservice/server/message"
+					use="encoded" />
+			</wsdl:input>
+			<wsdl:output name="sendWapPushSubmissionResponse">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://mobicomp.com/smsexpress/webservice/server/message"
+					use="encoded" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="sendSmsPullSubmission">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="sendSmsPullSubmissionRequest">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://mobicomp.com/smsexpress/webservice/server/message"
+					use="encoded" />
+			</wsdl:input>
+			<wsdl:output name="sendSmsPullSubmissionResponse">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://mobicomp.com/smsexpress/webservice/server/message"
+					use="encoded" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getSmsPullSubmissionResponses">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="getSmsPullSubmissionResponsesRequest">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://mobicomp.com/smsexpress/webservice/server/message"
+					use="encoded" />
+			</wsdl:input>
+			<wsdl:output name="getSmsPullSubmissionResponsesResponse">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://mobicomp.com/smsexpress/webservice/server/message"
+					use="encoded" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getSubmissionStatus">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="getSubmissionStatusRequest">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://mobicomp.com/smsexpress/webservice/server/message"
+					use="encoded" />
+			</wsdl:input>
+			<wsdl:output name="getSubmissionStatusResponse">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://mobicomp.com/smsexpress/webservice/server/message"
+					use="encoded" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getSubmissionDetails">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="getSubmissionDetailsRequest">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://mobicomp.com/smsexpress/webservice/server/message"
+					use="encoded" />
+			</wsdl:input>
+			<wsdl:output name="getSubmissionDetailsResponse">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://mobicomp.com/smsexpress/webservice/server/message"
+					use="encoded" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="SubmissionManagerService">
+		<wsdl:port binding="impl:SubmissionManager2SoapBinding"
+			name="SubmissionManager2">
+			<wsdlsoap:address
+				location="https://smsexpress.tmn.pt/smsexpress-webservices/SubmissionManager2" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

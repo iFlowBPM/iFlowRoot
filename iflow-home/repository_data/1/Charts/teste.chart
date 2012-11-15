@@ -1,0 +1,44 @@
+# Chart stuff
+chart.type=PIE
+chart.image.format=png
+chart.title=Default Title
+chart.generate.lengend=true
+chart.generate.tooltips=false
+chart.no.data.message=No Data Available
+chart.ignore.zeros=false
+chart.currency.values=false
+
+# Pie specific stuff
+chart.pie.circular=true
+chart.pie.show.tags=true
+# Please refer to StandardPieSectionLabelGenerator (JFreeChart) documentation
+# {0} is the label name
+# {1} is the real value
+# {2} is the percentage value
+# {0} = {1} ({2}) will present something like Product = 350,00 (10,00%)
+chart.pie.tag.format={0} \= {1} ({2})
+
+###
+## Styling stuff
+###
+
+## Load style from repository file
+#chart.style.loader=repos
+## retrieve Charts/teste.style
+#chart.style.name=teste
+
+# Embedded color loader
+chart.style.loader=color
+chart.style.show.border=true
+chart.style.font=Verdana;bold;12
+chart.style.colors=6
+chart.style.color.0=16;ff;00;00
+chart.style.color.1=16;ff;ff;00
+chart.style.color.2=16;00;ff;00
+chart.style.color.3=16;00;ff;ff
+chart.style.color.4=16;00;00;ff
+chart.style.color.5=16;ff;00;ff
+chart.style.background.color=16;9f;9f;ff
+# gray
+chart.style.legend.background.color=16;c0;c0;c0
+

@@ -1,0 +1,52 @@
+	<h2>$messages.getString("admin_nav.title") $navSep $messages.getString("admin_nav.section.processes.title") $navSep $messages.getString("admin_nav.section.processes.link.undo") </h2>
+	
+	<p>$messages.getString("help.box_proc_undo_select.concept")</p>
+	
+	<input class="regular_button_01" type="button" value="$messages.getString("button.search")" disabled="disabled" />
+	<p>$messages.getString("proc_undo_select.header.criteria"):</p>
+	<table class="item_list">
+		<tr class="tab_header">
+			<td>$messages.getString("help.box_proc_undo_select.table.header.field")</td>
+			<td>$messages.getString("help.box_proc_undo_select.table.header.description")</td>
+			<td>$messages.getString("help.box_proc_undo_select.table.header.mandatory")</td>
+		</tr>
+		<tr class="tab_row_odd">
+			<td>"$messages.getString("proc_undo_select.crit.flow")"</td>
+			<td>$messages.getString("help.box_proc_undo_select.table.body.flow")</td>
+			<td>$messages.getString("const.yes")</td>
+		</tr>
+		<tr class="tab_row_even">
+			<td>"$messages.getString("proc_undo_select.crit.after")"</td>
+			<td>$messages.getString("help.box_proc_undo_select.table.body.after")</td>
+			<td>$messages.getString("const.no")</td>
+		</tr>
+		<tr class="tab_row_odd">
+			<td>"$messages.getString("proc_undo_select.crit.before")"</td>
+			<td>$messages.getString("help.box_proc_undo_select.table.body.before")</td>
+			<td>$messages.getString("const.no")</td>
+		</tr>
+		<tr class="tab_row_even">
+			<td>"$messages.getString("proc_undo_select.crit.tasks")"</td>
+			<td>$messages.getString("help.box_proc_undo_select.table.body.tasks", [$messages.getString("button.previous"), $messages.getString("button.next")])</td>
+			<td>$messages.getString("const.no")</td>
+		</tr>
+		<tr class="tab_row_odd">
+			<td>"$messages.getString("proc_undo_select.crit.process")"</td>
+			<td>$messages.getString("help.box_proc_undo_select.table.body.process.description")</td>
+			<td>$messages.getString("help.box_proc_undo_select.table.body.process.mandatory", [$messages.getString("proc_undo_select.crit.previousUser"), $messages.getString("proc_undo_select.crit.currentUser")])</td>
+		</tr>
+		<tr class="tab_row_even">
+			<td>"$messages.getString("proc_undo_select.crit.previousUser")"</td>
+			<td>$messages.getString("help.box_proc_undo_select.table.body.previousUser.description")</td>
+			<td>$messages.getString("help.box_proc_undo_select.table.body.previousUser.mandatory", [$messages.getString("proc_undo_select.crit.process"), $messages.getString("proc_undo_select.crit.currentUser")])</td>
+		</tr>
+		<tr class="tab_row_odd">
+			<td>"$messages.getString("proc_undo_select.crit.currentUser")"</td>
+			<td>$messages.getString("help.box_proc_undo_select.table.body.currentUser.description")</td>
+			<td>$messages.getString("help.box_proc_undo_select.table.body.currentUser.mandatory", [$messages.getString("proc_undo_select.crit.process"), $messages.getString("proc_undo_select.crit.previousUser")])</td>
+		</tr>
+	</table>
+	
+	<p>$messages.getString("help.box_proc_undo_select.footer.p1")</p>
+	<img src="images/icon_revert.png" border="0" title="Revert" alt="Revert">
+	<p>$messages.getString("help.box_proc_undo_select.footer.p2")</p>

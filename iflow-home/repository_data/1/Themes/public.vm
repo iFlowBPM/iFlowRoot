@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>iFlow - enterprise process modeling</title>
+	<link rel="stylesheet" type="text/css" media="all" href="javascript/calendar/calendar-iflow.css" title="cal-iflow" />
+	<link rel="stylesheet" type="text/css" href="javascript/yahoo/container/assets/skins/sam/container.css" />
+	<link rel="stylesheet" type="text/css" href="javascript/yahoo/button/assets/skins/sam/button.css" />
+	<link rel="stylesheet" href="Themes/${orgTheme}/css/tips.css" type="text/css">
+	<link rel="stylesheet" href="Themes/${orgTheme}/css/iflow_main.css" type="text/css">
+	<link rel="stylesheet" href="Themes/${orgTheme}/css/tutorial.css" type="text/css">
+    <link rel="stylesheet" href="Themes/${orgTheme}/css/tree.css" type="text/css"  />
+    #if ("${menuLocation}" == "right")
+      <link rel="stylesheet" href="Themes/${orgTheme}/css/menuright.css" type="text/css"  />
+    #else
+      <link rel="stylesheet" href="Themes/${orgTheme}/css/menuleft.css" type="text/css"  />
+    #end
+    
+	<link rel="shortcut icon" href="images/favicon.ico" />
+	<!--[if IE]>
+		<link rel="stylesheet" href="Themes/${orgTheme}/css/iflow_ie.css" type="text/css">
+	<![endif]-->
+
+	<!--[if lt IE 7]>
+		<style type="text/css">
+		  .icon_item { // append this style
+		    width:24px;
+		    height:24px;
+		  }
+		  img { behavior: url(iepngfix.htc) }
+		</style>
+	<![endif]-->
+
+	<!-- locale stuff -->
+	<script type="text/javascript" src="javascript/messages.js"> </script><!-- default messages -->
+	<script type="text/javascript" src="javascript/messages_${lang}.js"> </script> <!-- localized version override -->
+	<script type="text/javascript" src="javascript/ibox.js"> </script>
+	<script type="text/javascript" src="javascript/calendar/calendar.js"></script>
+	<script type="text/javascript" src="javascript/calendar/lang/${cal_lang_file}"></script>
+	<script type="text/javascript" src="javascript/calendar/calendar-setup.js"></script>
+	<script type="text/javascript" src="javascript/yahoo/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="javascript/yahoo/event/event-min.js"></script>
+	<script type="text/javascript" src="javascript/yahoo/connection/connection-min.js"></script>
+	<script type="text/javascript" src="javascript/yahoo/dom/dom-min.js"></script>
+	<script type="text/javascript" src="javascript/yahoo/element/element-beta-min.js"></script>
+	<script type="text/javascript" src="javascript/yahoo/button/button-beta-min.js"></script>
+	<script type="text/javascript" src="javascript/yahoo/dragdrop/dragdrop-min.js"></script>
+	<script type="text/javascript" src="javascript/yahoo/animation/animation-min.js"></script>
+	<script type="text/javascript" src="javascript/yahoo/container/container-min.js"></script>
+	<script type="text/javascript" src="javascript/yahoo/yahoo-dom-event/yahoo-dom-event.js"></script>
+	<script type="text/javascript" src="javascript/yahoo/treeview/treeview-min.js"></script>
+
+	<script type="text/javascript" src="javascript/mootools.js"></script>
+
+	<script type="text/javascript" src="javascript/ajax_processing.js"></script>
+	<script type="text/javascript" src="javascript/iflow_main.js"></script>
+	<script type="text/javascript" src="$response.encodeURL('javascript/encodedURLS.jsp')"></script>
+	<script type="text/javascript" src="javascript/css.js"></script>
+	<script type="text/javascript" src="javascript/tutorial.js"></script>
+	<script type="text/javascript" src="$response.encodeURL('javascript/applet.js')"></script>
+	<script type="text/javascript" src="javascript/applet_functions.js"></script>
+</head>
+
+<body>
+
+  <div id="section3_content_div">
+    <iframe src="${processURI}" id="open_proc_frame" name="open_proc_frame" frameborder="0" scrolling="auto" marginheight="0" marginwidth="0" width="100%" height="100%">
+    O seu browser não suporta iframes
+    </iframe>
+  </div>
+  
+  #* Inject applet inside element body (right here...) *#
+  <script type="text/javascript">
+    setApplet('div_applet');
+    getAppletElem();
+  </script>
+</body>
+</html>
+  

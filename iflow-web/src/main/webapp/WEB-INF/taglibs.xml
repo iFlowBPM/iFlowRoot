@@ -1,0 +1,11 @@
+
+	<jsp-config>
+		<taglib>
+			<taglib-uri>http://jakarta.apache.org/taglibs/core</taglib-uri>
+			<taglib-location>/WEB-INF/tlds/c.tld</taglib-location>
+		</taglib>
+		<taglib>
+			<taglib-uri>http://www.iknow.pt/jsp/jstl/iflow</taglib-uri>
+			<taglib-location>/WEB-INF/tlds/iflow.tld</taglib-location>
+		</taglib>
+	</jsp-config>

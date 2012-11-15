@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<wsdl:definitions targetNamespace="http://webservices.iknow.pt"
+	xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://webservices.iknow.pt"
+	xmlns:intf="http://webservices.iknow.pt" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+	xmlns:tns1="http://types.services.api.iflow.pt" xmlns:tns2="http://lang.java"
+	xmlns:tns3="http://iflow.iknow.pt" xmlns:tns4="http://sql.java"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<wsdl:types>
+		<schema targetNamespace="http://lang.java" xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://iflow.iknow.pt" />
+			<import namespace="http://types.services.api.iflow.pt" />
+			<import namespace="http://sql.java" />
+			<import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+			<complexType name="StringArray">
+				<complexContent>
+					<restriction base="soapenc:Array">
+						<attribute ref="soapenc:arrayType" wsdl:arrayType="xsd:string[]" />
+					</restriction>
+				</complexContent>
+			</complexType>
+		</schema>
+		<schema targetNamespace="http://types.services.api.iflow.pt"
+			xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://iflow.iknow.pt" />
+			<import namespace="http://lang.java" />
+			<import namespace="http://sql.java" />
+			<import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+			<complexType name="StringSet">
+				<sequence>
+					<element name="result" nillable="true" type="tns2:StringArray" />
+				</sequence>
+			</complexType>
+			<complexType name="DataElement">
+				<sequence>
+					<element name="name" nillable="true" type="xsd:string" />
+					<element name="type" nillable="true" type="xsd:string" />
+					<element name="value" nillable="true" type="xsd:string" />
+				</sequence>
+			</complexType>
+			<complexType name="DataElementArray">
+				<complexContent>
+					<restriction base="soapenc:Array">
+						<attribute ref="soapenc:arrayType" wsdl:arrayType="tns1:DataElement[]" />
+					</restriction>
+				</complexContent>
+			</complexType>
+			<complexType name="DataElementSet">
+				<sequence>
+					<element name="result" nillable="true" type="tns1:DataElementArray" />
+				</sequence>
+			</complexType>
+			<complexType name="ActivitySet">
+				<sequence>
+					<element name="result" nillable="true" type="tns3:ActivityArray" />
+				</sequence>
+			</complexType>
+		</schema>
+		<schema targetNamespace="http://sql.java" xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://iflow.iknow.pt" />
+			<import namespace="http://lang.java" />
+			<import namespace="http://types.services.api.iflow.pt" />
+			<import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+			<complexType name="Timestamp">
+				<complexContent>
+					<extension base="xsd:dateTime">
+						<sequence>
+							<element name="nanos" type="xsd:int" />
+						</sequence>
+					</extension>
+				</complexContent>
+			</complexType>
+		</schema>
+		<schema targetNamespace="http://iflow.iknow.pt" xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://lang.java" />
+			<import namespace="http://types.services.api.iflow.pt" />
+			<import namespace="http://sql.java" />
+			<import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+			<complexType name="Activity">
+				<sequence>
+					<element name="archived" nillable="true" type="xsd:dateTime" />
+					<element name="created" nillable="true" type="xsd:dateTime" />
+					<element name="delegated" type="xsd:boolean" />
+					<element name="description" nillable="true" type="xsd:string" />
+					<element name="flowid" type="xsd:int" />
+					<element name="notify" type="xsd:boolean" />
+					<element name="pid" type="xsd:int" />
+					<element name="priority" type="xsd:int" />
+					<element name="profileName" nillable="true" type="xsd:string" />
+					<element name="read" type="xsd:boolean" />
+					<element name="started" nillable="true" type="xsd:dateTime" />
+					<element name="status" type="xsd:int" />
+					<element name="subpid" type="xsd:int" />
+					<element name="type" type="xsd:int" />
+					<element name="url" nillable="true" type="xsd:string" />
+					<element name="userid" nillable="true" type="xsd:string" />
+					<element name="profilename" nillable="true" type="xsd:string" />
+					<element name="pnumber" nillable="true" type="xsd:string" />
+					<element name="mid" type="xsd:int" />
+				</sequence>
+			</complexType>
+			<complexType name="ActivityArray">
+				<complexContent>
+					<restriction base="soapenc:Array">
+						<attribute ref="soapenc:arrayType" wsdl:arrayType="tns3:Activity[]" />
+					</restriction>
+				</complexContent>
+			</complexType>
+		</schema>
+	</wsdl:types>
+	<wsdl:message name="setProcessDataFromBlockRequest">
+		<wsdl:part name="user" type="xsd:string" />
+		<wsdl:part name="password" type="xsd:string" />
+		<wsdl:part name="flowid" type="xsd:int" />
+		<wsdl:part name="pid" type="xsd:int" />
+		<wsdl:part name="subpid" type="xsd:int" />
+		<wsdl:part name="names" type="tns2:StringArray" />
+		<wsdl:part name="values" type="tns2:StringArray" />
+		<wsdl:part name="types" type="tns2:StringArray" />
+	</wsdl:message>
+	<wsdl:message name="setProcessDataResponse">
+		<wsdl:part name="setProcessDataReturn" type="xsd:string" />
+	</wsdl:message>
+	<wsdl:message name="setProcessDataRequest">
+		<wsdl:part name="user" type="xsd:string" />
+		<wsdl:part name="password" type="xsd:string" />
+		<wsdl:part name="flowid" type="xsd:int" />
+		<wsdl:part name="pid" type="xsd:int" />
+		<wsdl:part name="subpid" type="xsd:int" />
+		<wsdl:part name="desFields" type="tns1:DataElementSet" />
+	</wsdl:message>
+	<wsdl:message name="getUserActivitiesRequest">
+		<wsdl:part name="user" type="xsd:string" />
+		<wsdl:part name="password" type="xsd:string" />
+	</wsdl:message>
+	<wsdl:message name="startFlowFromBlockRequest">
+		<wsdl:part name="user" type="xsd:string" />
+		<wsdl:part name="password" type="xsd:string" />
+		<wsdl:part name="flowid" type="xsd:int" />
+		<wsdl:part name="names" type="tns2:StringArray" />
+		<wsdl:part name="values" type="tns2:StringArray" />
+		<wsdl:part name="types" type="tns2:StringArray" />
+	</wsdl:message>
+	<wsdl:message name="getProcessDataRequest">
+		<wsdl:part name="user" type="xsd:string" />
+		<wsdl:part name="password" type="xsd:string" />
+		<wsdl:part name="flowid" type="xsd:int" />
+		<wsdl:part name="pid" type="xsd:int" />
+		<wsdl:part name="subpid" type="xsd:int" />
+		<wsdl:part name="ssFields" type="tns1:StringSet" />
+	</wsdl:message>
+	<wsdl:message name="getProcessActivityHistoryResponse">
+		<wsdl:part name="getProcessActivityHistoryReturn" type="tns1:ActivitySet" />
+	</wsdl:message>
+	<wsdl:message name="startFlowFromBlockResponse">
+		<wsdl:part name="startFlowFromBlockReturn" type="xsd:string" />
+	</wsdl:message>
+	<wsdl:message name="startFlowResponse">
+		<wsdl:part name="startFlowReturn" type="xsd:string" />
+	</wsdl:message>
+	<wsdl:message name="startFlowRequest">
+		<wsdl:part name="user" type="xsd:string" />
+		<wsdl:part name="password" type="xsd:string" />
+		<wsdl:part name="flowid" type="xsd:int" />
+		<wsdl:part name="desFields" type="tns1:DataElementSet" />
+	</wsdl:message>
+	<wsdl:message name="getProcessDataResponse">
+		<wsdl:part name="getProcessDataReturn" type="tns1:DataElementSet" />
+	</wsdl:message>
+	<wsdl:message name="getUserActivitiesResponse">
+		<wsdl:part name="getUserActivitiesReturn" type="tns1:ActivitySet" />
+	</wsdl:message>
+	<wsdl:message name="getProcessStateResponse">
+		<wsdl:part name="getProcessStateReturn" type="xsd:string" />
+	</wsdl:message>
+	<wsdl:message name="getProcessStateRequest">
+		<wsdl:part name="user" type="xsd:string" />
+		<wsdl:part name="password" type="xsd:string" />
+		<wsdl:part name="flowid" type="xsd:int" />
+		<wsdl:part name="pid" type="xsd:int" />
+		<wsdl:part name="subpid" type="xsd:int" />
+	</wsdl:message>
+	<wsdl:message name="getProcessActivityHistoryRequest">
+		<wsdl:part name="user" type="xsd:string" />
+		<wsdl:part name="password" type="xsd:string" />
+		<wsdl:part name="flowid" type="xsd:int" />
+		<wsdl:part name="pid" type="xsd:int" />
+		<wsdl:part name="subpid" type="xsd:int" />
+	</wsdl:message>
+	<wsdl:message name="setProcessDataFromBlockResponse">
+		<wsdl:part name="setProcessDataFromBlockReturn" type="xsd:string" />
+	</wsdl:message>
+	<wsdl:portType name="IFlowRemote">
+		<wsdl:operation name="getProcessData"
+			parameterOrder="user password flowid pid subpid ssFields">
+			<wsdl:input message="impl:getProcessDataRequest" name="getProcessDataRequest" />
+			<wsdl:output message="impl:getProcessDataResponse" name="getProcessDataResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="getProcessState" parameterOrder="user password flowid pid subpid">
+			<wsdl:input message="impl:getProcessStateRequest" name="getProcessStateRequest" />
+			<wsdl:output message="impl:getProcessStateResponse" name="getProcessStateResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="getUserActivities"
+			parameterOrder="user password">
+			<wsdl:input message="impl:getUserActivitiesRequest" name="getUserActivitiesRequest" />
+			<wsdl:output message="impl:getUserActivitiesResponse"
+				name="getUserActivitiesResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="getProcessActivityHistory"
+			parameterOrder="user password flowid pid subpid">
+			<wsdl:input message="impl:getProcessActivityHistoryRequest"
+				name="getProcessActivityHistoryRequest" />
+			<wsdl:output message="impl:getProcessActivityHistoryResponse"
+				name="getProcessActivityHistoryResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="startFlowFromBlock"
+			parameterOrder="user password flowid names values types">
+			<wsdl:input message="impl:startFlowFromBlockRequest" name="startFlowFromBlockRequest" />
+			<wsdl:output message="impl:startFlowFromBlockResponse"
+				name="startFlowFromBlockResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="startFlow" parameterOrder="user password flowid desFields">
+			<wsdl:input message="impl:startFlowRequest" name="startFlowRequest" />
+			<wsdl:output message="impl:startFlowResponse" name="startFlowResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="setProcessDataFromBlock"
+			parameterOrder="user password flowid pid subpid names values types">
+			<wsdl:input message="impl:setProcessDataFromBlockRequest"
+				name="setProcessDataFromBlockRequest" />
+			<wsdl:output message="impl:setProcessDataFromBlockResponse"
+				name="setProcessDataFromBlockResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="setProcessData"
+			parameterOrder="user password flowid pid subpid desFields">
+			<wsdl:input message="impl:setProcessDataRequest" name="setProcessDataRequest" />
+			<wsdl:output message="impl:setProcessDataResponse" name="setProcessDataResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="iFlowRemoteSoapBinding" type="impl:IFlowRemote">
+		<wsdlsoap:binding style="rpc"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="getProcessData">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="getProcessDataRequest">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://webservices.iknow.pt" use="encoded" />
+			</wsdl:input>
+			<wsdl:output name="getProcessDataResponse">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://webservices.iknow.pt" use="encoded" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getProcessState">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="getProcessStateRequest">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://webservices.iknow.pt" use="encoded" />
+			</wsdl:input>
+			<wsdl:output name="getProcessStateResponse">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://webservices.iknow.pt" use="encoded" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getUserActivities">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="getUserActivitiesRequest">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://webservices.iknow.pt" use="encoded" />
+			</wsdl:input>
+			<wsdl:output name="getUserActivitiesResponse">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://webservices.iknow.pt" use="encoded" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getProcessActivityHistory">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="getProcessActivityHistoryRequest">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://webservices.iknow.pt" use="encoded" />
+			</wsdl:input>
+			<wsdl:output name="getProcessActivityHistoryResponse">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://webservices.iknow.pt" use="encoded" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="startFlowFromBlock">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="startFlowFromBlockRequest">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://webservices.iknow.pt" use="encoded" />
+			</wsdl:input>
+			<wsdl:output name="startFlowFromBlockResponse">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://webservices.iknow.pt" use="encoded" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="startFlow">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="startFlowRequest">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://webservices.iknow.pt" use="encoded" />
+			</wsdl:input>
+			<wsdl:output name="startFlowResponse">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://webservices.iknow.pt" use="encoded" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setProcessDataFromBlock">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="setProcessDataFromBlockRequest">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://webservices.iknow.pt" use="encoded" />
+			</wsdl:input>
+			<wsdl:output name="setProcessDataFromBlockResponse">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://webservices.iknow.pt" use="encoded" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setProcessData">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="setProcessDataRequest">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://webservices.iknow.pt" use="encoded" />
+			</wsdl:input>
+			<wsdl:output name="setProcessDataResponse">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://webservices.iknow.pt" use="encoded" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="IFlowRemoteService">
+		<wsdl:port binding="impl:iFlowRemoteSoapBinding" name="iFlowRemote">
+			<wsdlsoap:address location="http://localhost:8080/iFlow/ws/iFlowRemote" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

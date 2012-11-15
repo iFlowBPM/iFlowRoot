@@ -1,0 +1,124 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
+%><%@ taglib uri="http://www.iknow.pt/jsp/jstl/iflow" prefix="if" %><% 
+
+if(null == session.getAttribute(Const.USER_INFO)) {
+  if(null == request.getAttribute("inFrame")) {
+	  String _sUrl = request.getRequestURI();
+	  if (request.getQueryString() != null) {
+	    _sUrl += "?" + request.getQueryString();
+	  }
+	  _sUrl = response.encodeURL(_sUrl);
+	  if (_sUrl.indexOf("logout.jsp") == -1) {
+	    session.setAttribute("URL", _sUrl);
+	  }
+
+	  String uri = request.getRequestURI();
+	  if (uri.indexOf("/main.jsp") > 0) {
+        ServletUtils.sendEncodeRedirect(response, "login.jsp");
+	    return;
+	  }
+      out.println("session-expired");
+  } else {
+    // Store formdata somewhere.
+    int __fid = Integer.parseInt(fdFormData.getParameter("flowid"));
+    int __pid = Integer.parseInt(fdFormData.getParameter("pid"));
+    String __subpid = fdFormData.getParameter("subpid");
+    if (StringUtils.isEmpty(__subpid)) {
+      __subpid = "1";
+    }
+
+    String hasPid = "false";
+    String __key = "flowid="+__fid+"&pid="+__pid+"&subpid="+__subpid;
+    if (__pid != Const.nSESSION_PID) {
+      __key += "&_form_session_key="+FormCache.put(fdFormData);
+      hasPid = "true";
+    }
+    %>
+<html>
+  <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Reauth</title>
+	<link rel="stylesheet" type="text/css" href="../javascript/calendar/calendar-iflow.css" media="all" title="cal-iflow" />
+	<link rel="stylesheet" type="text/css" href="../javascript/yahoo/container/assets/skins/sam/container.css" />
+	<link rel="stylesheet" type="text/css" href="../javascript/yahoo/button/assets/skins/sam/button.css" />
+	<link rel="stylesheet" type="text/css" href="../javascript/ibox.css" />
+	<link rel="stylesheet" href="../Themes/default/css/iflow_main.css" type="text/css">
+	<script type="text/javascript" src="../javascript/messages.js"> </script><!-- default messages -->
+	<script type="text/javascript" src="../javascript/ibox.js"> </script>
+	<script type="text/javascript" src="../javascript/calendar/calendar.js"></script>
+	<script type="text/javascript" src="../javascript/calendar/calendar-setup.js"></script>
+	<script type="text/javascript" src="../javascript/yahoo/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="../javascript/yahoo/event/event-min.js"></script>
+	<script type="text/javascript" src="../javascript/yahoo/connection/connection-min.js"></script>
+	<script type="text/javascript" src="../javascript/yahoo/dom/dom-min.js"></script>
+	<script type="text/javascript" src="../javascript/yahoo/element/element-min.js"></script>
+	<script type="text/javascript" src="../javascript/yahoo/button/button-min.js"></script>
+	<script type="text/javascript" src="../javascript/yahoo/dragdrop/dragdrop-min.js"></script>
+	<script type="text/javascript" src="../javascript/yahoo/animation/animation-min.js"></script>
+	<script type="text/javascript" src="../javascript/yahoo/container/container-min.js"></script>
+	<script type="text/javascript" src="../javascript/yahoo/yahoo-dom-event/yahoo-dom-event.js"></script>
+	<script type="text/javascript" src="../javascript/yahoo/treeview/treeview-min.js"></script>
+	<script type="text/javascript" src="../javascript/mootools.js"></script>
+	<script type="text/javascript" src="../javascript/ajax_processing.js"></script>
+	<script type="text/javascript" src="../javascript/iflow_main.js"></script>
+	<script type="text/javascript" src="../javascript/tutorial.js"></script>
+	<script type="text/javascript" src="../javascript/autosave.js"></script>
+	<script type="text/javascript">
+	var iboxlogin = new iBox({
+		indicatorImg: "images/indicator.gif",
+		bgColor: '#528b8b', // dark slate gray 4
+		closeLink: false,
+		bgOpacity:7, // how transparent our overlay bg is
+		fgOpacity:10 // how transparent our overlay fg is
+	});
+	function doParentLogin() {
+	  if(parent) {
+		parent.registerFormKey('<%=request.getRequestURL()%>','<%=__key%>', <%=hasPid%>);
+		parent.openLoginIbox();
+	  } else {
+	    // TODO Regular browser and/or standalone execution.
+	  }
+	}
+	</script>
+  </head>
+  <body onload="doParentLogin()">
+	<div id="autoSaveMessage" style="display:none">
+		<form name="loginform">
+			<div style="margin:auto;align:center;height:200px;background-image:url('../images/login_bg.gif');background-repeat:no-repeat;padding-top:1px;">
+			  <div style="position: relative; top: 60px;">
+				<div style="margin: 5px 0px; padding: 0px; position: relative; text-align: center; height: 2em;" class="error_msg">
+					<if:message string="login.field.required"/>
+				</div>	
+				<div style="margin: 2px 0pt; padding: 0pt; width: 140px; height: 18px; position: relative; text-align: right; float: left;" class="user_info"> 
+	  			  <if:message string="login.field.user"/>
+				</div>
+				<div style="margin: 2px 0pt; padding: 0pt; width: 140px; height: 18px; position: relative; text-align: left; float: right;" class="item">
+				  <input type="text" id="idlogin" name="login" size="15" maxlength="40" onblur="document.getElementById('idlogin').value=this.value;"/>
+				</div>    
+				<div style="margin: 2px 0pt; padding: 0pt; width: 140px; height: 18px; position: relative; text-align: right; float: left;" class="user_info">
+				   <if:message string="login.field.password"/>
+				</div>
+				<div style="margin: 2px 0pt; padding: 0pt; width: 140px; height: 18px; position: relative; text-align: left; float: right;" class="item">
+				    <input id="idpassword" type="password" name="password" size="15" maxlength="40" onblur="document.getElementById('idpassword').value=this.value;"/>
+				</div>
+		        <div style="position: relative; width: 280px; float: left; text-align: right;" class="item">
+			     	<input style="" id="link_search_span" class="regular_button_01" type="button" name="filter" value="Login" 
+				 	onClick="javascript:assyncLogin('../AuthenticationServlet', loginReturn);" />
+		        </div>
+		      </div>
+			</div>
+		</form>
+	</div>
+  </body>
+</html>
+<%
+  }
+  return;
+} else if (null != request.getAttribute("inFrame")) {
+  String __key = fdFormData.getParameter("_form_session_key");
+  if(StringUtils.isNotEmpty(__key)) {
+    FormData fd = FormCache.get(__key);
+    if(null != fd) fdFormData = fd;
+  }
+}
+%>

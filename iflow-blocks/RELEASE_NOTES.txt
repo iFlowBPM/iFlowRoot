@@ -1,0 +1,264 @@
+------------------------------------------------------------------------------
+                           iFlowBlocks Release Notes                                
+------------------------------------------------------------------------------
+
+Version 4.0.15 - R20120328
+	New Features:
+		- Foi desponibilizado um novo bloco Multi-Condição que tem funcionamento
+		similar ao bloco condição permitindo ter 4 condições.
+		- 544 - Envio de SMS (passou a funcionar com o serviço tmn sms express
+
+	Bug fixes:
+
+	Known Issues:
+ 
+ 
+Version 4.0.15 - R20120123
+	New Features:
+
+	Bug fixes:
+		- Subfluxo - subprocesso, Foram corrigidas anomalias no funcionamento
+		do bloco subFluxo
+
+Version 4.0.7 - R20100810
+
+ New Features:
+  - os blocos BlockGetUserInfo e BlockGetUsersInProfile passaram a aceder
+    às propriedades extra dos users.
+   
+ Bug fixes:
+ - 
+
+ Known Issues:
+  - O rollback dos blocos BlockSqlBatchInsert e BlockSqlBatchUpdate nao
+    funciona correctamente...
+
+------------------------------------------------------------------------------
+
+Version 4.0.6 - R20100727
+
+ New Features:
+  - BlockCriarXls: Permite criar documentos excel
+   
+ Bug fixes:
+  - Formulario: processamento do campo radio button.
+
+ Known Issues:
+  - O rollback dos blocos BlockSqlBatchInsert e BlockSqlBatchUpdate nao
+    funciona correctamente...
+
+------------------------------------------------------------------------------
+
+Version 4.0.5 - R20100609
+
+ New Features:
+  - BlockCriarDocumento: Adicionado suporte para as variáveis "built-in" userInfo, 
+  	procData e org bsh utils MyBshUtils.  	 
+   
+ Bug fixes:
+  - 
+
+ Known Issues:
+  - O rollback dos blocos BlockSqlBatchInsert e BlockSqlBatchUpdate nao
+    funciona correctamente...
+
+------------------------------------------------------------------------------
+
+Version 4.0.5 - R20100528
+
+ Bug fixes:
+  - Minor fixes 
+
+ Known Issues:
+  - O rollback dos blocos BlockSqlBatchInsert e BlockSqlBatchUpdate nao
+    funciona correctamente...
+
+------------------------------------------------------------------------------
+
+Version 4.0.4 - R20100525
+
+ New Features:
+  - BlockFormulario: Campo "obrigatório" adicionado para Selection, SQLSelection e File
+  - BlockSqlBatchInsert e BlockSqlBatchUpdate: transacional (se houver um erro,  
+    é feito o rollback da connection).
+  - Campos novos no bloco de importação de dados:
+    Sheet a importar
+    Formatação de dados das colunas importadas
+    Variavel documento para carregar ficheiro
+  - BlockFormulario: nova opção nos botões para ignorar processamento do 
+     formulário (útil para botões de cancelar/voltar em formulários com campos obrigatórios)
+  - BlockFormulario: possibilidade de definir o tamanho relativo (%) para os campos columndivision 
+    (colunas dos blocos), sendo que ao definir para uma coluna (num bloco) implica definir para todas
+  - Novo Bloco FlowDoc [BlockDocumentDelete]: Permite apagar ficheiros
+    locais ou remotos (no servidor DMS)
+  - Nome do ficheiro (save as)
+  - Possibilidade de criar uma caixa de confirmação nos botões dos fluxos
+  - Cabeçalho (header) e SubCabeçalho (subheader) no bloco formulário agora é 
+    string java (string parsed).
+  - Possibilidade de alterar um formulário inteiro para modo de leitura
+  - Possibilidade de definir cor de fundo de linha de tabela no formulário mediante
+    configuração do array rowcontrol: ex. rowcontrol[i]="bgcolor=#ededed";
+  - BlockFormulario: checkbox de campo obrigatório convertida em condição para campo obrigatório.
+  - Refactor: Blocos movidos para projecto iflow-blocks
+  - BlockFormulario: adicionado suporte para largura em % na área de texto.
+  - Suporte para caching de resultados nas listas de selecção SQL.
+  - Suporte para propriedade "align" e "bgcolor" na tabela de tamanho fixo.
+  - BlockFormulario: condição para mostrar botões disponível em todos os botões.
+  - BlockFormulario: adicionada opção para ignorar validação dos formulário nos botões 
+    (processa o formulário mas não valida).
+  - BlockFormulario: adicionado suporte para propriedade output_only (output_only=true) e 
+  	disabled (disabled=true) no array de controlo (controlarray) do campo tabela (arraytable) 
+  - BlockFormulario: adicionado suporte para linha de subheader no array 
+  	de controlo (controlarray) do campo tabela (arraytable). A linha subheader definida será 
+  	inserida automaticamente antes da linha respectiva 
+  	(ex. rowcontrol[i]="subheader=true,subheader_col_0=Desc,subheader_col_1=Ref" ...) 
+  - [ONGOING] Form Tables: Campo adicional para mensagens de erro/info/warning
+  - BlockFormulario: adicionado suporte para extraProps hide_prefix e hide_sufix nas
+  	tabelas, que quando a true, não mostram o prefixo/sufixo do campo respectivamente.
+  - BlockFormulario: adicionado novo tipo de dados (Tabela DMS)
+   
+ Bug fixes:
+  - BlockProcDetail: Listagem de processos por Process Number
+  - BlockDocumentList: Criterio de filtragem
+  - BlockDataImport: Remoção de tokens e sessão e colisão com mid
+  - BlockSqlInsert e BlockSqlUpdate: suporte para caracteres especiais na 
+    query avançada.
+  - Formulario: validação de dados no select onChange
+  - Formulario: permite expressões na caixa de confirmação dos botões
+  - Formulario: Codigos de lingua passados incorrectamente para xslt
+  - Formulario: Janela de selecção de data não é apresentada quando o iflow
+    está em espanhol.
+  - BlockSwitchProcAsUser: Porto inexistente removido do bloco (portOut)
+  - BlockSwitchProcAsUser: Subpid está a ser guardado no valor pid.
+  - Formulario/Ficheiro: toggle applet/javascript
+  - Formulario/Ficheiro: editar c/ javascript
+  - Formulario/Ficheiro: campo obrigatório
+  - #441: Correccao do bloco Abrir processo em ambiente internacional
+  - #441: Correccao do bloco Pesquisa de processo em ambiente internacional
+  - #441: Correccao do bloco Bloco SQL Update em ambiente internacional
+  - #441: Correccao do bloco formulario em ambiente internacional
+  - Propriedades dinamicas dos campos do formulario nao funcionam
+    correcamente quando se modifica um campo existente.
+  - #450: Internacionalizacao das bibliotecas de blocos
+  - Optimização (e correção no IE) da geração do html para as listas de selecção. 
+  - Corrigido problema com bloco NOP.
+  - BlockGetUsersInProfile: limpeza da lista de utilizadores.
+  - BlockFormulario: disable de tabs
+  - BlockFormulario: erro ao submeter formulario sem validação em IE
+  - BlockFormulario: fixed tab container disable
+  - Formulario/Ficheiro: limpa a variável de documentos que tenham sido apagados
+  - Formulario/Ficheiro: caixa de confirmação ao seleccionar ficheiro a apagar
+  - Corrigido bug no bloco GetUserProfiles (não estava a considerar o user 
+  	parametrizado, mas sim o utilizador executante)
+  - Corrigido bug que mostrava o texto "null" em caixas de texto de tabelas 
+  	do formulário
+  - Corrigido bug que ignorava processamento de campos dependentes de outros campos 
+  	no mesmo formulário
+  - Corrigido nome da sheet na geração de excel (remoção de caracteres especiais e  
+  	validação do tamanho)
+
+ Known Issues:
+  - O rollback dos blocos BlockSqlBatchInsert e BlockSqlBatchUpdate nao
+    funciona correctamente...
+
+------------------------------------------------------------------------------
+
+Version 4.0.3 - 2009/11/11
+
+ Bug fixes:
+ - #410: bug SQLSelect corrigido, já está ignore case na Advanced Query 
+ - BlocoSQLSelect: Quando o botão Cancelar é clicado nos blocos SQL a query advanced já não é removida.
+ - BlocoSQLSelect: Correcção do Bug Resultado Unitário com Query Avançada.
+
+ Known Issues:
+  -   
+
+------------------------------------------------------------------------------
+
+Version 4.0.3 - 2009/10/14
+
+ Bug fixes:
+  - #411: Bloco formulário no elemento tabela com o tipo check box dá erro por falta de props. Extra
+
+------------------------------------------------------------------------------
+
+Version 4.0.3 - 2009/09/21
+
+ New Features:
+  - Novo Bloco DateOperation: permite efectuar operações em datas.
+  - Bloco Report: adicionada opção para deadline.
+  - Bloco Formulário: Processamento do tipo de assinatura/cifra
+  - Blocos SQL: Execução de query avançada
+  - Bloco Formulário: adição de campos para valores default na lista de selecção
+  - Mensagens nos blocos: possibilidade de configurar mensagens "transformáveis"
+  
+ Bug fixes:
+  - Bloco Formulário: corrigida problema com não processamento de áreas de texto.  
+  - #388: Utilização de arrays em blocos Alfresco
+  - #390: Propriedades extra do bloco Get Document
+
+ Known Issues:
+  - 
+
+------------------------------------------------------------------------------
+
+Version 4.0.2 - 2009/07/30
+
+ New Features:
+  - Release notes dos blocos separado do projecto web.
+  - Novo bloco BlockDelegationOwner.
+  - Novo bloco BlockDelegationSubstitute.
+  - Novo bloco BlockSQLBatchUpdate.
+  - FlowDocs: Permite buscar documentos ao servidor alfresco
+  - FlowDocs: Permite inserir/actualizar documentos no servidor alfresco
+  - FlowDocs: Permite listar os documentos presentes no alfresco, utilizando critérios 
+  	de filtragem
+  - Bloco email: possibilidade de enviar para lista de recipientes.
+  - Bloco GetUserUp: possibilidade de definir utilizador para a obtenção do superior.
+  - Bloco OpenProc: adicionada variável para atribuição de pid do processo criado. 
+  - Bloco Formulário: adicionado suporte para Mensagens de Texto "transformáveis" 
+
+ Bug fixes:
+  - Block Formulario: melhorada detecção de ampersand e processamento de 
+	ampersand nos campos das listas de selecção SQL
+  - #372: Tratamento de tabelas com campos de entrada no BlockFormulário
+  - Bloco DocumentInfo: corrigida query de obtenção de documento. 
+  - Bloco ForwardTo: corrigida informação de utilizador/perfil na descrição.
+  - Log dos blocos centralizado no bloco abstracto Block e agora feito
+    tendo em conta a limitação do numero de caracteres permitido na coluna da DB
+  - Formulário: Transformação de variáveis para apresentação quando tipo de apresentação 
+  	difere do tipo da variável (definido no catálogo) 
+  - Formulário: melhorada verificação de acesso concorrente ao processo. 
+
+ Known Issues:
+  - Formulário: exportação de campos tabela com valores numéricos ou datas (os campos são todos 
+  	exportados como texto, não sendo possível efectuar operações nos dados (por exemplo, somas).
+  - WebForm: instável.
+
+------------------------------------------------------------------------------
+
+Version 4.0.1
+
+ New Features:
+  - Mensagens nos blocos: configuração das mensagens a mostrar em determinados
+                          blocos (ex. end, forward).
+                          
+ Bug fixes:
+  - #318: Erro na tabela
+  - #319: Erro na Saída de Texto
+  - #320: Erro Tipo documento
+  - #321: Erro Mensagem de texto
+  - #323: Erro de dados
+  - #324: Erro Bloco Condição
+  - #328: Erro XSL
+  - #330: erro tabela link
+  - #331: Bloco Obter Info Utilizador
+  - #355: Erro Bloco "Enviar Para"
+  - #341: Bloco BifurcaçãoBug fixes:
+  - #351: Reutilização de código nas stylesheets XSLT
+  - #353: icon do bloco series esta errado
+  - : Botão cancelar no formulário após processo transitar do criador
+  - #304: bloco atribuição
+  - #363: URL enconding nas stylesheets
+  - #362: URGENTE: Novo Bloco CreatePDF
+  - #365: Null nas caixas de texto da criação de perfil

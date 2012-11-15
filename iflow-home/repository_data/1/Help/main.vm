@@ -1,0 +1,19 @@
+<h2>$messages.getString("help.main.title")</h2>
+
+	<p>$messages.getString("help.main.concept.p1")</p>
+	<p>$messages.getString("help.main.concept.p2")</p>
+	<p>$messages.getString("help.main.concept.p3")</p>
+	
+	<p>$messages.getString("help.main.concept.p4")</p>
+	
+	<h3>$messages.getString("help.main.orgUnits.title")</h3> 
+	    <p>$messages.getString("help.main.orgUnits.concept")</p>
+		
+	<h3>$messages.getString("help.main.users.title")</h3> 
+		<p>$messages.getString("help.main.users.concept")</p>
+		
+	<h3>$messages.getString("help.main.profiles.title")</h3>
+		<p>$messages.getString("help.main.profiles.concept")</p>
+		
+	<h3>$messages.getString("help.main.flows.title")</h3>
+		<p>$messages.getString("help.main.flows.concept")</p>

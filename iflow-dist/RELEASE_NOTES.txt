@@ -1,0 +1,30 @@
+------------------------------------------------------------------------------
+                           iFlow-dist Release Notes                                
+------------------------------------------------------------------------------
+
+Version 4.0.2 (WORK IN PROGRESS)
+
+ New Features:
+  - Integrado o Instalador (Izpack) ao iflow-dist,
+  	ao realizar "mvn package" agora é gerado também um pacote de instalação.
+ 
+ How To:
+  - izpack -> install.xml
+  		Alterar:
+  			info -> appversion para a versão actual.
+  			variable name="iflow.home" -> idêntico ao anterior.
+  - Executar "mvn package"e será gerado um pacote de instalação na directoria target.
+  - Passos da instalação:
+  		+ Na instancia do servidor de base de dados introduzir os dados do utilizador
+  		  para a criação do contexto e os dados de Administrador para carregar
+  		  o script de criação da base de dados.
+  		+ Na instancia do servidor aplicacional introduzir o directório do Tomcat
+  		  e alterar os restantes dados caso necessário.
+  		+ Next, e é so iniciar o Tomcat.
+ 
+ Bug fixes:
+ 
+ Todo:
+  - Falta o License.html e o Readme.html
+  - O instalador apenas permite o TomCat
+  - Integração com Oracle e SQL Server

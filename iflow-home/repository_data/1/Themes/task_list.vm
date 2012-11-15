@@ -1,0 +1,256 @@
+
+#if("$Tab2" != "no")
+    <h1 id="title_tasks">$title</h1>
+	<div class="yui-skin-sam">
+	<div id ="view_proc_annotation_dashboard" ></div>
+	</div>
+
+
+	<div class="table_inc">
+      	<div class="tab_title">
+      		$most_recent
+      	</div>
+      	<p>$tasksMostRecentMsg</p>
+
+		<p>$label_label
+	    <select name="labelpainel" id="labelpainel" onchange="filterActivity(document.getElementById('labelpainel').value, 1);" >
+	    #if($selectedLabel == 0)
+	    	<option value="0" selected="selected">$label_default</option>
+	    #else
+			<option value="0">$label_default</option>
+		#end 
+	      #foreach($label in $labels)
+	         #if($selectedLabel == $label.getId())
+	         	<option value="$label.getId()" selected="selected">$label.getName()</option>
+	         #else
+		     	<option value="$label.getId()">$label.getName()</option>
+		     #end 
+		  #end
+	     </select>
+	    
+	   	$days_label
+	    <select name="dayspainel" id="dayspainel" onchange="filterActivity(document.getElementById('dayspainel').value, 2);" >
+	      #foreach($day in $days)
+		      #if($selectedDays == $count)
+		         <option value="$count" selected="selected">$day</option> 
+		      #else
+		      	 <option value="$count">$day</option> 
+		      #end
+	         #set($count=$count+1)
+		  #end
+	     </select>
+
+		#if($hasFolder > 0)
+			$folder_label
+		    <select name="folderpainel" id="folderpainel" onchange="filterActivity(document.getElementById('folderpainel').value , 3);" >		    
+		    #if($selectedFolder == 0)
+		    	<option value="0" selected="selected">$folder_default</option>
+		    #else
+		    	<option value="0">$folder_default</option>
+		    #end 
+		      #foreach($folder in $folders)
+			      #if($selectedFolder == $folder.getFolderid())
+			         <option value="$folder.getFolderid()" selected="selected">$folder.getName()</option>
+			      #else
+			      	<option value="$folder.getFolderid()">$folder.getName()</option>
+			      #end 
+			  #end
+		     </select>
+		#end
+		
+		<a href="javascript:cleanFilter()">$button_cleanfilter</a>
+		
+	#if($hasActivities)		
+		</p>		
+        <table class="item_list">
+          <tr class="tab_header">
+            <td></td>
+            <td></td>
+		#if($has_appname)
+			<td>$application</td>
+		#end
+			<td>$flow</td>
+			<td>$pnumber</td>
+			<td>$subject</td>#*
+			<td>$arrived</td>*#
+			<td>$waiting</td>
+			<td></td>
+		  </tr>
+		  #set($odd=1)
+		  #foreach($act in $newact)
+			#if($odd == 0)
+				#set($class_type="even")
+				#set($odd=1)
+			#else
+				#set($class_type="odd")
+				#set($odd=0)
+			#end
+			#set($style_read="")
+			#if($act.get("read") == 0)
+				#set($style_read="style='font-weight:bold;'")
+			#end
+
+			<tr class="tab_row_$class_type">
+             <td title='$act.get("task_annotation_color_title")'  style="background-color:$act.get("task_annotation_color_backgroundColor")" ></td>
+             
+	       #if($hasFolder > 0)         
+	        <td onclick="javascript:menuonoff('atribuir$row')" title="$action_move">
+	        <img class="toolTipImg" src="AnnotationIconsServlet?icon_name='action.png'&ts='$iconTime' border="0">
+		   	<div id="atribuir$row" style="display:none;position:absolute;z-index:1;background:none repeat scroll 0 0 #FFFFFF;border-color:#888888;border-style:solid;border-width:1px 1px 2px;text-align:left;padding:2px 5px"><table>
+		    	#foreach($folder in $folders)
+		    	  <tr><td style="background:$folder.getColor();width:4px;"></td>
+		    	  <td><input type="button" class="apt_regular_button" style="width:15em;text-align:left;margin:0px" value="$folder.getName()" id="$folder.getFolderid()" name="$folder.getName()" onclick="assignActivity('$folder.getFolderid()','$act.get("flowid")_$act.get("pid")_$act.get("subpid")')"></td></tr>
+		  		#end
+		  		
+		  		<tr><td style="background:#CCCCCC;width:4px;"></td>
+		        <td><input type="button" class="apt_regular_button" style="width:15em;text-align:left;margin:0px" value="$removeact" id="-1" name="$removeact" onclick="removeActivityFolder('$act.get("flowid")_$act.get("pid")_$act.get("subpid")')"></td></tr>
+		  		
+		    	</tr></table><input class="apt_regular_button" type="button" value="$action_close" id="bt_close2" name="$action_close" style="width:6em;text-align:center" onclick=""></div></td>
+			#else
+				<td></td>
+			#end
+			#set($row=$row+1)
+             
+            #if($has_appname)
+			 <td align="center"><a $style_read href="javascript:open_process(2, $act.get("flowid"), '$response.encodeURL($url_prefix,$act.get("uri"))','flowid=$act.get("flowid")&pid=$act.get("pid")&subpid=$act.get("subpid")&ts=$ts', $act.get("runMax"));">$act.get("appname")</a></td>
+			#end
+			 <td align="center"><a $style_read href="javascript:open_process(2, $act.get("flowid"), '$response.encodeURL($url_prefix,$act.get("uri"))','flowid=$act.get("flowid")&pid=$act.get("pid")&subpid=$act.get("subpid")&ts=$ts', $act.get("runMax"));">
+			 #if($act.get("delegated") == "1")
+			   <img src="$response.encodeURL($url_prefix,'images/icon_delegations.png')" alt="$act.get("delegated_alt")" style="border:none; float:left;" />
+			 #end
+			   $act.get("flowname")
+			 </a></td>
+			 <td align="center"><a $style_read href="javascript:open_process(2, $act.get("flowid"), '$response.encodeURL($url_prefix,$act.get("uri"))','flowid=$act.get("flowid")&pid=$act.get("pid")&subpid=$act.get("subpid")&ts=$ts', $act.get("runMax"));">$act.get("pnumber")</a></td>
+			 <td align="center"><a $style_read href="javascript:open_process(2, $act.get("flowid"), '$response.encodeURL($url_prefix,$act.get("uri"))','flowid=$act.get("flowid")&pid=$act.get("pid")&subpid=$act.get("subpid")&ts=$ts', $act.get("runMax"));">$act.get("desc")</a></td>#*
+			 <td align="center"><a $style_read href="javascript:open_process(2, $act.get("flowid"), '$response.encodeURL($url_prefix,$act.get("uri"))','flowid=$act.get("flowid")&pid=$act.get("pid")&subpid=$act.get("subpid")&ts=$ts', $act.get("runMax"));">$act.get("created")</a></td>*#
+			 <td align="center"><a $style_read href="javascript:open_process(2, $act.get("flowid"), '$response.encodeURL($url_prefix,$act.get("uri"))','flowid=$act.get("flowid")&pid=$act.get("pid")&subpid=$act.get("subpid")&ts=$ts', $act.get("runMax"));">$act.get("duration")</a></td>
+			<td>$act.get("task_annotation_icon")</td>
+			</tr>
+		  #end
+  		</table>	
+	</div>
+	#if($hasMoreActivities)
+	    <div class="button_box">
+	    	<input class="regular_button_00" type="button" name="more" value="$button_more" 
+			onClick="javascript:tabber(2, '$response.encodeURL($url_prefix,'actividades_filtro.jsp')','clean=true','$response.encodeURL($url_prefix,'actividades.jsp')','ts=$ts&clean=true');"
+			/>
+		</div>
+	#end
+	
+ #else
+ 	#if($actsize<=0 && $selectedFolder == 0 && $selectedLabel == 0 && $selectedDays==0)
+	<div class="info_msg">${no_tasks}</div>
+	#else
+	<div class="info_msg">${no_tasks_filter}</div>
+	#end
+#end
+#end
+
+#if("$Tab12" != "no")
+     <h1 id="title_msgs">$notes_title</h1>
+	 
+   #if($notifications.size() > 0)
+	 #set($msg_display="")
+	 #set($msg_empty_display="none")
+   #else
+	 #set($msg_display="none")
+	 #set($msg_empty_display="")
+   #end
+	<div class="table_inc" id="msg_table" style="display:$msg_display">
+		<p>$notificationsMsg</p>
+        <table class="item_list">
+          <tr class="tab_header">
+			<td></td>
+			<td>$notes_from</td>
+			<td>$notes_message</td>
+			<td>$notes_date</td>
+			<td>$notificationtitle</td>
+		  </tr>
+		  #set($odd=1)
+		  #foreach($note in $notifications)
+			#if($odd == 0)
+				#set($class_type="even")
+				#set($odd=1)
+			#else
+				#set($class_type="odd")
+				#set($odd=0)
+			#end
+			<tr class="tab_row_$class_type" id="msg_tr_$note.get("id")">
+			 <td class="itemlist_icon">
+				<a href="javascript:markNotification($note.get("id"), 'M');" >
+					<img class="toolTipImg" src="images/icon_unread.png" id="msg_img_$note.get("id")"width="16" height="16" border="0" title="$notes_tooltip">
+				</a>
+			  </td>
+			 <td>$note.get("from")</td>
+			 <td>$note.get("message")</td>
+			 <td>$note.get("date")</td>
+			
+			#if($note.get("link")=="false")
+				<td></td>
+			#else
+				<td class="itemlist">
+				<a href="javascript:process_detail($note.get("link"));" > $notificationitem </a>	
+				</td>
+			#end
+			</tr>
+		  #end
+	  </table>
+		#if($hasMoreNotifications)
+	    <div class="button_box">
+	    	<input class="regular_button_00" type="button" name="more" value="$button_more" 
+			onClick="javascript:tabber(6, '','','$response.encodeURL($url_prefix,'inbox.jsp')','ts=$ts');"
+			/>
+		</div>    
+		#end
+	</div>
+  	<div class="info_msg" id="msg_empty_div" style="display:$msg_empty_display">
+	 ${notes_empty}.<a class="toolTipImg" href="javascript:tabber('inbox','','',inboxJSP,'ts=$ts');" title="$tooltip_inbox">$notes_empty_link_text</a>.
+  	</div>
+#end
+
+#if("$Tab5" != "no")
+    <h1 id="title_delegations">$delegs_title</h1>
+	  
+#if($hasDelegs)
+	<div class="table_inc">	  
+		<div class="tab_title">
+      		$delegs_received_requests
+      	</div>
+	    <p>$delegationsMsg</p>
+		<table class="item_list">
+			<tr class="tab_header">
+				<td>$delegs_title_responsible</td>
+				<td>$delegs_title_flow</td>
+				<td>$delegs_title_endDate</td>
+				<td></td>
+				<td></td>
+			</tr>
+			#set($odd=1)
+			#foreach( $received in $receivedDelegs )
+				#if($odd == 0)
+					#set($class_type="even")
+					#set($odd=1)
+				#else
+					#set($class_type="odd")
+					#set($odd=0)
+				#end
+				<tr class="tab_row_$class_type">
+					<td>$received.get("OwnerID")</td>
+					<td>$received.get("FlowName")</td>
+					<td>$received.get("Expires")</td>
+					<td><a class="cell_button" href="javascript:tabber(5, gestaoTarefasNavJSP, '', '$response.encodeURL($url_prefix,'confirmar_agendamento.jsp')', 'id=$received.get("HierarchyID")&owner=$received.get("OwnerID")&dkey=$received.get("AcceptKey")&ts=$ts');">$delegs_title_accept</a>
+					<td><a class="cell_button" href="javascript:tabber(5, gestaoTarefasNavJSP, '', '$response.encodeURL($url_prefix,'confirmar_agendamento.jsp')', 'id=$received.get("HierarchyID")&owner=$received.get("OwnerID")&dkey=$received.get("RejectKey")&ts=$ts');">$delegs_title_refuse</a>
+				</tr>
+			#end
+		</table>
+	</div>    
+ #else
+	<div class="info_msg">
+		${no_delegs}.<a class="toolTipImg" href="javascript:tabber(5, gestaoTarefasNavJSP, '', gestaoTarefasJSP, 'ts=$ts');" title="$tooltip_delegs">$no_delegs_link_text</a>.
+	</div>
+#end
+#end
+
+		    		
+
+<!--FIM  TABELA DE TAREFAS -->

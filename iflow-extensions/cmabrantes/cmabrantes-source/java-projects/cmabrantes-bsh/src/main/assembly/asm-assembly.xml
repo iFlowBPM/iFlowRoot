@@ -1,0 +1,23 @@
+<assembly>
+	<id>install</id>
+	<includeBaseDirectory>true</includeBaseDirectory>
+	<formats>
+		<format>zip</format>
+	</formats>
+	<fileSets>
+		<fileSet>
+			<directory>config</directory>
+			<outputDirectory>config/</outputDirectory>
+			<includes>
+				<include>**</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>repository_data</directory>
+			<outputDirectory>repository_data/</outputDirectory>
+			<includes>
+				<include>**</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+</assembly>

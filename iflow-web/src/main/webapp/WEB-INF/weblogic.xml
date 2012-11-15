@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<weblogic-web-app xmlns="http://www.bea.com/ns/weblogic/90">
+<jsp-descriptor>
+<precompile>false</precompile>
+<precompile-continue>false</precompile-continue>
+<keepgenerated>true</keepgenerated>
+</jsp-descriptor>
+<container-descriptor>
+<prefer-web-inf-classes>true</prefer-web-inf-classes>
+<show-archived-real-path-enabled>true</show-archived-real-path-enabled>
+</container-descriptor>
+    <context-root>iFlow</context-root>
+</weblogic-web-app>

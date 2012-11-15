@@ -1,0 +1,72 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+
+// CHECK IF NEED TO INCLUDE ALSO initProcInfoEndPage.jspf at page end (if dataset might change).
+// CHECK IF NEED TO INCLUDE ALSO checkProcAccess.jspf after include this jsp
+
+int flowid = -1;
+int pid = -1;
+int subpid = -1;
+ProcessData procData = null;
+try {
+	// use of fdFormData defined in /inc/defs.jsp
+  flowid = Integer.parseInt(fdFormData.getParameter("flowid"));
+  pid = Integer.parseInt(fdFormData.getParameter("pid"));
+  String sSubPid = fdFormData.getParameter("subpid");
+  String inDetail = fdFormData.getParameter("inDetail");
+  boolean isInDetail = StringUtils.equals(inDetail, "true");
+  ProcessHeader procHeader = null;
+
+  String openPopUp = fdFormData.getParameter("openPopup");
+  boolean isOpenPopUp = StringUtils.equals(openPopUp, "true");
+
+  if (StringUtils.isEmpty(sSubPid)) {
+    // process not yet "migrated".. assume default subpid
+    subpid = 1;
+  }
+  else {
+    subpid = Integer.parseInt(sSubPid);
+  }
+
+  if (pid == Const.nSESSION_PID) {
+    subpid = Const.nSESSION_SUBPID; // reset subpid to session subpid
+    procData = (ProcessData)session.getAttribute(Const.SESSION_PROCESS + flowExecType);
+  }
+  else {
+    procHeader = new ProcessHeader(flowid, pid, subpid);
+    procData = pm.getProcessData(userInfo, procHeader, isInDetail?Const.nALL_PROCS:Const.nOPENED_PROCS);
+    // procData = pm.getProcessData(userInfo,flowid,pid,subpid,session);
+    // clean session dataset just in case...
+    session.removeAttribute(Const.SESSION_PROCESS + flowExecType);
+  }
+
+  if (procData == null) {
+	Logger.errorJsp(login, "initProcInfo.jsp", "Unable to get process(flowid="+flowid+", pid="+pid+", subpid="+subpid+")");
+	String msgKey = "initProcInfo.error.noProcess";
+	// process not found
+	if (procHeader != null && !isInDetail) {
+	  if(pm.isProcessClosed(userInfo, procHeader)) {
+	    msgKey = "initProcInfo.error.closedProcess";
+	    pm.deleteAllActivities(userInfo, procHeader);
+	  }
+	}
+    ServletUtils.sendEncodeRedirect(response, sURL_PREFIX + "flow_error.jsp?msg_key=" + msgKey);
+  } else {
+    if (isOpenPopUp){
+      session.setAttribute(Const.SESSION_PROCESS_POPUP_BACKUP + flowExecType, new ProcessData( procData));
+    }
+  }
+}
+catch (Exception e) {
+  Logger.errorJsp(login, "initProcInfo", "exception caught: " + e.getMessage(), e);
+  ServletUtils.sendEncodeRedirect(response, sURL_PREFIX+"flow_error.jsp");
+  return;
+}
+%>
+<script language="JavaScript" type="text/javascript">
+  parent.hideAnnotations();
+</script>
+<%
+String from = fdFormData.getParameter("from");
+if (from == null) from = "";
+%>

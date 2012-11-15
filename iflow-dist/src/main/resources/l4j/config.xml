@@ -1,0 +1,23 @@
+<launch4jConfig>
+	<headerType>gui</headerType>
+	<outfile>../../../../target/tmp/FlowEditor.exe</outfile>
+	<jar>../../../../target/tmp/FlowEditor.jar</jar>
+	<icon>../../../../target/tmp/icon3.ico</icon>
+	<jre>
+		<minVersion>1.5.0</minVersion>
+		<initialHeapSize>128</initialHeapSize>
+		<maxHeapSize>256</maxHeapSize>		
+	</jre>
+	<versionInfo>
+		<fileVersion>4.0.3.0</fileVersion>
+		<txtFileVersion>4.0.3</txtFileVersion>
+		<fileDescription>iFlow - Flow Editor Application</fileDescription>
+		<copyright>Infosistema 2009, All rights reserved</copyright>
+		<productVersion>4.0.3.0</productVersion>
+		<txtProductVersion>4.0.3</txtProductVersion>
+		<companyName>Infosistema</companyName>
+		<productName>iFlow</productName>
+		<internalName>iFlow</internalName>
+		<originalFilename>FlowEditor.exe</originalFilename>
+	</versionInfo>
+</launch4jConfig>

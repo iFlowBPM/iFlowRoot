@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<emailtemplate>
+  <emailsubject>$flowname: State reversion "$description" (sub-process $subpid of process $pid)</emailsubject>
+  <emailhtml>true</emailhtml>
+  <emailbody><![CDATA[
+<html>
+<head>
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="expires" content="0">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<style>
+
+body {
+	background: white;
+	padding: 10px;
+	font: 1em verdana;
+}
+
+img {
+	vertical-align: text-bottom;
+	border:none;
+}
+
+p {
+	font: 0.8em verdana;
+}
+
+p.title {
+	font: bold 1.0em verdana;
+}
+
+em {
+	font-weight: bold;
+	font-style: italic;
+}
+
+</style>
+</head>
+
+<body>
+	<img src="http://$app_host:$app_port/iFlow/images/logo_iflow.png" alt="iFlow"/>
+	<p class="title">iFlow - Revert State in $flowname</p>
+	<p>Task <em>$description</em> related to sub-process $subpid of process $pid in application <em>$flowname</em> was removed from your pending task list. The process was reverted to a previous state.</p>
+</body>
+</html>
+
+  ]]></emailbody>
+</emailtemplate>

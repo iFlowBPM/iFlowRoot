@@ -1,0 +1,66 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.Map"%>
+<%@page import="java.util.Collection"%>
+<%@page import="java.util.Iterator"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="org.apache.commons.lang.StringUtils"%>
+<%@page import="pt.iflow.api.presentation.FlowMenu"%>
+<%@page import="pt.iflow.api.presentation.FlowAppMenu"%>
+<%@page import="pt.iflow.api.presentation.FlowMenuItems"%>
+<%@page import="pt.iflow.api.utils.Utils"%>
+<%@page import="pt.iflow.flows.FlowData"%>
+<%@page import="pt.iflow.api.flows.FlowType" %>
+<%@page import="pt.iflow.api.core.BeanFactory"%>
+<%@page import="pt.iflow.api.presentation.FlowApplications"%>
+<%@page import="pt.iflow.api.transition.FlowRolesTO"%>
+
+<%
+    List<Map<Object,Object>> appFlows = new ArrayList<Map<Object,Object>>();
+    FlowType type = (FlowType) request.getAttribute("flow_type");
+	FlowMenu flows = BeanFactory.getFlowApplicationsBean().getAllApplicationOnlineMenu(userInfo, FlowApplications.ORPHAN_GROUP_ID, type, new FlowType[0], FlowRolesTO.READ_PRIV);
+
+	Collection<FlowAppMenu> appMenuList = flows.getAppMenuList();
+	Iterator<FlowAppMenu> iter = appMenuList.iterator();
+
+    while(iter != null && iter.hasNext()) {
+      FlowAppMenu appMenu = iter.next();
+	  String sAppName = appMenu.getAppDesc();
+      FlowMenuItems menuPart = appMenu.getMenuItems();
+      HashMap<Object,Object> hm = new HashMap<Object,Object>();
+      hm.put("appname", sAppName);
+      hm.put("flows", menuPart.getFlows());
+      appFlows.add(hm);
+    }
+
+    String expandTag = "onmouseover";
+    String expand = "var width = this.offsetWidth; this.style.width='auto'; var width2 = this.offsetWidth; if(width > width2) { this.style.width = width + 'px'; }";
+    showflowidselection = Utils.genEventAppendex(showflowidselection, expandTag, expand);
+    
+    String expandTagExtra = "onfocus";
+    String expandExtra = "setFocus(this, true);";
+    showflowidselection = Utils.genEventAppendex(showflowidselection, expandTagExtra, expandExtra);
+    
+    String collapseTag = "onblur";
+    String collapse = "setFocus(this, false); this.style.width='112px';";
+    showflowidselection = Utils.genEventAppendex(showflowidselection, collapseTag, collapse);
+    
+    String collapseTagExtra = "onmouseout";
+    String collapseExtra = "if(!this.focused) { this.style.width='112px'; }";
+    showflowidselection = Utils.genEventAppendex(showflowidselection, collapseTagExtra, collapseExtra);
+%>
+<select id="showflowid" name="showflowid" style="width:112px" <%=showflowidselection %>>
+	<option value="-1"><%=messages.getString("grouped_flow_list.field.all")%></option>
+	<% for(Map<Object,Object> appflow : appFlows) { 
+		String label = appflow.get("appname").toString();
+		if(StringUtils.isBlank(label)) {
+		  label = messages.getString("grouped_flow_list.field.others");
+		} %>
+	<optgroup label="<%=label %>">
+		<% for(FlowData data : (List <FlowData>) appflow.get("flows")) { %>
+    	<option value="<%=data.getId() %>" <%=data.getId() == nShowFlowId ? "selected" : "" %>><%=data.getName() %></option>
+		<% } %>
+  	</optgroup>
+	<% } %>
+</select>

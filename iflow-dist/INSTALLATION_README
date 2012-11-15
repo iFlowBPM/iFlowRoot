@@ -1,0 +1,51 @@
+Esta versão do iFlow funciona com a versão 6 ou superior do Java, com a base de dados MySQL 5.0 ou superior e com o Apache Tomcat 6.0. ou superior.
+Estes softwares deverão estar instalados e operacionais antes da instalação do iFlow.
+
+Pressupõe-se a utilização das ferramentas  “MySQL Administrator” e “MySQL Query Browser”
+para criação e configuração do Schema da Base de dados.
+
+.:Instalação:.
+	1.	Descompactar o pacote iflow-dist-X.X.X.zip para um local à sua escolha.
+	O local escolhido será identificado como [IFLOW_INSTALL] e contém todos os
+	ficheiros necessários à instalação do iFlow.
+	2.	Efectuar os passos referentes à instalação da Base de Dados e Tomcat.
+	3.	Arrancar o Tomcat.
+	
+.:Base de Dados:.
+	1.	Abrir o MySQL Administrator e criar uma Base de Dados para o iFlow
+		o	Catalogs - (new schema) exemplo: iflow
+		o	User Administration - (new user) exemplo: iflow
+			+	schema privilegies - escolher o schema criado e efectuar assigned das privileges
+	2.	Abrir o MySQL Query Browser com o login de administrador (root) e definir o default schema
+	com o criado anteriormente, para desta forma carregar correctamente os procedures.
+	Criar as tabelas, procedures e views do schema. 
+		o	File - Open Script -
+		[IFLOW_INSTALL]/db-install/mysql/create_database.sql e executar (execute)
+		para criar a Base de Dados para o iFlow.
+		
+.:Tomcat:. 
+	1.	Configurar a DataSource
+		o	[TOMCAT_HOME]/conf editar o ficheiro content.xml definindo a resource de acordo
+		com o texto seguinte (colocar dentro da tag Context),
+		substituindo [USER_NAME_BD] pelo user da Base de Dados,
+		[PASSWORD_BD] pela password do user de Base de Dados e [BD_NAME] pelo schema da Base de Dados.
+			+	<Resource name="jdbc/iFlowMyDS" auth="Container" type="javax.sql.DataSource" maxActive="100" maxIdle="30" maxWait="10000" username="[USER_NAME_BD]" password="[PASSWORD_BD]" driverClassName="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/[BD_NAME]?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf8&amp;characterSetResults=utf8&amp;noAccessToProcedureBodies=true"/>
+	2.	Copiar [IFLOW_INSTALL]/war/iFlow.war para [TOMCAT_HOME]/webapps
+	3.	Editar o ficheiro [TOMCAT_HOME]/bin/catalina.bat (win) ou [TOMCAT_HOME]/bin/catalina.sh (linux)  
+		o 	procurar a linha com o texto "----- Execute The Requested Command ------------"
+		o	acrescenter após a linha encontrada:
+			+ ambiente windows: 
+				set JAVA_OPTS=%JAVA_OPTS% -Diflow.home="[IFLOW_INSTALL]/iflow-home-X.X.X"
+				set CLASSPATH=%CLASSPATH%;[JAVA_HOME]/lib/tools.jar
+			+ ambiente linux: 
+				JAVA_OPTS="$JAVA_OPTS -Diflow.home=[IFLOW_INSTALL]/iflow-home-X.X.X"
+				CLASSPATH="$CLASSPATH":[JAVA_HOME]/lib/tools.jar
+	4.	Copiar a partir do [IFLOW_INSTALL]/library para [TOMCAT_HOME]/lib os ficheiros:
+		o	jniloader-1.0.jar
+		o	mysql-connector-java-5.1.6-bin.jar 
+
+Nota: pressupõe-se que a instalação do Tomcat é efectuada a partir do ficheiro Core (.zip) e não como serviço,
+neste caso o ponto 3 da instalação do Tomcat é substituído pela configuração através de tray bar.
+
+Nota2: Para correr em 64 bits é preciso, antes de compilar, alterar o código da classe pt.iflow.api.licensing.FileBasedLicenseServiceFactory
+conforme os comentários existentes na mesma.

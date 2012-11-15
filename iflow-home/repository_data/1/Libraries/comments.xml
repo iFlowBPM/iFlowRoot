@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Nesta biblioteca encontram-se blocos relativos a comentários nos fluxos (Comment, todo, etc) -->
+<XmlLibrary xmlns="http://www.iknow.pt/XmlLibrary"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.iknow.pt/XmlLibrary ../schemas/xmllibrary.xsd">
+	<name>Comments</name>
+	<version>1.0</version>
+	<author>iKnow</author>
+	<description>Comment Blocks</description>
+	<i18nName>library.comments.name</i18nName>
+	<i18nDescription>library.comments.description</i18nDescription>
+	<XmlBlock>
+		<class>BlockComment</class>
+		<XmlPort>
+			<name>portIn</name>
+			<description>portIn</description>
+			<in_out>in</in_out>
+			<position>
+				<x>-5</x>
+				<y>25</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portOut</name>
+			<description>portOut</description>
+			<in_out>out</in_out>
+			<position>
+				<x>55</x>
+				<y>25</y>
+			</position>
+		</XmlPort>
+		<image>comment.png</image>
+		<className>pt.iknow.floweditor.blocks.AlteraAtributosBeanShell</className>
+		<description>Comment</description>
+		<i18n>library.comments.block.comment</i18n>
+	</XmlBlock>
+	<XmlBlock>
+		<class>BlockToDo</class>
+		<XmlPort>
+			<name>portIn</name>
+			<description>portIn</description>
+			<in_out>in</in_out>
+			<position>
+				<x>-5</x>
+				<y>25</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portOut</name>
+			<description>portOut</description>
+			<in_out>out</in_out>
+			<position>
+				<x>55</x>
+				<y>25</y>
+			</position>
+		</XmlPort>
+		<image>todo.png</image>
+		<className>pt.iknow.floweditor.blocks.AlteraAtributosBeanShell</className>
+		<description>To Do</description>
+		<i18n>library.comments.block.todo</i18n>
+	</XmlBlock>
+</XmlLibrary>

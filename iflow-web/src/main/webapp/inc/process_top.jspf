@@ -1,0 +1,32 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page import="java.util.Date"%>
+<%@page import="pt.iflow.api.presentation.DateUtility"%>
+<%@page import="java.util.Enumeration"%><%
+	String sDate = DateUtility.getToday(userInfo);
+
+	java.util.Hashtable<String,Object> hsSubst = new java.util.Hashtable<String,Object>();
+	hsSubst.put("date", sDate);
+	hsSubst.put("title", title);
+	hsSubst.put("url_prefix", sURL_PREFIX.substring(0, sURL_PREFIX.length() - 1));
+	hsSubst.put("unit", unit);
+	hsSubst.put("user", user);
+  	hsSubst.put("feed_key", feed_key);
+	hsSubst.put("bank", bank);
+	hsSubst.put("css", css);
+	hsSubst.put("logo", logo);
+	hsSubst.put("ts",   java.lang.Long.toString(ts));
+	hsSubst.put("include_main", "no");
+	
+	StringBuffer sbParams = new StringBuffer();
+	Enumeration<String> myenum = fdFormData.getParameterNames();
+	while (myenum.hasMoreElements()) {
+		String sParam = myenum.nextElement();
+		String[] sValues = fdFormData.getParameterValues(sParam);
+		for (int i=0; sValues != null && i < sValues.length; i++) {
+			sbParams.append(sParam).append("=").append(sValues[i]).append("&");
+		}
+	}
+	
+	hsSubst.put("params", sbParams.toString());
+	
+%><%=PresentationManager.buildPage(response, userInfo, hsSubst, "process_top")%>

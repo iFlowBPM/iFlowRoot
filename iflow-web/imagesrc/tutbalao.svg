@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   sodipodi:docname="tutbalao.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/tutbalao.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs4">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective10" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     gridtolerance="10000"
+     guidetolerance="10"
+     objecttolerance="10"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1"
+     inkscape:cx="86.674671"
+     inkscape:cy="794.4947"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1440"
+     inkscape:window-height="827"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     showguides="true"
+     inkscape:guide-bbox="true">
+    <sodipodi:guide
+       orientation="-0.70710678,0.70710678"
+       position="-146,810"
+       id="guide2394" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 153,418.36218 C 153,417.02885 153,417.02885 153,418.36218 z"
+       id="path3215" />
+    <path
+       style="fill:#fbfaa2;fill-opacity:1;fill-rule:evenodd;stroke:#e7e7e7;stroke-width:2.53661155999999988;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1"
+       d="M 88.393689,80.678283 C 85.018484,81.279007 81.588107,82.097308 78.881161,83.821444 C 75.484057,85.898441 73.49137,89.023773 72.511391,92.211071 C 71.900181,94.405809 69.8646,96.175689 67.589977,97.503733 C 64.184718,99.557077 60.381672,101.20945 56.938533,103.20644 C 55.988556,103.84915 54.998954,104.49635 54.184207,105.22434 C 53.383743,105.96204 53.341072,107.06103 54.048275,107.85923 C 55.422713,109.40568 57.484072,110.50293 59.485544,111.5342 C 61.953458,112.69487 64.185115,114.11081 66.437262,115.49708 C 67.850772,116.41958 69.186411,117.42875 70.042907,118.7108 C 71.019224,121.16586 70.759302,123.75285 70.871044,126.28256 C 70.983736,134.29748 71.169843,142.31204 71.139954,150.32765 C 71.363698,181.48741 71.544567,212.64734 71.731189,243.80722 C 71.862627,253.92562 71.939064,264.04605 72.104845,274.16319 C 72.33245,276.62555 73.299884,279.04503 74.846267,281.20765 C 76.288476,283.1384 78.292458,284.86078 80.875067,285.92349 C 82.519646,286.63108 84.234785,287.26691 86.096651,287.55213 C 89.779262,288.13554 93.569687,287.94018 97.306251,288.03948 C 105.4288,288.11023 113.55167,288.04191 121.67417,288.04935 C 150.80483,288.15342 179.93599,288.08787 209.06686,288.10633 C 232.60955,288.10633 256.15223,288.10633 279.69492,288.10633 C 283.40943,287.6459 287.07452,286.59642 290.02573,284.77805 C 292.23398,283.34796 293.92337,281.48122 294.95333,279.41497 C 296.35062,276.71374 296.55952,273.7682 296.53848,270.8931 C 296.66251,262.7208 296.56039,254.54745 296.60168,246.3747 C 296.67554,195.8692 296.72925,145.36367 296.7317,94.858141 C 296.1363,92.25263 295.44945,89.597329 293.66696,87.29145 C 292.2978,85.470313 290.31034,83.923522 287.95704,82.841432 C 285.20959,81.492697 281.93121,80.817651 278.67377,80.79357 C 268.23982,80.651214 257.80229,80.713127 247.3666,80.673564 C 212.13488,80.612773 176.90301,80.65716 141.67124,80.643615 C 124.1235,80.643615 106.57577,80.643615 89.028036,80.643615 C 88.816587,80.65517 88.605137,80.666719 88.393689,80.678283 z"
+       id="rect2391"
+       inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/tutbalao.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+  </g>
+</svg>

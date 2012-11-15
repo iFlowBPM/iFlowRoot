@@ -1,0 +1,7 @@
+	<h2>$messages.getString("admin_nav.title") $navSep $messages.getString("admin_nav.section.flows.title") $navSep $messages.getString("admin_nav.section.flows.link.createAndEdit") </h2>
+
+	<p>$messages.getString("help.box_flow_editor.p1")</p>
+	<p>$messages.getString("help.box_flow_editor.p2")</p>
+	<p>$messages.getString("help.box_flow_editor.p3")</p>
+
+	<p style="font-size:20px; display: none;">* TODO EXPLICAÇÃO GRÁFICA AQUI</p>

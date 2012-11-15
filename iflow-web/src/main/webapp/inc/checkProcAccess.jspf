@@ -1,0 +1,27 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%><%
+// jsp to be included after initProcInfo to check if given user can access the requested process.
+
+      if (procData != null) {
+        Flow flowCPA = BeanFactory.getFlowBean();
+        String sTempUrlString = "dummy";
+        try {
+          if (StringUtilities.isEqual("true", fdFormData.getParameter("inDetail"))) {
+            // special case: process detail - must be READ or SUPER
+            if (!pm.canViewProcess(userInfo, procData)) {
+              sTempUrlString = null;
+            }
+          } else { // regular print form
+            // now check if user can acess process
+            sTempUrlString = pm.getUserProcessUrl(userInfo, procData, sTempUrlString);
+          }
+        } catch (Exception e) {
+          sTempUrlString = null;
+        }
+
+        if (sTempUrlString == null) {
+          ServletUtils.sendEncodeRedirect(response, sURL_PREFIX + "nopriv.jsp?flowid=" + flowid);
+          // ServletUtils.sendEncodeRedirect(response, sURL_PREFIX+"nopriv.jsp");
+          return;
+        }
+      }
+%>

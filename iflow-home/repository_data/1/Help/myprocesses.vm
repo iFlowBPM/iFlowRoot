@@ -1,0 +1,37 @@
+#set ( $emSearch = "<em>" + $messages.getString("help.myprocesses.title") + "</em>" )
+
+  <h2>$messages.getString("help.myprocesses.title")</h2>
+
+  <h3>$messages.getString("help.myprocesses.basicsearch.title")</h3>
+  <p>$messages.getString("help.myprocesses.basicsearch.concept.p1", $emSearch)</p>
+  <p>$messages.getString("help.myprocesses.basicsearch.concept.p2")</p>
+   <ul>
+     <li>$messages.getString("help.myprocesses.basicsearch.pnumber")</li>
+     <li>$messages.getString("help.myprocesses.basicsearch.flow")</li>
+     <li>$messages.getString("help.myprocesses.basicsearch.initialDate")</li>
+     <li>$messages.getString("help.myprocesses.basicsearch.finalDate")</li>
+     <li>$messages.getString("help.myprocesses.basicsearch.procState")</li>
+     <li>$messages.getString("help.myprocesses.basicsearch.to.title")
+     	<ul>
+     		<li>$messages.getString("help.myprocesses.basicsearch.to.common")</li>
+     		<li>$messages.getString("help.myprocesses.basicsearch.to.responsible")</li>
+     		<li>$messages.getString("help.myprocesses.basicsearch.to.supervisor")</li>
+     	</ul>
+     </li>
+     <li>$messages.getString("help.myprocesses.basicsearch.items")</li>
+   </ul>
+  <p>$messages.getString("help.myprocesses.basicsearch.footer")</p>
+  <h4>$messages.getString("help.myprocesses.basicsearch.flowCriteria.title")</h4>
+  <p>$messages.getString("help.myprocesses.basicsearch.flowCriteria.concept")</p>
+
+  <h3>$messages.getString("help.myprocesses.advancedsearch.title")</h3>
+  <p>$messages.getString("help.myprocesses.advancedsearch.concept.p1")</p>
+  <p>$messages.getString("help.myprocesses.advancedsearch.concept.p2")</p>
+  <p>$messages.getString("help.myprocesses.advancedsearch.concept.p3")</p>
+  <p>$messages.getString("help.myprocesses.advancedsearch.concept.p4")</p>
+  <p>$messages.getString("help.myprocesses.advancedsearch.concept.p5")</p>
+  <p>$messages.getString("help.myprocesses.advancedsearch.concept.p6")</p>
+  <p>$messages.getString("help.myprocesses.advancedsearch.concept.p7")</p>
+  <p>$messages.getString("help.myprocesses.advancedsearch.concept.p8")</p>
+  <p>$messages.getString("help.myprocesses.advancedsearch.concept.p9")</p>
+  

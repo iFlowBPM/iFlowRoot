@@ -1,0 +1,21 @@
+Copiar o troço XML abaixo para o ficheiro Tomcat v6.0 Server at localhost.launch
+
+
+
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jst.server.tomcat.core.launchConfigurationType">
+<booleanAttribute key="org.eclipse.debug.core.appendEnvironmentVariables" value="true"/>
+<listAttribute key="org.eclipse.jdt.launching.CLASSPATH">
+<listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry containerPath=&quot;org.eclipse.jdt.launching.JRE_CONTAINER&quot; path=&quot;1&quot; type=&quot;4&quot;/&gt;&#13;&#10;"/>
+<listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry id=&quot;org.eclipse.jdt.launching.classpathentry.variableClasspathEntry&quot;&gt;&#13;&#10;&lt;memento path=&quot;3&quot; variableString=&quot;${TOMCAT_HOME}/bin/bootstrap.jar&quot;/&gt;&#13;&#10;&lt;/runtimeClasspathEntry&gt;&#13;&#10;"/>
+<listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/iFlowHome/library/jniloader-1.0.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
+<listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/iFlowHome/library/mysql-connector-java-5.0.8-bin.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
+<listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/iFlowHome/library/ojdbc14.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
+</listAttribute>
+<booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
+<stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="start"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="${build_files}-Xms128m -Xmx256m -Dcatalina.base=&quot;${workspace_loc}/.metadata/.plugins/org.eclipse.wst.server.core/tmp1&quot; -Dcatalina.home=&quot;${TOMCAT_HOME}&quot; -Dwtp.deploy=&quot;${workspace_loc}/.metadata/.plugins/org.eclipse.wst.server.core/tmp1/wtpwebapps&quot; -Djava.endorsed.dirs=&quot;${TOMCAT_HOME}/common/endorsed&quot;&#13;&#10;-Diflow.home=${project_loc:iFlowHome}&#13;&#13;&#10;-Djava.library.path=${project_loc:iFlowHome}/library&#13;&#13;&#10;-Dlicense.file=${project_loc:iFlowHome}/license.dat"/>
+<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${project_loc:iFlowHome}"/>
+<stringAttribute key="server-id" value="10_8_07_12_01_PM1"/>
+</launchConfiguration>

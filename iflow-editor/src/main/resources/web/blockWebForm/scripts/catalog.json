@@ -1,0 +1,7 @@
+[{"name":"nome","desc":"Nome","type":"Text","list":false},
+{"name":"morada","desc":"Morada","type":"Text","list":false},
+{"name":"cpost","desc":"Código Postal","type":"Text","list":false},
+{"name":"idade","desc":"Idade","type":"Integer","list":false},
+{"name":"id_lista","desc":"Identificador Produto","type":"IntegerArray","list":true},
+{"name":"desc_lista","desc":"Descrição Produto","type":"TextArray","list":true},
+{"name":"price_lista","desc":"Preço Produto","type":"FloatArray","list":true}]

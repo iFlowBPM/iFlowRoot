@@ -1,0 +1,34 @@
+	<h2>$messages.getString("admin_nav.title") $navSep $messages.getString("admin_nav.section.flows.title") $navSep $messages.getString("admin_nav.section.flows.link.properties") </h2>
+
+	<p>$messages.getString("help.box_flow_settings.concept.p1")</p>
+	<p>$messages.getString("help.box_flow_settings.concept.p2", "<a href=javascript:tabber_save(4,'Admin/admin_nav.jsp','sel=29','Admin/flow_editor.jsp','');>floweditor</a>")</p>
+	<p>$messages.getString("help.box_flow_settings.concept.p3")</p>
+
+	<h3>$messages.getString("flow_settings.help.edit")</h3>
+	<div class="help_item_img"><img class="icon" src="images/icon_modify.png"/></div>
+	<p>$messages.getString("help.box_flow_settings.edit.p1")</p>
+	<p>$messages.getString("help.box_flow_settings.edit.p2")</p>
+	
+	<h3>$messages.getString("flow_settings.help.profiles")</h3>
+	<div class="help_item_img"><img class="icon" src="images/icon_profile.png"/></div>
+	<p>$messages.getString("help.box_flow_settings.profiles.p1")</p>
+
+	<h3>$messages.getString("flow_settings.help.resync")</h3>
+	<div class="help_item_img"><img class="icon" src="images/icon_resync.png"/></div>
+	<p>$messages.getString("help.box_flow_settings.resync.p1")</p>
+	<p>$messages.getString("help.box_flow_settings.resync.p2")</p>
+	<p>$messages.getString("help.box_flow_settings.resync.p3")</p>	
+
+	<h3>$messages.getString("flow_settings.help.copy_link")</h3>
+	<div class="help_item_img"><img class="icon" src="images/icon_copy.png"/></div>
+	<p>$messages.getString("help.box_flow_settings.copy_link.p1")</p>	
+
+
+	<h3>$messages.getString("flow_settings.help.undeploy")/$messages.getString("flow_settings.help.deploy")</h3>
+	<div class="help_item_img"><img class="icon" src="images/icon_offline.png"/><img class="icon" src="images/icon_online.png"/></div>
+	<p>$messages.getString("help.box_flow_settings.undeploy.p1")</p>
+	<p>$messages.getString("help.box_flow_settings.undeploy.p2")</p>
+
+	<h3>$messages.getString("flow_settings.help.delete")</h3>
+	<div class="help_item_img"><img class="icon" src="images/icon_delete.png"/></div>
+	<p>$messages.getString("help.box_flow_settings.delete.p1")</p>

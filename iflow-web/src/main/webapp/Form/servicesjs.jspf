@@ -1,0 +1,53 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%><%
+{
+String __printForm = Const.APP_URL_PREFIX+"/Form/print.jsp?";
+String __exportForm = Const.APP_URL_PREFIX+"/Form/export.jsp?";
+String __reqPrintForm = (String)request.getAttribute("printForm");
+if(StringUtils.isNotEmpty(__reqPrintForm))
+  __printForm = __reqPrintForm;
+String __reqExportForm = (String)request.getAttribute("exportForm");
+if(StringUtils.isNotEmpty(__reqExportForm))
+  __exportForm = __reqExportForm;
+
+
+%>
+<script language="JavaScript" type="text/javascript">
+<!--
+var W = null;
+
+function PrintService(field) {
+  if (field == null || field == 'undefined') {
+    document.<%=sFormName%>.op.value=5;
+  }
+  else {
+    document.<%=sFormName%>.op.value=6;
+    document.<%=sFormName%>._serv_field_.value=field;
+  }
+  document.<%=sFormName%>.submit();
+}
+
+function ExportService(field) {
+  document.<%=sFormName%>.op.value=7;
+  document.<%=sFormName%>._serv_field_.value=field;
+  document.<%=sFormName%>.submit();
+}
+
+function PrintServiceOpen(field) {
+  var url='<%=response.encodeURL(__printForm+"flowid=" + flowid + "&pid=" + pid + "&subpid=" + subpid + "&ts=" + ts)%>';
+  if (field != null && field != 'undefined') {
+    url = url + '&field=' + field;
+  }
+  W=window.open(url,'_print','toolbar=no,location=no,directories=no,status=yes,menubar=yes,scrollbars=yes,resizable=yes,width=600,height=400');
+  W.focus();
+}
+
+function ExportServiceOpen(field) {
+  var url='<%=response.encodeURL(__exportForm+"flowid=" + flowid + "&pid=" + pid + "&subpid=" + subpid + "&ts=" + ts)%>&field=' + field;
+  
+  W=window.open(url,'_export','menubar=no,status=no,scrollbars=yes,width=300,height=200');
+  W.focus();
+}
+
+//-->
+</script>
+<% } %>

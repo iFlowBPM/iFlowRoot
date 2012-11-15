@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions targetNamespace="urn:microsoft-dynamics-schemas/page/ws_lista_produtos"
+	xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="urn:microsoft-dynamics-schemas/page/ws_lista_produtos">
+	<types>
+		<xsd:schema elementFormDefault="qualified"
+			targetNamespace="urn:microsoft-dynamics-schemas/page/ws_lista_produtos"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:simpleType name="Blocked">
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="_blank_" />
+					<xsd:enumeration value="Ship" />
+					<xsd:enumeration value="Invoice" />
+					<xsd:enumeration value="All" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="Application_Method">
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="Manual" />
+					<xsd:enumeration value="Apply_to_Oldest" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="Reserve">
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="Never" />
+					<xsd:enumeration value="Optional" />
+					<xsd:enumeration value="Always" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			+
+			<xsd:simpleType name="Shipping_Advice">
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="Partial" />
+					<xsd:enumeration value="Complete" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:complexType name="WS_Lista_Produtos">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" maxOccurs="1" name="Key"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="No"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="Name"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="Responsibility_Center" type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="Location_Code"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="Post_Code"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="Country_Region_Code" type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="Phone_No"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="Fax_No"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="IC_Partner_Code"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="Contact"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="Salesperson_Code"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="Customer_Posting_Group" type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="Gen_Bus_Posting_Group" type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="VAT_Bus_Posting_Group" type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="Customer_Price_Group" type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="Customer_Disc_Group" type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="Payment_Terms_Code" type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="Reminder_Terms_Code" type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="Fin_Charge_Terms_Code" type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="Currency_Code"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="Language_Code"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="Search_Name"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="Credit_Limit_LCY"
+						type="xsd:decimal" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="Blocked"
+						type="tns:Blocked" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="Last_Date_Modified" type="xsd:date" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="Application_Method" type="tns:Application_Method" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="Combine_Shipments" type="xsd:boolean" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="Reserve"
+						type="tns:Reserve" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="Shipping_Advice"
+						type="tns:Shipping_Advice" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="Shipping_Agent_Code" type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="Base_Calendar_Code" type="xsd:string" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="WS_Lista_Produtos_List">
+				<xsd:sequence>
+					<xsd:element minOccurs="1" maxOccurs="unbounded"
+						name="WS_Lista_Produtos" type="tns:WS_Lista_Produtos" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:simpleType name="WS_Lista_Produtos_Fields">
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="No" />
+					<xsd:enumeration value="Name" />
+					<xsd:enumeration value="Responsibility_Center" />
+					<xsd:enumeration value="Location_Code" />
+					<xsd:enumeration value="Post_Code" />
+					<xsd:enumeration value="Country_Region_Code" />
+					<xsd:enumeration value="Phone_No" />
+					<xsd:enumeration value="Fax_No" />
+					<xsd:enumeration value="IC_Partner_Code" />
+					<xsd:enumeration value="Contact" />
+					<xsd:enumeration value="Salesperson_Code" />
+					<xsd:enumeration value="Customer_Posting_Group" />
+					<xsd:enumeration value="Gen_Bus_Posting_Group" />
+					<xsd:enumeration value="VAT_Bus_Posting_Group" />
+					<xsd:enumeration value="Customer_Price_Group" />
+					<xsd:enumeration value="Customer_Disc_Group" />
+					<xsd:enumeration value="Payment_Terms_Code" />
+					<xsd:enumeration value="Reminder_Terms_Code" />
+					<xsd:enumeration value="Fin_Charge_Terms_Code" />
+					<xsd:enumeration value="Currency_Code" />
+					<xsd:enumeration value="Language_Code" />
+					<xsd:enumeration value="Search_Name" />
+					<xsd:enumeration value="Credit_Limit_LCY" />
+					<xsd:enumeration value="Blocked" />
+					<xsd:enumeration value="Last_Date_Modified" />
+					<xsd:enumeration value="Application_Method" />
+					<xsd:enumeration value="Combine_Shipments" />
+					<xsd:enumeration value="Reserve" />
+					<xsd:enumeration value="Shipping_Advice" />
+					<xsd:enumeration value="Shipping_Agent_Code" />
+					<xsd:enumeration value="Base_Calendar_Code" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:complexType name="WS_Lista_Produtos_Filter">
+				<xsd:sequence>
+					<xsd:element minOccurs="1" maxOccurs="1" name="Field"
+						type="tns:WS_Lista_Produtos_Fields" />
+					<xsd:element minOccurs="1" maxOccurs="1" name="Criteria"
+						type="xsd:string" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="Read">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element minOccurs="1" maxOccurs="1" name="No"
+							type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Read_Result">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element minOccurs="0" maxOccurs="1"
+							name="WS_Lista_Produtos" type="tns:WS_Lista_Produtos" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="ReadMultiple">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element minOccurs="1" maxOccurs="unbounded" name="filter"
+							type="tns:WS_Lista_Produtos_Filter" />
+						<xsd:element minOccurs="0" maxOccurs="1" name="bookmarkKey"
+							type="xsd:string" />
+						<xsd:element minOccurs="1" maxOccurs="1" name="setSize"
+							type="xsd:int" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="ReadMultiple_Result">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element minOccurs="0" maxOccurs="1"
+							name="ReadMultiple_Result" type="tns:WS_Lista_Produtos_List" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="IsUpdated">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element minOccurs="1" maxOccurs="1" name="Key"
+							type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="IsUpdated_Result">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element minOccurs="1" maxOccurs="1"
+							name="IsUpdated_Result" type="xsd:boolean" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:schema>
+	</types>
+	<message name="Read">
+		<part name="parameters" element="tns:Read" />
+	</message>
+	<message name="Read_Result">
+		<part name="parameters" element="tns:Read_Result" />
+	</message>
+	<message name="ReadMultiple">
+		<part name="parameters" element="tns:ReadMultiple" />
+	</message>
+	<message name="ReadMultiple_Result">
+		<part name="parameters" element="tns:ReadMultiple_Result" />
+	</message>
+	<message name="IsUpdated">
+		<part name="parameters" element="tns:IsUpdated" />
+	</message>
+	<message name="IsUpdated_Result">
+		<part name="parameters" element="tns:IsUpdated_Result" />
+	</message>
+	<portType name="WS_Lista_Produtos_Port">
+		<operation name="Read">
+			<input name="Read" message="tns:Read" />
+			<output name="Read_Result" message="tns:Read_Result" />
+		</operation>
+		<operation name="ReadMultiple">
+			<input name="ReadMultiple" message="tns:ReadMultiple" />
+			<output name="ReadMultiple_Result" message="tns:ReadMultiple_Result" />
+		</operation>
+		<operation name="IsUpdated">
+			<input name="IsUpdated" message="tns:IsUpdated" />
+			<output name="IsUpdated_Result" message="tns:IsUpdated_Result" />
+		</operation>
+	</portType>
+	<binding name="WS_Lista_Produtos_Binding" type="tns:WS_Lista_Produtos_Port">
+		<binding transport="http://schemas.xmlsoap.org/soap/http"
+			xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+		<operation name="Read">
+			<operation
+				soapAction="urn:microsoft-dynamics-schemas/page/ws_lista_produtos:Read"
+				style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			<input name="Read">
+				<body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			</input>
+			<output name="Read_Result">
+				<body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			</output>
+		</operation>
+		<operation name="ReadMultiple">
+			<operation
+				soapAction="urn:microsoft-dynamics-schemas/page/ws_lista_produtos:ReadMultiple"
+				style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			<input name="ReadMultiple">
+				<body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			</input>
+			<output name="ReadMultiple_Result">
+				<body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			</output>
+		</operation>
+		<operation name="IsUpdated">
+			<operation
+				soapAction="urn:microsoft-dynamics-schemas/page/ws_lista_produtos:IsUpdated"
+				style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			<input name="IsUpdated">
+				<body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			</input>
+			<output name="IsUpdated_Result">
+				<body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			</output>
+		</operation>
+	</binding>
+	<service name="WS_Lista_Produtos_Service">
+		<port name="WS_Lista_Produtos_Port" binding="tns:WS_Lista_Produtos_Binding">
+			<address
+				location="http://192.168.1.19:7047/DynamicsNAV/WS/Cidadela/Page/WS_Lista_Produtos?wsdl"
+				xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+		</port>
+	</service>
+</definitions>

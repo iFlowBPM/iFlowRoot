@@ -1,0 +1,628 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   sodipodi:docname="canto_esquerdo_tab.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_direito_fundo_tab.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs4">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective10" />
+    <inkscape:perspective
+       id="perspective3368"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       sodipodi:type="inkscape:persp3d" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     gridtolerance="10000"
+     guidetolerance="10"
+     objecttolerance="10"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="5.656854"
+     inkscape:cx="291.26033"
+     inkscape:cy="346.72849"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     showguides="false"
+     inkscape:window-width="1440"
+     inkscape:window-height="827"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:snap-global="false">
+    <inkscape:grid
+       type="xygrid"
+       id="grid2391" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       y="485.21933"
+       x="321.07141"
+       height="22"
+       width="15"
+       id="rect3216"
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       style="fill:#e9f1f7;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 335.72767,485.21932 C 327.61553,485.21932 321.07142,492.02814 321.07142,500.51619 L 321.07142,507.21932 L 336.07142,507.21932 L 336.07142,485.21932 L 335.72767,485.21932 z"
+       id="rect2397"
+       inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_esquerdo_tab.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <g
+       id="g3278">
+      <rect
+         y="493.46933"
+         x="358.21429"
+         height="22"
+         width="15"
+         id="rect3208"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_esquerdo_tab_back.png"
+         id="path3204"
+         d="M 372.87053,493.46933 C 364.75839,493.46933 358.21428,500.27815 358.21428,508.7662 L 358.21428,515.46933 L 373.21428,515.46933 L 373.21428,493.46933 L 372.87053,493.46933 z"
+         style="fill:#6784aa;fill-opacity:0.94117647;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+    <g
+       id="g3183">
+      <rect
+         y="484.86218"
+         x="285.17856"
+         height="22"
+         width="15"
+         id="rect3234"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         style="fill:#e9f1f7;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M 285.52232,484.86217 C 293.63446,484.86217 300.17857,491.67099 300.17857,500.15904 L 300.17857,506.86217 L 285.17857,506.86217 L 285.17857,484.86217 L 285.52232,484.86217 z"
+         id="path3232"
+         inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_direito_tab.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+    </g>
+    <g
+       id="g3175"
+       transform="translate(-24.107135,36.142857)"
+       inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_direito_tab.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         y="480.57648"
+         x="310.17856"
+         height="22"
+         width="15"
+         id="rect3177"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         style="fill:#c2d3e0;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M 310.52232,480.57646 C 318.63446,480.57646 325.17857,487.38528 325.17857,495.87333 L 325.17857,502.57646 L 310.17857,502.57646 L 310.17857,480.57646 L 310.52232,480.57646 z"
+         id="path3179"
+         inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_direito_tab.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+    </g>
+    <g
+       transform="translate(-22.5,61.428572)"
+       id="g3193">
+      <rect
+         y="454.50504"
+         x="342.14285"
+         height="22"
+         width="15"
+         id="rect3195"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         style="fill:#e9f1f7;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M 356.7991,454.50503 C 348.68696,454.50503 342.14285,461.31385 342.14285,469.8019 L 342.14285,476.50503 L 357.14285,476.50503 L 357.14285,454.50503 L 356.7991,454.50503 z"
+         id="path3197"
+         inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_esquerdo_tab.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+    </g>
+    <path
+       style="opacity:1;fill:#c2d3e0;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 319.43566,534.85109 C 319.45077,528.17024 320.74349,523.91896 323.7525,520.65457 C 326.1514,518.05208 329.13777,516.543 332.91792,516.02309 L 334.78571,515.7662 L 334.78571,526.87115 L 334.78571,537.97609 L 327.10714,537.97609 L 319.42857,537.97609 L 319.43566,534.85109 z"
+       id="path3199"
+       inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_esquerdo_tab.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <g
+       id="g3254"
+       inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_direito_tab.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="rect3203"
+         width="15"
+         height="22"
+         x="281.78574"
+         y="546.7193" />
+      <path
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_direito_tab.png"
+         id="path3205"
+         d="M 282.12947,546.71932 C 290.24161,546.71932 296.78572,553.52814 296.78572,562.01619 L 296.78572,568.71932 L 281.78572,568.71932 L 281.78572,546.71932 L 282.12947,546.71932 z"
+         style="fill:#addfd2;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+    <g
+       id="g3266"
+       inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_esquerdo_fundo_tab.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         transform="scale(1,-1)"
+         y="-601.39789"
+         x="281.78574"
+         height="22"
+         width="15"
+         id="rect3235"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         style="fill:#addfd2;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M 282.12947,601.39788 C 290.24161,601.39788 296.78572,594.58906 296.78572,586.10101 L 296.78572,579.39788 L 281.78572,579.39788 L 281.78572,601.39788 L 282.12947,601.39788 z"
+         id="path3237"
+         inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_direito_tab.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+    </g>
+    <g
+       id="g3270"
+       inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_esquerdo_fundo_tab.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       transform="translate(-62.857143,1.0714286)">
+      <rect
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="rect3252"
+         width="15"
+         height="22"
+         x="317.85715"
+         y="578.50507" />
+      <g
+         transform="matrix(-1,0,0,-1,618.2143,1145.7958)"
+         id="g3239"
+         inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_esquerdo_fundo_tab.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90">
+        <rect
+           style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="rect3241"
+           width="15"
+           height="22"
+           x="285.35715"
+           y="545.29077" />
+        <path
+           inkscape:export-ydpi="90"
+           inkscape:export-xdpi="90"
+           inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_direito_tab.png"
+           id="path3243"
+           d="M 285.7009,545.29075 C 293.81304,545.29075 300.35715,552.09957 300.35715,560.58762 L 300.35715,567.29075 L 285.35715,567.29075 L 285.35715,545.29075 L 285.7009,545.29075 z"
+           style="fill:#addfd2;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      </g>
+    </g>
+    <g
+       id="g3262"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_esquerdo_tab.png"
+       transform="translate(-62.857143,0.3571429)">
+      <rect
+         y="548.38568"
+         x="318.82144"
+         height="22"
+         width="15"
+         id="rect3260"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         style="fill:#addfd2;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M 318.64995,567.3656 C 318.66506,560.68475 319.95778,556.43347 322.96679,553.16908 C 325.36569,550.56659 328.35206,549.05751 332.13221,548.5376 L 334,548.28071 L 334,559.38566 L 334,570.4906 L 326.32143,570.4906 L 318.64286,570.4906 L 318.64995,567.3656 z"
+         id="path3207"
+         inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_esquerdo_tab.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+    </g>
+    <g
+       id="g2428"
+       transform="translate(-41.428571,-7.1428571)">
+      <rect
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="rect3276"
+         width="15"
+         height="22"
+         x="358.75"
+         y="557.93365" />
+      <g
+         transform="translate(6.2499848,13.214316)"
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_esquerdo_tab_back.png"
+         id="g3230">
+        <path
+           inkscape:export-ydpi="90"
+           inkscape:export-xdpi="90"
+           inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_esquerdo_tab_back.png"
+           id="path3228"
+           d="M 367.15625,544.71932 C 359.04411,544.71932 352.5,551.52814 352.5,560.01619 L 352.5,566.71932 L 367.5,566.71932 L 367.5,544.71932 L 367.15625,544.71932 z"
+           style="fill:#70afad;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      </g>
+    </g>
+    <g
+       id="g2433"
+       transform="matrix(-1,0,0,1,714.28569,-7.1428572)"
+       inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_direito_tab_back.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         y="557.93365"
+         x="358.75"
+         height="22"
+         width="15"
+         id="rect2435"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <g
+         id="g2437"
+         inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_esquerdo_tab_back.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90"
+         transform="translate(6.2499848,13.214316)">
+        <path
+           style="fill:#70afad;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="M 367.15625,544.71932 C 359.04411,544.71932 352.5,551.52814 352.5,560.01619 L 352.5,566.71932 L 367.5,566.71932 L 367.5,544.71932 L 367.15625,544.71932 z"
+           id="path2439"
+           inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_esquerdo_tab_back.png"
+           inkscape:export-xdpi="90"
+           inkscape:export-ydpi="90" />
+      </g>
+    </g>
+    <g
+       id="g3261"
+       transform="translate(-5.833631,2.1213203)"
+       inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_esquerdo_tab.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         inkscape:transform-center-y="-3.8890905"
+         inkscape:transform-center-x="-2.6654039"
+         y="623.94427"
+         x="250.57253"
+         height="22"
+         width="15"
+         id="rect2443"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:transform-center-y="-3.7923741"
+         inkscape:transform-center-x="-2.4135549"
+         sodipodi:nodetypes="csccccccc"
+         style="fill:#addfd2;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M 250.60281,642.77679 C 250.61755,636.00508 250.07701,630.52591 253.01146,627.21712 C 255.35093,624.57924 257.10915,624.47568 260.79564,623.9487 L 265.57253,623.94429 L 265.57253,634.68832 L 265.57253,645.94429 L 258.08421,645.94429 L 250.5959,645.94429 L 250.60281,642.77679 z"
+         id="path2445"
+         inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_esquerdo_tab.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+    </g>
+    <g
+       transform="matrix(-1,0,0,1,538.24214,2.4748737)"
+       id="g3265"
+       inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_direito_tab.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="rect3267"
+         width="15"
+         height="22"
+         x="250.57253"
+         y="623.94427"
+         inkscape:transform-center-x="-2.6654039"
+         inkscape:transform-center-y="-3.8890905" />
+      <path
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_esquerdo_tab.png"
+         id="path3269"
+         d="M 250.60281,642.77679 C 250.61755,636.00508 250.07701,630.52591 253.01146,627.21712 C 255.35093,624.57924 257.10915,624.47568 260.79564,623.9487 L 265.57253,623.94429 L 265.57253,634.68832 L 265.57253,645.94429 L 258.08421,645.94429 L 250.5959,645.94429 L 250.60281,642.77679 z"
+         style="fill:#addfd2;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         sodipodi:nodetypes="csccccccc"
+         inkscape:transform-center-x="-2.4135549"
+         inkscape:transform-center-y="-3.7923741" />
+    </g>
+    <g
+       id="g3271"
+       transform="matrix(-1,0,0,-1,538.06537,1301.8851)"
+       inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_direito_fundo_tab.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         inkscape:transform-center-y="-3.8890905"
+         inkscape:transform-center-x="-2.6654039"
+         y="623.94427"
+         x="250.57253"
+         height="22"
+         width="15"
+         id="rect3273"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:transform-center-y="-3.7923741"
+         inkscape:transform-center-x="-2.4135549"
+         sodipodi:nodetypes="csccccccc"
+         style="fill:#addfd2;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M 250.60281,642.77679 C 250.61755,636.00508 250.07701,630.52591 253.01146,627.21712 C 255.35093,624.57924 257.10915,624.47568 260.79564,623.9487 L 265.57253,623.94429 L 265.57253,634.68832 L 265.57253,645.94429 L 258.08421,645.94429 L 250.5959,645.94429 L 250.60281,642.77679 z"
+         id="path3275"
+         inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_esquerdo_tab.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+    </g>
+    <g
+       id="g3297"
+       inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_esquerdo_tab_back.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       transform="translate(-0.7071066,-0.8838831)">
+      <rect
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="rect3285"
+         width="15"
+         height="22"
+         x="304.75458"
+         y="629.24762"
+         inkscape:transform-center-x="-2.6654039"
+         inkscape:transform-center-y="-3.8890905" />
+      <path
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_esquerdo_tab.png"
+         id="path3287"
+         d="M 304.78486,648.0801 C 304.7996,641.30839 304.25906,635.82922 307.19351,632.52043 C 309.53298,629.88255 311.2912,629.77899 314.97769,629.25201 L 319.75458,629.2476 L 319.75458,639.99163 L 319.75458,651.2476 L 312.26626,651.2476 L 304.77795,651.2476 L 304.78486,648.0801 z"
+         style="fill:#70afad;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         sodipodi:nodetypes="csccccccc"
+         inkscape:transform-center-x="-2.4135549"
+         inkscape:transform-center-y="-3.7923741" />
+    </g>
+    <g
+       id="g3301"
+       transform="matrix(-1,0,0,1,645.89913,-0.1767767)"
+       inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_direito_tab_back.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         inkscape:transform-center-y="-3.8890905"
+         inkscape:transform-center-x="-2.6654039"
+         y="629.24762"
+         x="304.75458"
+         height="22"
+         width="15"
+         id="rect3303"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:transform-center-y="-3.7923741"
+         inkscape:transform-center-x="-2.4135549"
+         sodipodi:nodetypes="csccccccc"
+         style="fill:#70afad;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M 304.78486,648.0801 C 304.7996,641.30839 304.25906,635.82922 307.19351,632.52043 C 309.53298,629.88255 311.2912,629.77899 314.97769,629.25201 L 319.75458,629.2476 L 319.75458,639.99163 L 319.75458,651.2476 L 312.26626,651.2476 L 304.77795,651.2476 L 304.78486,648.0801 z"
+         id="path3305"
+         inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_esquerdo_tab.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+    </g>
+    <rect
+       inkscape:transform-center-y="-3.8890905"
+       inkscape:transform-center-x="-2.6654039"
+       y="-676.17273"
+       x="242.88696"
+       height="22"
+       width="15"
+       id="rect3279"
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       transform="scale(1,-1)" />
+    <g
+       id="g3242"
+       inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_esquerdo_fundo_tab.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <path
+         id="path3281"
+         d="M 242.90625,664.1875 C 242.99878,667.81847 243.44861,670.80331 245.31752,672.90625 C 247.66187,675.54416 249.45215,675.62927 253.14633,676.15625 L 257.90625,676.1875 L 257.90625,665.4375 L 257.90625,664.1875 L 242.90625,664.1875 z"
+         style="fill:#addfd2;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect3236"
+       width="9.8994951"
+       height="8.6620579"
+       x="212.92752"
+       y="646.21771" />
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect3238"
+       width="10.871767"
+       height="9.0156116"
+       x="215.57918"
+       y="641.26801" />
+    <g
+       id="g2456"
+       transform="translate(5.7010487,3.4913399)">
+      <rect
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="rect2450"
+         width="15"
+         height="22"
+         x="243.05951"
+         y="682.81091"
+         inkscape:transform-center-x="-2.6654039"
+         inkscape:transform-center-y="-3.8890905" />
+      <path
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_esquerdo_tab.png"
+         id="path2452"
+         d="M 243.0898,701.64343 C 243.10454,694.87172 242.65239,687.18284 245.23328,684.80213 C 247.82491,682.41152 249.59614,682.90038 253.28263,682.81534 L 258.05952,682.81093 L 258.05952,693.55496 L 258.05952,704.81093 L 250.5712,704.81093 L 243.08289,704.81093 L 243.0898,701.64343 z"
+         style="fill:#addfd2;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         sodipodi:nodetypes="csccccccc"
+         inkscape:transform-center-x="-2.4135549"
+         inkscape:transform-center-y="-3.7923741" />
+    </g>
+    <g
+       transform="matrix(-1,0,0,1,528.91716,3.3145632)"
+       id="g2460"
+       inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_direito_tab.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         inkscape:transform-center-y="-3.8890905"
+         inkscape:transform-center-x="-2.6654039"
+         y="682.81091"
+         x="243.05951"
+         height="22"
+         width="15"
+         id="rect2462"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:transform-center-y="-3.7923741"
+         inkscape:transform-center-x="-2.4135549"
+         sodipodi:nodetypes="csccccccc"
+         style="fill:#addfd2;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M 243.0898,701.64343 C 243.10454,694.87172 242.65239,687.18284 245.23328,684.80213 C 247.82491,682.41152 249.59614,682.90038 253.28263,682.81534 L 258.05952,682.81093 L 258.05952,693.55496 L 258.05952,704.81093 L 250.5712,704.81093 L 243.08289,704.81093 L 243.0898,701.64343 z"
+         id="path2464"
+         inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_esquerdo_tab.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+    </g>
+    <rect
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect2468"
+       width="15"
+       height="22"
+       x="300.55615"
+       y="685.06482"
+       inkscape:transform-center-x="-2.6654039"
+       inkscape:transform-center-y="-3.8890905"
+       inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_esquerdo_tab_back.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_esquerdo_tab_back.png"
+       id="path2470"
+       d="M 300.58642,703.89733 C 300.60116,697.12562 300.14901,689.43674 302.7299,687.05603 C 305.32153,684.66542 307.09276,685.15428 310.77925,685.06924 L 315.55614,685.06483 L 315.55614,695.80886 L 315.55614,707.06483 L 308.06782,707.06483 L 300.57951,707.06483 L 300.58642,703.89733 z"
+       style="fill:#70afad;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       sodipodi:nodetypes="csccccccc"
+       inkscape:transform-center-x="-2.4135549"
+       inkscape:transform-center-y="-3.7923741" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect2476"
+       width="15"
+       height="12"
+       x="251.06041"
+       y="-735.88464"
+       inkscape:transform-center-x="-2.6654039"
+       inkscape:transform-center-y="-2.1213221"
+       transform="scale(1,-1)"
+       inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_esquerdo_fundo_tab.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       id="path2478"
+       d="M 251.06042,723.88459 C 251.08769,728.37043 251.38454,732.44535 253.21667,734.02051 C 255.8083,736.24863 257.59268,735.80533 261.27917,735.88459 L 266.06042,735.88459 L 266.06042,725.86517 L 266.06042,723.88459 L 251.06042,723.88459 z"
+       style="fill:#addfd2;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_esquerdo_fundo_tab.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <g
+       id="g2480"
+       transform="matrix(-1,0,0,-1,528.91716,1418.3368)"
+       inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_direito_fundo_tab.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="rect2482"
+         width="15"
+         height="22"
+         x="243.05951"
+         y="682.81091"
+         inkscape:transform-center-x="-2.6654039"
+         inkscape:transform-center-y="-3.8890905" />
+      <path
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_esquerdo_tab.png"
+         id="path2484"
+         d="M 243.0898,701.64343 C 243.10454,694.87172 242.65239,687.18284 245.23328,684.80213 C 247.82491,682.41152 249.59614,682.90038 253.28263,682.81534 L 258.05952,682.81093 L 258.05952,693.55496 L 258.05952,704.81093 L 250.5712,704.81093 L 243.08289,704.81093 L 243.0898,701.64343 z"
+         style="fill:#addfd2;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         sodipodi:nodetypes="csccccccc"
+         inkscape:transform-center-x="-2.4135549"
+         inkscape:transform-center-y="-3.7923741" />
+    </g>
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_direito_tab_back.png"
+       inkscape:transform-center-y="-3.8890905"
+       inkscape:transform-center-x="2.6654039"
+       y="685.4184"
+       x="-337.12292"
+       height="22"
+       width="15"
+       id="rect2486"
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       transform="scale(-1,1)" />
+    <path
+       inkscape:transform-center-y="-3.7923741"
+       inkscape:transform-center-x="2.4135596"
+       sodipodi:nodetypes="csccccccc"
+       style="fill:#70afad;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 337.09264,704.25088 C 337.0779,697.47917 337.53005,689.79029 334.94916,687.40958 C 332.35753,685.01897 330.5863,685.50783 326.89981,685.42279 L 322.12292,685.41838 L 322.12292,696.16241 L 322.12292,707.41838 L 329.61124,707.41838 L 337.09955,707.41838 L 337.09264,704.25088 z"
+       id="path2488"
+       inkscape:export-filename="/home/jcosta/Work/iknow/iflow-4/workspace/iFlow/src/main/webapp/images/canto_direito_tab_back.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+  </g>
+</svg>

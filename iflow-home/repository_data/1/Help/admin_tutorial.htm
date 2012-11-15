@@ -1,0 +1,194 @@
+#set( $emAdmin = "<em>" + $messages.getString("main.tab.admin") + "</em>" )
+#set( $emProcesses = "<em>" + $messages.getString("main.tab.processes") + "</em>" )
+#set( $emAdminUsers = "<em>" + $messages.getString("admin_nav.section.users.link.users") + "</em>" )
+#set( $emOrgUnits = "<em>" + $messages.getString("admin_nav.section.users.link.orgunits") + "</em>" )
+#set( $emProfiles = "<em>" + $messages.getString("admin_nav.section.flows.link.profiles") + "</em>" )
+#set( $emUsers = "<em>" + $messages.getString("admin_nav.section.users.title") + "</em>" )
+#set( $emUserAdmin = "<em>" + $messages.getString("useradm.title") + "</em>" )
+
+    <style type="text/css">
+    	dl#main {
+    		margin-top: 5px;
+    	}
+    	
+    	dt {
+    		display: none;
+    		font-size: 14px;
+    		font-weight: bold;
+    		height: 20px;
+    		background-color: white;
+    		color: black;
+    		padding: 2px 5px;
+    		margin-bottom: 0px;
+    		border: 1px solid #EBE9E7;
+    		border-bottom: none;
+    	}
+    	
+    	dd {
+    		display: none;
+    		padding: 0px 5px;
+    		border: 1px solid #EBE9E7;
+    		border-top: none;
+    		background-color: white;
+     		margin-left: 0px;
+     		height: 300px;
+     		overflow: auto;
+    	}
+    	
+    	dt.active {
+    		display: block;
+    	}
+    	
+    	dd.active {
+    		display: block;
+    	}
+    	
+    	dt.inactive {
+    		display: none;
+    	}
+    	
+    	dd.inactive {
+    		display: none;
+		}
+		
+    	dd h1 {
+    		font-size: 16px;
+    		border-bottom: none;
+    	}
+    	
+    	dd h2 {
+    		font-size: 1.2em;
+    	}
+    	
+    	dd h3 {
+    		font-size: 1.1em;
+    	}
+    	
+    	dd ul {
+    		background-color: white;
+    		margin:0;
+    	}
+    	
+    	dd li {
+    		background-color: white;
+    	}
+    	
+    	dd a {
+    		color: blue;
+    		font-weight: bold;
+    		padding-left: 0px;
+    	}
+    	
+    	dl em {
+    		font-weight: bold;
+    	}
+    	
+    	dd p {
+    		line-height: 150%;
+    	}
+    	
+    	#help_link_previous, #help_link_next {
+		}
+
+    	#help_link_previous {
+    		text-align: left;
+    	}
+    	
+    	#help_link_next {
+    		text-align: right;
+    	}
+    	
+    	.yui-skin-sam .yui-panel-container.shadow .underlay {
+			background-color:#000000;
+			bottom:10px;
+			left:-3px;
+			opacity:0.12;
+			position:absolute;
+			right:-3px;
+			top:2px;
+		}
+
+    </style>
+    
+    <dl id="main">
+      <dt id="dt_none" class="${tutorialActive}">
+         $messages.getString("help.admin_tutorial.tutorial")
+      </dt>
+      <dd id="dd_none" class="${tutorialActive}">
+        <h1>$messages.getString("help.admin_tutorial.tutorial.p1", $username)</h1>
+        <p>$messages.getString("help.admin_tutorial.tutorial.p2")</p>
+        <p>$messages.getString("help.admin_tutorial.tutorial.p3")</p>
+        <p>$messages.getString("help.admin_tutorial.tutorial.p4")</p>
+        <p>$messages.getString("help.admin_tutorial.tutorial.p5")</p>
+        <p><a href="${initProcLink}">$messages.getString("help.admin_tutorial.tutorial.p6")</a></p>        
+	  </dd>
+	  
+      <dt id="dt_users" class="${usersActive}">
+      	$messages.getString("help.admin_tutorial.users")
+      </dt>
+      <dd id="dd_users" class="${usersActive}">
+        <p>$messages.getString("help.admin_tutorial.users.p1", $emAdmin, $emUsers) $emAdminUsers</p>
+        <p>$messages.getString("help.admin_tutorial.users.p2")</p>
+        <p>$messages.getString("help.admin_tutorial.users.p3")</p>
+        <p>(<a href="${users_config_link}">$messages.getString("help.admin_tutorial.goto") $messages.getString("main.tab.admin") $navSep $messages.getString("admin_nav.section.users.title") $navSep $messages.getString("admin_nav.section.users.link.users")</a>)</p>
+      </dd>
+
+      <dt id="dt_org_units" class="${orgUnitsActive}">
+      	$messages.getString("help.admin_tutorial.orgUnits")
+      </dt>
+      <dd id="dd_org_units" class="${orgUnitsActive}">
+        <p>$messages.getString("help.admin_tutorial.orgUnits.p1")</p>
+        <p>$messages.getString("help.admin_tutorial.orgUnits.p2", $emOrgUnits, $emUserAdmin)</p>
+        <p>$messages.getString("help.admin_tutorial.orgUnits.p3")</p>
+        <p>(<a href="${org_units_config_link}">$messages.getString("help.admin_tutorial.goto") $messages.getString("main.tab.admin") $navSep $messages.getString("admin_nav.section.users.title") $navSep $messages.getString("admin_nav.section.users.link.orgunits")</a>)</p>
+      </dd>
+
+      <dt id="dt_profiles" class="${profilesActive}">
+         $messages.getString("help.admin_tutorial.profiles")
+      </dt>
+      <dd id="dd_profiles" class="${profilesActive}">
+        <p>$messages.getString("help.admin_tutorial.profiles.p1", $emProfiles, $emUserAdmin)</p>
+        <p>$messages.getString("help.admin_tutorial.profiles.p2")</p>
+        <p>$messages.getString("help.admin_tutorial.profiles.p3")</p>
+       	<ul>
+       		<li>$messages.getString("help.admin_tutorial.profiles.p3.1")</li>
+       		<li>$messages.getString("help.admin_tutorial.profiles.p3.2")</li>
+       	</ul>
+       	<p>$messages.getString("help.admin_tutorial.profiles.p4")</p>
+        <p>(<a href="${profiles_config_link}">$messages.getString("help.admin_tutorial.goto") $messages.getString("main.tab.admin") $navSep $messages.getString("admin_nav.section.users.title") $navSep $messages.getString("admin_nav.section.users.link.profiles")</a>)</p>
+      </dd>
+
+      <dt id="dt_flows" class="${flowsActive}">
+         $messages.getString("help.admin_tutorial.flows")
+      </dt>
+      <dd id="dd_flows" class="${flowsActive}">
+      	<p>$messages.getString("help.admin_tutorial.flows.p1")</p>
+      	<p>$messages.getString("help.admin_tutorial.flows.p2")</p>
+      	<p>$messages.getString("help.admin_tutorial.flows.p3")</p>
+      	<p>$messages.getString("help.admin_tutorial.flows.p4")</p>
+      	<p>$messages.getString("help.admin_tutorial.flows.p5")</p>
+        <p>(<a href="${flows_config_link}">$messages.getString("help.admin_tutorial.goto") $messages.getString("main.tab.admin") $navSep $messages.getString("admin_nav.section.flows.title") $navSep $messages.getString("admin_nav.section.flows.link.createAndEdit")</a>)</p>
+      </dd>
+
+      <dt id="dt_permissions" class="${permissionsActive}">
+         $messages.getString("help.admin_tutorial.permissions")
+      </dt>
+      <dd id="dd_permissions" class="${permissionsActive}">
+        <p>$messages.getString("help.admin_tutorial.permissions.p1")</p>
+        <p>$messages.getString("help.admin_tutorial.permissions.p2")</p>
+        <p>$messages.getString("help.admin_tutorial.permissions.p3")</p>
+        <p>$messages.getString("help.admin_tutorial.permissions.p4")</p>
+        <p>$messages.getString("help.admin_tutorial.permissions.p5")</p>        
+        <p>(<a href="${permissions_config_link}">$messages.getString("help.admin_tutorial.goto") $messages.getString("main.tab.admin") $navSep $messages.getString("admin_nav.section.flows.title") $navSep $messages.getString("admin_nav.section.flows.link.properties")</a>)</p>
+      </dd>
+
+      <dt id="dt_menus" class="${menusActive}">
+         $messages.getString("help.admin_tutorial.menus")
+      </dt>
+      <dd id="dd_menus" class="${menusActive}">
+        <p>$messages.getString("help.admin_tutorial.menus.p1", $emProcesses)</p>
+        <p>(<a href="${menus_config_link}">$messages.getString("help.admin_tutorial.goto") $messages.getString("admin_nav.section.flows.title") $navSep $messages.getString("admin_nav.section.flows.title") $navSep $messages.getString("admin_nav.section.flows.link.menus")</a>)</p>
+      </dd>
+
+    </dl>
+    <p><a href="${close_function}">$closeString</a></p>

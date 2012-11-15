@@ -1,0 +1,100 @@
+/*
+ * Esta classe eh gerada automaticamente a partir do ficheiro AppletServletHelper.atl
+ * Caro pretenda efectuar alguma alteracao, devera modificar AppletServletHelper.atl
+ * e correr mvn generate-sources
+ * 
+ * =====================================
+ * 
+ * This class was generated automatically from file AppletServletHelper.atl
+ * If you want to make changes, modify AppletServletHelper.atl instead and run mvn generate-sources
+ * 
+ */
+package pt.iflow.applet;
+
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Arrays;
+
+import pt.iflow.applet.UtilityApplet;
+
+
+/**
+ * Helper class to manage classpath dependencies for utility applet.
+ * 
+ * @author oscar.lopes@infosistema.com
+ *
+ */
+public class AppletServletHelper extends pt.iflow.applet.AbstractAppletServletHelper {
+
+  private static final String VERSION = "@APP_VER@"; //$NON-NLS-1$
+  
+  public static final String CLASSPATH="@CLASSPATH@"; //$NON-NLS-1$
+  
+  private List<String> deps = new ArrayList<String>();
+  
+  public AppletServletHelper() {
+
+	String [] aDeps = CLASSPATH.split(","); //$NON-NLS-1$
+	
+	deps = Arrays.asList(aDeps);
+  }
+  
+  /**
+   * Iterate through all dependencies
+   * 
+   * @return
+   */
+  public Iterator<String> dependenecies() {
+    return deps.iterator();
+  }
+  
+  /**
+   * Get applet version
+   * 
+   * @return Applet version number
+   */
+  public String getVersion() {
+    return VERSION;
+  }
+  
+  /**
+   * Devolve um reader para a template velocity com o script que insere a applet no documento.
+   * <br><br>
+   * Nota: isto esta assim para eliminar a dependencia de velocity na applet. Ao mesmo tempo
+   * convem manter o codigo relacionado com a applet junto da applet. Nao me levem a mal por isso.
+   * 
+   * @return
+   * @see getAppletScriptContext()
+   */
+  public Reader getAppletScriptTemplate() {
+    InputStream is = AppletServletHelper.class.getResourceAsStream("applet.vm"); //$NON-NLS-1$
+    try {
+      return new InputStreamReader(is,"UTF-8"); //$NON-NLS-1$
+    } catch (UnsupportedEncodingException e) {
+      return new InputStreamReader(is);
+    }
+  }
+  
+  /**
+   * Devolve o contexto a usar pelo velocity para processar a template
+   * <br><br>
+   * Nota: isto esta assim para eliminar a dependencia de velocity na applet. Ao mesmo tempo
+   * convem manter o codigo relacionado com a applet junto da applet. Nao me levem a mal por isso.
+   * 
+   * @return
+   * @see getAppletScriptTemplate()
+   */
+  public Hashtable<String,Object> getAppletScriptContext() {
+    Hashtable<String, Object> ctx = new Hashtable<String, Object>();
+    ctx.put(VAR_APPLET_CLASS_NAME, UtilityApplet.class.getName());
+    ctx.put(VAR_APPLET_CLASS_PATH, CLASSPATH);
+    return ctx;
+  }
+  
+}

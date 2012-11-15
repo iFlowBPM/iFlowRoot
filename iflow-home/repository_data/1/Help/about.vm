@@ -1,0 +1,7 @@
+#set ( $iFlow = "<i>iFlow&#8482;</i>")
+    <img id="img_org_logo" border="0" src="Logo"/>
+    <p>$messages.getString("help.about.version") $version (Build $build)</p>
+    <p>&copy; 2001-2009 </p>
+    <p>$messages.getString("help.about.trademark", $iFlow)</p>
+    <a href="http://www.iflow.pt" target="blank">www.iflow.pt</a>
+    

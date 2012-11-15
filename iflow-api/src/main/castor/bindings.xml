@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<binding xmlns="http://www.castor.org/SourceGenerator/Binding" xsi:schemaLocation="http://www.castor.org/SourceGenerator/Binding http://castor.org/binding.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<!--define the {namespace,package} binding -->
+	<package>
+		<name>pt.iflow.api.xml.codegen.library</name>
+		<namespace>http://www.iflow.pt/Library</namespace>
+	</package>
+
+	<package>
+		<name>pt.iflow.api.xml.codegen.flow</name>
+		<namespace>http://www.iflow.pt/Flow</namespace>
+	</package>
+
+	<package>
+		<name>pt.iflow.api.xml.codegen.processdata</name>
+		<namespace>http://www.iflow.pt/ProcessData</namespace>
+	</package>
+
+
+	<!--
+	 Castor binding file.
+	 One can define mappings between a xml tag and a generated class property.
+	 The example below 'renames' the class tag to type, ie, the generated class
+	 will have getter/setter for type instead of class.
+	 -->
+
+    <complexTypeBinding name="XmlBlockType">
+       <java-class name="XmlBlockType"/>
+       <elementBinding name="class">
+           <member name="type" />
+       </elementBinding>
+    </complexTypeBinding>
+
+    <complexTypeBinding name="XmlPortType">
+       <java-class name="XmlPortType" />
+       <elementBinding name="connected_block_id">
+           <member name="connectedBlockId" />
+       </elementBinding>
+       <elementBinding name="connected_port_name">
+           <member name="connectedPortName" />
+       </elementBinding>
+       <elementBinding name="in_out">
+           <member name="inOut" />
+       </elementBinding>
+    </complexTypeBinding>
+
+</binding>

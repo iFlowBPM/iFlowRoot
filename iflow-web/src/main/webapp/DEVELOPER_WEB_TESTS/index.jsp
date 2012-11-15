@@ -1,0 +1,1 @@
+<a href="seriesManager.jsp">Series</a>

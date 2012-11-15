@@ -1,0 +1,222 @@
+.yui-panel-container .shadow .underlay {
+	position: absolute;
+	background-color: #000;
+	opacity: 0.12;
+	filter: alpha(opacity =   12);
+	left: 3px;
+	right: -3px;
+	bottom: -3px;
+	top: 3px;
+}
+
+.yui-panel {
+	border: none;
+	overflow: visible;
+	background-color: transparent;
+}
+
+/* Apply styles to the close icon to anchor it to the left side of the header */
+.yui-panel .container-close {
+	position: absolute;
+	top: 3px;
+	left: 4px;
+	height: 18px;
+	width: 17px;
+	cursor: pointer;
+	background:
+		url(../../javascript/yahoo/container/assets/img/aqua-hd-close.gif)
+		no-repeat;
+}
+
+/* span:hover not supported on IE6 */
+.yui-panel .container-close:hover {
+	background:
+		url(../../javascript/yahoo/container/assets/img/aqua-hd-close-over.gif)
+		no-repeat;
+}
+
+/* Style the header and apply the rounded corners, center the text */
+.yui-panel .hd {
+	padding: 0;
+	border: none;
+	background:
+		url(../../javascript/yahoo/container/assets/img/aqua-hd-bg.gif)
+		repeat-x;
+	color: #000;
+	height: 22px;
+	margin-left: 7px;
+	margin-right: 7px;
+	text-align: center;
+	overflow: visible;
+}
+
+/* Style the body and footer */
+.yui-panel .bd {
+	overflow: hidden;
+	padding: 4px;
+	border: 1px solid #aeaeae;
+	background-color: #FFF;
+}
+
+.yui-panel .ft {
+	font-size: 75%;
+	color: #666;
+	padding: 2px;
+	overflow: hidden;
+	border: 1px solid #aeaeae;
+	border-top: none;
+	background-color: #dfdfdf;
+}
+
+/* Skin custom elements */
+.yui-panel .hd span {
+	vertical-align: middle;
+	line-height: 22px;
+	font-weight: bold;
+}
+
+.yui-panel .hd .tl {
+	width: 7px;
+	height: 22px;
+	top: 0;
+	left: 0;
+	background:
+		url(../../javascript/yahoo/container/assets/img/aqua-hd-lt.gif)
+		no-repeat;
+	position: absolute;
+}
+
+.yui-panel .hd .tr {
+	width: 7px;
+	height: 22px;
+	top: 0;
+	right: 0;
+	background:
+		url(../../javascript/yahoo/container/assets/img/aqua-hd-rt.gif)
+		no-repeat;
+	position: absolute;
+}
+
+/* tooltip design */
+.ToolTips {
+	display: block;
+	position: absolute;
+	width: 404px;
+}
+
+.ToolTips .sticky_close {
+	display: block;
+	position: absolute;
+	top: 1px;
+	right: 3px;
+	background: url(images/fileclose.png);
+	width: 16px;
+	height: 16px;
+	line-height: 16px;
+	font-size: 0px;
+	z-index: 100000000;
+}
+
+.ToolTips .message {
+	display: block;
+	position: relative;
+	background: url(images/tip_body.png) repeat-y;
+	padding: 0px 10px;
+}
+
+/* here we do a little switch. If the tooltip is positioned above the element hovered, it changes the classes on the header/footer divs in order to point at the element hovered */
+.ToolTips .dockBottomHeader,.ToolTips .dockTopFooter {
+	display: block;
+	position: relative;
+	background: url(images/dockBottomHeader.png) no-repeat bottom;
+	height: 33px;
+}
+
+.ToolTips .dockTopFooter {
+	background: url(images/dockTopFooter.png) no-repeat bottom;
+	height: 60px;
+}
+
+.ToolTips .dockBottomFooter,.ToolTips .dockTopHeader {
+	display: block;
+	position: relative;
+	background: url(images/dockBottomFooter.png);
+	height: 35px;
+	line-height: 11px;
+	font-size: 0px;
+	clear: both;
+}
+
+/* this one has more height to display the close button in case sticky tooltips are on */
+.ToolTips .dockTopHeader {
+	background: url(images/dockTopHeader.png) bottom center no-repeat;
+	height: 20px;
+	line-height: 20px;
+	font-size: 0px;
+}
+
+* html .ToolTips .dockBottomHeader {
+	background: none;
+	filter: progid : DXImageTransform.Microsoft.AlphaImageLoader ( src =
+		'images/dockBottomHeader.png' );
+}
+
+* html .ToolTips .dockBottomFooter {
+	background: none;
+	filter: progid : DXImageTransform.Microsoft.AlphaImageLoader ( src =
+		'images/dockBottomFooter.png' );
+}
+
+* html .ToolTips .dockTopHeader {
+	background: none;
+	filter: progid : DXImageTransform.Microsoft.AlphaImageLoader ( src =
+		'images/dockTopHeader.png' );
+}
+
+* html .ToolTips .dockTopFooter {
+	background: none;
+	filter: progid : DXImageTransform.Microsoft.AlphaImageLoader ( src =
+		'images/dockTopFooter.png' );
+}
+
+* html .ToolTips .sticky_close {
+	background: none;
+	filter: progid : DXImageTransform.Microsoft.AlphaImageLoader ( src =
+		'images/fileclose.png' );
+}
+
+/* this is just a div displaying the loading animated .gif */
+.loading {
+	display: block;
+	margin: 0px auto 0px;
+	background: url(images/ajax-loader.gif) center center no-repeat;
+	width: 31px;
+	height: 50px;
+}
+
+/* tip container */
+.tipContainer {
+	display: none;
+}
+
+/* beautify the tooltip content */
+.ToolTips .message {
+	font-size: 12px;
+	text-align: justify;
+}
+
+.ToolTips .message h3 {
+	font-size: 16px;
+	margin: 0px 0px 10px;
+	padding: 0px;
+	color: #FF6600;
+}
+
+.ToolTips .message .rights {
+	display: block;
+	clear: both;
+	margin: 15px 0px 0px;
+	text-align: right;
+	font-size: 11px;
+	color: #666666;
+}

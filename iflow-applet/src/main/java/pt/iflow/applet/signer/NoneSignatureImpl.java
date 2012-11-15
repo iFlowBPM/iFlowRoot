@@ -1,0 +1,46 @@
+package pt.iflow.applet.signer;
+
+import java.awt.Component;
+
+import pt.iflow.applet.DynamicForm;
+import pt.iflow.applet.ExtensionFileFilter;
+import pt.iflow.applet.IVFile;
+import pt.iflow.applet.WebClient;
+
+/**
+ * No signature
+ * @author ombl
+ *
+ */
+public class NoneSignatureImpl implements FileSigner {
+
+  public void loadSignature(Component parent) {
+  }
+
+  public IVFile sign(IVFile file) {
+    return file;
+  }
+
+  public String verify(IVFile file) {
+    return null;
+  }
+
+  public boolean isActive() {
+    return true;
+  }
+
+  public DynamicForm getForm() {
+    return null;
+  }
+
+  public String validateForm() {
+    return null;
+  }
+  
+  public void init(final WebClient webClient) {
+  }
+  
+  public ExtensionFileFilter getFilter() {
+    return null;
+  }
+}

@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions targetNamespace="urn:microsoft-dynamics-schemas/page/ws_reqinternacompra"
+	xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="urn:microsoft-dynamics-schemas/page/ws_reqinternacompra">
+	<types>
+		<xsd:schema elementFormDefault="qualified"
+			targetNamespace="urn:microsoft-dynamics-schemas/page/ws_reqinternacompra"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:complexType name="Purchase_Internal_Req_Line">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" maxOccurs="1" name="Key"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="No"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="Description"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="Location_Code"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="Quantity"
+						type="xsd:decimal" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="Expense_Proposal_Qty" type="xsd:decimal" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="Quantity_Received" type="xsd:decimal" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="Unit_of_Measure_Code" type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="Unit_of_Measure"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="Budget_Dimension_1_Code" type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="Budget_Dimension_2_Code" type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="Budget_Dimension_3_Code" type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="Budget_Dimension_4_Code" type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="Promised_Receipt_Date" type="xsd:date" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="Planned_Receipt_Date" type="xsd:date" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="Expected_Receipt_Date" type="xsd:date" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="Order_Date"
+						type="xsd:date" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="Lead_Time_Calculation" type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="Finished"
+						type="xsd:boolean" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="Appl_to_Item_Entry" type="xsd:int" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="Shortcut_Dimension_1_Code" type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="Shortcut_Dimension_2_Code" type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="DRF_Code"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="ShortcutDimCode_x005B_3_x005D_" type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="ShortcutDimCode_x005B_4_x005D_" type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="ShortcutDimCode_x005B_5_x005D_" type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="ShortcutDimCode_x005B_6_x005D_" type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="ShortcutDimCode_x005B_7_x005D_" type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="ShortcutDimCode_x005B_8_x005D_" type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="STRSUBSTNO__x0027__Percent1__x0027__x002C_PurchInfoPaneMgt_CalcAvailability_Rec"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="STRSUBSTNO__x0027__Percent1__x0027__x002C_PurchInfoPaneMgt_CalcNoOfPurchasePrices_Rec"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="STRSUBSTNO__x0027__Percent1__x0027__x002C_PurchInfoPaneMgt_CalcNoOfPurchLineDisc_Rec"
+						type="xsd:string" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="Purchase_Internal_Req_Line_List">
+				<xsd:sequence>
+					<xsd:element minOccurs="1" maxOccurs="unbounded"
+						name="Purchase_Internal_Req_Line" type="tns:Purchase_Internal_Req_Line" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="WS_ReqInternaCompra">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" maxOccurs="1" name="Key"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="No"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="Service"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="Ship_to_Name"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="Ship_to_Address"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="Ship_to_Address_2" type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="Ship_to_Post_Code" type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="Ship_to_City"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="Ship_to_County"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="Ship_to_Contact"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="Posting_Date"
+						type="xsd:date" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="Document_Date"
+						type="xsd:date" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="User_ID"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="Location_Code"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="Shipment_Method_Code" type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="Expected_Receipt_Date" type="xsd:date" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="STRSUBSTNO__x0027__Percent1__x0027__x002C_PurchInfoPaneMgmt_CalcNoOfOrderAddr_Buy_from_Vendor_No"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1"
+						name="STRSUBSTNO__x0027__Percent1__x0027__x002C_PurchInfoPaneMgmt_CalcNoOfContacts_Rec"
+						type="xsd:string" />
+					<xsd:element minOccurs="0" maxOccurs="1" name="PurchLines"
+						type="tns:Purchase_Internal_Req_Line_List" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="WS_ReqInternaCompra_List">
+				<xsd:sequence>
+					<xsd:element minOccurs="1" maxOccurs="unbounded"
+						name="WS_ReqInternaCompra" type="tns:WS_ReqInternaCompra" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:simpleType name="WS_ReqInternaCompra_Fields">
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="No" />
+					<xsd:enumeration value="Service" />
+					<xsd:enumeration value="Ship_to_Name" />
+					<xsd:enumeration value="Ship_to_Address" />
+					<xsd:enumeration value="Ship_to_Address_2" />
+					<xsd:enumeration value="Ship_to_Post_Code" />
+					<xsd:enumeration value="Ship_to_City" />
+					<xsd:enumeration value="Ship_to_County" />
+					<xsd:enumeration value="Ship_to_Contact" />
+					<xsd:enumeration value="Posting_Date" />
+					<xsd:enumeration value="Document_Date" />
+					<xsd:enumeration value="User_ID" />
+					<xsd:enumeration value="Location_Code" />
+					<xsd:enumeration value="Shipment_Method_Code" />
+					<xsd:enumeration value="Expected_Receipt_Date" />
+					<xsd:enumeration
+						value="STRSUBSTNO__x0027__Percent1__x0027__x002C_PurchInfoPaneMgmt_CalcNoOfOrderAddr_Buy_from_Vendor_No" />
+					<xsd:enumeration
+						value="STRSUBSTNO__x0027__Percent1__x0027__x002C_PurchInfoPaneMgmt_CalcNoOfContacts_Rec" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:complexType name="WS_ReqInternaCompra_Filter">
+				<xsd:sequence>
+					<xsd:element minOccurs="1" maxOccurs="1" name="Field"
+						type="tns:WS_ReqInternaCompra_Fields" />
+					<xsd:element minOccurs="1" maxOccurs="1" name="Criteria"
+						type="xsd:string" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="Read">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element minOccurs="1" maxOccurs="1" name="No"
+							type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Read_Result">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element minOccurs="0" maxOccurs="1"
+							name="WS_ReqInternaCompra" type="tns:WS_ReqInternaCompra" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="ReadMultiple">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element minOccurs="1" maxOccurs="unbounded" name="filter"
+							type="tns:WS_ReqInternaCompra_Filter" />
+						<xsd:element minOccurs="0" maxOccurs="1" name="bookmarkKey"
+							type="xsd:string" />
+						<xsd:element minOccurs="1" maxOccurs="1" name="setSize"
+							type="xsd:int" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="ReadMultiple_Result">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element minOccurs="0" maxOccurs="1"
+							name="ReadMultiple_Result" type="tns:WS_ReqInternaCompra_List" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="IsUpdated">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element minOccurs="1" maxOccurs="1" name="Key"
+							type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="IsUpdated_Result">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element minOccurs="1" maxOccurs="1"
+							name="IsUpdated_Result" type="xsd:boolean" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Create">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element minOccurs="1" maxOccurs="1"
+							name="WS_ReqInternaCompra" type="tns:WS_ReqInternaCompra" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Create_Result">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element minOccurs="1" maxOccurs="1"
+							name="WS_ReqInternaCompra" type="tns:WS_ReqInternaCompra" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="CreateMultiple">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element minOccurs="1" maxOccurs="1"
+							name="WS_ReqInternaCompra_List" type="tns:WS_ReqInternaCompra_List" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="CreateMultiple_Result">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element minOccurs="1" maxOccurs="1"
+							name="WS_ReqInternaCompra_List" type="tns:WS_ReqInternaCompra_List" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Update">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element minOccurs="1" maxOccurs="1"
+							name="WS_ReqInternaCompra" type="tns:WS_ReqInternaCompra" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Update_Result">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element minOccurs="1" maxOccurs="1"
+							name="WS_ReqInternaCompra" type="tns:WS_ReqInternaCompra" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="UpdateMultiple">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element minOccurs="1" maxOccurs="1"
+							name="WS_ReqInternaCompra_List" type="tns:WS_ReqInternaCompra_List" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="UpdateMultiple_Result">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element minOccurs="1" maxOccurs="1"
+							name="WS_ReqInternaCompra_List" type="tns:WS_ReqInternaCompra_List" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Delete">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element minOccurs="1" maxOccurs="1" name="Key"
+							type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Delete_Result">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element minOccurs="1" maxOccurs="1" name="Delete_Result"
+							type="xsd:boolean" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Delete_PurchLines">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element minOccurs="1" maxOccurs="1" name="PurchLines_Key"
+							type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Delete_PurchLines_Result">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element minOccurs="1" maxOccurs="1"
+							name="Delete_PurchLines_Result" type="xsd:boolean" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:schema>
+	</types>
+	<message name="Read">
+		<part name="parameters" element="tns:Read" />
+	</message>
+	<message name="Read_Result">
+		<part name="parameters" element="tns:Read_Result" />
+	</message>
+	<message name="ReadMultiple">
+		<part name="parameters" element="tns:ReadMultiple" />
+	</message>
+	<message name="ReadMultiple_Result">
+		<part name="parameters" element="tns:ReadMultiple_Result" />
+	</message>
+	<message name="IsUpdated">
+		<part name="parameters" element="tns:IsUpdated" />
+	</message>
+	<message name="IsUpdated_Result">
+		<part name="parameters" element="tns:IsUpdated_Result" />
+	</message>
+	<message name="Create">
+		<part name="parameters" element="tns:Create" />
+	</message>
+	<message name="Create_Result">
+		<part name="parameters" element="tns:Create_Result" />
+	</message>
+	<message name="CreateMultiple">
+		<part name="parameters" element="tns:CreateMultiple" />
+	</message>
+	<message name="CreateMultiple_Result">
+		<part name="parameters" element="tns:CreateMultiple_Result" />
+	</message>
+	<message name="Update">
+		<part name="parameters" element="tns:Update" />
+	</message>
+	<message name="Update_Result">
+		<part name="parameters" element="tns:Update_Result" />
+	</message>
+	<message name="UpdateMultiple">
+		<part name="parameters" element="tns:UpdateMultiple" />
+	</message>
+	<message name="UpdateMultiple_Result">
+		<part name="parameters" element="tns:UpdateMultiple_Result" />
+	</message>
+	<message name="Delete">
+		<part name="parameters" element="tns:Delete" />
+	</message>
+	<message name="Delete_Result">
+		<part name="parameters" element="tns:Delete_Result" />
+	</message>
+	<message name="Delete_PurchLines">
+		<part name="parameters" element="tns:Delete_PurchLines" />
+	</message>
+	<message name="Delete_PurchLines_Result">
+		<part name="parameters" element="tns:Delete_PurchLines_Result" />
+	</message>
+	<portType name="WS_ReqInternaCompra_Port">
+		<operation name="Read">
+			<input name="Read" message="tns:Read" />
+			<output name="Read_Result" message="tns:Read_Result" />
+		</operation>
+		<operation name="ReadMultiple">
+			<input name="ReadMultiple" message="tns:ReadMultiple" />
+			<output name="ReadMultiple_Result" message="tns:ReadMultiple_Result" />
+		</operation>
+		<operation name="IsUpdated">
+			<input name="IsUpdated" message="tns:IsUpdated" />
+			<output name="IsUpdated_Result" message="tns:IsUpdated_Result" />
+		</operation>
+		<operation name="Create">
+			<input name="Create" message="tns:Create" />
+			<output name="Create_Result" message="tns:Create_Result" />
+		</operation>
+		<operation name="CreateMultiple">
+			<input name="CreateMultiple" message="tns:CreateMultiple" />
+			<output name="CreateMultiple_Result" message="tns:CreateMultiple_Result" />
+		</operation>
+		<operation name="Update">
+			<input name="Update" message="tns:Update" />
+			<output name="Update_Result" message="tns:Update_Result" />
+		</operation>
+		<operation name="UpdateMultiple">
+			<input name="UpdateMultiple" message="tns:UpdateMultiple" />
+			<output name="UpdateMultiple_Result" message="tns:UpdateMultiple_Result" />
+		</operation>
+		<operation name="Delete">
+			<input name="Delete" message="tns:Delete" />
+			<output name="Delete_Result" message="tns:Delete_Result" />
+		</operation>
+		<operation name="Delete_PurchLines">
+			<input name="Delete_PurchLines" message="tns:Delete_PurchLines" />
+			<output name="Delete_PurchLines_Result" message="tns:Delete_PurchLines_Result" />
+		</operation>
+	</portType>
+	<binding name="WS_ReqInternaCompra_Binding" type="tns:WS_ReqInternaCompra_Port">
+		<binding transport="http://schemas.xmlsoap.org/soap/http"
+			xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+		<operation name="Read">
+			<operation
+				soapAction="urn:microsoft-dynamics-schemas/page/ws_reqinternacompra:Read"
+				style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			<input name="Read">
+				<body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			</input>
+			<output name="Read_Result">
+				<body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			</output>
+		</operation>
+		<operation name="ReadMultiple">
+			<operation
+				soapAction="urn:microsoft-dynamics-schemas/page/ws_reqinternacompra:ReadMultiple"
+				style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			<input name="ReadMultiple">
+				<body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			</input>
+			<output name="ReadMultiple_Result">
+				<body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			</output>
+		</operation>
+		<operation name="IsUpdated">
+			<operation
+				soapAction="urn:microsoft-dynamics-schemas/page/ws_reqinternacompra:IsUpdated"
+				style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			<input name="IsUpdated">
+				<body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			</input>
+			<output name="IsUpdated_Result">
+				<body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			</output>
+		</operation>
+		<operation name="Create">
+			<operation
+				soapAction="urn:microsoft-dynamics-schemas/page/ws_reqinternacompra:Create"
+				style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			<input name="Create">
+				<body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			</input>
+			<output name="Create_Result">
+				<body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			</output>
+		</operation>
+		<operation name="CreateMultiple">
+			<operation
+				soapAction="urn:microsoft-dynamics-schemas/page/ws_reqinternacompra:CreateMultiple"
+				style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			<input name="CreateMultiple">
+				<body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			</input>
+			<output name="CreateMultiple_Result">
+				<body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			</output>
+		</operation>
+		<operation name="Update">
+			<operation
+				soapAction="urn:microsoft-dynamics-schemas/page/ws_reqinternacompra:Update"
+				style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			<input name="Update">
+				<body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			</input>
+			<output name="Update_Result">
+				<body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			</output>
+		</operation>
+		<operation name="UpdateMultiple">
+			<operation
+				soapAction="urn:microsoft-dynamics-schemas/page/ws_reqinternacompra:UpdateMultiple"
+				style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			<input name="UpdateMultiple">
+				<body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			</input>
+			<output name="UpdateMultiple_Result">
+				<body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			</output>
+		</operation>
+		<operation name="Delete">
+			<operation
+				soapAction="urn:microsoft-dynamics-schemas/page/ws_reqinternacompra:Delete"
+				style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			<input name="Delete">
+				<body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			</input>
+			<output name="Delete_Result">
+				<body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			</output>
+		</operation>
+		<operation name="Delete_PurchLines">
+			<operation
+				soapAction="urn:microsoft-dynamics-schemas/page/ws_reqinternacompra:Delete_PurchLines"
+				style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			<input name="Delete_PurchLines">
+				<body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			</input>
+			<output name="Delete_PurchLines_Result">
+				<body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+			</output>
+		</operation>
+	</binding>
+	<service name="WS_ReqInternaCompra_Service">
+		<port name="WS_ReqInternaCompra_Port" binding="tns:WS_ReqInternaCompra_Binding">
+			<address
+				location="http://192.168.1.19:7047/DynamicsNAV/WS/Cidadela/Page/WS_ReqInternaCompra?wsdl"
+				xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+		</port>
+	</service>
+</definitions>

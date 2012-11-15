@@ -1,0 +1,9 @@
+Purchase order
+ABC Enterprises Number: 4500005693 ABC Road Date: 03/02/2001
+Alpine Delivery date: 07/02/2001
+|Number Article Description Price Quantity Tax Amount
+P0010 R-5000 ABC red 250 gr 10.0 111.0 16 1110.0
+P0011 R-3456 ABC magic 500 gr 1000.0 1.0 16 1000.0
+Tax: 337.6
+Total: 2447.6
+

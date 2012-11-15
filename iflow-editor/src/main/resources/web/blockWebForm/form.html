@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<title>Form Editor</title>
+		<link rel="shortcut icon" href="images/favicon.ico" type="image/vnd.microsoft.icon" />
+		<link rel="stylesheet" href="css/form.css" type="text/css" charset="utf-8" />
+		<link rel="stylesheet" href="css/mocha.css" type="text/css" charset="utf-8" />
+		<link rel="stylesheet" href="css/customize-mocha.css" type="text/css" charset="utf-8" />
+		<script type="text/javascript" src="scripts/mootools-1.2.1-core-nc.js" charset="utf-8"> </script>
+		<script type="text/javascript" src="scripts/mootools-1.2-more.js" charset="utf-8"> </script>
+		<!-- I hope Internet Explorer die with cancer... long and painfull death... -->
+		<!--[if IE]>
+		<script type="text/javascript" src="scripts/excanvas-compressed.js" charset="utf-8"> </script>
+		<![endif]-->
+		<script type="text/javascript" src="scripts/mocha.js" charset="utf-8"> </script>
+		<script type="text/javascript" src="scripts/mocha-extra.js" charset="utf-8"> </script>
+		<script type="text/javascript">
+		// inject dynamic generated scripts
+		var scr = '</'+'script'+' charset="utf-8">';
+		document.write('<script type="text/javascript" src="scripts/loadMessages.js'+location.search+'"> '+scr);
+	 	</script>
+		<script type="text/javascript" src="scripts/contextmenu.js" charset="utf-8"> </script>
+		<script type="text/javascript" src="scripts/handySortables.js" charset="utf-8"> </script>
+		<script type="text/javascript" src="scripts/form-editor-events.js" charset="utf-8"> </script>
+		<script type="text/javascript" src="scripts/drag-n-sort.js" charset="utf-8"> </script>
+		<script type="text/javascript" src="scripts/widget-builder.js" charset="utf-8"> </script>
+		<script type="text/javascript">
+		// inject dynamic generated scripts
+		document.write('<script type="text/javascript" src="scripts/catalog.js'+location.search+'"> '+scr);
+	 	</script>
+		<script type="text/javascript" src="scripts/widget-definitions.js" charset="utf-8"> </script>
+		<script type="text/javascript" src="scripts/dnd.js" charset="utf-8"> </script>
+		<script type="text/javascript">
+		// inject dynamic generated scripts
+		document.write('<script type="text/javascript" src="scripts/debug-formeditor.js'+location.search+'"> '+scr);
+	 	</script>
+		<!-- I hope Internet Explorer die with cancer... long and painfull death... -->
+		<!--[if IE]>
+		<link rel="stylesheet" href="ie.css" type="text/css" charset="utf-8"></link>
+		<script type="text/javascript">
+			alert("Estás a usar Internet Explorer\nA culpa é TUA se não funcionar!");
+		</script>
+		<![endif]-->
+	</head>
+	<body id="body">
+	<div id="desktop">
+		<div id="desktopHeader">
+			<div id="desktopTitlebarWrapper">
+				<div id="desktopTitlebar">
+					<h2 class="tagline"><span class="i18n" id="titleSpanId">Formulário</span> <span id="formTitleElem" class="taglineEm formTitleError">&nbsp;</span></h2>
+				</div>
+			</div>
+			<div id="desktopNavbar">
+			<ul>
+				<li><a class="returnFalse i18n" href="" id="menuFormId">Formulário</a>	
+					<ul>
+						<li><a class="i18n" id="saveFormLink" href="">Guardar</a></li>
+						<li class="divider"><a id="syncFormLink" class="returnFalse i18n" href="">Sincronizar Editor</a></li>
+						<li class="divider"><a id="promoteToTemplateLink" class="i18n" href="">Promover a Template</a></li>
+						<li class="divider"><a id="cancelEditorLink" class="i18n" href="">Cancelar Edição</a></li>
+						<li class="divider"><a id="closeEditorLink" class="i18n" href="">Fechar</a></li>
+					</ul>
+				</li>
+				<li><a class="preview" href="" id="previewFormLink">Prévisualizar</a></li>	
+			</ul>
+			<ul class="rightHelp">
+				<li><a class="i18n" id="helpWindowLink" href="help.html">Ajuda</a></li>
+			</ul>
+			</div><!-- desktopNavbar end -->
+		</div><!-- desktopHeader end -->
+
+	<!-- NOTA: estas posições não são muito importantes, uma vez que serão reajustadas quando a página carregar. -->
+		<div class="mocha" id="theFormWindow" style="width:700px;height:250px;top:70px;left:10px">
+			<h3 id="formDesignTitle" class="mochaTitle i18n">Formulário</h3>
+			<div id="formWindowContents">
+				<form action="#" onsubmit="return false;" class="formDropPlace">
+					<div id="tabFolder" class="tabFolder">
+						<div id="newTab" class="newTab"><img src="images/edit_add.png" title="Add..." alt="Add..." id="add_tab"/></div>
+					</div>
+					<div id="form" class="roundedCorners">
+						<div id="formDesignDragInfo" class="info i18n">Drag Items Here</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+	<!-- NOTA: estas posições não são muito importantes, uma vez que serão reajustadas quando a página carregar. -->
+		<div class="mocha" id="toolboxWindow" style="width:250px;height:250px;top:70px;left:710px">
+			<h3 id="toolboxTitle" class="mochaTitle i18n">Toolbox</h3>
+			<div id="toolbox">
+				<div id="catalog">
+					<div id="cat_title" class="info i18n">Flow Properties</div>
+					<div id="cat_toolbox">
+						<div class="catStuff">
+							<div id="catCtl" class="catCtl">
+								<img src="images/edit_add.png" title="Adicionar Variável ao Catálogo" alt="Adicionar Variável ao Catálogo" id="add_cat"/>
+								<!-- <img src="images/configure.png" title="Configurar Catálogo de Variáveis" alt="Configurar Catálogo de Variáveis" id="cfg_cat"/> -->
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="widgets">
+					<div id="wgt_title" class="info i18n">Widgets</div>
+					<div id="wgt_toolbox"></div>
+				</div>
+			</div>
+		</div>
+
+	<!-- NOTA: estas posições não são muito importantes, uma vez que serão reajustadas quando a página carregar. -->
+		<div class="mocha" id="propertiesWindow" style="width:250px;height:250px;top:385px;left:710px">
+			<h3 id="propertiesWindowTitle" class="mochaTitle i18n">Propriedades</h3>
+			<form action="#" onsubmit="return false;">
+				<div class="info" id="propertyItemTitle"></div>
+				<div id="autoProperties"></div>
+				<div class="propertiesButtons">
+					<button id="revertPropertiesButton" name="revertPropertiesButton" type="button"><img id="revertIcon" src="images/button_cancel.png" alt="Reverter" title="Reverter"/><span id="revertPropertiesButtonS" class="i18n">Reverter</span></button>
+					<button id="applyPropertiesButton" name="applyPropertiesButton" type="button"><img id="applyIcon" src="images/button_ok.png" alt="Guardar" title="Guardar"/><span id="applyPropertiesButtonS" class="i18n">Guardar</span></button>
+				</div>
+			</form>
+		</div>
+		
+		<div id="dockWrapper">
+			<div id="dock">
+				<div id="dockPlacement"></div>
+				<div id="dockAutoHide"></div>
+				<div id="dockSort"><div id="dockClear" class="clear"></div></div>		
+			</div>
+		</div>
+	</div>
+	</body>
+</html>

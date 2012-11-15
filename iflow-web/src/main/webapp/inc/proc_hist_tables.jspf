@@ -1,0 +1,43 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://jakarta.apache.org/taglibs/core" prefix="c" %>
+<%@ taglib uri="http://www.iknow.pt/jsp/jstl/iflow" prefix="if" %>
+<%
+{
+  // I need a Map<String,Map<String,String>> named hmHist from ProcessPresentation to print data related to process states
+  // I need a List<String> named alStates from ProcessPresentation to iterate over process states
+  // I also need an Iterator<Activity> from ProcessManager to print process history
+  // Finally I need a String named sONGOING with the on going text message
+  
+  List<Activity> __alStates = (List<Activity>) request.getAttribute("alStates");
+  List<Activity> __alTaskHist = (List<Activity>) request.getAttribute("it");
+  Map<String,Map<String,String>> __hmHist = (Map<String,Map<String,String>>)request.getAttribute("hmHist");
+  Hashtable<String,Object> __vmCtx = new Hashtable<String,Object>();
+  if (__alStates != null) {
+  	__vmCtx.put("alStates",__alStates);
+  }
+  if (__hmHist != null) {
+    __vmCtx.put("hmHist", __hmHist);
+  }
+  if (__alTaskHist != null) {
+    __vmCtx.put("alTaskHist", __alTaskHist);
+  }
+  __vmCtx.put("messages",messages);
+  __vmCtx.put("sONGOING",(String)request.getAttribute("sONGOING"));
+  final UserInfoInterface __uui = userInfo;
+  __vmCtx.put("dateUtil", DateUtility.getHelper(userInfo));
+  
+  String __sStateHistTpl = (String) request.getAttribute("activityHistoryTpl");
+  if(StringUtilities.isEmpty(__sStateHistTpl)) __sStateHistTpl = "proc_hist";
+  String __sTaskHistTpl = (String) request.getAttribute("activityTasksTpl");
+  if(StringUtilities.isEmpty(__sTaskHistTpl)) __sTaskHistTpl = "proc_tasks";
+  
+  if (__alStates != null && !__alStates.isEmpty()) { %>
+<%=pt.iflow.api.presentation.PresentationManager.buildPage(response, userInfo, __vmCtx, __sStateHistTpl)%>
+<% }
+
+  if (__alTaskHist != null && !__alTaskHist.isEmpty()) { %>
+<%=pt.iflow.api.presentation.PresentationManager.buildPage(response, userInfo, __vmCtx, __sTaskHistTpl)%>
+<% }
+
+} // Closes top {
+%>

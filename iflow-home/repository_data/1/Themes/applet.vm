@@ -1,0 +1,47 @@
+window['IFLOW_APPLET_NAME'] = 'iflowUtilityApplet';
+var appletDone = false;
+// Override applet
+function setApplet() {
+    if (appletDone) return;
+    var appletId, appletClass, appletClasspath, appletParent, appletData, appletWidth, appletHeight;
+    var sizeAndId, protocol;
+    
+	appletId = window['IFLOW_APPLET_NAME'];
+	appletWidth = '0';
+	appletHeight = '0';
+    
+    if(document.getElementById(appletId)) return; // applet already exists
+    
+    // TODO parametrizar a versao
+    sizeAndId = 'id="'+appletId+'" name="'+appletId+'" width="'+appletWidth+'" height="'+appletHeight+'" type="application/x-java-applet;version=1.6"';
+    
+    // insecure items protocol hack
+    protocol = window.location.protocol;
+    if('https' == protocol || 'https:' == protocol) protocol = 'https';
+    else protocol = 'http';
+    // Windows + Internet Explorer
+    if (window.ActiveXObject) {
+      appletData = '<object '+sizeAndId+' classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" codebase="'+protocol+'://java.sun.com/update/1.6.0/jinstall-6u10-windows-i586.cab#Version=6,0,0,28">';
+      appletData += '<PARAM NAME="CODE" VALUE="${appletClassName}" >';
+      appletData += '<PARAM NAME="ARCHIVE" VALUE="${appletDependencies}" >';
+      appletData += '<PARAM NAME="type" VALUE="application/x-java-applet;version=1.6" >';
+      // vm params
+      appletData += '<PARAM NAME="java_arguments" VALUE="-Xmx512m" >';
+      appletData += '<PARAM name="separate_jvm" value="true" >';
+      // applet params
+      appletData += '<PARAM NAME="scriptable" VALUE="true" >';
+      appletData += '<PARAM NAME="mayscript" VALUE="true" >';
+      appletData += '<PARAM NAME="appletLang" VALUE="${appletLang}" >';
+      appletData += '</object>';
+    } else {
+      appletData = '<embed '+sizeAndId+' CODE="${appletClassName}" ARCHIVE="${appletDependencies}" ';
+      // vm params
+      appletData += 'java_arguments="-Xmx512m" separate_jvm="true" ';
+      appletData += 'scriptable="true" mayscript="true" appletLang="${appletLang}" pluginspage="'+protocol+'://java.sun.com/products/plugin/index.html#download">';
+      appletData += '</embed>';
+    }
+    
+    // append applet to page
+    document.body.innerHTML+=appletData;
+    appletDone = true;
+}

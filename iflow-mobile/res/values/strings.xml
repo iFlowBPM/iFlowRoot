@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="app_name">iFlow</string>
+    <string name="button">Click Me!</string>
+    <string name="loginButton">Login</string>
+    <string name="loginString">Introduza as suas credênciais:</string>
+    <string name="no_items">No options to show</string>
+    <string name="new_hello_world">Novo Hello World</string>
+    <string name="menu_new">Novo..</string>
+    <string name="menu_task">Tarefas</string>
+    <string name="menu_messages">Mensagens</string>
+    <string name="menu_save">Guardar</string>
+    <string name="menu_settings">Settings</string>
+
+</resources>

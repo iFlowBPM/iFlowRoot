@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="XmlLetterType">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="tipoPequeno" type="XmlLetter"/>
+				<xs:element name="tipoGrande" type="XmlLetter"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- XmlLetterType -->
+	<xs:complexType name="XmlLetter">
+		<xs:sequence>
+			<xs:element name="nome" type="xs:string"/>
+			<xs:element name="tamanho" type="xs:integer"/>
+			<xs:element name="tipe" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>
