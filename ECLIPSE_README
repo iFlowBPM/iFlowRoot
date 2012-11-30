@@ -1,26 +1,4 @@
-Worked for me....
+All help may be found at
+wiki.iflowbpm.com
 
-1 - svn checkout do trunk
-2 - mvn install na linha de comandos do projecto iflow
-3 - right-click projecto iflow
-4 - import
-5 - general->maven-projects
-6 - seleccionar projectos
-7 - correr maven generate sources no iflow-api e iflow-applet (atenção aos schemas que estão em src/main/schemas - apenas se alterarem é necessário). Copiar classes geradas no target para src/main/java
-8 - correr maven->update project configuration em todos os projectos
-9 - se as bibliotecas não estiverem no servidor, ir a project->properties->JEE module dependencies e seleccionar iflow-api, iflow-applet e maven dependencies.
-10- (para versoes anteriores ao galileo) verificar se os resources não estao a ser excluidos no build-path->source (se tiver excluded **, remover) 
-11- Adicionar aos argumentos de inicializaçao do Tomcat6.0: -Diflow.home=${workspace_loc:iflow-home}
-12- Adicionar na classpath do Tomcat as bibliotecas do iflow-home/library : jniloader-1.0.jar, mysql-connector-java-5.1.5.bin.jar, mysql-connector.jar
-13- confirmar que estamos a correr em java 5
-
-Notas:
-  - Actualizar a versão do Maven2 para 2.1.0
-
-
-voila...se tiveres sorte...:P
-
-Problemas conhecidos:
-
-1 - o iutils precisa da biblioteca commons-fileupload-1.2.2-20091125-sources.jar e por vezes esta não é publicada, adicioná-la quando acontecer
-
+Search for Development Environment HowTo
