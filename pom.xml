@@ -5,11 +5,11 @@
  
 	<organization>
 		<name>Infosistema, S.A.</name>
-		<url>http://www.infosistema.pt/</url>
+		<url>http://www.infosistema.com/</url>
 	</organization>
 	<version>4.2.0</version>
 	<description>iFlow</description>
-	<url>http://www.iflow.pt</url>
+	<url>http://www.iflowbpm.com</url>
 	<inceptionYear>2005</inceptionYear>
 
 	<name>iFlow</name>
@@ -499,7 +499,7 @@
 				<executions>
 					<execution>
 						<id>copy</id>
-						<phase>initialize</phase>
+						<phase>compile</phase>
 						<goals>
 							<goal>copy</goal>
 						</goals>
@@ -536,8 +536,8 @@
 	</reporting>
 
 	<issueManagement>
-		<system>Trac</system>
-		<url>http://suporte-iflow.infosistema.com/trac/iflow4</url>
+		<system>GitHub</system>
+		<url>https://github.com/iFlowBPM/iFlowRoot/issues</url>
 	</issueManagement>
 
 	<mailingLists>
@@ -547,28 +547,10 @@
 	</mailingLists>
 
 	<scm>
-		<connection>scm:svn:http://eddie/svn/iFlowRoot/trunk</connection>
-		<developerConnection>scm:http://eddie/svn/iFlowRoot/trunk</developerConnection>
-		<url>http://eddie/svn/iFlowRoot/trunk</url>
+	<url>https://github.com/iFlowBPM/iFlowRoot/</url>
 	</scm>
 
 	<repositories>
-		<repository>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<id>iflowInternal</id>
-			<name>Maven Repository at Eddie (internal)</name>
-			<url>http://vmsvn01.infosistema.com/maven2</url>
-		</repository>
-		<repository>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<id>iflowExternal</id>
-			<name>Maven Repository at Eddie</name>
-			<url>http://vmsvn01.infosistema.com/maven2</url>
-		</repository>
 		<repository>
       		<id>Codehaus Snapshots</id>
       		<url>http://snapshots.repository.codehaus.org/</url>
@@ -582,19 +564,6 @@
 	    </pluginRepository>
 	</pluginRepositories>
 
-	<distributionManagement>
-		<repository>
-			<id>eddie</id>
-			<name>Local Repository</name>
-			<url>scp://vmsvn01.infosistema.com/var/www/html/maven2</url>
-		</repository>
-		<snapshotRepository>
-			<id>eddie</id>
-			<name>Local Repository</name>
-			<url>scp://vmsvn01.infosistema.com/var/www/html/maven2</url>
-		</snapshotRepository>
-	</distributionManagement>
-
 	<developers>
 		<developer>
 			<id>jcosta</id>
@@ -605,47 +574,6 @@
 			</roles>
 			<organization>Infosistema.com</organization>
 			<timezone>GMT</timezone>
-		</developer>
-		<developer>
-			<id>agoncalves</id>
-			<name>Alexandre Gonçalves</name>
-			<email>alexandre.goncalves@infosistema.com
-			</email>
-			<roles>
-				<role>Programmer</role>
-			</roles>
-			<organization>Infosistema.com</organization>
-			<timezone>GMT</timezone>
-		</developer>
-		<developer>
-			<id>olopes</id>
-			<name>Oscar Lopes</name>
-			<email>oscar.lopes@infosistema.com</email>
-			<roles>
-				<role>Programmer</role>
-			</roles>
-			<organization>Infosistema.com</organization>
-			<timezone>GMT</timezone>
-		</developer>
-		<developer>
-			<id>lcabral</id>
-			<name>Luis Cabral</name>
-			<email>luis.cabral@infosistema.com</email>
-			<roles>
-				<role>Programmer</role>
-			</roles>
-			<organization>Infosistema.com</organization>
-			<timezone>GMT</timezone>
-		</developer>
-		<developer>
-			<id>mguilher</id>
-			<name>Miguel Guilherme</name>
-			<email>miguel.guilherme@infosistema.com</email>
-			<organization>Infosistema</organization>
-			<organizationUrl>http://www.infosistema.pt</organizationUrl>
-			<timezone>GMT</timezone>
-			<roles>
-			</roles>
 		</developer>
 	</developers>
 

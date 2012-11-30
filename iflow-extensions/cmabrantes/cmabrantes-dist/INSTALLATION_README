@@ -1,6 +1,0 @@
-Instalação:
-
-Copiar iFlowHome para iFlowHome (sobrepor ficheiros na instalação base do iFlow)
-Copiar iFlow para [iFLOW_INSTALL]/tomcat/webapps (sobrepor ficheiros na instalação base do iFlow)
-Copiar cidadelaproxy para o webapps do tomcat
-

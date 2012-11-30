@@ -1,3 +1,0 @@
-PROVIDERURL=ldap://ldapdev.central.rinterna.local:389
-DCRHPROVIDERURL=ldap://ldapdev.central.rinterna.local:389
-SECURITYCREDENTIALS=api_ldap
