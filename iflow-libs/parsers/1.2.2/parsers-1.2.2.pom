@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>pt.iknow</groupId>
+	<artifactId>parsers</artifactId>
+	<name>iKnow Parsers</name>
+	<version>1.2.2</version>
+	<dependencies>
+		<dependency>
+			<groupId>net.java.dev.javacc</groupId>
+			<artifactId>javacc</artifactId>
+			<version>4.0</version>
+		</dependency>
+		<dependency>
+			<groupId>pt.iknow</groupId>
+			<artifactId>iutils</artifactId>
+			<version>1.5.5</version>
+		</dependency>
+	</dependencies>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>mojo.codehaus.org</id>
+          <name>Maven Plugin Snapshots</name>
+          <url>http://repository.codehaus.org/org/codehaus/mojo</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+        </pluginRepository>
+      </pluginRepositories>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>javacc-maven-plugin</artifactId>
+				<version>2.2</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>javacc</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+				  <!-- Uncomment if you are building in windows -->
+				  <!--
+				  <sourceDirectory>src\main\javacc</sourceDirectory>
+				  <outputDirectory>target\generated-sources\javacc</outputDirectory>
+				  <timestampDirectory>target\generated-sources\javacc-timestamp</timestampDirectory>
+				  -->
+				  <isStatic>false</isStatic>
+				</configuration>
+			</plugin>
+      <plugin>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+		</plugins>
+	</build>
+	<distributionManagement>
+	  <repository>
+	    <id>eddie</id>
+	    <name>Local Repository</name>
+	    <url>scp://eddie.iknow.pt/var/www/html/maven2</url>
+	  </repository>
+	  <snapshotRepository>
+	    <id>eddie</id>
+	    <name>Local Repository</name>
+	    <url>scp://eddie.iknow.pt/var/www/html/maven2</url>
+	  </snapshotRepository>
+	</distributionManagement>
+	<!-- <properties>
+	<base.dir>D:\Applics\Jcompiler\Sources\Parsers</base.dir>
+	</properties> -->
+</project>
+

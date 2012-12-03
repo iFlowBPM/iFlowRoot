@@ -1,0 +1,36 @@
+Library handling in Infosistema iFlow
+
+Infosistema iFlow uses third party libraries listed in file THIRD_PARTY_LIBS.txt as well as some of its own libraries listed in INFOSISTEMA_LIBS.txt
+
+iFlow libraries are handled by Maven. To develop iFlow code you must install maven >= 2.0.10. See http://maven.apache.org/
+
+Some libraries are not hosted in maven repositories so you must handle then manually when you create the development environment. Those are:
+- Infosistema own libraries http://sourceforge.net/projects/infosistemaflow/
+- Kaptcha http://freshmeat.net/projects/lipstiklf
+- LipstikLF http://freshmeat.net/projects/lipstiklf
+- Image4J http://image4j.sourceforge.net/
+- ActiveSms http://activesms.rubyforge.org/
+- Launch4j http://launch4j.sourceforge.net/
+- xstream  http://xstream.codehaus.org/
+
+All these libraries must be obtained from the listed URLs and stored locally on your computer. Be sure to get .jar files for the right version, as listed. Having done that, for each one you must make it available for use with maven.
+
+You have two options
+
+Option 1. Create your own maven shared repository
+You may want do this if several people are working with the software so that the repository is set up only once.
+see http://maven.apache.org/
+
+Option 2. Install locally in your working environment (easier)
+
+For each library file (.jar) execute in the command line:
+
+linux: <path to maven home>/bin/mvn mvn install:install-file -DgroupId=<groupId> -DartifactId=<artifactId> -Dversion=<version> -Dpackaging=jar -Dfile=/path/to/file
+windows: <path to maven home>\bin\mvn mvn install:install-file -DgroupId=<groupId> -DartifactId=<artifactId> -Dversion=<version> -Dpackaging=jar -Dfile=\path\to\file
+
+<artifactId> is the library id as listed in third party libs file
+<groupId> is the group id as listed in third party libs file
+<version> is the library version which should be the one listed in third party libs file
+
+With the libraries installed you are set up and may develop Infosistema iFlow without needing to worry about library handling.
+
