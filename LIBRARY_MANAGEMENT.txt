@@ -6,7 +6,7 @@ iFlow libraries are handled by Maven. To develop iFlow code you must install mav
 
 Some libraries are not hosted in maven repositories so you must handle then manually when you create the development environment. Those are:
 - Infosistema own libraries http://sourceforge.net/projects/infosistemaflow/
-- Kaptcha http://freshmeat.net/projects/lipstiklf
+- Kaptcha http://freecode.com/projects/kaptcha
 - LipstikLF http://freshmeat.net/projects/lipstiklf
 - Image4J http://image4j.sourceforge.net/
 - ActiveSms http://activesms.rubyforge.org/
