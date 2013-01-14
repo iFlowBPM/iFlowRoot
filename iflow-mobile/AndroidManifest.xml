@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="android.test"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk android:minSdkVersion="11"
+    	android:targetSdkVersion="15"/>
+
+    <application
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:hardwareAccelerated="true" >
+        <activity
+            android:name=".TesteActivity"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MyLogin"
+            android:icon="@drawable/checkauthentication"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.test.MYLOGIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MyTasks"
+            android:icon="@drawable/home_ic"
+            android:label="Home"
+            android:theme="@style/Theme.MyApp">
+            <intent-filter>
+                <action android:name="android.test.MYTASKS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".NewTask"
+            android:icon="@drawable/home_ic2"
+            android:theme="@style/Theme.MyApp2">
+            <intent-filter>
+                <action android:name="android.test.NEWTASK" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MyMessages"
+            android:icon="@drawable/home_ic2"
+            android:theme="@style/Theme.MyApp2">
+            <intent-filter>
+                <action android:name="android.test.MYMESSAGES" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".NewForm"
+            android:icon="@drawable/home_ic2"
+            android:label="@string/new_hello_world"
+            android:theme="@style/Theme.MyApp2">
+            <intent-filter>
+                <action android:name="android.test.NEWFORM" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE operations PUBLIC "-//IFLOW//DTD Operations XML" "operations.dtd">
+<operations>
+	<operation code="add" labelkey="AlteraAtributosDataProcessing.add.label">
+		<field type="expression" name="op1"    labelkey="AlteraAtributosDataProcessing.label_op1" />
+		<field type="expression" name="op2"    labelkey="AlteraAtributosDataProcessing.label_op2" />
+		<field type="catalog"    name="result" labelkey="AlteraAtributosDataProcessing.label_result" />
+	</operation>
+	<operation code="sub" labelkey="AlteraAtributosDataProcessing.sub.label">
+		<field type="expression" name="op1"    labelkey="AlteraAtributosDataProcessing.label_op1" />
+		<field type="expression" name="op2"    labelkey="AlteraAtributosDataProcessing.label_op2" />
+		<field type="catalog"    name="result" labelkey="AlteraAtributosDataProcessing.label_result" />
+	</operation>
+	<operation code="mul" labelkey="AlteraAtributosDataProcessing.mul.label">
+		<field type="expression" name="op1"    labelkey="AlteraAtributosDataProcessing.label_op1" />
+		<field type="expression" name="op2"    labelkey="AlteraAtributosDataProcessing.label_op2" />
+		<field type="catalog"    name="result" labelkey="AlteraAtributosDataProcessing.label_result" />
+	</operation>
+	<operation code="div" labelkey="AlteraAtributosDataProcessing.div.label">
+		<field type="expression" name="op1"    labelkey="AlteraAtributosDataProcessing.label_op1" />
+		<field type="expression" name="op2"    labelkey="AlteraAtributosDataProcessing.label_op2" />
+		<field type="catalog"    name="result" labelkey="AlteraAtributosDataProcessing.label_result" />
+	</operation>
+	<operation code="trim" labelkey="AlteraAtributosDataProcessing.trim.label">
+		<field type="array"      name="result" labelkey="AlteraAtributosDataProcessing.label_array" />
+	</operation>
+	<operation code="init" labelkey="AlteraAtributosDataProcessing.init.label">
+		<field type="array"      name="result" labelkey="AlteraAtributosDataProcessing.label_array" />
+		<field type="expression" name="length" labelkey="AlteraAtributosDataProcessing.label_size" />
+		<field type="expression" name="value" labelkey="AlteraAtributosDataProcessing.label_value" />
+	</operation>
+</operations>

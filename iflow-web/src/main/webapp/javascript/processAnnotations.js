@@ -171,9 +171,12 @@ function saveProcessAnnotations(saveHistory){
   if (saveHistory) {
     var id = 0;
     var chk = document.getElementById('checkLabel_'+id);
-    while (chk != null) {
-      managerLabels(id, false);
-      chk = document.getElementById('checkLabel_'+ (++id));
+    while (id <= 20) {
+      if (chk != null) {
+        managerLabels(id, false);
+        chk = document.getElementById('checkLabel_'+ (id));
+      }
+      id++;
     }
   }
   params += addLabels;
@@ -217,13 +220,15 @@ function saveForwardToProcessAnnotations(saveHistory){
       //LABELS
       var forwardToSelectedLabels = '&addLabels=';
       var forwardToNotSelectedLabels = '&removeLabels=';
-      var id = 1;
+      var id = 0;
       var chk = innerDoc.getElementById('checkLabel_'+id);
-      while (chk != null) {
-        if (chk.checked == true){
-          forwardToSelectedLabels += id + '§§§';
-        } else {
-          forwardToNotSelectedLabels += id + '§§§';
+      while (id <= 20) {
+        if (chk != null) {
+          if (chk.checked == true){
+            forwardToSelectedLabels += id + '§§§';
+          } else {
+            forwardToNotSelectedLabels += id + '§§§';
+          }
         }
         id +=1;
         chk = innerDoc.getElementById('checkLabel_'+id);

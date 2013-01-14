@@ -1,0 +1,11 @@
+#form {
+	border: 1px solid #e9e9e9;
+	margin-right: 208px;
+}
+
+#toolbox {
+	position:absolute;
+	width: 200px;
+	right:8px;
+	top:84px;
+}

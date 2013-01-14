@@ -1,26 +1,3 @@
-/*****************************************************************************************
-    Infosistema iFlow - workflow and BPM platform
-    Copyright(C) 2002-2012 Infosistema, S.A.
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-    www.infosistema.com
-    iflow@infosistema.com
-    Av. Jose Gomes Ferreira, 11 3rd floor, s.34
-    Miraflores
-    1495-139 Alges Portugal
-****************************************************************************************/
 /*
  * <p>Title: UniFlowRemote.java</p> <p>Description: </p> <p>Copyright:
  * Copyright (c) Sep 2, 2005</p> <p>Company: iKnow</p> @author Pedro Monteiro
@@ -84,11 +61,12 @@ public class IFlowRemote {
   /**
    * Method to be called (as an Axis WebService) to list owner flows
    * 
-   * @param user
-   * @param password
+   * @param user    User
+   * @param password    User password
+   * @return    List of the flows owned by the user. 
    * @throws Exception
    */
-  public FlowDataConvertSet listFlows (String user, String password) throws Exception {
+  public FlowDataConvertSet listFlows(String user, String password) throws Exception {
 	  FlowDataConvertSet fdcs = new FlowDataConvertSet();
 	  UserInfoInterface ui = BeanFactory.getUserInfoFactory().newUserInfo(user,password);
 	  if (!ui.isLogged()) {
@@ -137,16 +115,17 @@ public class IFlowRemote {
   }
   
   /**
-   * Method to be called (as an Axis WebService) to initiate a flow
+   * Retrieves the design of a form in XML format
    * 
-   * @param user
-   * @param password
-   * @param flowid
-   * @param pid
-   * @param subpid
+   * @param user    User
+   * @param password    User password
+   * @param flowid    Id of the flow
+   * @param pid    Process id
+   * @param subpid    Subprocess id
+   * @return    The design data of a Form in XML format     
    * @throws Exception
-   */ 
-  public String generateXmlForm (String user, String password, int flowid, int pid, int subpid) throws Exception {
+   */
+  public String generateXmlForm(String user, String password, int flowid, int pid, int subpid) throws Exception {
 	  UserInfoInterface ui = BeanFactory.getUserInfoFactory().newUserInfo(user,password);
 	  Flow f = BeanFactory.getFlowBean();
 	  FlowType flowType = BeanFactory.getFlowBean().getFlowType(ui, flowid);//Op
@@ -200,8 +179,6 @@ public class IFlowRemote {
 		      hmHidden.put(Const.FLOWEXECTYPE, flowExecType);
 		      hmHidden.put("_serv_field_", "-1");
 		      hmHidden.put(Const.sMID_ATTRIBUTE, currMid);
-		      /*ServletUtils response = new ServletUtils();
-		      sXml = BlockFormulario.generateForm(bf, ui, pd, hmHidden, true, FormService.NONE, -1, response, true);*/
 		      sXml = BlockFormulario.generateForm(bf, ui, pd, hmHidden, true, FormService.EXPORT, -1, null, true);
 		      Logger.warning(user, this, "generateXmlForm", "Form XML obtained");
 		      
@@ -264,14 +241,11 @@ public class IFlowRemote {
 	  return sXml;
   }
   
-  private String generateXmlBlock (List<String> messages) {
+  private String generateXmlBlock(List<String> messages) {
 	  StringBuffer sXml = new StringBuffer();
 	  Iterator<String> it = messages.iterator();
 	  sXml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-	  //sXml.append("<?xml-stylesheet href=\"\" type=\"text/xsl\"?>");
 	  sXml.append("<form>");
-      //sXml.append("<name>").append(BlockFormulario.sFORM_NAME).append("</name>");//AG//must be?
-      //sXml.append("<action>").append("form.jsp").append("</action>");//BlockFormulario.sJSP_FORM //AG//must be?
       sXml.append("<blockdivision><columndivision>");
 	  while (it.hasNext()) {
 		  String message = it.next();
@@ -288,11 +262,16 @@ public class IFlowRemote {
   }
   
   /**
-   * Method to be called (as an Axis WebService) to initiate a flow
+   * This method is used to call the the method startFlow from an iFlow block. 
+   * Since iflow blocks only uses simple data types, this method converts String Arrays to a DataElementSet and calls the starFlow method with that data.
    * 
-   * @param user
-   * @param password
-   * @param flowid
+   * @param user    User
+   * @param password    User password
+   * @param flowid  Id of the flow to be started
+   * @param names   List of the names of the variables to be initialized
+   * @param values  List of the values to assign to the variables
+   * @param types   List of the variables types
+   * @return    a String contaning the id of the process created by the Flow
    * @throws Exception
    */
   public String startFlowFromBlock(String user, String password, int flowid, String[] names, String[] values, String[] types) throws Exception {
@@ -315,9 +294,11 @@ public class IFlowRemote {
    /**
    * Method to be called (as an Axis WebService) to initiate a flow
    * 
-   * @param user
-   * @param password
-   * @param flowid
+   * @param user    User
+   * @param password    User password
+   * @param flowid  Id of the flow to be started
+   * @param desFields   Set containing the variables names, values and types, to initialize the new process   
+   * @return    a String contaning the id of the process created by the Flow
    * @throws Exception
    */
   public String startFlow(String user, String password, int flowid, DataElementSet desFields) throws Exception {
@@ -362,6 +343,17 @@ public class IFlowRemote {
     return "" + procData.getPid();
   }
 
+  /**
+   *  Gets the state (current activity) of the process
+   * 
+   * @param user    User
+   * @param password    User password
+   * @param flowid  Id of the flow
+   * @param pid   Process id
+   * @param subpid  Subprocess id.
+   * @return    the process state, that is, the description of its current activity.
+   * @throws Exception
+   */
   public String getProcessState(String user, String password, int flowid, int pid, int subpid) throws Exception {
     String retObj = "";
 
@@ -391,6 +383,17 @@ public class IFlowRemote {
     return retObj;
   }
 
+  /**
+   * Retrieves the worklist history of a process
+   * 
+   * @param user    User
+   * @param password    User password
+   * @param flowid    Id of the flow
+   * @param pid    Process id
+   * @param subpid    Subprocess id
+   * @return     All the activities of a process
+   * @throws Exception
+   */
   public ActivitySet getProcessActivityHistory(String user, String password, int flowid, int pid, int subpid) throws Exception {
     ActivitySet retObj = null;
 
@@ -417,6 +420,14 @@ public class IFlowRemote {
     return retObj;
   }
 
+  /**
+   * Retrieves a user's current list of activites
+   * 
+   * @param user    User
+   * @param password    User password
+   * @return     All the activities opened for the user
+   * @throws Exception
+   */
   public ActivitySet getUserActivities(String user, String password) throws Exception {
     ActivitySet retObj = null;
 
@@ -454,7 +465,18 @@ public class IFlowRemote {
     return retObj;
   }
 
-  // XXX agon: ssFields, dataset, dataset types...
+  /**
+   * Retrieves process data for given process
+   * 
+   * @param user    User
+   * @param password    User password
+   * @param flowid    Id of the flow
+   * @param pid    Process id
+   * @param subpid    Subprocess id
+   * @param ssFields    List of the names of the variables to get. Must be empty to get all variables    
+   * @return     Set with the names, values and types of all the variables of the process
+   * @throws Exception
+   */
   public DataElementSet getProcessData(String user, String password, int flowid, int pid, int subpid, StringSet ssFields) throws Exception {
     DataElementSet retObj = null;
 
@@ -514,6 +536,22 @@ public class IFlowRemote {
     return retObj;
   }
 
+  /**
+   *  This method is used to call the the method setProcessData from an iFlow block.
+   *  Since iflow blocks only uses simple data types, this method converts String Arrays to a DataElementSet 
+   *  and calls the setProcessData method with that data. 
+   * 
+   * @param user    User
+   * @param password    User password
+   * @param flowid    Id of the flow
+   * @param pid    Process id
+   * @param subpid    Subprocess id
+   * @param names   List of the names of the variables to be set
+   * @param values  List of the values to assign to the variables
+   * @param types   List of the variables types
+   * @return     "OK" if executed with success
+   * @throws Exception
+   */
   public String setProcessDataFromBlock(String user, String password, int flowid, int pid, int subpid, String[] names, String[] values, String[] types) throws Exception {
     DataElementSet desFields = null;
 
@@ -530,6 +568,18 @@ public class IFlowRemote {
     return setProcessData(user, password, flowid, pid, subpid, desFields);
   }
 
+  /**
+   * Sets the values of the process variables
+   * 
+   * @param user    User
+   * @param password    User password
+   * @param flowid    Id of the flow
+   * @param pid    Process id
+   * @param subpid    Subprocess id
+   * @param desFields   Set containing the variables names, values and types, to be set the in the process    
+   * @return     "OK" if executed with success
+   * @throws Exception
+   */
   public String setProcessData(String user, String password, int flowid, int pid, int subpid, DataElementSet desFields) throws Exception {
     UserInfoInterface ui = BeanFactory.getUserInfoFactory().newUserInfo(user,password);
     if (!ui.isLogged()) {

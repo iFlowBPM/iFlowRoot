@@ -1,0 +1,28 @@
+Manifest-Version: 1.0
+Built-By: pussman
+Build-Jdk: 1.6.0_35
+Class-Path: dms-connector-0.0.7-R20100908.jar commons-lang-2.4.jar ifl
+ ow-api-4.2.0-R20120423.jar xalan-2.7.1.jar serializer-2.7.1.jar j2ee-
+ 1.4.jar google-collect-snapshot-20080530.jar bsh-2.0b4.jar swsms-2.8.
+ 2.jar bcprov-jdk15-140.jar mail-1.4.1.jar jai_core-1.1.2_01.jar jai_c
+ odec-1.1.2_01.jar iutils-2.0.6.jar jcvs-1.2.jar mindbright-1.2.jar ve
+ locity-1.5.jar commons-collections-3.2.1.jar oro-2.0.8.jar commons-fi
+ leupload-1.2.2-20091125.jar axis-ant-1.4.jar axis-schema-1.3.jar comm
+ ons-pool-1.3.jar jcommon-1.0.15.jar jfreechart-1.0.12.jar bcprov-jdk1
+ 4-142.jar activation-1.1.jar tmnSmsExpress-20120522.jar swingx-1.0.ja
+ r one-jar-0.96.jar castor-0.9.6.jar commons-discovery-0.4.jar commons
+ -codec-1.2.jar commons-logging-1.0.4.jar axis-1.4.jar axis-jaxrpc-1.4
+ .jar axis-saaj-1.4.jar axis-wsdl4j-1.5.1.jar xercesImpl-2.9.1.jar xml
+ -apis-1.3.04.jar commons-httpclient-3.0.jar commons-io-1.4.jar log4j-
+ 1.2.9.jar jetty-6.1.9.jar jetty-util-6.1.9.jar servlet-api-2.5-6.1.9.
+ jar javassist-3.7.ga.jar mozilla-interfaces-1.9.0.3.jar mozilla-glue-
+ 1.9.0.3.jar looks-2.2.1.jar jsyntaxpane-0.9.5.jar collections-generic
+ -4.01.jar json-0.10.jar asm-2.2.3.jar asm-attrs-2.2.3.jar asm-commons
+ -2.2.3.jar asm-tree-2.2.3.jar
+Implementation-Title: iFlow Editor
+Implementation-Version: 4.2.0-R20120423
+Implementation-Vendor-Id: pt.iknow.iflow
+Implementation-Vendor: Infosistema, S.A.
+Main-Class: pt.iknow.floweditor.FlowEditor
+Created-By: Maven Integration for Eclipse
+

@@ -8,6 +8,8 @@ Version 4.2.0
 	Bug fixes:
    		 - 1296 - Erro ao abrir um ficheiro a partir do email
    		 - 1305 - Erro na configuração do DS gera log infinito
+         - 1369 - Erro na ordenação de tarefas com etiquetas.
+         - 1368 - Erro nos Gráficos com caracteres especiais
 	Known Issues:
 	
 [R20120927]

@@ -1,26 +1,3 @@
-/*****************************************************************************************
-    Infosistema iFlow - workflow and BPM platform
-    Copyright(C) 2002-2012 Infosistema, S.A.
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-    www.infosistema.com
-    iflow@infosistema.com
-    Av. Jose Gomes Ferreira, 11 3rd floor, s.34
-    Miraflores
-    1495-139 Alges Portugal
-****************************************************************************************/
 package pt.iflow.core;
 
 import java.io.BufferedInputStream;
@@ -56,6 +33,7 @@ import pt.iflow.api.core.ResourceModifiedListener;
 import pt.iflow.api.notification.EmailManager;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
+import pt.iflow.api.utils.Setup;
 import pt.iflow.api.utils.UserInfoInterface;
 import pt.iflow.api.utils.XslTransformerFactory;
 
@@ -93,7 +71,7 @@ public class RepositoryBean implements Repository {
   private static final String sLOGO_TEMPLATE = "{0}{2}/logo.png";
   private static final String sCLASS_DIR_TEMPLATE = "{0}{2}/Classes/{1}";
   private static final String sCHARTS_DIR_TEMPLATE = "{0}{2}/Charts/{1}";
-  private static final String sLIBRARIES_DIR_TEMPLATE = "{0}{2}/Libraries/{1}";
+  private static String sLIBRARIES_DIR_TEMPLATE;
   private static final String sICONS_DIR_TEMPLATE = "{0}{2}/Icons/{1}";
   private static final String sANNOTATION_ICONS_DIR_TEMPLATE = "{0}{2}/Icons/annotations/{1}";
   private static final String sTHEMES_DIR_TEMPLATE = "{0}{2}/Themes/{1}";
@@ -110,6 +88,10 @@ public class RepositoryBean implements Repository {
   }
 
   protected RepositoryBean() {
+    if (StringUtils.equals(Const.EDITOR_MODE_BPMN, Setup.getProperty(Const.EDITOR_MODE)))
+      sLIBRARIES_DIR_TEMPLATE = "{0}{2}/LibrariesBPMN/{1}";
+    else
+      sLIBRARIES_DIR_TEMPLATE = "{0}{2}/Libraries/{1}";
   }
 
 

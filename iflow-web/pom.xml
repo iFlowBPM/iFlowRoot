@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>pt.iknow.iflow</groupId>
 		<artifactId>iflow</artifactId>
-		<version>4</version>
+		<version>4.2.0</version>
 	</parent>
 
 	<name>iFlow Web</name>
@@ -276,12 +276,24 @@
 	      <groupId>commons-beanutils</groupId>
     	  <artifactId>commons-beanutils</artifactId>
 	    </dependency>
+        <dependency>
+          <groupId>pt.iflow.vfs</groupId>
+          <artifactId>virtual-entity</artifactId>
+          <version>0.0.1</version>
+        </dependency>
 
 		<!-- TESTS -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>pt.iknow.iflow</groupId>
+			<artifactId>vfs-connector</artifactId>
+			<version>4.2.0</version>
+			<type>jar</type>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 
