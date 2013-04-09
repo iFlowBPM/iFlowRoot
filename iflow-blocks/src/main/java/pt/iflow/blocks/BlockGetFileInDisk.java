@@ -1,8 +1,11 @@
 package pt.iflow.blocks;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 
 import pt.iflow.api.blocks.Block;
 import pt.iflow.api.blocks.Port;
@@ -31,10 +34,11 @@ import pt.iknow.utils.StringUtilities;
  */
 
 public class BlockGetFileInDisk extends Block {
-  public Port portIn, portSuccess, portError;
+  public Port portIn, portSuccess, portEmpty, portError;
 
   private static final String DOCUMENT = "Document";
   private static final String PATH = "Path";
+  private static final String DELETE = "Delete";
 
   public BlockGetFileInDisk(int anFlowId, int id, int subflowblockid, String filename) {
     super(anFlowId, id, subflowblockid, filename);
@@ -54,7 +58,8 @@ public class BlockGetFileInDisk extends Block {
   public Port[] getOutPorts(UserInfoInterface userInfo) {
     Port[] retObj = new Port[2];
     retObj[0] = portSuccess;
-    retObj[1] = portError;
+    retObj[1] = portEmpty;
+    retObj[2] = portError;
     return retObj;
   }
 
@@ -95,7 +100,7 @@ public class BlockGetFileInDisk extends Block {
 
     String sDocumentVar = this.getAttribute(DOCUMENT);
     String sPathVar = this.getAttribute(PATH);
-    boolean sAddedVar = false;
+    String sDeleteVar = this.getAttribute(DELETE);
 
     if (StringUtilities.isEmpty(sDocumentVar)) {
       Logger.error(login, this, "after", procData.getSignature() + "empty value for Document attribute");
@@ -107,9 +112,13 @@ public class BlockGetFileInDisk extends Block {
       try {
         ProcessListVariable docsVar = procData.getList(sDocumentVar);
         String sPath = procData.transform(userInfo, sPathVar);
+        String sDelete = procData.transform(userInfo, sDeleteVar);
+
         File directory = new File(sPath);
         if (directory.isDirectory()) {
           File[] fileListing = directory.listFiles();
+          if (fileListing.length == 0)
+            throw new FileNotFoundException();
 
           for (File readFile : fileListing) {
             String fileName = readFile.getName();
@@ -118,6 +127,10 @@ public class BlockGetFileInDisk extends Block {
 
             Logger.info(userInfo.getUtilizador(), this, "processForm", "file (" + doc.getFileName() + ") for var " + sDocumentVar
                 + " added.");
+            if (StringUtils.equalsIgnoreCase(sDelete, "" + Boolean.TRUE)) {
+              readFile.delete();
+              Logger.info(userInfo.getUtilizador(), this, "processForm", "file (" + directory.getPath() + ") deleted ");
+            }
 
             // now update process
             docsVar.parseAndAddNewItem(String.valueOf(doc.getDocId()));
@@ -126,15 +139,24 @@ public class BlockGetFileInDisk extends Block {
           String fileName = directory.getName();
           Document doc = new DocumentData(fileName, FileUtils.readFileToByteArray(directory));
           doc = docBean.addDocument(userInfo, procData, doc);
-
           Logger.info(userInfo.getUtilizador(), this, "processForm", "file (" + doc.getFileName() + ") for var " + sDocumentVar
               + " added.");
+          if (StringUtils.equalsIgnoreCase(sDelete, "" + Boolean.TRUE)) {
+            directory.delete();
+            Logger.info(userInfo.getUtilizador(), this, "processForm", "file (" + directory.getPath() + ") deleted ");
+          }
 
           // now update process
           docsVar.parseAndAddNewItem(String.valueOf(doc.getDocId()));
         }
         outPort = portSuccess;
 
+      } catch (FileNotFoundException e) {
+        Logger.error(login, this, "after", procData.getSignature() + "file not found: " + e.getMessage(), e);
+        outPort = portEmpty;
+      } catch (IOException e) {
+        Logger.error(login, this, "after", procData.getSignature() + "IO exception: " + e.getMessage(), e);
+        outPort = portEmpty;
       } catch (Exception e) {
         Logger.error(login, this, "after", procData.getSignature() + "caught exception: " + e.getMessage(), e);
         outPort = portError;

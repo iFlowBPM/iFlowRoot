@@ -292,7 +292,6 @@
 			<groupId>pt.iknow.iflow</groupId>
 			<artifactId>vfs-connector</artifactId>
 			<version>4.2.0</version>
-			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>

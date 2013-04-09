@@ -6,7 +6,6 @@
 
 package pt.iflow.api.userdata;
 
-import pt.iflow.api.userdata.IMappedData;
 
 
 /**
@@ -32,6 +31,11 @@ public interface UserData extends IMappedData {
   public static final String MOBILE_NUMBER = "MOBILE_NUMBER";
   public static final String ORGADM = "ORGADM";
   public static final String PASSWORD_RESET = "PASSWORD_RESET";
+  public static final String ORGADM_USERS = "ORGADM_USERS";
+  public static final String ORGADM_FLOWS = "ORGADM_FLOWS";
+  public static final String ORGADM_PROCESSES = "ORGADM_PROCESSES";
+  public static final String ORGADM_RESOURCES = "ORGADM_RESOURCES";
+  public static final String ORGADM_ORG = "ORGADM_ORG";
   
   public abstract String getEmail();
   public abstract String getUsername();
@@ -41,4 +45,14 @@ public interface UserData extends IMappedData {
   public abstract String getUnitId();
   public abstract String getMobileNumber();
   public abstract String getOrgAdm();
+
+  public abstract String getOrgAdmUsers();
+
+  public abstract String getOrgAdmFlows();
+
+  public abstract String getOrgAdmProcesses();
+
+  public abstract String getOrgAdmResources();
+
+  public abstract String getOrgAdmOrg();
 }

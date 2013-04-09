@@ -35,6 +35,16 @@ public interface UserInfoInterface {
 	public abstract boolean isLogged();
 
 	public abstract boolean isOrgAdmin();
+
+  public boolean isOrgAdminUsers();
+
+  public boolean isOrgAdminFlows();
+
+  public boolean isOrgAdminProcesses();
+
+  public boolean isOrgAdminResources();
+
+  public boolean isOrgAdminOrg();
 	
 	public abstract boolean isSysAdmin();
 	

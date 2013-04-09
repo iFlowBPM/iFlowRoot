@@ -11,6 +11,8 @@ public class DesenhoScrollPane extends JScrollPane {
   private static final long serialVersionUID = 2956791840433440274L;
   
   private Desenho desenho;
+  private R2RModule r2rFlow;
+  private int r2rType;
 
   public DesenhoScrollPane(Janela j, String flowId, String flowName) {
     super();
@@ -50,5 +52,21 @@ public class DesenhoScrollPane extends JScrollPane {
   
   public String getName() {
     return desenho.getName();
+  }
+
+  public void setR2rFlow(R2RModule r2rFlow) {
+    this.r2rFlow = r2rFlow;
+  }
+
+  public R2RModule getR2rFlow() {
+    return r2rFlow;
+  }
+
+  public void setR2rType(int r2rType) {
+    this.r2rType = r2rType;
+  }
+
+  public int getR2rType() {
+    return r2rType;
   }
 }

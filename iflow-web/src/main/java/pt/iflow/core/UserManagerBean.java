@@ -513,7 +513,11 @@ public class UserManagerBean implements UserManager {
    * @return - true if user was modified successfully
    */
 
-  public IErrorHandler modifyUserAsAdmin(UserInfoInterface userInfo, String userId, String gender, String unit, String emailAddress, String firstName, String lastName, String phoneNumber, String faxNumber, String mobileNumber, String companyPhone, String orgAdm, String newPassword, String[] listExtraProperties, String[] listExtraValues) {
+  public IErrorHandler modifyUserAsAdmin(UserInfoInterface userInfo, String userId, String gender, String unit,
+      String emailAddress, String firstName, String lastName, String phoneNumber, String faxNumber, String mobileNumber,
+      String companyPhone, String orgAdm, String orgAdmUsers, String orgAdmFlows, String orgAdmProcesses, String orgAdmResources,
+      String orgAdmOrg, String newPassword, String[] listExtraProperties, String[] listExtraValues) {
+
     IErrorHandler result = new ErrorHandler(ErrorCode.FAILURE);
     // check self data
     if (!(userInfo.isOrgAdmin() || userInfo.isSysAdmin())) {
@@ -617,7 +621,9 @@ public class UserManagerBean implements UserManager {
       }
 
       int pos = 0;
-      pst = db.prepareStatement("update users set GENDER=?,EMAIL_ADDRESS=?,FIRST_NAME=?,LAST_NAME=?,PHONE_NUMBER=?,FAX_NUMBER=?,MOBILE_NUMBER=?,COMPANY_PHONE=?,ORGADM=?"+setUnitId+setExtras+setPassword+" where USERID=?");
+      pst = db
+          .prepareStatement("update users set GENDER=?,EMAIL_ADDRESS=?,FIRST_NAME=?,LAST_NAME=?,PHONE_NUMBER=?,FAX_NUMBER=?,MOBILE_NUMBER=?,COMPANY_PHONE=?,ORGADM=?,ORGADM_USERS=?,ORGADM_FLOWS=?,ORGADM_PROCESSES=?,ORGADM_RESOURCES=?,ORGADM_ORG=?"
+              + setUnitId + setExtras + setPassword + " where USERID=?");
       pst.setString(++pos, gender);
       pst.setString(++pos, emailAddress);
       pst.setString(++pos, firstName);
@@ -627,6 +633,11 @@ public class UserManagerBean implements UserManager {
       pst.setString(++pos, mobileNumber);
       pst.setString(++pos, companyPhone);
       pst.setInt(++pos, iOrgAdm);
+      pst.setInt(++pos, StringUtils.equals(orgAdmUsers, "true") ? 1 : 0);
+      pst.setInt(++pos, StringUtils.equals(orgAdmFlows, "true") ? 1 : 0);
+      pst.setInt(++pos, StringUtils.equals(orgAdmProcesses, "true") ? 1 : 0);
+      pst.setInt(++pos, StringUtils.equals(orgAdmResources, "true") ? 1 : 0);
+      pst.setInt(++pos, StringUtils.equals(orgAdmOrg, "true") ? 1 : 0);
       if(StringUtils.isNotEmpty(unit)) pst.setString(++pos, unit);
       if (listExtraValues!=null && listExtraValues.length>0) {
         for (int i=0; i<listExtraValues.length; i++){

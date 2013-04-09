@@ -227,6 +227,12 @@ public class Trata_Menus {
     // menubar.setHelpMenu(menu);
     menubar.add(menu);
 
+    /** ***menu ready2run *** *** *****/
+    menu = new JMenu(Messages.getString("Trata_Menus.ready2run")); //$NON-NLS-1$
+    menu.add(Faz_MenuItem_Opcoes2(Mesg.s2rInstall, janela));
+    // menubar.setHelpMenu(menu);
+    menubar.add(menu);
+
     /* menu about */
     // menu=new JMenu(Mesg.About);
     menu = new JMenu(Messages.getString("Trata_Menus.help")); //$NON-NLS-1$

@@ -1,10 +1,15 @@
 -------------------------------------------------------------------------------
                            iFlow Release Notes                                
 -------------------------------------------------------------------------------
-Version 4.2.0 - Ractual
+Version 4.2.1 - R20130313
+	New Features:
+		- Utilização de um colorpic para permitir ao utilizador escolher as cores das categorias
+		
+Version 4.2.0 - R20130207
 	New Features:
          - 1224 - Remover Categoria do processo
 	Bug fixes:
+	     - 1401 - Erro no campo advancedquery dos blocos SQL quando existia uma plica
 	Known Issues:
 
 Version 4.2.0 - R20120618

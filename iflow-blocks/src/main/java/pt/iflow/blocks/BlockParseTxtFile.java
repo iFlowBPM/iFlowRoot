@@ -1,10 +1,14 @@
 package pt.iflow.blocks;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.regex.Pattern;
+
+import org.apache.commons.lang.StringUtils;
 
 import pt.iflow.api.blocks.Block;
 import pt.iflow.api.blocks.Port;
@@ -30,7 +34,7 @@ import pt.iknow.utils.StringUtilities;
  */
 
 public class BlockParseTxtFile extends Block {
-  public Port portIn, portSuccess, portError;
+  public Port portIn, portSuccess, portEmpty, portError;
 
   private static final String PATH = "Path";
   private static final String DOCUMENT = "Document";
@@ -57,7 +61,8 @@ public class BlockParseTxtFile extends Block {
   public Port[] getOutPorts(UserInfoInterface userInfo) {
     Port[] retObj = new Port[2];
     retObj[0] = portSuccess;
-    retObj[1] = portError;
+    retObj[1] = portEmpty;
+    retObj[2] = portError;
     return retObj;
   }
 
@@ -116,7 +121,13 @@ public class BlockParseTxtFile extends Block {
         Map<String, String> inputArgs = new HashMap<String, String>();
         ParseTxtUtil ptu = new ParseTxtUtil();
         ProcessListVariable docsVar = procData.getList(sDocumentVar);
-        Document doc = docBean.getDocument(userInfo, procData, ((Long) docsVar.getItem(0).getValue()).intValue());
+        Integer docId;
+        try {
+          docId = (Integer) docsVar.getItem(0).getValue();
+        } catch (Exception e) {
+          docId = ((Long) docsVar.getItem(0).getValue()).intValue();
+        }
+        Document doc = docBean.getDocument(userInfo, procData, docId);
 
         String[] listNames = procData.transform(userInfo, sVariablesVar).split(",");
 
@@ -124,7 +135,17 @@ public class BlockParseTxtFile extends Block {
         inputArgs.put(ParseTxtUtil.PARAM_FIXED_INIT_FIELD, procData.transform(userInfo, sStartVar));
         inputArgs.put(ParseTxtUtil.PARAM_FIXED_END_FIELD, procData.transform(userInfo, sEndVar));
         inputArgs.put(ParseTxtUtil.PARAM_NUMBER_COLLUMNS, "" + listNames.length);
-        inputArgs.put(ParseTxtUtil.PARAM_DOCUMENT, new String(doc.getContent()));
+        String tmp = new String(doc.getContent(), "ISO-8859-1");
+        char[] badChars = { '\u0080', '\u0081', '\u0082', '\u0083', '\u0084', '\u0085', '\u0086', '\u0087', '\u0088', '\u0089',
+            '\u008A', '\u008B', '\u008C', '\u008D', '\u008E', '\u008F', '\u0090', '\u0091', '\u0092', '\u0093', '\u0094',
+            '\u0095', '\u0096', '\u0097', '\u0098', '\u0099', '\u009A', '\u009B', '\u009C', '\u009D', '\u009E', '\u009F' };
+
+        for (int i = 0; i < badChars.length; i++) {
+          tmp = tmp.replace(badChars[i], ' ');
+        }
+        inputArgs.put(ParseTxtUtil.PARAM_DOCUMENT, tmp);
+        // inputArgs.put(ParseTxtUtil.PARAM_DOCUMENT, (new String(doc.getContent(), "ISO-8859-1")).replace('�', ' '));
+
         ArrayList<ArrayList<String>> result = (ArrayList<ArrayList<String>>) ptu.execute(inputArgs);
 
         for (int i = 0; i < listNames.length; i++) {
@@ -136,6 +157,9 @@ public class BlockParseTxtFile extends Block {
 
         outPort = portSuccess;
 
+      } catch (IOException e) {
+        Logger.error(login, this, "after", procData.getSignature() + "caught exception: " + e.getMessage(), e);
+        outPort = portEmpty;
       } catch (Exception e) {
         Logger.error(login, this, "after", procData.getSignature() + "caught exception: " + e.getMessage(), e);
         outPort = portError;
@@ -207,16 +231,17 @@ public class BlockParseTxtFile extends Block {
       for (int i = 0; i < n_cols; i++)
         outputList.add(new ArrayList<String>());
 
+      Pattern p = Pattern.compile(separator);
       // parsing the line
       while (scanner.hasNextLine()) {
         String line = scanner.nextLine();
-        String[] lineSplit = line.split(separator);
+        String[] lineSplit = StringUtils.splitPreserveAllTokens(line, separator);
+
+        if (lineSplit.length != n_cols)
+          throw new IOException("Wrong number of separators in line " + outputList.get(0).size());
 
         // for each field the value is stored on the fields list
         for (int i = 0; i < n_cols; i++) {
-          // first time data creation
-          // Atention: the first line cannot have less fields than the
-          // rest of the document
           if (outputList.get(i) == null)
             outputList.set(i, new ArrayList<String>());
 

@@ -943,18 +943,18 @@ public class RepositoryWebClient implements RepositoryClient {
     return getList(RepositoryWebOpCodes.LIST_PROCESS_TASK_ANNOTATION_LABELS);
   }
 
-  public String runFlow(String flowName) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  public String setFlowReady2Run(String flowname) {
-    // TODO Auto-generated method stub
-    return null;
+  public String runFlow(String flowname) {
+    String result = getString(RepositoryWebOpCodes.RUN_FLOW, flowname);
+    return result;
   }
 
   public String undeployFlow(String flowname) {
-    // TODO Auto-generated method stub
-    return null;
+    String result = getString(RepositoryWebOpCodes.UNDEPLOY_FLOW, flowname);
+    return result;
+  }
+
+  public String setFlowReady2Run(String flowname) {
+    String result = getString(RepositoryWebOpCodes.SET_R2R_FLOW, flowname);
+    return result;
   }
 }

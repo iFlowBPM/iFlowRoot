@@ -153,7 +153,7 @@ boolean notifyInvalid = !LicenseServiceFactory.getLicenseService().isLicenseOK()
     </div> 
 </div>
 <div class="lp_footer_nav">
-    <a class="lp_top_nav_link" style="color:#5D7891;" href="http://www.infosistema.pt"><if:message string="iflow.copyright"/></a>
+    <a class="lp_top_nav_link" style="color:#5D7891;" href="https://infosistema.com"><if:message string="iflow.copyright"/></a>
     <br><span class="lp_top_nav_text">iFlow Version <%= Version.VERSION %></span>
 </div>
 

@@ -1841,6 +1841,32 @@ CREATE TABLE `user_session` (
 )
 ENGINE = INNODB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS serial_code_templates;
+
+CREATE TABLE `serial_code_templates` (
+  `template` VARCHAR(50) NOT NULL,
+  `name` VARCHAR(50) NOT NULL,
+  `description` VARCHAR(500),
+  `callback` VARCHAR(50),
+  `flag` VARCHAR(50),
+  `organization` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`template`, `name`)
+)
+ENGINE = INNODB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS serial_code_templates;
+
+CREATE TABLE `serial_code_templates` (
+  `template` VARCHAR(50) NOT NULL,
+  `name` VARCHAR(50) NOT NULL,
+  `description` VARCHAR(500),
+  `callback` VARCHAR(50),
+  `flag` VARCHAR(50),
+  `organization` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`template`, `name`)
+)
+ENGINE = INNODB DEFAULT CHARSET=utf8;
+
 ALTER TABLE flow ADD COLUMN `max_block_id` INT;
 
 DROP TABLE IF EXISTS subflow_block_mapping;
@@ -1868,3 +1894,13 @@ alter table users add column employeeid varchar(50);
 alter table users add column manager varchar(50);
 alter table users add column telephonenumber varchar(50);
 alter table users add column title varchar(50);
+
+ALTER TABLE `reporting` ADD INDEX `IDX_REPORTING`(`flowid`, `pid`, `subpid`);
+
+ALTER TABLE `users`
+ ADD COLUMN `orgadm_users` INT(1) UNSIGNED NOT NULL DEFAULT 1 AFTER `title`,
+ ADD COLUMN `orgadm_flows` INT(1) UNSIGNED NOT NULL DEFAULT 1 AFTER `orgadm_users`,
+ ADD COLUMN `orgadm_processes` INT(1) UNSIGNED NOT NULL DEFAULT 1 AFTER `orgadm_flows`,
+ ADD COLUMN `orgadm_resources` INT(1) UNSIGNED NOT NULL DEFAULT 1 AFTER `orgadm_processes`,
+ ADD COLUMN `orgadm_org` INT(1) UNSIGNED NOT NULL DEFAULT 1 AFTER `orgadm_resources`
+;

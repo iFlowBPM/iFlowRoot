@@ -55,6 +55,11 @@
   String mobileNumber = "";
   String companyPhone = "";
   String orgadm = "";
+  String orgadmUsers = "";
+  String orgadmFlows = "";
+  String orgadmProcesses = "";
+  String orgadmResources = "";
+  String orgadmOrg = "";
   String password = "";
   String repeatPass = "";
 
@@ -72,6 +77,11 @@
   mobileNumber = fdFormData.getParameter("mobileNumber");
   companyPhone = fdFormData.getParameter("companyPhone");
   orgadm = fdFormData.getParameter("orgadm");
+  orgadmUsers = fdFormData.getParameter("orgadmUsers");
+  orgadmFlows = fdFormData.getParameter("orgadmFlows");
+  orgadmProcesses = fdFormData.getParameter("orgadmProcesses");
+  orgadmResources = fdFormData.getParameter("orgadmResources");
+  orgadmOrg = fdFormData.getParameter("orgadmOrg");
   password = fdFormData.getParameter("password");
   repeatPass = fdFormData.getParameter("repeatPassword");
   String[] listExtraValues = new String[listExtraProperties.length];
@@ -89,6 +99,11 @@
   if (mobileNumber == null) mobileNumber = "";
   if (companyPhone == null) companyPhone = "";
   if (orgadm == null) orgadm = "";
+  if (orgadmUsers == null) orgadmUsers = "";
+  if (orgadmFlows == null) orgadmFlows = "";
+  if (orgadmProcesses == null) orgadmProcesses = "";
+  if (orgadmResources == null) orgadmResources = "";
+  if (orgadmOrg == null) orgadmOrg = "";
   if (password == null) password = "";
   if (repeatPass == null) repeatPass = "";
   for (int i = 0; i < listExtraValues.length; i++) {
@@ -145,7 +160,7 @@
     }
     else { 
       errorHandler = manager.modifyUserAsAdmin(ui, userId, gender, unitId, emailAddress, firstName, lastName, phoneNumber,
-          faxNumber, mobileNumber, companyPhone, orgadm, password, listExtraProperties, listExtraValues);
+          faxNumber, mobileNumber, companyPhone, orgadm, orgadmUsers, orgadmFlows, orgadmProcesses, orgadmResources, orgadmOrg, password, listExtraProperties, listExtraValues);
       ErrorCode errCode = (errorHandler != null)?errorHandler.getErrorCode():null;
       
       if (UserErrorCode.SUCCESS.equals(errCode)) {
@@ -191,6 +206,11 @@
     mobileNumber = userView.getMobileNumber();
     companyPhone = userView.getCompanyPhone();
     orgadm = userView.getOrgAdm().equals("1")?"true":"false";
+    orgadmUsers = userView.getOrgAdmUsers().equals("1")?"true":"false";
+    orgadmFlows = userView.getOrgAdmFlows().equals("1")?"true":"false";
+    orgadmProcesses = userView.getOrgAdmProcesses().equals("1")?"true":"false";
+    orgadmResources = userView.getOrgAdmResources().equals("1")?"true":"false";
+    orgadmOrg = userView.getOrgAdmOrg().equals("1")?"true":"false";
     for (int i = 0; i < listExtraProperties.length; i++) {
       listExtraValues[i] = userView.get(listExtraProperties[i]);
     }
@@ -260,7 +280,19 @@
   <% } %>
   </if:formSelect>
   
-  <if:formInput name="orgadm" labelkey="userform.field.orgadm" type="checkbox" value='<%=orgadm%>' edit="<%=bEdit%>" required="false" />
+  <if:formInput name="orgadm" onchange="if ($('orgadm').checked==true) $('orgadmSubPanel').style.display=''; else $('orgadmSubPanel').style.display='none';" labelkey="userform.field.orgadm" type="checkbox" value='<%=orgadm%>' edit="<%=bEdit%>" required="false" />
+  
+    <div id="orgadmSubPanel" style="<%= "true".equals(orgadm)?"":"display : none" %>" >
+      <if:formInput name="orgadmUsers" labelkey="userform.field.orgadmusers" type="checkbox" value='<%=orgadmUsers%>' edit="<%=bEdit && userInfo.isOrgAdminUsers()%>" required="false" />
+      
+      <if:formInput name="orgadmFlows" labelkey="userform.field.orgadmflows" type="checkbox" value='<%=orgadmFlows%>' edit="<%=bEdit && userInfo.isOrgAdminFlows()%>" required="false" />
+      
+      <if:formInput name="orgadmProcesses" labelkey="userform.field.orgadmprocesses" type="checkbox" value='<%=orgadmProcesses%>' edit="<%=bEdit && userInfo.isOrgAdminProcesses()%>" required="false" />
+      
+      <if:formInput name="orgadmResources" labelkey="userform.field.orgadmresources" type="checkbox" value='<%=orgadmResources%>' edit="<%=bEdit && userInfo.isOrgAdminResources()%>" required="false" />
+      
+      <if:formInput name="orgadmOrg" labelkey="userform.field.orgadmorg" type="checkbox" value='<%=orgadmOrg%>' edit="<%=bEdit && userInfo.isOrgAdminOrg()%>" required="false" />
+  </div>
   
   <if:formInput name="emailAddress" labelkey="userform.field.emailaddress" type="text" value='<%=emailAddress%>' edit="<%=bEdit%>" required="<%= Const.bUSE_EMAIL %>" maxlength="100" />
 

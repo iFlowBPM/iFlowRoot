@@ -11,6 +11,7 @@ package pt.iknow.floweditor;
  ****************************************************/
 
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -223,7 +224,7 @@ public class Linha extends Componente {
       Graphics2D g2d = (Graphics2D)g;
       float dot[] = {2.0f};
       Stroke dottedStroke = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dot, 0.0f);
-      g2d.setStroke(dottedStroke);
+      g2d.setColor(Color.GRAY);
     }
 
     Point a = null;

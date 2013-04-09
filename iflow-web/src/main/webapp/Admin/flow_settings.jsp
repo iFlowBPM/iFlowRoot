@@ -4,6 +4,7 @@
 <%@ include file = "../inc/defs.jsp" %>
 
 <%
+UserInfoInterface ui = userInfo;
 	String title = messages.getString("flow_settings.title"); 
 String sPage = "Admin/flow_settings";
 
@@ -22,7 +23,7 @@ fda = BeanFactory.getFlowHolderBean().listFlows(userInfo);
 String deployResult = (String)request.getAttribute("deployResult");
 
 %>
-
+<%if (ui.isOrgAdminFlows()) {%>
 
 	<h1 id="title_admin"><%=title%></h1>
 
@@ -138,3 +139,4 @@ String deployResult = (String)request.getAttribute("deployResult");
 </div>
 
 <if:generateHelpBox context="flow_settings"/>
+<%} %>

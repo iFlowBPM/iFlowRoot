@@ -223,7 +223,11 @@ public class EventManager extends Thread {
     return result;
   }
 
-  private void checkEventsDB() {
+  public synchronized void checkEventsSynchronizedDB() {
+    checkEventsDB();
+  }
+
+  private synchronized void checkEventsDB() {
     Connection db = null;
     Statement st = null;
     Statement st2 = null;

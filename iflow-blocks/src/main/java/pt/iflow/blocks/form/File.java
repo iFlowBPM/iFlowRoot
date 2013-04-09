@@ -16,6 +16,7 @@ import pt.iflow.api.documents.Documents;
 import pt.iflow.api.processdata.ProcessData;
 import pt.iflow.api.processdata.ProcessListItem;
 import pt.iflow.api.processdata.ProcessListVariable;
+import pt.iflow.api.processtype.DocumentDataType;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.ServletUtils;
 import pt.iflow.api.utils.UserInfoInterface;
@@ -223,7 +224,22 @@ public class File implements FieldInterface {
     }
 
     String sVar = props.getProperty(FormProps.sVARIABLE);
-    ProcessListVariable listvar = procData.getList(sVar);
+    ProcessListVariable listvar = null;
+
+    try {
+      listvar = procData.getList(sVar);
+      if (listvar == null) {
+        listvar = new ProcessListVariable(new DocumentDataType(), "");
+        Integer docId = Integer.parseInt(procData.transform(userInfo, sVar));
+        Document doc = BeanFactory.getDocumentsBean().getDocument(userInfo, procData, docId);
+        if (StringUtils.isNotBlank(doc.getFileName()))
+          listvar.setItemValue(0, docId);
+        else
+          listvar = null;
+      }
+    } catch (Exception e) {
+      listvar = null;
+    }
 
     int filesAvailable = 0;
     if (listvar == null) {

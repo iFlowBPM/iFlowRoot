@@ -1,15 +1,15 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
  
 	<organization>
 		<name>Infosistema, S.A.</name>
-		<url>http://www.infosistema.com/</url>
+		<url>http://www.infosistema.pt/</url>
 	</organization>
 	<version>4.2.0</version>
 	<description>iFlow</description>
-	<url>http://www.iflowbpm.com</url>
+	<url>http://www.iflow.pt</url>
 	<inceptionYear>2005</inceptionYear>
 
 	<name>iFlow</name>
@@ -30,11 +30,12 @@
 		<!--
 		<module>iflow-dist</module>
 		-->
+		<module>vfs-connector</module>
 	</modules>
 
 	<properties>
-		<iflow.baseversion>4.2.0</iflow.baseversion>
-		<iflow.buildnumber>20120423</iflow.buildnumber>
+		<iflow.baseversion>4.2.1</iflow.baseversion>
+		<iflow.buildnumber>20130130</iflow.buildnumber>
 		<iflow.version>${iflow.baseversion}-R${iflow.buildnumber}</iflow.version>
 		<dms-connector.version>0.0.7-R20100908</dms-connector.version>
 		<alfresco-connector.version>0.0.7-R20100908</alfresco-connector.version>
@@ -499,7 +500,7 @@
 				<executions>
 					<execution>
 						<id>copy</id>
-						<phase>compile</phase>
+						<phase>initialize</phase>
 						<goals>
 							<goal>copy</goal>
 						</goals>
@@ -536,8 +537,8 @@
 	</reporting>
 
 	<issueManagement>
-		<system>GitHub</system>
-		<url>https://github.com/iFlowBPM/iFlowRoot/issues</url>
+		<system>Trac</system>
+		<url>http://suporte-iflow.infosistema.com/trac/iflow4</url>
 	</issueManagement>
 
 	<mailingLists>
@@ -547,10 +548,28 @@
 	</mailingLists>
 
 	<scm>
-	<url>https://github.com/iFlowBPM/iFlowRoot/</url>
+		<connection>scm:svn:http://eddie/svn/iFlowRoot/trunk</connection>
+		<developerConnection>scm:http://eddie/svn/iFlowRoot/trunk</developerConnection>
+		<url>http://eddie/svn/iFlowRoot/trunk</url>
 	</scm>
 
 	<repositories>
+		<repository>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<id>iflowInternal</id>
+			<name>Maven Repository at Eddie (internal)</name>
+			<url>http://vmsvn01.infosistema.com/maven2</url>
+		</repository>
+		<repository>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<id>iflowExternal</id>
+			<name>Maven Repository at Eddie</name>
+			<url>http://vmsvn01.infosistema.com/maven2</url>
+		</repository>
 		<repository>
       		<id>Codehaus Snapshots</id>
       		<url>http://snapshots.repository.codehaus.org/</url>
@@ -564,6 +583,19 @@
 	    </pluginRepository>
 	</pluginRepositories>
 
+	<distributionManagement>
+		<repository>
+			<id>eddie</id>
+			<name>Local Repository</name>
+			<url>scp://vmsvn01.infosistema.com/var/www/html/maven2</url>
+		</repository>
+		<snapshotRepository>
+			<id>eddie</id>
+			<name>Local Repository</name>
+			<url>scp://vmsvn01.infosistema.com/var/www/html/maven2</url>
+		</snapshotRepository>
+	</distributionManagement>
+
 	<developers>
 		<developer>
 			<id>jcosta</id>
@@ -574,6 +606,47 @@
 			</roles>
 			<organization>Infosistema.com</organization>
 			<timezone>GMT</timezone>
+		</developer>
+		<developer>
+			<id>agoncalves</id>
+			<name>Alexandre Gonçalves</name>
+			<email>alexandre.goncalves@infosistema.com
+			</email>
+			<roles>
+				<role>Programmer</role>
+			</roles>
+			<organization>Infosistema.com</organization>
+			<timezone>GMT</timezone>
+		</developer>
+		<developer>
+			<id>olopes</id>
+			<name>Oscar Lopes</name>
+			<email>oscar.lopes@infosistema.com</email>
+			<roles>
+				<role>Programmer</role>
+			</roles>
+			<organization>Infosistema.com</organization>
+			<timezone>GMT</timezone>
+		</developer>
+		<developer>
+			<id>lcabral</id>
+			<name>Luis Cabral</name>
+			<email>luis.cabral@infosistema.com</email>
+			<roles>
+				<role>Programmer</role>
+			</roles>
+			<organization>Infosistema.com</organization>
+			<timezone>GMT</timezone>
+		</developer>
+		<developer>
+			<id>mguilher</id>
+			<name>Miguel Guilherme</name>
+			<email>miguel.guilherme@infosistema.com</email>
+			<organization>Infosistema</organization>
+			<organizationUrl>http://www.infosistema.pt</organizationUrl>
+			<timezone>GMT</timezone>
+			<roles>
+			</roles>
 		</developer>
 	</developers>
 

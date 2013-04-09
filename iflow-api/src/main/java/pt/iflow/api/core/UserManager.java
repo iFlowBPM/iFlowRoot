@@ -121,7 +121,10 @@ public interface UserManager {
     * @param listExtraValues - Extra Values
     * @return - true if user was created successfully
     */
-   public IErrorHandler modifyUserAsAdmin(UserInfoInterface userInfo, String userId, String gender, String unit, String emailAddress, String firstName, String lastName, String phoneNumber, String faxNumber, String mobileNumber, String companyPhone, String orgAdm, String newPassword, String[] listExtraProperties, String[] listExtraValues);
+  public IErrorHandler modifyUserAsAdmin(UserInfoInterface userInfo, String userId, String gender, String unit,
+      String emailAddress, String firstName, String lastName, String phoneNumber, String faxNumber, String mobileNumber,
+      String companyPhone, String orgAdm, String orgAdmUsers, String orgAdmFlows, String orgAdmProcesses, String orgAdmResources,
+      String orgAdmOrg, String newPassword, String[] listExtraProperties, String[] listExtraValues);
 
    /**
     * Modify an existing user

@@ -7,8 +7,7 @@ import pt.iknow.floweditor.FlowEditorAdapter;
  * 
  * @see JSPFieldData
  */
-public  class JSPFormTemplate extends JSPFieldData {
-
+public class JSPFormTemplate extends JSPFieldData {
 
   // id constructor
   public JSPFormTemplate(FlowEditorAdapter adapter, int anID) {
@@ -19,24 +18,19 @@ public  class JSPFormTemplate extends JSPFieldData {
   public JSPFormTemplate(FlowEditorAdapter adapter) {
     this(adapter, -1);
   }
-  
-  
+
   // full constructor
-  public JSPFormTemplate(FlowEditorAdapter adapter, int anID,
-		       int anPosition,
-		       String asText) {
+  public JSPFormTemplate(FlowEditorAdapter adapter, int anID, int anPosition, String asText) {
     this(adapter, anID);
     this._nPosition = anPosition;
 
     // now set all field properties
-    this.setProperty(JSPFieldData.nPROP_TEXT,asText);
+    this.setProperty(JSPFieldData.nPROP_TEXT, asText);
   }
-
 
   public JSPFormTemplate(JSPFieldData afdData) {
     super(afdData);
   }
-
 
   protected void init() {
     this._nFieldType = JSPFieldTypeEnum.FIELD_TYPE_FORM_TEMPLATE;
@@ -52,5 +46,10 @@ public  class JSPFormTemplate extends JSPFieldData {
     this._alRequiredProps.add(new Integer(JSPFieldData.nPROP_FORM_TEMPLATE));
   }
 
-
+  public String[] exportToTableRow() {
+    String[] ret = new String[this._alTableProps.size()];
+    ret[3] = this.getProperty(JSPFieldData.nPROP_FORM_TEMPLATE);
+    ret[1] = this.getFieldTypeText();
+    return ret;
+  }
 }

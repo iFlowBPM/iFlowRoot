@@ -72,6 +72,11 @@ public class UserInfo implements Serializable, UserInfoInterface {
   protected String _sFeedKey = null;
 
   protected boolean _bIsOrgAdmin = false;
+  protected boolean _bIsOrgAdminUsers = false;
+  protected boolean _bIsOrgAdminFlows = false;
+  protected boolean _bIsOrgAdminProcesses = false;
+  protected boolean _bIsOrgAdminResources = false;
+  protected boolean _bIsOrgAdminOrg = false;
   protected boolean _bIsSysAdmin = false;
   protected boolean _bUnitManager = false;
 
@@ -302,6 +307,21 @@ public class UserInfo implements Serializable, UserInfoInterface {
 
       if (this._userData.getOrgAdm().equals("1")) {
         this._bIsOrgAdmin = true;
+      }
+      if (this._userData.getOrgAdmUsers().equals("1")) {
+        this._bIsOrgAdminUsers = true;
+      }
+      if (this._userData.getOrgAdmFlows().equals("1")) {
+        this._bIsOrgAdminFlows = true;
+      }
+      if (this._userData.getOrgAdmProcesses().equals("1")) {
+        this._bIsOrgAdminProcesses = true;
+      }
+      if (this._userData.getOrgAdmResources().equals("1")) {
+        this._bIsOrgAdminResources = true;
+      }
+      if (this._userData.getOrgAdmOrg().equals("1")) {
+        this._bIsOrgAdminOrg = true;
       }
       String unitManager = this._unitData.get(OrganizationalUnitData.MANAGER);
       if (StringUtils.isNotEmpty(unitManager) && unitManager.equals(this.getUtilizador())) {
@@ -544,6 +564,26 @@ public class UserInfo implements Serializable, UserInfoInterface {
 
   public boolean isOrgAdmin() {
     return this._bIsOrgAdmin;
+  }
+
+  public boolean isOrgAdminUsers() {
+    return this._bIsOrgAdmin && this._bIsOrgAdminUsers;
+  }
+
+  public boolean isOrgAdminFlows() {
+    return this._bIsOrgAdmin && this._bIsOrgAdminFlows;
+  }
+
+  public boolean isOrgAdminProcesses() {
+    return this._bIsOrgAdmin && this._bIsOrgAdminProcesses;
+  }
+
+  public boolean isOrgAdminResources() {
+    return this._bIsOrgAdmin && this._bIsOrgAdminResources;
+  }
+
+  public boolean isOrgAdminOrg() {
+    return this._bIsOrgAdmin && this._bIsOrgAdminOrg;
   }
 
   public boolean isSysAdmin() {

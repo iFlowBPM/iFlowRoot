@@ -165,7 +165,7 @@ if (users.length == 0) {
 	</div>
 <% if (canModify) { %>
 	<div class="button_box">
-    	<input class="regular_button_01" type="submit" name="add_user" value="<%=messages.getString("button.add")%>" onClick="javascript:tabber_right('admin', '<%=response.encodeURL("Admin/UserManagement/userform.jsp")%>','operation=create');"/>
+    	<input class="regular_button_01" type="button" name="add_user" value="<%=messages.getString("button.add")%>" onClick="javascript:tabber_right('admin', '<%=response.encodeURL("Admin/UserManagement/userform.jsp")%>','operation=create');"/>
 <% if(Const.bUSE_EMAIL) { %>
     	<input class="regular_button_01" type="button" name="invite_user" value="<%=messages.getString("button.invite")%>" onClick="javascript:tabber_right('admin', '<%=response.encodeURL("Admin/UserManagement/userform.jsp")%>','operation=invite');"/>
 <% } %>

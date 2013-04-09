@@ -225,9 +225,9 @@ function saveForwardToProcessAnnotations(saveHistory){
       while (id <= 20) {
         if (chk != null) {
           if (chk.checked == true){
-            forwardToSelectedLabels += id + '§§§';
+            forwardToSelectedLabels += id + ',';
           } else {
-            forwardToNotSelectedLabels += id + '§§§';
+            forwardToNotSelectedLabels += id + ',';
           }
         }
         id +=1;
@@ -270,15 +270,15 @@ function callBackFunction(error) {
 function managerLabels(id, checkini){
 	if(document.getElementById('checkLabel_'+id).checked == true){
 		if(checkini)
-			removeLabels = removeLabels.replace(id + '§§§','');	
+			removeLabels = removeLabels.replace(id + ',','');	
 		else
-			addLabels += id + '§§§';
+			addLabels += id + ',';
 
 	}else{
 		if(checkini)
-			removeLabels += id + '§§§';
+			removeLabels += id + ',';
 		else
-			addLabels = addLabels.replace(id + '§§§','');
+			addLabels = addLabels.replace(id + ',','');
 	}
 }
 

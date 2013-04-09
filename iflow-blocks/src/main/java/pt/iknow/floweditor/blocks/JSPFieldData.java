@@ -43,9 +43,12 @@ import pt.iflow.api.xml.codegen.flow.XmlAttribute;
 import pt.iflow.api.xml.codegen.flow.XmlCatalogVarAttribute;
 import pt.iflow.api.xml.codegen.flow.XmlCatalogVars;
 import pt.iflow.api.xml.codegen.flow.XmlFlow;
+import pt.iknow.floweditor.Atributo;
 import pt.iknow.floweditor.FlowEditorAdapter;
 import pt.iknow.iflow.RepositoryClient;
 import pt.iknow.utils.swing.JMultiLineToolTip;
+import ca.odell.glazedlists.GlazedLists;
+import ca.odell.glazedlists.swing.AutoCompleteSupport;
 
 
 /**
@@ -1402,6 +1405,11 @@ public class JSPFieldData {
         ((JComboBox) ec).setSelectedItem(asValue);
       }
       break;
+    case JSPFieldData.nPROP_VAR_NAME:
+      if (ec != null) {
+        ((JComboBox) ec).setSelectedItem(asValue);
+      }
+      break;
     default:
       // DEFAULT IS TEXT...
       if (ec != null) {
@@ -2572,6 +2580,16 @@ public class JSPFieldData {
         ((JComboBox) jValue).setSelectedItem(stmp);
       }
         break;
+      case JSPFieldData.nPROP_VAR_NAME: {
+        if (jValue == null) {
+          JComboBox comboBox = new JComboBox();
+          Object[] elements = getCatalogue();
+          AutoCompleteSupport.install(comboBox, GlazedLists.eventListOf(elements));
+          this.setEditComponent(iProp, jValue = comboBox);
+        }
+        ((JComboBox) jValue).setSelectedItem(stmp);
+      }
+        break;
       default:
         // DEFAULT IS TEXT...
         if (jValue == null) {
@@ -2685,6 +2703,9 @@ public class JSPFieldData {
           // nao sei se eh realmente necessario um listener deste tipo...
           break;
         case JSPFieldData.nPROP_FORM_TEMPLATE:
+          // nao sei se eh realmente necessario um listener deste tipo...
+          break;
+        case JSPFieldData.nPROP_VAR_NAME:
           // nao sei se eh realmente necessario um listener deste tipo...
           break;
         default:
@@ -2811,6 +2832,16 @@ public class JSPFieldData {
             this.setEditComponent(iRow, iProp, jValue = jcb);
           }
           ((JComboBox) jValue).setSelectedItem(stmp);
+          break;
+        case JSPFieldData.nPROP_VAR_NAME: {
+          if (jValue == null) {
+            JComboBox comboBox = new JComboBox();
+            Object[] elements = getCatalogue();
+            AutoCompleteSupport.install(comboBox, GlazedLists.eventListOf(elements));
+            this.setEditComponent(iRow, iProp, jValue = comboBox);
+          }
+          ((JComboBox) jValue).setSelectedItem(stmp);
+        }
           break;
         case JSPFieldData.nPROP_PP_PASS_TO_LINK:
         case JSPFieldData.nPROP_USE_LINKS:
@@ -3045,6 +3076,14 @@ public class JSPFieldData {
     return _saFormTemplates;
   }
 
+  private String[] getCatalogue() {
+    Object[] catalogue = adapter.getDesenho().getCatalogue().toArray();
+    String[] ret = new String[catalogue.length];
+    for (int i = 0; i < catalogue.length; i++)
+      ret[i] = ((Atributo) catalogue[i]).getNome();
+    return ret;
+  }
+
   private JButton makeControlButton(String asImageIconName,
       String asToolTipText,
       ActionListener l,
@@ -3121,6 +3160,9 @@ public class JSPFieldData {
         case JSPFieldData.nPROP_BUTTON_TYPE:
         case JSPFieldData.nPROP_LIST_OF_POPUP_FLOWS:
           stmp = (String)(((JComboBox)jValue).getSelectedItem());
+          break;
+        case JSPFieldData.nPROP_VAR_NAME:
+          stmp = (String) (((JComboBox) jValue).getSelectedItem());
           break;
         case JSPFieldData.nPROP_PP_PASS_TO_LINK:
         case JSPFieldData.nPROP_USE_LINKS:
@@ -3208,6 +3250,9 @@ public class JSPFieldData {
           case JSPFieldData.nPROP_FILE_SIGNATURE_TYPE:
           case JSPFieldData.nPROP_BUTTON_TYPE:
             stmp = (String)(((JComboBox)jValue).getSelectedItem());
+            break;
+          case JSPFieldData.nPROP_VAR_NAME:
+            stmp = (String) (((JComboBox) jValue).getSelectedItem());
             break;
           case JSPFieldData.nPROP_PP_PASS_TO_LINK:
           case JSPFieldData.nPROP_USE_LINKS:

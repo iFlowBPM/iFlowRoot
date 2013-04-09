@@ -10,7 +10,6 @@ package pt.iknow.floweditor;
  *
  ****************************************************/
 
-import pt.iflow.api.xml.codegen.library.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
@@ -18,6 +17,7 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import pt.iflow.api.xml.codegen.library.Color;
 import pt.iknow.utils.StringUtilities;
 
 /****************************
@@ -189,12 +189,16 @@ public class Componente_Biblioteca {
     }
     catch(Exception e) {
       try{
-        if (funcao_desenho.endsWith(";")) //$NON-NLS-1$
+        if (funcao_desenho.endsWith(";")) { //$NON-NLS-1$
           this.funcao_Desenho = Janela.getInstance().createImage(funcao_desenho.substring(0,funcao_desenho.length()-1), true);
-        else
+          this.Largura_X = funcao_Desenho.getWidth(Desenha_Componente.ppanel);
+          this.Largura_Y = funcao_Desenho.getHeight(Desenha_Componente.ppanel);
+        }
+ else {
           this.funcao_Desenho=Janela.getInstance().createImage(funcao_desenho, true, color);
-        this.Largura_X=funcao_Desenho.getWidth(Desenha_Componente.ppanel);
-        this.Largura_Y=funcao_Desenho.getHeight(Desenha_Componente.ppanel);
+          this.Largura_X = funcao_Desenho.getWidth(Desenha_Componente.ppanel);
+          this.Largura_Y = funcao_Desenho.getHeight(Desenha_Componente.ppanel);
+        }
       }
       catch (Exception e2) {
         Num_funcao_Desenho=1;

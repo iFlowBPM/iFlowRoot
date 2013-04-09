@@ -166,6 +166,7 @@ function disableForm() {
 	}
 	backToTop();
 }
+
 function enableForm() {
 	var el = document.getElementById('_formLoadingDiv');
 	if (el) {
@@ -212,11 +213,15 @@ function SetOpacity(elem, opacityAsInt) {
 	elem.style.filter  = "alpha(opacity=" + opacityAsInt + ")";
 }
 function backToTop() {
-	if (parent && ((typeof parent.scroll) == 'function' || (typeof parent.scroll) == 'object')) {
-		parent.scroll(0,0);
-	} else if ((typeof scroll) == 'function' || (typeof scroll) == 'object') {
-		scroll(0,0);
-	}
+    try{
+        parent.scroll(0,0);
+        return;
+    }catch(err1){}
+    
+    try{
+        scroll(0,0);
+        return;
+    }catch(err1){}
 }
 
 function showAlert(msg, type, title) {

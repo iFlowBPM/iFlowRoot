@@ -184,6 +184,7 @@ public class BlockSQLBatchInsert extends BlockSQL {
     					Logger.debug(login,this,"after","Query: " + sbQuery.toString());
 
     					// inserts
+              final int MAX_LOGS = 100;
     					int nTotalInserts = procData.getList(saVars[0]).size();
     					for (int row=0; row < nTotalInserts; row++) {
 
@@ -199,7 +200,11 @@ public class BlockSQLBatchInsert extends BlockSQL {
     									+  value);
 
     						}
-    						Logger.debug(login,this,"after","Going to execute insert " + (row+1) + " of " + nTotalInserts);
+                if (row < MAX_LOGS)
+                  Logger.debug(login, this, "after", "Going to execute insert " + (row + 1) + " of " + nTotalInserts);
+                else if (row == MAX_LOGS)
+                  Logger.debug(login, this, "after", "...Executing next inserts of " + nTotalInserts);
+
     						nCols += pst.executeUpdate();
     					}
 

@@ -18,11 +18,9 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
-import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -44,6 +42,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.StringReader;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,6 +59,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -203,11 +203,16 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
   // Desenho canvas = null;
   private ExampleFileFilter filter = new ExampleFileFilter(Mesg.FileExtension, Mesg.FileExtension);
   private ExampleFileFilter libFilter = new ExampleFileFilter(Mesg.LibraryExtension, Mesg.LibraryExtension);
+  private ExampleFileFilter s2rFilter = new ExampleFileFilter(Mesg.s2rExtension, Mesg.s2rExtension);
+
+  // S2R Module loaded
+  private S2RModule s2rModule;
+
   // JScrollPane scrollPane = null;
 
   private JTabbedPane libraryTabPane = new JTabbedPane(JTabbedPane.TOP);
   private JPanel blockSorterPane = new JPanel(new BorderLayout());
-  
+
   // JTabbedPane tabPane = new JTabbedPane(JTabbedPane.TOP,
   // JTabbedPane.SCROLL_TAB_LAYOUT);
   private CloseableTabbedPane tabPane = new CloseableTabbedPane();
@@ -226,7 +231,12 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
   private File i18nCacheFolder = null;
   private FlowRepUrl iFlowURL = null;
   private FlowEditorConfig cfg = null;
-  private RepositoryClient repository = null; 
+  private RepositoryClient repository = null;
+  private JComboBox showR2RBox;
+  private JComboBox showR2RComponentBox;
+  private JButton installR2RButton;
+  private JButton uninstallR2RButton;
+  private JButton saveR2RButton;
 
   private LibrarySet _librarySet = new LibrarySet();
   private File lastLibParent = new File("libraries"); //$NON-NLS-1$
@@ -244,14 +254,14 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
   private boolean antiAlias = true;
   private boolean confirmarSaida = true;
   private IMessages blockMsg = null;
-  
+
   private static Janela instance = null;
 
   private Shell iflowShell = null;
   private MozillaBrowser iflowBrowser = null;
   private Runnable iflowWindowDispatcher = new Runnable() {
     public void run() {
-      if(null != iflowShell) {
+      if (null != iflowShell) {
         iflowShell.forceActive();
         iflowShell.forceFocus();
         return;
@@ -284,25 +294,28 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
       iflowBrowser = new MozillaBrowser(iflowShell);
 
       iflowBrowser.addProgressListener(new ProgressListener() {
-        public void changed(ProgressEvent event) {}
+        public void changed(ProgressEvent event) {
+        }
 
         public void completed(ProgressEvent event) {
-          if(event.total == event.current) {
+          if (event.total == event.current) {
             nsIDOMWindow domWindow = (nsIDOMWindow) iflowBrowser.getBrowser().getContentDOMWindow();
             nsIDOMDocument doc = domWindow.getDocument();
-            nsIDOMHTMLDocument htmlDoc = (nsIDOMHTMLDocument)doc.queryInterface(nsIDOMHTMLDocument.NS_IDOMHTMLDOCUMENT_IID);
-            if(null == htmlDoc) return;
+            nsIDOMHTMLDocument htmlDoc = (nsIDOMHTMLDocument) doc.queryInterface(nsIDOMHTMLDocument.NS_IDOMHTMLDOCUMENT_IID);
+            if (null == htmlDoc)
+              return;
             nsIDOMElement elem = htmlDoc.getElementById("top_logout_link");
-            if(null == elem) return;
+            if (null == elem)
+              return;
             nsIDOMNode parent = elem.getParentNode();
             nsIDOMNode prev = elem.getPreviousSibling();
-            parent.removeChild(elem);  // remove link
-            parent.removeChild(prev);  // remove adjacent " : "
+            parent.removeChild(elem); // remove link
+            parent.removeChild(prev); // remove adjacent " : "
           }
         }
       });
       iflowBrowser.importCookies(getRepository().getCookies());
-      iflowBrowser.setUrl(getRepository().getBaseURL()+"/main.jsp");
+      iflowBrowser.setUrl(getRepository().getBaseURL() + "/main.jsp");
 
       iflowShell.setSize(1024, 768);
       iflowShell.setText("iFlow");
@@ -310,8 +323,6 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
       iflowShell.open();
     }
   };
-
-
 
   public static Janela getInstance() {
     return instance;
@@ -345,7 +356,7 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
     iFlowURL = login(cfg);
 
     updateLocalCache();
-    
+
     // load block messages
     blockMsg = getCachedBlockMsg();
 
@@ -404,15 +415,13 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
   public void addDesenhoDependentComponent(JComponent component) {
     desenhoDependentComponents.add(component);
   }
-  
+
   public void addProcessStateComponents(JComponent component) {
     processStateComponents.add(component);
   }
 
-
   /*****************************************************************************
-   * adiciona os componentes a janela - desenho, componentes de biblioteca
-   * menus, toolbar
+   * adiciona os componentes a janela - desenho, componentes de biblioteca menus, toolbar
    */
   private void adicionaComponentesJanela() {
     /* limpa */
@@ -423,7 +432,7 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
     actualizaLibrarySet(null);
     SimpleCrossIcon icon = new SimpleCrossIcon();
     contentPane.setLayout(new BorderLayout());
-    
+
     // BLOCK LIBRARY
     JPanel panel = new JPanel(new BorderLayout());
     gradientLabel = new GradientLabel("  " + Messages.getString("Janela.blockLibraryTitle")); //$NON-NLS-1$
@@ -445,13 +454,14 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
     libraryPane.add(panel, java.awt.BorderLayout.NORTH);
     libraryPane.add(libraryTabPane, java.awt.BorderLayout.CENTER);
     libraryPane.setBorder(BorderFactory.createEtchedBorder());
-    
+
     // MAIN PANE
     contentPane.add(tabPane, java.awt.BorderLayout.CENTER);
     contentPane.add(libraryPane, java.awt.BorderLayout.EAST);
-    contentPane.add(blockPane,java.awt. BorderLayout.SOUTH);
+    contentPane.add(blockPane, java.awt.BorderLayout.SOUTH);
 
-    //contentPane.add(new javax.swing.JSplitPane(javax.swing.JSplitPane.HORIZONTAL_SPLIT, tabPane, libraryPane), BorderLayout.CENTER);
+    // contentPane.add(new javax.swing.JSplitPane(javax.swing.JSplitPane.HORIZONTAL_SPLIT, tabPane, libraryPane),
+    // BorderLayout.CENTER);
 
     // criar evento para notificar a mudanca de tab
     tabPane.addChangeListener(new ChangeListener() {
@@ -488,7 +498,7 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
 
   private void notifyDesenhoDependentComponents() {
     boolean enabled = tabPane.getTabCount() > 0;
-    for(JComponent component : desenhoDependentComponents) {
+    for (JComponent component : desenhoDependentComponents) {
       component.setEnabled(enabled);
     }
     notifyProcessStateComponents();
@@ -501,10 +511,10 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
     }
     displaySortedBlocks();
   }
-  
+
   private void displaySortedBlocks() {
     boolean visible = false;
-    if(getSelectedDesenho() != null && !getSelectedDesenho().isEditable()) {
+    if (getSelectedDesenho() != null && !getSelectedDesenho().isEditable()) {
       DesenhoEstadoProcesso desenho = (DesenhoEstadoProcesso) getSelectedDesenho();
       JPanel panel = new JPanel(new java.awt.BorderLayout());
       GradientLabel gradientLabel = new GradientLabel("  " + Messages.getString("Janela.blockSorter.title"));
@@ -523,23 +533,22 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
 
       blockPane.add(panel, java.awt.BorderLayout.NORTH);
       blockPane.add(blockSorterPane, java.awt.BorderLayout.CENTER);
-      blockPane.setBorder(BorderFactory.createEtchedBorder());   
+      blockPane.setBorder(BorderFactory.createEtchedBorder());
 
       visible = desenho.showSortedBlocks();
       blockPane.remove(blockSorterPane);
       blockSorterPane = desenho.getBlockPane();
       blockPane.add(blockSorterPane);
-      
+
       desenho.setGlow(createImage("aureola.png", false, false));
-      
+
       blockPane.repaint();
     }
     blockPane.setVisible(visible);
-    if(showBlockSorterButton != null) {
+    if (showBlockSorterButton != null) {
       showBlockSorterButton.setSelected(visible);
     }
   }
-
 
   /*****************************************************************************
    * actualiza componentes de biblioteca
@@ -554,19 +563,19 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
       Library bib = _librarySet.getLibrary(saLibs[i]);
       if (bib.getName().equals("Default")) //$NON-NLS-1$
         continue;
-      
+
       String displayName = bib.getName();
-      if(StringUtils.isNotBlank(bib.getNameKey())) {
+      if (StringUtils.isNotBlank(bib.getNameKey())) {
         displayName = blockMsg.getString(bib.getNameKey());
       }
-      
+
       String tooltip = bib.getDescription();
-      if(StringUtils.isNotBlank(bib.getDescriptionKey())) {
+      if (StringUtils.isNotBlank(bib.getDescriptionKey())) {
         tooltip = blockMsg.getString(bib.getDescriptionKey());
       }
-      
+
       Canvas_Janela_Biblioteca cjb = new Canvas_Janela_Biblioteca(bib, this);
-      
+
       int tabPos = libraryTabPane.indexOfTab(displayName);
       if (tabPos == -1) {
         libraryTabPane.addTab(displayName, null, cjb.sp, tooltip);
@@ -588,26 +597,146 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
       this.libraryTabPane.setSelectedIndex(nSelTab);
     }
   }
-  
+
   private void toggleBlockSorterPane() {
     if (!getSelectedDesenho().isEditable()) {
       DesenhoEstadoProcesso desenho = (DesenhoEstadoProcesso) getSelectedDesenho();
       boolean visible = !desenho.showSortedBlocks();
       desenho.setShowSortedBlocks(visible);
       blockPane.setVisible(visible);
-      if(showBlockSorterButton != null) {
+      if (showBlockSorterButton != null) {
         showBlockSorterButton.setSelected(visible);
       }
     }
     repaint();
   }
-  
+
   private void toggleLibraryPane() {
     boolean visible = !libraryPane.isVisible();
     libraryPane.setVisible(visible);
     t_m.setShowLibSelected(visible);
     showLibButton.setSelected(visible);
     repaint();
+  }
+
+  private void selectR2RComponentBox() {
+    showR2RBox.getSelectedItem();
+    R2RModule r2rApp = null;
+    for (R2RModule r2rTmp : s2rModule.getApplicationModules())
+      if (StringUtils.equalsIgnoreCase(r2rTmp.getNameFlowXml(), "" + showR2RBox.getSelectedItem()))
+        r2rApp = r2rTmp;
+
+    if (r2rApp == null)
+      return;
+
+    // 0 app, 1 install, 2 unistall
+    String flowTxt = "";
+    int module = showR2RComponentBox.getSelectedIndex();
+    if (module == 2) {
+      flowTxt = r2rApp.getUninstallFlowXml();
+    } else if (module == 1) {
+      flowTxt = r2rApp.getInstallFlowXml();
+    } else {
+      flowTxt = r2rApp.getApplicationFlowXml();
+    }
+    try {
+      XmlFlow flow = (XmlFlow) XmlFlow.unmarshal(new StringReader(flowTxt));
+      String flowName = flow.getName();
+      int flowVersion = -1;// Integer.parseInt("" + flow.getIFlowVersion().subSequence(0, flow.getIFlowVersion().indexOf(".")));
+      byte[] flowData = FlowMarshaller.marshall(flow);
+
+      if (flowData != null) {
+        try {
+          DesenhoScrollPane scrollPane = new DesenhoScrollPane(this, flowData, flowName, flowVersion);
+          for (int i = 0; i < tabPane.getTabCount(); i++)
+            if (StringUtils.equals(tabPane.getTitleAt(i), scrollPane.getName()))
+              tabPane.removeTabAt(i);
+
+          scrollPane.setR2rFlow(r2rApp);
+          scrollPane.setR2rType(module);
+          tabPane.addTab(scrollPane.getName(), scrollPane);
+          tabPane.setSelectedComponent(scrollPane);
+          scrollPane.getDesenho().setLastParent(this.lastParent);
+          scrollPane.getDesenho().updateCanvasSize();
+          repaint();
+        } catch (InvalidFlowException e) {
+          new Erro(e.getMessage(), this);
+        }
+      }
+    } catch (Exception e) {
+
+    }
+
+    repaint();
+  }
+
+  private void selectR2RBox() {
+    repaint();
+  }
+
+  private void uninstallR2RApplication() {
+    showR2RBox.getSelectedItem();
+    R2RModule r2rApp = null;
+    for (R2RModule r2rTmp : s2rModule.getApplicationModules())
+      if (StringUtils.equalsIgnoreCase(r2rTmp.getNameFlowXml(), "" + showR2RBox.getSelectedItem()))
+        r2rApp = r2rTmp;
+
+    if (r2rApp == null)
+      return;
+    try {
+      if (repository.checkConnection()) {
+        FlowEditor.log("Uninstalling R2R " + r2rApp.getNameFlowXml() + " ....");
+        XmlFlow uninstall = (XmlFlow) XmlFlow.unmarshal(new StringReader(r2rApp.getUninstallFlowXml()));
+        XmlFlow application = (XmlFlow) XmlFlow.unmarshal(new StringReader(r2rApp.getApplicationFlowXml()));
+
+        FlowEditor.log("Running R2R Uninstaller - " + r2rApp.getNameFlowXml() + " ....");
+        repository.deployFlow(uninstall.getName(), uninstall.getDescription(), FlowMarshaller.marshall(uninstall));
+        repository.runFlow(uninstall.getName());
+        repository.undeployFlow(uninstall.getName());
+        FlowEditor.log("R2R Uninstaller Completed - " + r2rApp.getNameFlowXml() + " ....");
+
+        FlowEditor.log("Uninstalling R2R Application - " + r2rApp.getNameFlowXml() + " ....");
+        repository.undeployFlow(application.getName());
+        FlowEditor.log("Uninstall R2R Application Completed - " + r2rApp.getNameFlowXml() + " ....");
+
+        new Informacao("Application uninstalled", this);
+      }
+    } catch (Exception e) {
+      new Erro(e.getMessage(), this);
+    }
+  }
+
+  private void installR2RApplication() {
+    showR2RBox.getSelectedItem();
+    R2RModule r2rApp = null;
+    for (R2RModule r2rTmp : s2rModule.getApplicationModules())
+      if (StringUtils.equalsIgnoreCase(r2rTmp.getNameFlowXml(), "" + showR2RBox.getSelectedItem()))
+        r2rApp = r2rTmp;
+
+    if (r2rApp == null)
+      return;
+    try {
+      if (repository.checkConnection()) {
+        FlowEditor.log("Installing R2R " + r2rApp.getNameFlowXml() + " ....");
+        XmlFlow install = (XmlFlow) XmlFlow.unmarshal(new StringReader(r2rApp.getInstallFlowXml()));
+        XmlFlow application = (XmlFlow) XmlFlow.unmarshal(new StringReader(r2rApp.getApplicationFlowXml()));
+
+        FlowEditor.log("Installing R2R Application - " + r2rApp.getNameFlowXml() + " ....");
+        repository.deployFlow(application.getName(), application.getDescription(), FlowMarshaller.marshall(application));
+        repository.setFlowReady2Run(application.getName());
+        FlowEditor.log("Installed R2R Application Completed - " + r2rApp.getNameFlowXml() + " ....");
+
+        FlowEditor.log("Running R2R Installer - " + r2rApp.getNameFlowXml() + " ....");
+        repository.deployFlow(install.getName(), install.getDescription(), FlowMarshaller.marshall(install));
+        repository.runFlow(install.getName());
+        repository.undeployFlow(install.getName());
+        FlowEditor.log("R2R Installer Completed - " + r2rApp.getNameFlowXml() + " ....");
+
+        new Informacao("Application installed", this);
+      }
+    } catch (Exception e) {
+      new Erro(e.getMessage(), this);
+    }
   }
 
   private void notifyDesenho() {
@@ -634,12 +763,14 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
   }
 
   public void setSelectedDesenho(Desenho d) {
-    if(null == d) return;
+    if (null == d)
+      return;
     int componentCount = tabPane.getComponentCount();
-    for(int i = 0; i < componentCount; i++) {
+    for (int i = 0; i < componentCount; i++) {
       Component c = tabPane.getComponentAt(i);
-      if(null == c || !(c instanceof DesenhoScrollPane)) continue;
-      if(((DesenhoScrollPane) c).getDesenho() == d) {
+      if (null == c || !(c instanceof DesenhoScrollPane))
+        continue;
+      if (((DesenhoScrollPane) c).getDesenho() == d) {
         tabPane.setSelectedIndex(i);
         return;
       }
@@ -684,7 +815,7 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
           scrollPane.getDesenho().setLastParent(this.lastParent);
           scrollPane.getDesenho().updateCanvasSize();
           repaint();
-        } catch(InvalidFlowException e) {
+        } catch (InvalidFlowException e) {
           new Erro(e.getMessage(), this);
         }
       }
@@ -744,21 +875,21 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
       DownloadLibrary dl = new DownloadLibrary(this, true, _librarySet);
 
       if (dl.isOk()) {
-          String sSelTab = null;
+        String sSelTab = null;
 
-          Library[] ba = dl.getSelectedLibraries();
-          if (ba != null) {
-            this.aEspera();
+        Library[] ba = dl.getSelectedLibraries();
+        if (ba != null) {
+          this.aEspera();
 
-            for (int i = 0; i < ba.length; i++) {
-              _librarySet.addLibrary(ba[i]);
-              sSelTab = ba[i].getName();
-            }
-
-            actualizaLibrarySet(sSelTab);
-            this.repaint();
+          for (int i = 0; i < ba.length; i++) {
+            _librarySet.addLibrary(ba[i]);
+            sSelTab = ba[i].getName();
           }
+
+          actualizaLibrarySet(sSelTab);
+          this.repaint();
         }
+      }
     } else if (accao.equals(Mesg.Novo)) { /* novo projecto */
       // Pede o nome
       String[] newName = getFlowName(Mesg.Novo, "", "");
@@ -786,7 +917,7 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
     // force return to normal
     this.normal();
   }
-  
+
   private void refreshProcessState() {
     FlowEditor.log("Refresh process state");
 
@@ -802,50 +933,50 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
       }
     }
   }
-  
+
   private void viewProcessState() {
     FlowEditor.log("View process state");
 
     boolean exit;
-    while(true) {
+    while (true) {
       exit = true;
       ViewProcessStateDialog dialog = new ViewProcessStateDialog(this);
       Integer flowid = dialog.getFlowId();
       String pnumber = dialog.getProcessNumber();
       if (flowid == null) {
-        return;      
+        return;
       }
 
       this.aEspera();
 
       String flowName = dialog.getFullFlowName();
       exit = processState(flowName, flowid, pnumber, true);
-      if(exit) {
+      if (exit) {
         break;
       }
     }
   }
-  
+
   private boolean processState(String flowName, int flowid, String pnumber, boolean createNewTab) {
     boolean exit = true;
     int flowVersion = -1;
     byte[] flowData = downloadFlow(flowName, true, flowVersion);
     List<FlowStateHistoryTO> flowStateHist = downloadProcessStateHistory(flowid, pnumber);
-    
+
     if (flowData != null) {
       int response = JOptionPane.YES_OPTION;
       if (flowStateHist.isEmpty()) {
-        response = JOptionPane.showConfirmDialog(this, Messages.getString("ViewProcessStateDialog.empty.message", pnumber, "" + flowid), Messages
-            .getString("ViewProcessStateDialog.empty.title"), JOptionPane.YES_NO_OPTION);
+        response = JOptionPane.showConfirmDialog(this, Messages.getString("ViewProcessStateDialog.empty.message", pnumber, ""
+            + flowid), Messages.getString("ViewProcessStateDialog.empty.title"), JOptionPane.YES_NO_OPTION);
       }
-      if(response == JOptionPane.YES_OPTION) {
+      if (response == JOptionPane.YES_OPTION) {
         try {
           DesenhoScrollPane scrollPane = new DesenhoScrollPane(this, flowData, flowName, flowVersion, flowStateHist);
           scrollPane.getDesenho().setFlowId("" + flowid);
           scrollPane.getDesenho().setPNumber(pnumber);
-          if(createNewTab) {
+          if (createNewTab) {
             tabPane.addTab(scrollPane.getName(), scrollPane);
-            if(libraryPane.isVisible()) {
+            if (libraryPane.isVisible()) {
               toggleLibraryPane();
             }
           } else {
@@ -854,11 +985,11 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
             tabPane.addTab(scrollPane.getName(), scrollPane, null, index);
           }
           tabPane.setSelectedComponent(scrollPane);
-          
+
           scrollPane.getDesenho().setLastParent(this.lastParent);
           scrollPane.getDesenho().updateCanvasSize();
           repaint();
-        } catch(InvalidFlowException e) {
+        } catch (InvalidFlowException e) {
           new Erro(e.getMessage(), this);
         }
       } else {
@@ -911,11 +1042,39 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
       Desenho d = getSelectedDesenho();
       if (null != d)
         d.templateManager();
-    } else if(nome.equals(Mesg.ConfirmarSaida)) {
+    } else if (nome.equals(Mesg.ConfirmarSaida)) {
       FlowEditorConfig cfg = FlowEditorConfig.loadConfig();
       confirmarSaida = !confirmarSaida;
       cfg.setConfirmExit(!confirmarSaida);
       cfg.saveConfig();
+    } else if (nome.equals(Mesg.s2rInstall)) {
+      s2rModule = null;
+      showR2RBox.setVisible(false);
+      installR2RButton.setVisible(false);
+      uninstallR2RButton.setVisible(false);
+      showR2RComponentBox.setVisible(false);
+      saveR2RButton.setVisible(false);
+
+      JFileChooser fd = new JFileChooser(this.flowCacheFolder);
+      fd.setFileFilter(this.s2rFilter);
+      fd.setMultiSelectionEnabled(false);
+      fd.showOpenDialog(this);
+      File s2rFile = fd.getSelectedFile();
+      if (s2rFile != null)
+        s2rModule = new S2RModule(s2rFile, this);
+      if (s2rModule != null && s2rModule.getApplicationModules() != null && s2rModule.getApplicationModules().size() > 0) {
+        String[] r2rNames = new String[s2rModule.getApplicationModules().size()];
+        for (int i = 0; i < s2rModule.getApplicationModules().size(); i++)
+          r2rNames[i] = s2rModule.getApplicationModules().get(i).getNameFlowXml();
+        showR2RBox.setModel(new JComboBox(r2rNames).getModel());
+        showR2RBox.setVisible(true);
+        installR2RButton.setVisible(true);
+        uninstallR2RButton.setVisible(true);
+        showR2RComponentBox.setVisible(true);
+        saveR2RButton.setVisible(true);
+      }
+    } else if (nome.equals(Mesg.s2rUninstall)) {
+      //
     }
 
     this.repaint();
@@ -980,14 +1139,30 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
       tabPane.setSelectedComponent(scrollPane);
       scrollPane.getDesenho().updateCanvasSize();
       repaint();
-    } catch(InvalidFlowException e) {
+    } catch (InvalidFlowException e) {
+      new Erro(e.getMessage(), this);
+    }
+  }
+
+  private void openFlowTxt(String flow) {
+    try {
+      File flowFile = null;
+      DesenhoScrollPane scrollPane = new DesenhoScrollPane(this, flowFile);
+      Desenho d = scrollPane.getDesenho();
+      this.lastParent = flowFile.getParentFile();
+      d.setLastParent(this.lastParent);
+      tabPane.addTab(scrollPane.getName(), scrollPane);
+      tabPane.setSelectedComponent(scrollPane);
+      scrollPane.getDesenho().updateCanvasSize();
+      repaint();
+    } catch (InvalidFlowException e) {
       new Erro(e.getMessage(), this);
     }
   }
 
   private byte[] downloadFlow(String flowName, boolean isFlow, int version) {
     RepositoryClient rep = getRepository();
-    if(!rep.checkConnection()) {
+    if (!rep.checkConnection()) {
       return null;
     }
     if (flowName == null) {
@@ -995,23 +1170,23 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
     }
     byte[] data = null;
     if (isFlow) {
-      if(version < 0)
+      if (version < 0)
         data = rep.getFlow(flowName);
       else
         data = rep.getFlowVersion(flowName, version);
     } else {
-      if(version < 0)
+      if (version < 0)
         data = rep.getSubFlow(flowName);
       else
         data = rep.getSubFlowVersion(flowName, version);
     }
     return data;
   }
-  
+
   private List<FlowStateHistoryTO> downloadProcessStateHistory(int flowid, String pnumber) {
     List<FlowStateHistoryTO> retObj = new ArrayList<FlowStateHistoryTO>();
     RepositoryClient rep = getRepository();
-    if(!rep.checkConnection()) {
+    if (!rep.checkConnection()) {
       return retObj;
     }
     try {
@@ -1021,11 +1196,11 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
     }
     return retObj;
   }
-  
+
   public List<FlowStateLogTO> downloadProcessStateLogs(int flowid, String pnumber, int state) {
     List<FlowStateLogTO> retObj = new ArrayList<FlowStateLogTO>();
     RepositoryClient rep = getRepository();
-    if(!rep.checkConnection()) {
+    if (!rep.checkConnection()) {
       return retObj;
     }
     byte[] data = rep.getProcessStateLog(flowid, pnumber, state);
@@ -1047,7 +1222,8 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
     /* perguntar se quer gravar */
     if (force || d.isFlowChanged()) {
       File lastParent = d.getLastParent();
-      if(null == lastParent) lastParent = this.lastParent;
+      if (null == lastParent)
+        lastParent = this.lastParent;
       JFileChooser fd = new JFileChooser(lastParent);
       String filename = FilenameUtils.removeExtension(d.getFlowId()) + ".xml";
       fd.setSelectedFile(new File(lastParent, filename));
@@ -1056,9 +1232,10 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
       int returnVal = fd.showSaveDialog(this);
       if (returnVal == JFileChooser.APPROVE_OPTION) {
         File f = fd.getSelectedFile();
-        if(f.exists()) {
+        if (f.exists()) {
           int r = new Sair(this, Mesg.ConfirmaExistente).getResposta();
-          if(r != Sair.YES) return r;
+          if (r != Sair.YES)
+            return r;
         }
 
         lastParent = fd.getCurrentDirectory();
@@ -1069,6 +1246,37 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
         return Sair.CANCEL;
       }
     }
+    return Sair.YES;
+  }
+
+  private int saveR2RApplication() {
+    Desenho d = getSelectedDesenho();
+    if (null == s2rModule)
+      return Sair.NO;
+    /* perguntar se quer gravar */
+    File lastParent = d == null ? null : d.getLastParent();
+    if (null == lastParent)
+      lastParent = this.lastParent;
+    JFileChooser fd = new JFileChooser(lastParent);
+    fd.setSelectedFile(s2rModule.getFilePath());
+    fd.setFileFilter(this.s2rFilter);
+    fd.setMultiSelectionEnabled(false);
+    int returnVal = fd.showSaveDialog(this);
+    if (returnVal == JFileChooser.APPROVE_OPTION) {
+      File f = fd.getSelectedFile();
+      if (f.exists()) {
+        int r = new Sair(this, Mesg.ConfirmaExistente).getResposta();
+        if (r != Sair.YES)
+          return r;
+      }
+
+      lastParent = fd.getCurrentDirectory();
+      this.lastParent = lastParent;
+      s2rModule.saveToFile(fd.getSelectedFile(), tabPane);
+    } else {
+      return Sair.CANCEL;
+    }
+
     return Sair.YES;
   }
 
@@ -1087,7 +1295,7 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
       if (StringUtilities.isNotEmpty(flowId) && StringUtilities.isNotEmpty(flowName)) {
         RepositoryClient rep = getRepository();
         boolean fileExists = false;
-        if(rep.checkConnection()) {
+        if (rep.checkConnection()) {
           // test if file exists in repository
           if (rep.hasExtendedAPI()) {
             FlowInfo finfo = rep.getFlowInfo(flowId);
@@ -1105,9 +1313,9 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
 
         if (fileExists) {
           FlowEditor.log("Flow exists. Please confirm."); //$NON-NLS-1$
-          Object [] options = new Object[]{ Mesg.Sim, Mesg.Nao };
-          int opt = JOptionPane.showOptionDialog(this, Messages.getString("Desenho.confirm.flowExists"),  //$NON-NLS-1$
-              Messages.getString("Desenho.title_warning"), JOptionPane.YES_NO_OPTION,  //$NON-NLS-1$
+          Object[] options = new Object[] { Mesg.Sim, Mesg.Nao };
+          int opt = JOptionPane.showOptionDialog(this, Messages.getString("Desenho.confirm.flowExists"), //$NON-NLS-1$
+              Messages.getString("Desenho.title_warning"), JOptionPane.YES_NO_OPTION, //$NON-NLS-1$
               JOptionPane.WARNING_MESSAGE, (Icon) null, options, options[1]);
           if (opt == JOptionPane.OK_OPTION) {
             flowNameSet = true;
@@ -1179,7 +1387,7 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
     toolBar.addSeparator();
 
     boolean repOn = repository.checkConnection();
-    
+
     /* validar entradas e saidas */
     button = new JButton(new ImageIcon(createImage("menu_icon_download.png", false, false))); //$NON-NLS-1$
     button.setToolTipText(Mesg.ImportarFicheiro);
@@ -1217,7 +1425,7 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
     onlineComponents.add(button);
 
     toolBar.addSeparator();
-    
+
     /* escolher novo bloco */
     button = new JButton(new ImageIcon(createImage("menu_icon_choose_block.png", false, false))); //$NON-NLS-1$
     button.setToolTipText(Mesg.ChooseBlock); //$NON-NLS-1$
@@ -1253,7 +1461,7 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
     button = new JButton(new ImageIcon(createImage("template_man.png", false, false))); //$NON-NLS-1$
     button.setEnabled(false);
     button.setToolTipText(Mesg.TemplateManagerTooltip);
-    // Check WebForm class availability and enable 
+    // Check WebForm class availability and enable
     // TODO Criar um esquema de plugins!!!!!!
     try {
       loadGUIClass(Janela.WEB_FORM_CLASS);
@@ -1263,12 +1471,13 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
         }
       });
       button.setEnabled(true);
-    } catch (ClassNotFoundException e) {}
+    } catch (ClassNotFoundException e) {
+    }
     toolBar.add(button);
     addDesenhoDependentComponent(button);
 
     toolBar.addSeparator();
-    
+
     /* ver estado processo */
     button = new JButton(new ImageIcon(createImage("menu_icon_process_view.png", false, false)));
     button.setToolTipText(Mesg.ViewProcessState);
@@ -1280,7 +1489,7 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
     });
     toolBar.add(button);
     onlineComponents.add(button);
-    
+
     /* refrescar o estado do processo */
     button = new JButton(new ImageIcon(createImage("menu_icon_process_refresh.png", false, false)));
     button.setToolTipText(Mesg.RefreshProcessState);
@@ -1291,7 +1500,7 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
     });
     toolBar.add(button);
     addProcessStateComponents(button);
-    
+
     /* mostrar blocos percorridos */
     showBlockSorterButton = new JToggleButton();
     showBlockSorterButton.setSelectedIcon(new ImageIcon(createImage("menu_icon_process_show_on.png", false, false)));
@@ -1305,9 +1514,9 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
     });
     toolBar.add(showBlockSorterButton);
     addProcessStateComponents(showBlockSorterButton);
-    
+
     toolBar.addSeparator();
-    
+
     showLibButton = new JToggleButton();
     showLibButton.setSelectedIcon(new ImageIcon(createImage("menu_icon_show_lib_on.png", false, false)));
     showLibButton.setIcon(new ImageIcon(createImage("menu_icon_show_lib_off.png", false, false)));
@@ -1319,12 +1528,66 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
       }
     });
     toolBar.add(showLibButton);
-    
+
+    // S2R
+    toolBar.addSeparator();
+
+    installR2RButton = new JButton();
+    installR2RButton.setVisible(false);
+    installR2RButton.setText(Mesg.Install);
+    installR2RButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        installR2RApplication();
+      }
+    });
+    toolBar.add(installR2RButton);
+
+    uninstallR2RButton = new JButton();
+    uninstallR2RButton.setVisible(false);
+    uninstallR2RButton.setText(Mesg.Uninstall);
+    uninstallR2RButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        uninstallR2RApplication();
+      }
+    });
+    toolBar.add(uninstallR2RButton);
+
+    saveR2RButton = new JButton();
+    saveR2RButton.setVisible(false);
+    saveR2RButton.setText(Mesg.Save);
+    saveR2RButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        saveR2RApplication();
+      }
+    });
+    toolBar.add(saveR2RButton);
+
+    showR2RBox = new JComboBox();
+    showR2RBox.setVisible(false);
+    showR2RBox.setMaximumSize(new Dimension(100, 100));
+    showR2RBox.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        selectR2RBox();
+      }
+    });
+    toolBar.add(showR2RBox);
+
+    showR2RComponentBox = new JComboBox(new String[] { Mesg.Application, Mesg.Installer, Mesg.Uninstaller });
+    showR2RComponentBox.setVisible(false);
+    showR2RComponentBox.setMaximumSize(new Dimension(80, 100));
+    showR2RComponentBox.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        selectR2RComponentBox();
+      }
+    });
+    toolBar.add(showR2RComponentBox);
+
     toolBar.addSeparator();
     panelOnline = new JPanel();
-    panelOnline.setBorder(new  LineBorder(Color.black));
+    panelOnline.setBorder(new LineBorder(Color.black));
     panelOnline.setBackground(new Color(0xf7f5e8));
-    JLabel lblOffline = new JLabel(Messages.getString("Janela.status.offline"), new ImageIcon(createImage("warning.png", false, false)), JLabel.LEFT);
+    JLabel lblOffline = new JLabel(Messages.getString("Janela.status.offline"), new ImageIcon(createImage("warning.png", false,
+        false)), JLabel.LEFT);
     panelOnline.add(lblOffline);
     toolBar.add(panelOnline);
 
@@ -1435,10 +1698,10 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
   }
 
   private void openIFlowWindow() {
-    if(!repository.checkConnection()) return; // improve this
+    if (!repository.checkConnection())
+      return; // improve this
     FlowEditor.getRootDisplay().asyncExec(iflowWindowDispatcher);
   }
-
 
   protected void processKeyEvent(KeyEvent e) {
     super.processKeyEvent(e);
@@ -1488,6 +1751,7 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
   public Image createImage(String nomeficheiro, boolean isBiblioteca) {
     return createImage(nomeficheiro, true, isBiblioteca, null);
   }
+
   public Image createImage(String nomeficheiro, boolean isBiblioteca, pt.iflow.api.xml.codegen.library.Color xmlColor) {
     return createImage(nomeficheiro, true, isBiblioteca, xmlColor);
   }
@@ -1502,7 +1766,8 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
     return createImage(nomeFicheiro, abTryRep, isBiblioteca, null);
   }
 
-  public Image createImage(String nomeFicheiro, boolean abTryRep, boolean isBiblioteca, pt.iflow.api.xml.codegen.library.Color xmlColor) {
+  public Image createImage(String nomeFicheiro, boolean abTryRep, boolean isBiblioteca,
+      pt.iflow.api.xml.codegen.library.Color xmlColor) {
     // ptgm - saves time with server01.gif (transactions.xml)
     if (_htImageCache.containsKey(nomeFicheiro)) {
       return _htImageCache.get(nomeFicheiro);
@@ -1597,25 +1862,25 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
       double h = imagem.getHeight(null);
 
       // ensure that the image is not bigger than MAX_WIDTH x MAX_HEIGHT
-      if (w > MAX_WIDTH || h > MAX_HEIGHT) {
-        // scale image....
-        int nw = (int) (MAX_WIDTH * w / h);
-        int nh = (int) (MAX_HEIGHT * h / w);
-        if (nh < MAX_HEIGHT) {
-          nw = MAX_WIDTH;
-        }
-        imagem = new ImageIcon(imagem.getScaledInstance(nw, nh, Image.SCALE_DEFAULT)).getImage();
-        w = imagem.getWidth(null);
-        h = imagem.getHeight(null);
-      }
+      // if (w > MAX_WIDTH || h > MAX_HEIGHT) {
+      // // scale image....
+      // int nw = (int) (MAX_WIDTH * w / h);
+      // int nh = (int) (MAX_HEIGHT * h / w);
+      // if (nh < MAX_HEIGHT) {
+      // nw = MAX_WIDTH;
+      // }
+      // imagem = new ImageIcon(imagem.getScaledInstance(nw, nh, Image.SCALE_DEFAULT)).getImage();
+      // w = imagem.getWidth(null);
+      // h = imagem.getHeight(null);
+      // }
 
-      int width = MAX_WIDTH;
-      int height = MAX_HEIGHT;
+      int width = (int) w;
+      int height = (int) h;
       BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
       Graphics2D g = (Graphics2D) bi.getGraphics();
       g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-      if(null != xmlColor) {
+      if (null != xmlColor) {
         Color c = new Color(xmlColor.getR(), xmlColor.getG(), xmlColor.getB(), xmlColor.getA());
         g.setColor(c);
       } else if (hmBColors.containsKey(nomeFicheiro)) {
@@ -1624,13 +1889,13 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
         g.setColor(DEFAULT_COLOR);
       }
 
-      g.fillRoundRect(0, 0, width, height, BORDER_CORNER_RADIUS, BORDER_CORNER_RADIUS);
-
-      g.setPaint(new GradientPaint(new Point(2, 2), new Color(0.73f, 0.73f, 0.73f, 0.75f), new Point(width - (2 * BORDER_WIDTH),
-          height), new Color(0.93f, 0.93f, 0.93f, 0.85f)));
-
-      g.fillRoundRect(BORDER_WIDTH, BORDER_WIDTH, width - (2 * BORDER_WIDTH), height - (2 * BORDER_WIDTH), INNER_CORNER_RADIUS,
-          INNER_CORNER_RADIUS);
+      // g.fillRoundRect(0, 0, width, height, BORDER_CORNER_RADIUS, BORDER_CORNER_RADIUS);
+      //
+      // g.setPaint(new GradientPaint(new Point(2, 2), new Color(0.73f, 0.73f, 0.73f, 0.75f), new Point(width - (2 * BORDER_WIDTH),
+      // height), new Color(0.93f, 0.93f, 0.93f, 0.85f)));
+      //
+      // g.fillRoundRect(BORDER_WIDTH, BORDER_WIDTH, width - (2 * BORDER_WIDTH), height - (2 * BORDER_WIDTH), INNER_CORNER_RADIUS,
+      // INNER_CORNER_RADIUS);
       // g.fillRect(BORDER_WIDTH, BORDER_WIDTH, width-(2*BORDER_WIDTH),
       // height-(2*BORDER_WIDTH));
 
@@ -1664,7 +1929,7 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
     RepositoryWebClient rep = login.getRepository();
     this.repository = rep;
     FlowRepUrl result = rep.getIFlowURL();
-    
+
     if (rep.checkConnection()) {
       // reload icon image
       Image imagem = createImage("icon1.gif", true, false); //$NON-NLS-1$
@@ -1679,13 +1944,13 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
       String localeKey = result.getLanguage();
       if (rep.checkConnection()) {
         String iflowKey = rep.getUserLocale();
-        if(!StringUtilities.isEqual(iflowKey, localeKey)) {
+        if (!StringUtilities.isEqual(iflowKey, localeKey)) {
           localeKey = iflowKey;
           result.setLanguage(localeKey);
         }
       }
       Mesg.setLocale(localeKey);
-    } else if(StringUtils.isBlank(useLocale) || FlowEditorConfig.LOCALE_USE_DEFAULT.equals(useLocale)) {
+    } else if (StringUtils.isBlank(useLocale) || FlowEditorConfig.LOCALE_USE_DEFAULT.equals(useLocale)) {
       // use default
       result.setLanguage(Locale.getDefault().toString());
     } else {
@@ -1693,8 +1958,8 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
       result.setLanguage(cfg.getSelectedLocale());
     }
     cfg.saveConfig();
-    FlowEditor.log("User locale: "+result.getLanguage());
-    
+    FlowEditor.log("User locale: " + result.getLanguage());
+
     return result;
   }
 
@@ -1704,7 +1969,7 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
   private void exit() {
     synchronizeFlows();
     boolean doExit = confirmExit();
-    if(doExit) {
+    if (doExit) {
       // System.exit(0);
       FlowEditor.shutdown();
     }
@@ -1734,7 +1999,7 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
 
   private void switchWorkspace() {
     boolean doExit = confirmExit();
-    if(doExit) {
+    if (doExit) {
       // Notificar a main class
       FlowEditor.runEditor(null);
     }
@@ -1743,7 +2008,7 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
   private List<DesenhoScrollPane> getOpenTabs() {
     int tabCount = tabPane.getTabCount();
     List<DesenhoScrollPane> tabs = new ArrayList<DesenhoScrollPane>(tabCount);
-    for(int i = 0; i < tabCount; i++)
+    for (int i = 0; i < tabCount; i++)
       tabs.add((DesenhoScrollPane) tabPane.getComponentAt(i));
 
     return tabs;
@@ -1767,13 +2032,14 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
 
   public int getLibraryWidth() {
     int w = 0;
-    if(libraryPane.isVisible()) w = libraryPane.getSize().width;
+    if (libraryPane.isVisible())
+      w = libraryPane.getSize().width;
     return w;
   }
 
   public void setTabTitle(Component c, String text, String tooltip) {
     int pos = tabPane.indexOfComponent(c);
-    if(pos != -1) {
+    if (pos != -1) {
       tabPane.setTitleAt(pos, text);
       tabPane.setToolTipTextAt(pos, tooltip);
     }
@@ -1794,7 +2060,6 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
   public JPopupMenu getBlockPopup(Desenho d) {
     return this.t_m.Da_Popup_Componente(d, getOpenTabs());
   }
-
 
   public void keyPressed(java.awt.event.KeyEvent keyEvent) {
     Desenho d = getSelectedDesenho();
@@ -1892,9 +2157,9 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
     if (!subFlowCacheFolder.exists()) {
       subFlowCacheFolder.mkdirs();
     }
-    
+
     File i18nCacheFolder = new File(cacheFolder, "i18n");
-    if(!i18nCacheFolder.exists()) {
+    if (!i18nCacheFolder.exists()) {
       i18nCacheFolder.mkdirs();
     }
 
@@ -2008,43 +2273,42 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
 
     // compute local classes hashes and check updated/changed files
     FlowEditor.log("Checking for modified class files"); //$NON-NLS-1$
-    File classesCacheFolder = ((RepositoryWebClient)repository).getClassCacheFolder();
+    File classesCacheFolder = ((RepositoryWebClient) repository).getClassCacheFolder();
     List<CheckSum> classChecksum = new ArrayList<CheckSum>();
     computeClassChecksums(classesCacheFolder, "", classChecksum);
-    CheckSum [] modified = CheckSum.unmarshall(rep.getModifiedClasses(CheckSum.marshall(classChecksum)));
+    CheckSum[] modified = CheckSum.unmarshall(rep.getModifiedClasses(CheckSum.marshall(classChecksum)));
 
     // remove modified files
-    if(null != modified) {
-      for(CheckSum sum : modified) {
-        FlowEditor.log("Cached file has changed: "+sum.getFile());
+    if (null != modified) {
+      for (CheckSum sum : modified) {
+        FlowEditor.log("Cached file has changed: " + sum.getFile());
         File toRemove = new File(classesCacheFolder, sum.getFile());
         toRemove.delete();
       }
     }
-    
-    
+
     // TODO i18n cache
     FlowEditor.log("Checking for modified i18n files"); //$NON-NLS-1$
     List<CheckSum> i18nChecksum = new ArrayList<CheckSum>();
-    
-    File [] i18nResources = this.i18nCacheFolder.listFiles();
-    for(File f : i18nResources) {
-      if(!f.isFile()) continue;
+
+    File[] i18nResources = this.i18nCacheFolder.listFiles();
+    for (File f : i18nResources) {
+      if (!f.isFile())
+        continue;
       CheckSum sum = new CheckSum(CheckSum.digest(f), f.getName());
       i18nChecksum.add(sum);
     }
-    
+
     modified = CheckSum.unmarshall(rep.getModifiedMessages(CheckSum.marshall(i18nChecksum)));
 
     // remove modified files
-    if(null != modified) {
-      for(CheckSum sum : modified) {
-        FlowEditor.log("Cached file has changed: "+sum.getFile());
+    if (null != modified) {
+      for (CheckSum sum : modified) {
+        FlowEditor.log("Cached file has changed: " + sum.getFile());
         File toRemove = new File(this.i18nCacheFolder, sum.getFile());
         toRemove.delete();
       }
     }
-    
 
     FlowEditor.log("Writing updated cache info file");
     saveUserCacheEntry(this.cacheInfoFile, localCache);
@@ -2057,20 +2321,20 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
     try {
       in = new FileInputStream(cacheFile);
       return (UserCacheEntry) Unmarshaller.unmarshal(UserCacheEntry.class, new InputSource(in));
-    } catch(Exception e) {
+    } catch (Exception e) {
       FlowEditor.log("Error loading cache file. Assuming empty...");
     } finally {
-      if(null != in) {
+      if (null != in) {
         try {
           in.close();
-        } catch(IOException e) {
+        } catch (IOException e) {
         }
-        
+
       }
     }
     return new UserCacheEntry();
   }
-  
+
   private static void saveUserCacheEntry(File cacheFile, UserCacheEntry entry) {
     try {
 
@@ -2083,51 +2347,48 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
       marshaller.marshal(entry);
       osw.close();
       fos.close();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       FlowEditor.log("Error writing cache file", e);
     }
   }
-  
+
   private void computeClassChecksums(File parent, String prefix, List<CheckSum> sums) {
-    File [] children = parent.listFiles();
-    
-    for(File f : children) {
-      if(f.isFile()) {
-        sums.add(new CheckSum(CheckSum.digest(f), prefix+f.getName()));
+    File[] children = parent.listFiles();
+
+    for (File f : children) {
+      if (f.isFile()) {
+        sums.add(new CheckSum(CheckSum.digest(f), prefix + f.getName()));
       } else if (f.isDirectory()) {
-        computeClassChecksums(f, prefix+f.getName()+"/", sums);
+        computeClassChecksums(f, prefix + f.getName() + "/", sums);
       }
     }
   }
 
-  
-  
   private void synchronizeFlows() {
 
     RepositoryClient rep = getRepository();
-    
-    if(!rep.checkConnection()) return;
-    
+
+    if (!rep.checkConnection())
+      return;
+
     FlowEditor.log("Checking for flows to synchronize"); //$NON-NLS-1$
     File[] files;
     // check flow state changes
 
-
     // foreach cached flow, upload
     files = this.flowCacheFolder.listFiles();
     for (File file : files) {
-      FlowEditor.log("Uploading flow "+file); //$NON-NLS-1$
-      byte [] filedata = new byte[(int)file.length()];
+      FlowEditor.log("Uploading flow " + file); //$NON-NLS-1$
+      byte[] filedata = new byte[(int) file.length()];
       FileInputStream fin = null;
       try {
         fin = new FileInputStream(file);
         fin.read(filedata);
-      } 
-      catch (IOException e) {}
-      finally {
+      } catch (IOException e) {
+      } finally {
         try {
-          if(null != fin) fin.close();
+          if (null != fin)
+            fin.close();
         } catch (IOException e) {
         }
       }
@@ -2136,7 +2397,7 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
         XmlFlow flow = FlowMarshaller.unmarshal(filedata);
         String name = flow.getName();
         String description = flow.getDescription();
-        FlowEditor.log("subflow name: "+name+"; description: "+description); //$NON-NLS-1$
+        FlowEditor.log("subflow name: " + name + "; description: " + description); //$NON-NLS-1$
         rep.deployFlow(name, description, filedata);
       } catch (Throwable t) {
 
@@ -2147,17 +2408,17 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
     // foreach cached subflow, upload
     files = this.subFlowCacheFolder.listFiles();
     for (File file : files) {
-      FlowEditor.log("Uploading subflow "+file); //$NON-NLS-1$
-      byte [] filedata = new byte[(int)file.length()];
+      FlowEditor.log("Uploading subflow " + file); //$NON-NLS-1$
+      byte[] filedata = new byte[(int) file.length()];
       FileInputStream fin = null;
       try {
         fin = new FileInputStream(file);
         fin.read(filedata);
-      } 
-      catch (IOException e) {}
-      finally {
+      } catch (IOException e) {
+      } finally {
         try {
-          if(null != fin) fin.close();
+          if (null != fin)
+            fin.close();
         } catch (IOException e) {
         }
       }
@@ -2166,7 +2427,7 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
         XmlFlow flow = FlowMarshaller.unmarshal(filedata);
         String name = flow.getName();
         String description = flow.getDescription();
-        FlowEditor.log("subflow name: "+name+"; description: "+description); //$NON-NLS-1$
+        FlowEditor.log("subflow name: " + name + "; description: " + description); //$NON-NLS-1$
         rep.deploySubFlow(name, description, filedata);
       } catch (Throwable t) {
       }
@@ -2181,16 +2442,17 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
     int flowId = -1;
 
     try {
-      byte [] data = d.getFlowData();
-      if(null == data) throw new Exception("Invalid flow data");
+      byte[] data = d.getFlowData();
+      if (null == data)
+        throw new Exception("Invalid flow data");
       // test iFlow connectivity
-      if(repository.checkConnection()) {
+      if (repository.checkConnection()) {
         // is OK
         RepositoryClient rep = getRepository();
         rep.setStatusListener(listener);
         FlowEditor.log("Uploading to Repository ..."); //$NON-NLS-1$
 
-        if(isFlow && version)
+        if (isFlow && version)
           flowId = rep.deployFlowVersion(d.getFlowId(), d.getName(), data, comment);
         else if (isFlow && !version)
           flowId = rep.deployFlow(d.getFlowId(), d.getName(), data);
@@ -2203,18 +2465,18 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
         FlowEditor.log("Flow uploaded."); //$NON-NLS-1$
       } else {
         FlowEditor.log("Saving into local cache..."); //$NON-NLS-1$
-        if(isFlow)
+        if (isFlow)
           saveOk = cacheFlow(d.getFlowId(), data, this.flowCacheFolder);
         else
           saveOk = cacheFlow(d.getFlowId(), data, this.subFlowCacheFolder);
 
-        if(saveOk) {
+        if (saveOk) {
           flowId = 1;
         }
         FlowEditor.log("Flow saved."); //$NON-NLS-1$
       }
 
-      d.setFlowChanged(d.isFlowChanged()&&!saveOk); // if save ok, mark flow not changed
+      d.setFlowChanged(d.isFlowChanged() && !saveOk); // if save ok, mark flow not changed
     } catch (Throwable t) {
       FlowEditor.log("Error saving flow.", t); //$NON-NLS-1$
       flowId = -1;
@@ -2223,7 +2485,7 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
   }
 
   private boolean cacheFlow(String name, byte[] data, File parent) {
-    FlowEditor.log("Caching local Flow "+name+" into "+parent); //$NON-NLS-1$
+    FlowEditor.log("Caching local Flow " + name + " into " + parent); //$NON-NLS-1$
     boolean saveOk = false;
     // save to disk
     File file = new File(parent, name);
@@ -2233,10 +2495,11 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
       fout.write(data);
       saveOk = true;
     } catch (IOException e) {
-      FlowEditor.log("error writing file "+file, e);
+      FlowEditor.log("error writing file " + file, e);
     } finally {
       try {
-        if(null != fout) fout.close();
+        if (null != fout)
+          fout.close();
       } catch (IOException e) {
       }
     }
@@ -2247,34 +2510,34 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
 
   private synchronized void notifyOnline(boolean fromEvent) {
     boolean repOn = repository.checkConnection();
-    if(null != panelOnline) panelOnline.setVisible(!repOn);
+    if (null != panelOnline)
+      panelOnline.setVisible(!repOn);
 
-    setTitle("Flow Editor " + Version.VERSION+" on "+iFlowURL.url+(repOn?"":" (offline)"));
+    setTitle("Flow Editor " + Version.VERSION + " on " + iFlowURL.url + (repOn ? "" : " (offline)"));
 
-    if(!repOn) {
+    if (!repOn) {
       String msg = Messages.getString("Janela.offline.msg");
       String title = Messages.getString("Janela.offline.title");
       JOptionPane.showMessageDialog(this, msg, title, JOptionPane.INFORMATION_MESSAGE);
     }
 
-    if(fromEvent && repOn) {
+    if (fromEvent && repOn) {
       String msg = Messages.getString("Janela.online.msg");
       String title = Messages.getString("Janela.online.title");
       JOptionPane.showMessageDialog(this, msg, title, JOptionPane.INFORMATION_MESSAGE);
     }
-    if(repOn) synchronizeFlows();
+    if (repOn)
+      synchronizeFlows();
 
     Iterator<JComponent> iterCo = onlineComponents.iterator();
-    while(iterCo.hasNext())
+    while (iterCo.hasNext())
       iterCo.next().setEnabled(repOn);
 
   }
 
-
   /**
-   * The class which generates the 'X' icon for the tabs. The constructor
-   * accepts an icon which is extra to the 'X' icon, so you can have tabs like
-   * in JBuilder. This value is null if no extra icon is required.
+   * The class which generates the 'X' icon for the tabs. The constructor accepts an icon which is extra to the 'X' icon, so you can
+   * have tabs like in JBuilder. This value is null if no extra icon is required.
    */
   private static class SimpleCrossIcon implements Icon {
     /**
@@ -2288,9 +2551,8 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
     private int height = 16;
 
     /**
-     * Draw the icon at the specified location. Icon implementations may use the
-     * Component argument to get properties useful for painting, e.g. the
-     * foreground or background color.
+     * Draw the icon at the specified location. Icon implementations may use the Component argument to get properties useful for
+     * painting, e.g. the foreground or background color.
      * 
      * @param c
      *          the component which the icon belongs to
@@ -2355,65 +2617,65 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
     return dialogClass;
   }
 
-
   public RepositoryClient getRepository() {
     return repository;
   }
-  
+
   private IMessages getCachedBlockMsg() {
-    String resourceName = "editor_blocks_"+iFlowURL.getLanguage()+".properties";
+    String resourceName = "editor_blocks_" + iFlowURL.getLanguage() + ".properties";
     // byte [] propContents = null;
     Properties props = new Properties();
     File cachedProp = new File(this.i18nCacheFolder, resourceName);
-    if(!cachedProp.exists()) {
+    if (!cachedProp.exists()) {
       // retrieve from iFlow
-      byte [] data = repository.getMessages(resourceName);
-      if(null == data) {
+      byte[] data = repository.getMessages(resourceName);
+      if (null == data) {
         // try to retrieve default file...
         resourceName = "editor_blocks.properties";
         cachedProp = new File(this.i18nCacheFolder, resourceName);
-        if(!cachedProp.exists()) {
+        if (!cachedProp.exists()) {
           data = repository.getMessages(resourceName);
         }
       }
-      
+
       // at this point return data is null if localized and default versions of properties
       // are not found
-      if(null == data) return new BlockMessages(props);
-      
+      if (null == data)
+        return new BlockMessages(props);
+
       OutputStream out = null;
-      
+
       try {
         out = new FileOutputStream(cachedProp);
         out.write(data);
       } catch (Exception e) {
-        
+
       } finally {
-        if(null != out) {
+        if (null != out) {
           try {
             out.close();
           } catch (IOException e) {
           }
         }
       }
-      
+
     }
-    
+
     InputStream in = null;
-    
+
     try {
       props.load(in = new FileInputStream(cachedProp));
-    } catch(Exception e) {
-      
+    } catch (Exception e) {
+
     } finally {
-      if(null != in) {
+      if (null != in) {
         try {
           in.close();
         } catch (IOException e) {
         }
       }
     }
-    
+
     return new BlockMessages(props);
   }
 

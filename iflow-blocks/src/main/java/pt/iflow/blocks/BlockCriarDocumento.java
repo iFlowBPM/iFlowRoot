@@ -28,6 +28,7 @@ public class BlockCriarDocumento extends Block {
   private static final String TEMPLATE = "template";
   private static final String VARIABLE = "variable";
   private static final String FILENAME = "filename";
+  private static final String OVERWRITE = "overwrite";
 
   public BlockCriarDocumento(int anFlowId, int id, int subflowblockid, String filename) {
     super(anFlowId, id, subflowblockid, filename);
@@ -79,6 +80,8 @@ public class BlockCriarDocumento extends Block {
     String tmpl = getAttribute(TEMPLATE);
     String var = getAttribute(VARIABLE);
     String filename = getAttribute(FILENAME);
+    String overwrite = getAttribute(OVERWRITE);
+
     if (StringUtils.isBlank(tmpl) || StringUtils.isBlank(var) || StringUtils.isBlank(filename)) {
       Logger.error(login, this, "after", "Unable to process data into file: must set variables (found: template=" + tmpl
           + "; variable=" + var + "; filename=" + filename + ")");
@@ -112,6 +115,9 @@ public class BlockCriarDocumento extends Block {
             newDocument.setUpdated(Calendar.getInstance().getTime());
             Document savedDocument = BeanFactory.getDocumentsBean().addDocument(userInfo, procData, newDocument);
             try {
+              if (StringUtils.equalsIgnoreCase("true", procData.transform(userInfo, overwrite)))
+                variable.clear();
+
               variable.parseAndAddNewItem(String.valueOf(savedDocument.getDocId()));
               outPort = this.portOutOk;
               logMsg.append("Added '" + savedDocument.getDocId() + "' to '" + var + "';");

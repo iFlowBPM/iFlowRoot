@@ -129,7 +129,7 @@ public class ProcessAnnotationServlet extends javax.servlet.http.HttpServlet imp
 	  String[] paramlist = new String[0];
 	  
 	  if(param != null){
-		  paramlist = param.split("§§§");		  
+		  paramlist = param.split(",");		  
 		  if( (paramlist.length == 0) || (paramlist.length == 1 && paramlist[0].equals(""))) 
 			  paramlist = new String[0];
 	  }

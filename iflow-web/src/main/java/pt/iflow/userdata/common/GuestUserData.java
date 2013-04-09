@@ -40,6 +40,11 @@ public class GuestUserData implements UserData,Serializable{
     this._data.put("MOBILE_NUMBER", "MOBILE_NUMBER");
     this._data.put("ORGADM", "ORGADM");
     this._data.put("USERNAME", "USERNAME");
+    this._data.put(ORGADM_USERS, ORGADM_USERS);
+    this._data.put(ORGADM_FLOWS, ORGADM_FLOWS);
+    this._data.put(ORGADM_PROCESSES, ORGADM_PROCESSES);
+    this._data.put(ORGADM_RESOURCES, ORGADM_RESOURCES);
+    this._data.put(ORGADM_ORG, ORGADM_ORG);
   }
   
 
@@ -93,5 +98,25 @@ public class GuestUserData implements UserData,Serializable{
 
   public String toString() {
     return String.valueOf(_data);
+  }
+
+  public String getOrgAdmFlows() {
+    return get(ORGADM_FLOWS);
+  }
+
+  public String getOrgAdmOrg() {
+    return get(ORGADM_ORG);
+  }
+
+  public String getOrgAdmProcesses() {
+    return get(ORGADM_PROCESSES);
+  }
+
+  public String getOrgAdmResources() {
+    return get(ORGADM_RESOURCES);
+  }
+
+  public String getOrgAdmUsers() {
+    return get(ORGADM_USERS);
   }
 }

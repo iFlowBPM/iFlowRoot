@@ -72,15 +72,18 @@ public class Desenha_Componente {
         
         /* drawImage*/
         if (desenho!=null) {
-            int _x=desenho.getWidth(ppanel);
-            int _y=desenho.getHeight(ppanel);
-            cb.Largura_X=_x;
-            cb.Largura_Y=_y;
-            
+      if ((cb.Largura_X == 0 || cb.Largura_Y == 0)
+          || (cb.Largura_X < desenho.getWidth(ppanel) || cb.Largura_Y < desenho.getHeight(ppanel))) {
+        cb.Largura_X = desenho.getWidth(ppanel);
+        cb.Largura_Y = desenho.getHeight(ppanel);
+      }
+      int _x = cb.Largura_X;
+      int _y = cb.Largura_Y;
             
              //   g.drawRect(x1,y1,_x,_y);
                 //if (g.drawImage(desenho,x1,y1,x2,y2,ppanel))
-            if (g.drawImage(desenho,x1,y1,_x,_y,jp)) {
+      jp.setBackground(Color.WHITE);
+      if (g.drawImage(desenho, x1, y1, _x, _y, jp)) {
                 numero_funcao=-3; /* -3 not used */
                 return;
             }

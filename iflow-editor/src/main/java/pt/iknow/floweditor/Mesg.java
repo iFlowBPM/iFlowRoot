@@ -20,6 +20,7 @@ public class Mesg {
   /* files */
   static final String FileExtension = "xml"; //$NON-NLS-1$
   static final String LibraryExtension = "xml"; //$NON-NLS-1$
+  static final String s2rExtension = "s2r"; //$NON-NLS-1$
 
   static final String[] CompComCor = { "Background", //$NON-NLS-1$
     "Block", //$NON-NLS-1$
@@ -106,6 +107,10 @@ public class Mesg {
   static String AntiAlias;
   static String ShowBlockLibrary;
   static String OpenIFlow;
+
+  /* Menu R2R */
+  static String s2rInstall;
+  static String s2rUninstall;
 
   /* Toolbar */
   static String ToolNovo;
@@ -263,6 +268,12 @@ public class Mesg {
 
   static String Proxy;
 
+  static String Install;
+  static String Uninstall;
+  static String Installer;
+  static String Uninstaller;
+  static String Application;
+
   static {
     reload();
   }
@@ -359,6 +370,10 @@ public class Mesg {
     AntiAlias = Messages.getString("Menu.ANTI_ALIAS"); //$NON-NLS-1$
     ShowBlockLibrary = Messages.getString("Menu.SHOW_LIBRARY"); //$NON-NLS-1$
     OpenIFlow = Messages.getString("Menu.OPEN_IFLOW"); //$NON-NLS-1$
+
+    /* R2R */
+    s2rInstall = Messages.getString("Menu.S2R_INSTAL");
+    s2rUninstall = Messages.getString("Menu.S2R_UNINSTAL");
 
     /* Toolbar */
     ToolNovo = Messages.getString("Toolbar.NEW"); //$NON-NLS-1$
@@ -515,6 +530,13 @@ public class Mesg {
     TitleNewFlow = Messages.getString("Window.ChooseCB.NEW_FLOW"); //$NON-NLS-1$
     Search = Messages.getString("Generic.SEARCH"); //$NON-NLS-1$
     TitleDownloadLibrary = Messages.getString("Window.ChooseCB.DOWNLOAD_LIBRARY"); //$NON-NLS-1$
+
+    // S2R
+    Install = Messages.getString("Generic.Install"); //$NON-NLS-1$
+    Uninstall = Messages.getString("Generic.Uninstall"); //$NON-NLS-1$
+    Installer = Messages.getString("Generic.Installer"); //$NON-NLS-1$
+    Uninstaller = Messages.getString("Generic.Uninstaller"); //$NON-NLS-1$
+    Application = Messages.getString("Generic.Application"); //$NON-NLS-1$
 
     Proxy = Messages.getString("ProxyWindow.title"); //$NON-NLS-1$
   }

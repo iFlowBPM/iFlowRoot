@@ -89,7 +89,7 @@ public class RepositoryBean implements Repository {
 
   protected RepositoryBean() {
     if (StringUtils.equals(Const.EDITOR_MODE_BPMN, Setup.getProperty(Const.EDITOR_MODE)))
-      sLIBRARIES_DIR_TEMPLATE = "{0}{2}/LibrariesBPMN/{1}";
+      sLIBRARIES_DIR_TEMPLATE = "{0}{2}/Libraries_BPMN/{1}";
     else
       sLIBRARIES_DIR_TEMPLATE = "{0}{2}/Libraries/{1}";
   }

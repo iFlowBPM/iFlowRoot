@@ -6,9 +6,12 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.lang.StringUtils;
+
 import pt.iflow.api.blocks.Block;
 import pt.iflow.api.blocks.Port;
 import pt.iflow.api.db.DatabaseInterface;
+import pt.iflow.api.events.EventManager;
 import pt.iflow.api.processdata.ProcessData;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.UserInfoInterface;
@@ -33,8 +36,8 @@ import pt.iflow.api.utils.Utils;
  */
 
 public class BlockEventTrigger extends Block {
-    private static final String sQueryNoBlock = "UPDATE iflow.event_data set processed=0 WHERE type='AsyncWait' AND fid=? AND pid=? AND subpid=? ;";
-    private static final String sQueryWithBlock = "UPDATE iflow.event_data set processed=0 WHERE type='AsyncWait' AND fid=? AND pid=? AND subpid=? AND blockid=? ;";
+  private static final String sQueryNoBlock = "UPDATE event_data SET processed=0 WHERE type='AsyncWait' AND fid=? AND pid=? AND subpid=? ;";
+  private static final String sQueryWithBlock = "UPDATE event_data SET processed=0 WHERE type='AsyncWait' AND fid=? AND pid=? AND subpid=? AND blockid=? ;";
     public static final String sFLOWID = "flowid";
     public static final String sPID = "pid";
     public static final String sSUBPID = "subPid";
@@ -98,6 +101,7 @@ public class BlockEventTrigger extends Block {
         StringBuffer logMsg = new StringBuffer();
         String login = userInfo.getUtilizador();
         String flowid = "-1", pid = "-1", subpid = "-1", blockid = "-1";
+    Boolean isAsynchronous = false;
         DataSource ds = null;
         Connection db = null;
         PreparedStatement pst = null;
@@ -109,6 +113,7 @@ public class BlockEventTrigger extends Block {
             pid = "" + procData.eval( userInfo, this.getAttribute(sPID));
             subpid= "" + procData.eval( userInfo, this.getAttribute(sSUBPID));
             blockid = "" + procData.eval( userInfo, this.getAttribute(sBLOCKID));
+      isAsynchronous = StringUtils.equalsIgnoreCase("true", "" + procData.eval(userInfo, this.getAttribute(sISASYNCHRONOUS)));
 
             if (flowid == null || pid == null || subpid == null || Integer.parseInt(flowid) < 0
                     || Integer.parseInt(pid) < 0 || Integer.parseInt(subpid) < 0) {
@@ -144,7 +149,8 @@ public class BlockEventTrigger extends Block {
                     }
 
                     Logger.debug(login, this, "after", "Going to set event READY_TO_PROCESS flowid, pid, subpid: "
-                            + flowid + "," + pid + "," + subpid);
+ + flowid + "," + pid + ","
+              + subpid + " :" + pst.toString());
                     int nCols = pst.executeUpdate();
                     Logger.debug(login, this, "after", "Number of updated columns = " + nCols);
 
@@ -155,6 +161,8 @@ public class BlockEventTrigger extends Block {
                     }
 
                 }
+        if (!isAsynchronous)
+          EventManager.get().checkEventsSynchronizedDB();
             } catch (SQLException sqle) {
                 Logger.error(login, this, "after", "caught sql exception: " + sqle.getMessage(), sqle);
                 outPort = portError;

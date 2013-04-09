@@ -33,6 +33,7 @@ public class AlteraAtributosEventTrigger extends AbstractAlteraAtributos impleme
     public static final String sPID = "pid";
     public static final String sSUBPID = "subPid";
     public static final String sBLOCKID = "blockid";
+  public static final String sISASYNCHRONOUS = "isAsynchronous";
 
     JPanel panel1 = new JPanel();
     BorderLayout borderLayout1 = new BorderLayout();
@@ -59,6 +60,7 @@ public class AlteraAtributosEventTrigger extends AbstractAlteraAtributos impleme
     public final String sDESC_PID ;
     public final String sDESC_SUBPID ;
     public final String sDESC_BLOCKID ;
+  public final String sDESC_ISASYNCHRONOUS;
 
     private int exitStatus = EXIT_STATUS_CANCEL;
     private String[][] data;
@@ -76,6 +78,7 @@ public class AlteraAtributosEventTrigger extends AbstractAlteraAtributos impleme
       sDESC_PID = adapter.getString("AlteraAtributosLaunchAsyncEvent.pid"); ;
       sDESC_SUBPID = adapter.getString("AlteraAtributosLaunchAsyncEvent.subpid");
       sDESC_BLOCKID = adapter.getString("AlteraAtributosLaunchAsyncEvent.blockid");
+    sDESC_ISASYNCHRONOUS = adapter.getString("AlteraAtributosLaunchAsyncEvent.isasynchronous");
       
       _sSELECT = adapter.getString("AlteraAtributosEmail.choose"); //$NON-NLS-1$
     }
@@ -90,7 +93,7 @@ public class AlteraAtributosEventTrigger extends AbstractAlteraAtributos impleme
       data[1][0] = AlteraAtributosEventTrigger.sPID;
       data[2][0] = AlteraAtributosEventTrigger.sSUBPID;
       data[3][0] = AlteraAtributosEventTrigger.sBLOCKID;
-      
+    data[4][0] = AlteraAtributosEventTrigger.sISASYNCHRONOUS;
       return data;
     }
 
@@ -106,8 +109,8 @@ public class AlteraAtributosEventTrigger extends AbstractAlteraAtributos impleme
       }
 
       int size = atributos.size();
-      if (size < 4) {
-        size = 4;
+    if (size < 5) {
+      size = 5;
       }
       data = new String[size][2];
 
@@ -161,6 +164,18 @@ public class AlteraAtributosEventTrigger extends AbstractAlteraAtributos impleme
       this._jtfBlockid = new JTextField();
       this._jtfBlockid.setText((String) data[3][1]);
 
+    // ISASYNCHRONOUS
+    data[4][0] = sDESC_ISASYNCHRONOUS;
+    if (atributos != null && atributos.size() > 4 && atributos.get(4) != null)
+      stmp = new String(((Atributo) atributos.get(4)).getValor());
+    else
+      stmp = null;
+    if (stmp == null || stmp.equals("")) //$NON-NLS-1$
+      stmp = ""; //$NON-NLS-1$
+    data[4][1] = stmp;
+    this._jtfisAsynchronous = new JTextField();
+    this._jtfisAsynchronous.setText((String) data[4][1]);
+
       jTable1 = new MyJTableX(data, AlteraAtributosColumnNames);
 
       MyTableModel tableModel = new MyTableModel(AlteraAtributosColumnNames, data);
@@ -184,6 +199,8 @@ public class AlteraAtributosEventTrigger extends AbstractAlteraAtributos impleme
       cm.addEditorForCell(2, 1, ed);
       ed = new DefaultCellEditor(this._jtfBlockid);
       cm.addEditorForCell(3, 1, ed);
+    ed = new DefaultCellEditor(this._jtfisAsynchronous);
+    cm.addEditorForCell(4, 1, ed);
 
       /* criar botoes e arranjar dialogo */
       try {
@@ -271,6 +288,9 @@ public class AlteraAtributosEventTrigger extends AbstractAlteraAtributos impleme
       
       // blockid
       data[3][1] = jTable1.getStringAt(3, 1);
+
+    // isasynchronous
+    data[4][1] = jTable1.getStringAt(4, 1);
 
       exitStatus = EXIT_STATUS_OK;
       dispose();

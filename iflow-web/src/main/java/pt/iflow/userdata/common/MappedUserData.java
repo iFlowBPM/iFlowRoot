@@ -72,4 +72,24 @@ public class MappedUserData extends MappedData implements UserData,Serializable{
   public String getUsername() {
     return get(USERNAME);
   }
+
+  public String getOrgAdmFlows() {
+    return get(ORGADM_FLOWS);
+  }
+
+  public String getOrgAdmOrg() {
+    return get(ORGADM_ORG);
+  }
+
+  public String getOrgAdmProcesses() {
+    return get(ORGADM_PROCESSES);
+  }
+
+  public String getOrgAdmResources() {
+    return get(ORGADM_RESOURCES);
+  }
+
+  public String getOrgAdmUsers() {
+    return get(ORGADM_USERS);
+  }
 }

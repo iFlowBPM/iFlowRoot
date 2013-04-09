@@ -1973,3 +1973,12 @@ alter table users add telephonenumber varchar(50);
 GO
 alter table users add title varchar(50);
 GO
+CREATE INDEX IDX_REPORTING ON dbo.reporting(flowid , pid ,subpid );
+GO
+ALTER TABLE dbo.users ADD 
+  orgadm_users NUMBER(1)  NOT NULL DEFAULT 1,
+  orgadm_flows NUMBER(1)  NOT NULL DEFAULT 1,
+  orgadm_processes NUMBER(1)  NOT NULL DEFAULT 1,
+  orgadm_resources NUMBER(1)  NOT NULL DEFAULT 1,
+  orgadm_org NUMBER(1)  NOT NULL DEFAULT 1;
+GO

@@ -68,7 +68,7 @@
 
 
 <%
-  if (canUserAdmin && userInfo.isOrgAdmin()) {
+  if (canUserAdmin && userInfo.isOrgAdmin() && userInfo.isOrgAdminUsers()) {
 %>
 <h2 onclick="javascript:toggleItemBox('admin', $('admin_section_users'))"><%=messages.getString("admin_nav.section.users.title")%><img
 	id="admin_section_users" class="item_title_show" src="images/minus.png"
@@ -104,7 +104,7 @@
   }
 %>
 <%
-  if (userInfo.isOrgAdmin()) {
+  if (userInfo.isOrgAdmin() && userInfo.isOrgAdminFlows()) {
 %>
 
 <h2 onclick="javascript:toggleItemBox('admin', $('admin_section_flows'))"><%=messages.getString("admin_nav.section.flows.title")%><img
@@ -138,7 +138,7 @@
   }
 %>
 <%
-  if (userInfo.isOrgAdmin()) {
+  if (userInfo.isOrgAdmin() && userInfo.isOrgAdminProcesses()) {
 %>
 
 <h2 onclick="javascript:toggleItemBox('admin', $('admin_section_processes'))"><%=messages.getString("admin_nav.section.processes.title")%><img
@@ -171,6 +171,9 @@
   }
 %>
 
+<%
+  if (userInfo.isOrgAdmin() && userInfo.isOrgAdminResources()) {
+%>
 <h2 onclick="javascript:toggleItemBox('admin', $('admin_section_resources'))"><%=messages.getString("admin_nav.section.resources.title")%><img
 	id="admin_section_resources" class="item_title_show"
 	src="images/minus.png" <%if(isClassic){%>style="display: none;"<%}%>/></h2>
@@ -192,6 +195,7 @@
 		class="toolTipItemLink li_link"
 		href="javascript:selectedItem('admin',<%=AdminNavConsts.RESOURCES_PUBLIC%>);tabber_save(4,'','sel=<%=AdminNavConsts.RESOURCES_PUBLIC%>','<%=response.encodeURL("Admin/Resources/dolist.jsp") %>','type=<%=ResourceNavConsts.PUBLIC_FILES%>&ts=<%=ts%>');"><%=messages.getString("admin_nav.section.resources.link.public")%></a></li>
 	<%
+  }
 	  if (userInfo.isSysAdmin()) {
 	%>
 	<li><a id="li_a_admin_<%=AdminNavConsts.RESOURCES_FLOW_TEMPLATES%>"
@@ -204,7 +208,9 @@
 	%>
 </ul>
 
-
+<%
+  if (userInfo.isOrgAdmin() && userInfo.isOrgAdminOrg()) {
+%>
 <h2 onclick="javascript:toggleItemBox('admin', $('admin_section_organization'))"><%=messages.getString("admin_nav.section.organization.title")%><img
 	id="admin_section_organization" class="item_title_show"
 	src="images/minus.png" <%if(isClassic){%>style="display: none;"<%}%>/></h2>
@@ -234,4 +240,4 @@
                   .getString("admin_nav.section.organization.link.profiles")%></a></li>
     <%}%>
 </ul>
-	
+	<%} %>

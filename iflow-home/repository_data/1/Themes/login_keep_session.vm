@@ -29,7 +29,7 @@
 			#if (!$isInstallLocal)
 				<div class="lp_top_nav_pos">
 					<div class="lp_top_nav_text" style="float:left;">
-						<a class="lp_top_nav_link" href="http://www.iflow.pt/ifportal">iflow.pt</a> 
+						<a class="lp_top_nav_link" href="http://www.iflowbpm.com/">iflowbpm.pt</a> 
 						: <a class="lp_top_nav_link" href="register">$msg.get('login.link.register')</a>
 						#if ($useEmail)
 							: <a class="lp_top_nav_link" href="resetPassword">$msg.get('login.link.passwordRecover')</a>
@@ -76,7 +76,7 @@
 				</div>
 			</div>
 			<div class="lp_footer_nav">
-				<a class="lp_top_nav_link" style="color:#5D7891;" href="http://www.infosistema.pt">$msg.get('iflow.copyright')</a>
+				<a class="lp_top_nav_link" style="color:#5D7891;" href="http://infosistema.pt">$msg.get('iflow.copyright')</a>
 				<br><span class="lp_top_nav_text ${maintenance}">iFlow Version ${version}</span>
 			</div>
 		</form>
