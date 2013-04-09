@@ -25,5 +25,10 @@
   		<type>jar</type>
   		<scope>compile</scope>
   	</dependency>
+    <dependency>
+        <groupId>pt.iflow.vfs</groupId>
+        <artifactId>virtual-entity</artifactId>
+        <version>0.0.1</version>        
+    </dependency>
   </dependencies>
 </project>

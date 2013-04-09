@@ -38,7 +38,6 @@
 	<![endif]-->
 
 	<!-- locale stuff -->
-	<script type="text/javascript" src="javascript/jscolor/jscolor.js"></script> 
 	<script type="text/javascript" src="javascript/messages.js"> </script><!-- default messages -->
 	<script type="text/javascript" src="javascript/messages_${lang}.js"> </script> <!-- localized version override -->
 	<script type="text/javascript" src="javascript/ibox.js"> </script>

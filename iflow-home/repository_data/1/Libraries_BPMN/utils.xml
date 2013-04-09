@@ -651,7 +651,7 @@
             <description>Path to file(s) folder</description>
             <value />
         </XmlAttribute>
-        <image>bpmn_delete_file.png</image>
+        <image></image>
         <description>Delete File(s) to disk</description>
         <i18n>library.dms.block.delete_file_in_disk</i18n>
     </XmlBlock>

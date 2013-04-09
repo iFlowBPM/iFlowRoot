@@ -3,7 +3,7 @@
 
 
     Infosistema iFlow - workflow and BPM platform
-    Copyright(C) 2002-2013 Infosistema, S.A.
+    Copyright(C) 2002-2012 Infosistema, S.A.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as published by

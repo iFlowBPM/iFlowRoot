@@ -1,11 +1,7 @@
 -------------------------------------------------------------------------------
                            iFlow Release Notes                                
 -------------------------------------------------------------------------------
-Version 4.2.1 - R20130313
-	New Features:
-		- Utilização de um colorpic para permitir ao utilizador escolher as cores das categorias
-		
-Version 4.2.0 - R20130207
+Version 4.2.0 - Ractual
 	New Features:
          - 1224 - Remover Categoria do processo
 	Bug fixes:

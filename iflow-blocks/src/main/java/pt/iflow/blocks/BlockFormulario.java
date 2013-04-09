@@ -399,7 +399,6 @@ public class BlockFormulario extends Block implements FormOperations {
       HashSet hstmp = null;
       int ntmp = 0;
       int nFieldCounter = 0;
-      int nLinkCounter = 0;
       boolean nextIsVisible = false; // usado nos tabs
       Stack<NameValuePair<Boolean, TabContainerWrapper>> tabStack = new Stack<NameValuePair<Boolean, TabContainerWrapper>>();
       Stack<NameValuePair<Boolean, MenuContainerWrapper>> menuStack = new Stack<NameValuePair<Boolean, MenuContainerWrapper>>();
@@ -1056,7 +1055,6 @@ public class BlockFormulario extends Block implements FormOperations {
           boolean useIt = true;
           String text = formButton.getText(userInfo);
           String operation = "";
-          String buttonAssign = "";
           String buttonFormName = BlockFormulario.getButtonFormId(formButton);
 
           String showCond = formButton.getAttribute(FormButton.ATTR_SHOW_COND);
@@ -1179,7 +1177,6 @@ public class BlockFormulario extends Block implements FormOperations {
                   if (StringUtils.isNotEmpty(customValue)) {
                     operation += "document." + sFormName + "." + customVar + 
                       ".value='" + customValue + "';";
-                    buttonAssign += "<variable>" + customVar + "</variable>" + "<value>" + customValue + "</value>";
                     // add var to hidden field list
                     hmHiddenFields.put(customVar, "");
                   }
@@ -1212,7 +1209,6 @@ public class BlockFormulario extends Block implements FormOperations {
             sbXml.append("<name>").append(buttonFormName).append("</name>");
             sbXml.append("<text>").append(text).append("</text>");
             sbXml.append("<operation>").append(operation).append("</operation>");
-            sbXml.append(buttonAssign);
 
             // TOOLTIP
             String tooltip = formButton.getAttribute(FormButton.ATTR_TOOLTIP);

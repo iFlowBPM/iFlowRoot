@@ -139,7 +139,7 @@ public class Link implements DataTypeInterface {
       int row,
       ProcessVariableValue value, 
       Properties props,
- ServletUtils response) {
+      ServletUtils response) {
     
     boolean outputOnly = FormUtils.checkOutputField(props, varIndex, row);
     
@@ -312,7 +312,7 @@ public class Link implements DataTypeInterface {
       sb.append(data.get("stylesheet")); //$NON-NLS-1$
       sb.append("</stylesheet>"); //$NON-NLS-1$
     }
-    sb.append("<id>" + fieldNumber + "_" + row + "_" + var + "</id>");
+
     sb.append("</a>"); //$NON-NLS-1$
 
 

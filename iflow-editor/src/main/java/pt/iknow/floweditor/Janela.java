@@ -721,16 +721,16 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
         XmlFlow install = (XmlFlow) XmlFlow.unmarshal(new StringReader(r2rApp.getInstallFlowXml()));
         XmlFlow application = (XmlFlow) XmlFlow.unmarshal(new StringReader(r2rApp.getApplicationFlowXml()));
 
-        FlowEditor.log("Installing R2R Application - " + r2rApp.getNameFlowXml() + " ....");
-        repository.deployFlow(application.getName(), application.getDescription(), FlowMarshaller.marshall(application));
-        repository.setFlowReady2Run(application.getName());
-        FlowEditor.log("Installed R2R Application Completed - " + r2rApp.getNameFlowXml() + " ....");
-
         FlowEditor.log("Running R2R Installer - " + r2rApp.getNameFlowXml() + " ....");
         repository.deployFlow(install.getName(), install.getDescription(), FlowMarshaller.marshall(install));
         repository.runFlow(install.getName());
         repository.undeployFlow(install.getName());
         FlowEditor.log("R2R Installer Completed - " + r2rApp.getNameFlowXml() + " ....");
+
+        FlowEditor.log("Installing R2R Application - " + r2rApp.getNameFlowXml() + " ....");
+        repository.deployFlow(application.getName(), application.getDescription(), FlowMarshaller.marshall(application));
+        repository.setFlowReady2Run(application.getName());
+        FlowEditor.log("Installed R2R Application Completed - " + r2rApp.getNameFlowXml() + " ....");
 
         new Informacao("Application installed", this);
       }

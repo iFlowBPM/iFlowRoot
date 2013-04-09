@@ -7,7 +7,6 @@
 
 package pt.iflow.services;
 
-import java.io.StringReader;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,21 +15,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathFactory;
-
 import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 
 import pt.iflow.api.blocks.Block;
-import pt.iflow.api.blocks.FormOperations;
 import pt.iflow.api.blocks.FormService;
 import pt.iflow.api.blocks.MessageBlock;
 import pt.iflow.api.core.Activity;
@@ -65,7 +52,6 @@ import pt.iflow.api.utils.UserInfoInterface;
 import pt.iflow.blocks.BlockFormulario;
 import pt.iflow.flows.FlowData;
 import pt.iknow.utils.StringUtilities;
-import pt.iknow.utils.html.FormData;
 
 public class IFlowRemote {
 
@@ -130,312 +116,254 @@ public class IFlowRemote {
     return fdcs;
   }
 
-  public String processXmlForm(String user, String password, int flowid, int pid, int subpid, String xmlForm,
-      String buttonClickedId, String linkClickedId)
-      throws Exception {
-    UserInfoInterface userInfo = BeanFactory.getUserInfoFactory().newUserInfo(user, password);
-    ProcessManager pm = BeanFactory.getProcessManagerBean();
-    ProcessData procData = pm.getProcessDataToBlock(userInfo, flowid, pid, subpid);
-
-    String title = "Formul&aacute;rio";
-    FormData fdFormData = null;
-    int op = 0;
-
-    if (StringUtils.isNotBlank(buttonClickedId)) {
-      fdFormData = parseServiceRequest(xmlForm, buttonClickedId);
-      Integer buttonClickedIdInt = null;
-
-      if (StringUtils.isBlank(buttonClickedId))
-        buttonClickedIdInt = 0;
-      else
-        buttonClickedIdInt = Integer.parseInt(buttonClickedId);
-
-      op = buttonClickedIdInt;
-
-      switch (buttonClickedIdInt) {
-      case 0:// cancelar
-        op = 4;
-        break;
-      case 1:// repor
-        op = 0;
-        break;
-      case 2:// guardar
-        op = 2;
-        break;
-      case 4:// avançar
-        op = 3;
-        break;
-      }
-      if (op >= 6)
-      op = 3;
-    } else {
-      fdFormData = parseServiceRequest(xmlForm, linkClickedId);
-      op = 3;
-    }
-
-    fdFormData.setParameter("op", "" + op);
-
-    Block bBlockJSP = null;
-
-    String currMid = String.valueOf(pm.getModificationId(userInfo, procData.getProcessHeader()));
-
-    HashMap<String, String> hmHidden = new HashMap<String, String>();
-    hmHidden.put("subpid", String.valueOf(subpid));
-    hmHidden.put("pid", String.valueOf(pid));
-    hmHidden.put("flowid", String.valueOf(flowid));
-    hmHidden.put("op", String.valueOf(op));
-    // TODO hmHidden.put(Const.FLOWEXECTYPE, flowExecType);
-    hmHidden.put("_serv_field_", "-1");
-    hmHidden.put(Const.sMID_ATTRIBUTE, currMid);
-    // TODO request.setAttribute(Const.sMID_ATTRIBUTE,currMid);
-
-    Flow flow = BeanFactory.getFlowBean();
-    try {
-
-      bBlockJSP = flow.getBlock(userInfo, procData);
-
-      // To appear blockId in title
-      title = bBlockJSP.getDescription(userInfo, procData);
-      if (Const.nMODE == Const.nDEVELOPMENT) {
-        title = title + " block" + bBlockJSP.getId();
-      }
-
-      if (bBlockJSP.getClass().getName().indexOf("BlockFormulario") == -1) {
-        throw new Exception("Not BlockFormulario!");
-      }
-    } catch (Exception e) {
-      // send to main page...
-      // not able to get flow or process is not in jsp state (if
-      // a casting exception occurs..)
-      return "ERROR " + e.getMessage();
-    }
-
-    // OP: 0 - entering page/reload
-    // 1 - unused
-    // 2 - save
-    // 3 - next
-    // 4 - cancel
-    // 5 - service print
-    // 6 - service print field
-    // 7 - service export field
-    // 8 - only process form
-    // 9 - return to parent
-
-    // check write permissions...
-    if (!flow.checkUserFlowRoles(userInfo, flowid, "" + FlowRolesTO.WRITE_PRIV)
-        && !flow.checkUserFlowRoles(userInfo, flowid, "" + FlowRolesTO.SUPERUSER_PRIV)) {
-      return "ERROR No Privileges";
-    }
-
-    if (bBlockJSP != null && op == 0) {
-      // Variables
-      String description = title;
-      // TODO: corrigir isto
-      String url = "Form/form.jsp?flowid=" + flowid + "&pid=" + pid + "&subpid=" + subpid;
-
-      Logger.trace(this, "before", user + " call with subpid=" + subpid + ",pid=" + pid + ",flowid=" + flowid);
-
-
-      Activity activity = null;
-
-      try {
-        // Get the ProcessManager EJB
-
-        activity = new Activity(user, flowid, pid, subpid, 0, 0, description, Block.getDefaultUrl(userInfo, procData), 1);
-        activity.setRead();
-        activity.mid = procData.getMid();
-        pm.updateActivity(userInfo, activity);
-
-      } catch (Exception e) {
-        Logger.error(user, this, "before", procData.getSignature() + "Caught an unexpected exception scheduling activities: "
-            + e.getMessage(), e);
-      }
-    }
-
-    // TODO
-    /*
-     * if (bBlockJSP != null && op == 9) { // return to parent ProcessData pdReturn = (ProcessData)
-     * session.getAttribute(Const.sSWITCH_PROC_SESSION_ATTRIBUTE); session.setAttribute(Const.SESSION_PROCESS + flowExecType,
-     * pdReturn); String next_page = flow.nextBlock(userInfo, pdReturn);
-     * 
-     * if (next_page == null) { next_page = sURL_PREFIX + "flow_error.jsp" + "?" + Const.FLOWEXECTYPE + "=" + flowExecType + "&ts="
-     * + ts; } else { next_page = sURL_PREFIX + next_page + "&" + Const.FLOWEXECTYPE + "=" + flowExecType + "&ts=" + ts; }
-     * 
-     * ServletUtils.sendEncodeRedirect(response, next_page); return; }
-     */
-    
-    Object[] oa = null;
-    if (bBlockJSP != null
-        && (op == 2 || op == 3 || op == 5 || op == 6 || op == 7 || op == pt.iflow.api.blocks.FormOperations.OP_ONCHANGE_SUBMIT)) {
-
-      String formMid = extractAttributeValue(xmlForm, Const.sMID_ATTRIBUTE);
-      boolean procAccessOk = StringUtils.isBlank(formMid) || StringUtils.equals(currMid, formMid);
-
-      if (procAccessOk) {
-        oa = new Object[5];
-        oa[0] = userInfo;
-        oa[1] = procData;
-        oa[2] = fdFormData;
-        oa[3] = new pt.iflow.api.utils.ServletUtils();// null;// new ServletUtils(request, response);
-        oa[4] = (op == FormOperations.OP_GENERATE_FORM || op == FormOperations.OP_ONCHANGE_SUBMIT);
-
-        // 3: processForm
-        procData = (ProcessData) bBlockJSP.execute(3, oa);
-
-        oa = new Object[1];
-        oa[0] = procData;
-        // 4: hasError
-        if (!((Boolean) bBlockJSP.execute(4, oa)).booleanValue()) {
-
-          if (op == 2 || (pid != Const.nSESSION_PID && (op == 5 || op == 6 || op == 7 /* || op == 8 */))) {
-            // save dataset if op = 2 (save) or refresh(8)/print(5,6)/export(7) and process is in DB
-            // don't save it if op = 3 because nextBlock does it!
-            int mid = flow.saveDataSet(userInfo, procData, null);
-            currMid = String.valueOf(mid);
-            // now don't forget to update flowid and pid and subpid
-            flowid = procData.getFlowId();
-            pid = procData.getPid();
-            subpid = procData.getSubPid();
-            hmHidden.put("subpid", String.valueOf(subpid));
-            hmHidden.put("pid", String.valueOf(pid));
-            hmHidden.put("flowid", String.valueOf(flowid));
-            // hmHidden.put(Const.FLOWEXECTYPE, flowExecType);
-            hmHidden.put(Const.sMID_ATTRIBUTE, currMid);
-            // request.setAttribute(Const.sMID_ATTRIBUTE, currMid);
-          }
-        }
-
-        boolean autoAdvance = (op == FormOperations.OP_ONCHANGE_SUBMIT ? ((Boolean) bBlockJSP.execute(14, oa)).booleanValue()
-            : false);
-        if (op == 3 || autoAdvance) {
-          String next_page = flow.nextBlock(userInfo, procData);
-        }
-      } else {
-        oa = new Object[2];
-        oa[0] = procData;
-        oa[1] = "form.proc_change_error";
-        // 5: setError
-        bBlockJSP.execute(5, oa);
-      }
-    } // op == 2 || op == 3 || op == 5 || op == 6 || op == 7 || op == 8
-    
-    
-    return "OK";
-  }
-
-  public static Document loadXMLFromString(String xml) throws Exception {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    DocumentBuilder builder = factory.newDocumentBuilder();
-    InputSource is = new InputSource(new StringReader(xml));
-    return builder.parse(is);
-  }
-
-  private FormData parseServiceRequest(String xmlForm, String clickedId) {
-    FormData retObj = new FormData();
-    Document doc;
-    try {
-      doc = loadXMLFromString(xmlForm);
-    } catch (Exception e) {
-      return retObj;
-    }
-    doc.getDocumentElement().normalize();
-
-    // hidden parameters
-    NodeList hiddenList = doc.getElementsByTagName("hidden");
-    for (int i = 0; i < hiddenList.getLength(); i++) {
-      Node hiddenNode = hiddenList.item(i);
-      NodeList hiddenChildrenNodes = hiddenNode.getChildNodes();
-      String nameTmp = "", valueTmp = "";
-      for (int j = 0; j < hiddenChildrenNodes.getLength(); j++)
-        if (StringUtils.equalsIgnoreCase(hiddenChildrenNodes.item(j).getNodeName(), "name"))
-          nameTmp = hiddenChildrenNodes.item(j).getTextContent();
-        else if (StringUtils.equalsIgnoreCase(hiddenChildrenNodes.item(j).getNodeName(), "value"))
-          valueTmp = hiddenChildrenNodes.item(j).getTextContent();
-      if (StringUtils.isNotBlank(nameTmp))
-        retObj.setParameter(nameTmp, valueTmp);
-    }
-
-    // user editable values
-    NodeList fieldList = doc.getElementsByTagName("field");
-    for (int i = 0; i < fieldList.getLength(); i++) {
-      Node fieldNode = fieldList.item(i);
-      NodeList fieldChildrenNodes = fieldNode.getChildNodes();
-      String variableTmp = "", valueTmp = "";
-      for (int j = 0; j < fieldChildrenNodes.getLength(); j++)
-        if (StringUtils.equalsIgnoreCase(fieldChildrenNodes.item(j).getNodeName(), "variable"))
-          variableTmp = fieldChildrenNodes.item(j).getTextContent();
-        else if (StringUtils.equalsIgnoreCase(fieldChildrenNodes.item(j).getNodeName(), "value"))
-          valueTmp = fieldChildrenNodes.item(j).getTextContent();
-      if (StringUtils.isNotBlank(variableTmp))
-        retObj.setParameter(variableTmp, valueTmp);
-    }
-
-    //link parameters
-    if (StringUtils.contains(clickedId, "_")) {
-      try {
-        String field = clickedId.split("_")[0];
-        String row = clickedId.split("_")[1];
-        String linkVariable = StringUtils.substring(clickedId, (field + "_" + row + "_").length(), clickedId.lastIndexOf("_"));
-
-        XPathFactory xPathfactory = XPathFactory.newInstance();
-        XPath xpath = xPathfactory.newXPath();
-        XPathExpression expr = xpath.compile("//row[col/value/a/id='" + clickedId + "']");
-        NodeList rowList = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
-        if (rowList.getLength() > 0) {
-          ArrayList<String> varList = new ArrayList<String>();
-          ArrayList<String> valList = new ArrayList<String>();
-          // traverse columns
-          NodeList columnsList = rowList.item(0).getChildNodes();
-          for (int i = 0; i < columnsList.getLength(); i++) {
-            valList.add(((Node) xpath.compile("value").evaluate(columnsList.item(i), XPathConstants.NODE)).getTextContent());
-            varList.add(((Node) xpath.compile("variable").evaluate(columnsList.item(i), XPathConstants.NODE)).getTextContent());
-          }
-          retObj.setParameter(linkVariable + "_" + row + "_row", row);
-          retObj.setParameter(linkVariable + "_" + row, "1");
-          for (int i = 0; i < valList.size(); i++)
-            if (!StringUtils.startsWith(valList.get(i), "#")) {
-              retObj.setParameter(linkVariable + "_" + row + "_" + varList.get(i), valList.get(i));
-            }
-
-        }
-      } catch (Exception e) {
-        return retObj;
-      }
-    }
-    // button parameter
-    else {
-      // clicked button
-      retObj.setParameter("_button_clicked_id", clickedId);
-      NodeList buttonList = doc.getElementsByTagName("button");
-      for (int i = 0; i < buttonList.getLength(); i++) {
-        Node buttonNode = buttonList.item(i);
-        NodeList buttonChildrenNodes = buttonNode.getChildNodes();
-        String idTmp = "", nameTmp = "", variableTmp = "", valueTmp = "";
-        for (int j = 0; j < buttonChildrenNodes.getLength(); j++)
-          if (StringUtils.equalsIgnoreCase(buttonChildrenNodes.item(j).getNodeName(), "id"))
-            idTmp = buttonChildrenNodes.item(j).getTextContent();
-          else if (StringUtils.equalsIgnoreCase(buttonChildrenNodes.item(j).getNodeName(), "name"))
-            nameTmp = buttonChildrenNodes.item(j).getTextContent();
-          else if (StringUtils.equalsIgnoreCase(buttonChildrenNodes.item(j).getNodeName(), "variable"))
-            variableTmp = buttonChildrenNodes.item(j).getTextContent();
-          else if (StringUtils.equalsIgnoreCase(buttonChildrenNodes.item(j).getNodeName(), "value"))
-            valueTmp = buttonChildrenNodes.item(j).getTextContent();
-        if (StringUtils.equals(idTmp, clickedId)) {
-          // button name
-          retObj.setParameter(nameTmp, idTmp);
-          if (StringUtils.isNotBlank(variableTmp))
-            // assign value to custom button
-            retObj.setParameter(variableTmp, valueTmp);
-        }
-      }
-    }
-    return retObj;
-  }
-
-  private String extractAttributeValue(String xmlForm, String smidAttribute) {
-    // TODO Auto-generated method stub
-    return null;
-  }
+  // public String processXmlForm(String user, String password, int flowid, int pid, int subpid, String xmlForm, String op)
+  // throws Exception {
+  // String popupReturnBlockId = null;
+  //
+  // String title = "Formul&aacute;rio";
+  // // use of fdFormData defined in /inc/defs.jsp
+  // String sOp = fdFormData.getParameter("op");
+  // if (sOp == null) {
+  // sOp = "0";
+  // }
+  // int op = Integer.parseInt(sOp);
+  //
+  // Block bBlockJSP = null;
+  //
+  // String currMid = String.valueOf(pm.getModificationId(userInfo, procData.getProcessHeader()));
+  //
+  // HashMap<String, String> hmHidden = new HashMap<String, String>();
+  // hmHidden.put("subpid", String.valueOf(subpid));
+  // hmHidden.put("pid", String.valueOf(pid));
+  // hmHidden.put("flowid", String.valueOf(flowid));
+  // hmHidden.put("op", String.valueOf(op));
+  // hmHidden.put(Const.FLOWEXECTYPE, flowExecType);
+  // hmHidden.put("_serv_field_", "-1");
+  // hmHidden.put(Const.sMID_ATTRIBUTE, currMid);
+  // request.setAttribute(Const.sMID_ATTRIBUTE, currMid);
+  //
+  // Flow flow = BeanFactory.getFlowBean();
+  // try {
+  //
+  // bBlockJSP = flow.getBlock(userInfo, procData);
+  //
+  // // To appear blockId in title
+  // title = bBlockJSP.getDescription(userInfo, procData);
+  // if (Const.nMODE == Const.nDEVELOPMENT) {
+  // title = title + " block" + bBlockJSP.getId();
+  // }
+  //
+  // if (bBlockJSP.getClass().getName().indexOf("BlockFormulario") == -1) {
+  // throw new Exception("Not BlockFormulario!");
+  // }
+  // } catch (Exception e) {
+  // // send to main page...
+  // // not able to get flow or process is not in jsp state (if
+  // // a casting exception occurs..)
+  // ServletUtils.sendEncodeRedirect(response, "../flow_error.jsp");
+  // return;
+  // }
+  //
+  // // OP: 0 - entering page/reload
+  // // 1 - unused
+  // // 2 - save
+  // // 3 - next
+  // // 4 - cancel
+  // // 5 - service print
+  // // 6 - service print field
+  // // 7 - service export field
+  // // 8 - only process form
+  // // 9 - return to parent
+  //
+  // // check write permissions...
+  // if (!flow.checkUserFlowRoles(userInfo, flowid, "" + FlowRolesTO.WRITE_PRIV)
+  // && !flow.checkUserFlowRoles(userInfo, flowid, "" + FlowRolesTO.SUPERUSER_PRIV)) {
+  // ServletUtils.sendEncodeRedirect(response, "../nopriv.jsp?flowid=" + flowid);
+  // return;
+  // }
+  //
+  // if (bBlockJSP != null && op == 0) {
+  // // Variables
+  // String description = title;
+  // // TODO: corrigir isto
+  // String url = "Form/form.jsp?flowid=" + flowid + "&pid=" + pid + "&subpid=" + subpid;
+  //
+  // Logger.trace(this, "before", login + " call with subpid=" + subpid + ",pid=" + pid + ",flowid=" + flowid);
+  //
+  // String nextPage = url;
+  //
+  // Activity activity = null;
+  // String stmp = null;
+  //
+  // try {
+  // // Get the ProcessManager EJB
+  //
+  // activity = new Activity(login, flowid, pid, subpid, 0, 0, description, Block.getDefaultUrl(userInfo, procData), 1);
+  // activity.setRead();
+  // activity.mid = procData.getMid();
+  // pm.updateActivity(userInfo, activity);
+  //
+  // } catch (Exception e) {
+  // Logger.error(login, this, "before", procData.getSignature() + "Caught an unexpected exception scheduling activities: "
+  // + e.getMessage(), e);
+  // }
+  // }
+  //
+  // if (bBlockJSP != null && op == 9) {
+  // // return to parent
+  // ProcessData pdReturn = (ProcessData) session.getAttribute(Const.sSWITCH_PROC_SESSION_ATTRIBUTE);
+  // session.setAttribute(Const.SESSION_PROCESS + flowExecType, pdReturn);
+  // String next_page = flow.nextBlock(userInfo, pdReturn);
+  //
+  // if (next_page == null) {
+  // next_page = sURL_PREFIX + "flow_error.jsp" + "?" + Const.FLOWEXECTYPE + "=" + flowExecType + "&ts=" + ts;
+  // } else {
+  // next_page = sURL_PREFIX + next_page + "&" + Const.FLOWEXECTYPE + "=" + flowExecType + "&ts=" + ts;
+  // }
+  //
+  // ServletUtils.sendEncodeRedirect(response, next_page);
+  // return;
+  //
+  // }
+  //
+  // Object[] oa = null;
+  // if (bBlockJSP != null && (op == 2 || op == 3 || op == 5 || op == 6 || op == 7 || op == FormOperations.OP_ONCHANGE_SUBMIT)) {
+  //
+  // String formMid = fdFormData.getParameter(Const.sMID_ATTRIBUTE);
+  // request.setAttribute(Const.sMID_ATTRIBUTE, formMid);
+  // boolean procAccessOk = StringUtils.isBlank(formMid) || StringUtils.equals(currMid, formMid);
+  //
+  // if (procAccessOk) {
+  // oa = new Object[5];
+  // oa[0] = userInfo;
+  // oa[1] = procData;
+  // oa[2] = fdFormData;
+  // oa[3] = new ServletUtils(request, response);
+  // oa[4] = (op == FormOperations.OP_GENERATE_FORM || op == FormOperations.OP_ONCHANGE_SUBMIT);
+  //
+  // // 3: processForm
+  // procData = (ProcessData) bBlockJSP.execute(3, oa);
+  //
+  // oa = new Object[1];
+  // oa[0] = procData;
+  // // 4: hasError
+  // if (!((Boolean) bBlockJSP.execute(4, oa)).booleanValue()) {
+  //
+  // if (op == 2 || (pid != Const.nSESSION_PID && (op == 5 || op == 6 || op == 7 /* || op == 8 */))) {
+  // // save dataset if op = 2 (save) or refresh(8)/print(5,6)/export(7) and process is in DB
+  // // don't save it if op = 3 because nextBlock does it!
+  // int mid = flow.saveDataSet(userInfo, procData, request);
+  // currMid = String.valueOf(mid);
+  // // now don't forget to update flowid and pid and subpid
+  // flowid = procData.getFlowId();
+  // pid = procData.getPid();
+  // subpid = procData.getSubPid();
+  // hmHidden.put("subpid", String.valueOf(subpid));
+  // hmHidden.put("pid", String.valueOf(pid));
+  // hmHidden.put("flowid", String.valueOf(flowid));
+  // hmHidden.put(Const.FLOWEXECTYPE, flowExecType);
+  // hmHidden.put(Const.sMID_ATTRIBUTE, currMid);
+  // request.setAttribute(Const.sMID_ATTRIBUTE, currMid);
+  // }
+  //
+  // boolean autoAdvance = (op == FormOperations.OP_ONCHANGE_SUBMIT ? ((Boolean) bBlockJSP.execute(14, oa)).booleanValue()
+  // : false);
+  // if (op == 3 || autoAdvance) {
+  // String next_page = flow.nextBlock(userInfo, procData);
+  //
+  // // Caso esteja a correr em popup e o bloco não seja de popup, sair no erro
+  // if (popupReturnBlockId != null && !flow.getBlock(userInfo, procData).canRunInPopupBlock()) {
+  // next_page = sURL_PREFIX + "flow_popup_error.jsp" + "?" + Const.FLOWEXECTYPE + "=" + flowExecType + "&ts=" + ts;
+  // } else {
+  // boolean bStay = false;
+  // if (StringUtils.isNotEmpty(procData.getAppData(Const.STAY_IN_PAGE))) {
+  // bStay = true;
+  // } else {
+  // if (next_page == null) {
+  // next_page = sURL_PREFIX + "flow_error.jsp" + "?" + Const.FLOWEXECTYPE + "=" + flowExecType + "&ts=" + ts;
+  // } else {
+  // bStay = false;
+  // next_page = sURL_PREFIX + next_page + "&" + Const.FLOWEXECTYPE + "=" + flowExecType + "&ts=" + ts;
+  // }
+  // }
+  // if (!bStay) {
+  // if (!procData.isInDB()) {
+  // session.setAttribute(Const.SESSION_PROCESS + flowExecType, procData);
+  // }
+  // ServletUtils.sendEncodeRedirect(response, next_page);
+  // return;
+  // }
+  // }
+  // }
+  // }
+  // } else {
+  // oa = new Object[2];
+  // oa[0] = procData;
+  // oa[1] = messages.getString("form.proc_change_error");
+  // // 5: setError
+  // bBlockJSP.execute(5, oa);
+  // }
+  // } // op == 2 || op == 3 || op == 5 || op == 6 || op == 7 || op == 8
+  // else if (bBlockJSP != null && op == 4) {
+  // // cancel proc
+  // String next_page = flow.endProc(userInfo, procData);
+  // if (next_page == null) {
+  // next_page = sURL_PREFIX + "flow_error.jsp" + "?" + Const.FLOWEXECTYPE + "=" + flowExecType + "&ts=" + ts;
+  // } else {
+  // next_page = sURL_PREFIX + next_page + "&" + Const.FLOWEXECTYPE + "=" + flowExecType + "&ts=" + ts;
+  // }
+  // ServletUtils.sendEncodeRedirect(response, next_page);
+  // return;
+  // } // op == 4
+  //
+  // String sHtml = "";
+  // String sFormName = "";
+  //
+  // if (bBlockJSP != null) {
+  // // return to parent additional stuff
+  // boolean bRemoveParentProc = false;
+  // ProcessData pdReturn = (ProcessData) session.getAttribute(Const.sSWITCH_PROC_SESSION_ATTRIBUTE);
+  // if (pdReturn != null) {
+  // String sSwitchFlag = pdReturn.getTempData(Const.sSWITCH_PROC_FLAG);
+  // String sRetProcFid = pdReturn.getTempData(Const.sSWITCH_PROC_TEMP_FID);
+  // String sRetProcPid = pdReturn.getTempData(Const.sSWITCH_PROC_TEMP_PID);
+  // String sRetProcSubPid = pdReturn.getTempData(Const.sSWITCH_PROC_TEMP_SUBPID);
+  //
+  // if (sSwitchFlag == null || !sSwitchFlag.equals("true") || sRetProcFid == null || sRetProcPid == null
+  // || sRetProcSubPid == null) {
+  // bRemoveParentProc = true;
+  // } else {
+  // if (!sRetProcFid.equals(String.valueOf(flowid)) || !sRetProcPid.equals(String.valueOf(pid))
+  // || !sRetProcSubPid.equals(String.valueOf(subpid))) {
+  // bRemoveParentProc = true;
+  // } else {
+  // // enable switch proc return to parent
+  // procData.setTempData(Const.sSWITCH_PROC_RETURN_PARENT, "true");
+  // }
+  // }
+  // } else {
+  // bRemoveParentProc = true;
+  // }
+  //
+  // if (bRemoveParentProc) {
+  // procData.setTempData(Const.sSWITCH_PROC_RETURN_PARENT, null);
+  // session.removeAttribute(Const.sSWITCH_PROC_SESSION_ATTRIBUTE);
+  // }
+  //
+  // oa = new Object[4];
+  // oa[0] = userInfo;
+  // oa[1] = procData;
+  // oa[2] = hmHidden;
+  // oa[3] = new ServletUtils(response);
+  // // 2: generateForm
+  // sHtml = (String) bBlockJSP.execute(2, oa);
+  //
+  // // 7: var FORM_NAME
+  // sFormName = (String) bBlockJSP.execute(7, null);
+  // }
+  //
+  // return null;
+  // }
 
   /**
    * Retrieves the design of a form in XML format
@@ -790,13 +718,10 @@ public class IFlowRemote {
 
     try {
       ProcessManager pm = BeanFactory.getProcessManagerBean();
-      List<Activity> altmp = new ArrayList<Activity>();
-      Iterator<Activity> lit = null;
 
-      if (ui.isUnitManager())
-        lit = pm.getUserAndSubordinatesActivities(ui);
-      else
-        lit = pm.getUserActivities(ui);
+      Iterator<Activity> lit = pm.getUserActivities(ui);
+
+      List<Activity> altmp = new ArrayList<Activity>();
 
       while (lit != null && lit.hasNext()) {
         Activity a = lit.next();
@@ -808,6 +733,7 @@ public class IFlowRemote {
         retObj = new ActivitySet();
         retObj.setResult(altmp.toArray(atmp));
       }
+
     } catch (Exception e) {
       e.printStackTrace();
       Logger.warning(user, this, "getUserActivities", "Error: caught exception: " + e.getMessage());

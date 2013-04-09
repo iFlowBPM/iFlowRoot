@@ -108,14 +108,7 @@ public class BlockPutFileInDisk extends Block {
         String sPath = procData.transform(userInfo, sPathVar);
 
         for (int i = 0; i < docsVar.size(); i++) {
-          Object docIdRaw = docsVar.getItem(i).getValue();
-          int docId;
-          if (docIdRaw instanceof Long)
-            docId = ((Long) docIdRaw).intValue();
-          else
-            docId = (Integer) docIdRaw;
-
-          Document doc = docBean.getDocument(userInfo, procData, docId);
+          Document doc = docBean.getDocument(userInfo, procData, ((Long) docsVar.getItem(i).getValue()).intValue());
           FileUtils.writeByteArrayToFile(new File(sPath + File.separator + doc.getFileName()), doc.getContent());
         }
 

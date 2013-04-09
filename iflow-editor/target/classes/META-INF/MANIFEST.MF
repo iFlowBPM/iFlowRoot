@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Built-By: pussman
 Build-Jdk: 1.6.0_35
 Class-Path: dms-connector-0.0.7-R20100908.jar commons-lang-2.4.jar ifl
- ow-api-4.2.1-R20130130.jar xalan-2.7.1.jar serializer-2.7.1.jar j2ee-
+ ow-api-4.2.0-R20120423.jar xalan-2.7.1.jar serializer-2.7.1.jar j2ee-
  1.4.jar google-collect-snapshot-20080530.jar bsh-2.0b4.jar swsms-2.8.
  2.jar bcprov-jdk15-140.jar mail-1.4.1.jar jai_core-1.1.2_01.jar jai_c
  odec-1.1.2_01.jar iutils-2.0.6.jar jcvs-1.2.jar mindbright-1.2.jar ve
@@ -20,7 +20,7 @@ Class-Path: dms-connector-0.0.7-R20100908.jar commons-lang-2.4.jar ifl
  -4.01.jar json-0.10.jar asm-2.2.3.jar asm-attrs-2.2.3.jar asm-commons
  -2.2.3.jar asm-tree-2.2.3.jar
 Implementation-Title: iFlow Editor
-Implementation-Version: 4.2.1-R20130130
+Implementation-Version: 4.2.0-R20120423
 Implementation-Vendor-Id: pt.iknow.iflow
 Implementation-Vendor: Infosistema, S.A.
 Main-Class: pt.iknow.floweditor.FlowEditor

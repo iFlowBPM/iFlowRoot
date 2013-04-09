@@ -847,7 +847,6 @@ public class FlowHolderBean implements FlowHolder {
         subFlow = FlowMarshaller.unmarshal(subFlowData);
       } catch (Exception e1) {} 
 
-    ArrayList<Integer> mainFlowIds = new ArrayList<Integer>();
       IFlowData[] allFlowData = this.listFlows(userInfo);
       for(IFlowData flowData: allFlowData){
         DBFlow dbFlow = readFlow(userInfo, flowData.getId());
@@ -857,7 +856,6 @@ public class FlowHolderBean implements FlowHolder {
             if(xmlBlock.getType().equals("BlockSubFlow")){
               for(XmlAttribute xmlAttribute:xmlBlock.getXmlAttribute()){
                 if(xmlAttribute.getName().equals("MNome do SubFluxo") && xmlAttribute.getValue().equals(subFlowName)){
-                mainFlowIds.add(dbFlow.flowid);
                   for(XmlCatalogVarAttribute xmlCatalogueVar : flow.getXmlCatalogVars().getXmlCatalogVarAttribute()){
                     for(XmlCatalogVarAttribute xmlCatalogueVarSub : subFlow.getXmlCatalogVars().getXmlCatalogVarAttribute()){
                       if (xmlCatalogueVar.getName().equals(xmlCatalogueVarSub.getName())
@@ -880,9 +878,6 @@ public class FlowHolderBean implements FlowHolder {
           Logger.debug(userInfo.getUtilizador(), this, "writeSubFlowData",
               "ValidationException in flow " + flowData.getName());
         }
-      // refresh main flows
-      for (Integer flowId : mainFlowIds)
-        refreshFlow(userInfo, flowId);
       }
       return false;
     }
@@ -1284,9 +1279,9 @@ public class FlowHolderBean implements FlowHolder {
     try {
       db = Utils.getDataSource().getConnection();
       pst = db
-          .prepareStatement("select original_blockid, sub_flowname, bm.mapped_blockid from subflow_block_mapping bm, flow_state fs "
+          .prepareStatement("select original_blockid, sub_flowname, bm.mapped_blockid from iflow.subflow_block_mapping bm, iflow.flow_state fs "
               + "where bm.flowname=? and fs.flowid = ? and fs.state = bm.mapped_blockid "
-              + "and bm.created=(select max(created) from subflow_block_mapping where flowname=? and created<(select max(created) from subflow_block_mapping where flowname=?))");
+              + "and bm.created=(select max(created) from iflow.subflow_block_mapping where flowname=? and created<(select max(created) from iflow.subflow_block_mapping where flowname=?))");
       pst.setString(1, subFlowBlockMappings.get(0).getMainFlowName());
       pst.setInt(2, flowId);
       pst.setString(3, subFlowBlockMappings.get(0).getMainFlowName());
@@ -1346,8 +1341,8 @@ public class FlowHolderBean implements FlowHolder {
       // check if mappings have changed before saving them
       Boolean mappingsChanged = false;
       pst = db
-.prepareStatement("select flowname, sub_flowname, original_blockid, mapped_blockid from subflow_block_mapping "
-          + "bm where bm.flowname=? and bm.created=(select max(created) from subflow_block_mapping where flowname=?) order by id");
+          .prepareStatement("select flowname, sub_flowname, original_blockid, mapped_blockid from iflow.subflow_block_mapping "
+              + "bm where bm.flowname=? and bm.created=(select max(created) from iflow.subflow_block_mapping where flowname=?) order by id");
       pst.setString(1, subFlowBlockMappings.get(0).getMainFlowName());
       pst.setString(2, subFlowBlockMappings.get(0).getMainFlowName());
       ResultSet rs = pst.executeQuery();

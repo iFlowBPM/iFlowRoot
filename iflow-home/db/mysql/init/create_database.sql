@@ -1895,9 +1895,19 @@ alter table users add column manager varchar(50);
 alter table users add column telephonenumber varchar(50);
 alter table users add column title varchar(50);
 
-ALTER TABLE `reporting` ADD INDEX `IDX_REPORTING`(`flowid`, `pid`, `subpid`);
+CREATE TABLE `serial_code_templates` (
+  `template` VARCHAR(50) NOT NULL,
+  `name` VARCHAR(50) NOT NULL,
+  `description` VARCHAR(500),
+  `callback` VARCHAR(50),
+  `flag` VARCHAR(50),
+  `organization` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`template`, `name`, `organization`)
+);
 
-ALTER TABLE `users`
+ALTER TABLE `iflow`.`reporting` ADD INDEX `IDX_REPORTING`(`flowid`, `pid`, `subpid`);
+
+ALTER TABLE `iflow`.`users`
  ADD COLUMN `orgadm_users` INT(1) UNSIGNED NOT NULL DEFAULT 1 AFTER `title`,
  ADD COLUMN `orgadm_flows` INT(1) UNSIGNED NOT NULL DEFAULT 1 AFTER `orgadm_users`,
  ADD COLUMN `orgadm_processes` INT(1) UNSIGNED NOT NULL DEFAULT 1 AFTER `orgadm_flows`,
