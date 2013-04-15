@@ -1,0 +1,12 @@
+-------------------------------------------------------------------------------
+                           iFlow Release Notes                                
+-------------------------------------------------------------------------------
+4.2.1-R20130128
+New Features:
+		 Block Read File
+		 Block Write File
+		 Block Parse File
+Bug fixes:
+		  
+ Known Issues:
+          

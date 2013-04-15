@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>pt.iknow.iflow</groupId>
 		<artifactId>iflow</artifactId>
-		<version>4.2.0</version>
+		<version>4.2.2</version>
 	</parent>
 
 	<name>iFlow Web</name>
@@ -73,7 +73,7 @@
 		<dependency>
 			<groupId>pt.iknow</groupId>
 			<artifactId>iutils</artifactId>
-			<version>2.0.6</version>
+			<version>2.0.6</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 		<dependency>
 			<groupId>pt.iknow</groupId>
@@ -300,7 +300,7 @@
 		<plugins>
 	    	<plugin>
         		<artifactId>maven-resources-plugin</artifactId>
-        		<version>2.3</version>
+        		<version>2.4</version>
         		<executions>
           			<execution>
             			<id>copy-resources</id>
@@ -355,7 +355,7 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>2.0</version>
+				<version>2.1</version>
 				<configuration>
 					<archiveClasses>true</archiveClasses>
 					<warSourceExcludes>**/.svn/**,**/CVS,**/DEVELOPER_WEB_TESTS/**</warSourceExcludes>
