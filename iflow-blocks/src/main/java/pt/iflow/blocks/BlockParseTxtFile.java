@@ -282,13 +282,14 @@ public class BlockParseTxtFile extends Block {
       Scanner scanner = new Scanner((String) inputArgs.get(PARAM_DOCUMENT));
 
       // parsing the line
+      int lineNumber=0;
       while (scanner.hasNextLine()) {
         String line = scanner.nextLine();
 
         if (line.length() < lineMinSize) {
-          throw new Exception("Line [" + line + "] is smaller than [" + lineMinSize + "]");
+          throw new Exception("Line [" + lineNumber + "] is smaller than [" + lineMinSize + "]");
         }
-
+        lineNumber++;
         for (int i = 0; i < initPositions.length; i++) {
           List<String> fieldList = outputList.get(i);
 
