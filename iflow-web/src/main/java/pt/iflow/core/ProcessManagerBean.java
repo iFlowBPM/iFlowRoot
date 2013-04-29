@@ -77,6 +77,7 @@ import pt.iflow.api.transition.FlowStateLogTO;
 import pt.iflow.api.transition.LogTO;
 import pt.iflow.api.transition.UpgradeLogTO;
 import pt.iflow.api.userdata.UserData;
+import pt.iflow.api.userdata.views.UserViewInterface;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.DataSetVariables;
 import pt.iflow.api.utils.Logger;
@@ -2597,7 +2598,7 @@ public class ProcessManagerBean implements ProcessManager {
    * @see pt.iflow.api.core.ProcessManager#getUserActivities(pt.iflow.api.utils.UserInfoInterface)
    */
   public ListIterator<Activity> getUserActivities(UserInfoInterface userInfo) {
-    return this.getUserActivities(userInfo, -1);
+	  return this.getUserActivities(userInfo, -1);
   }
   
   /*
@@ -5903,4 +5904,69 @@ public class ProcessManagerBean implements ProcessManager {
 	    return result;
 	  }
   
+  public ListIterator<Activity> getUserAndSubordinatesActivities(UserInfoInterface userInfo) {
+	    String userid = userInfo.getUtilizador();
+	    Logger.trace(this, "getUserActivities", userid + " call.");
+
+	    Connection db = null;
+	    PreparedStatement st = null;
+	    ResultSet rs = null;
+	    LinkedList<Activity> l = new LinkedList<Activity>();
+	    ListIterator<Activity> result = null;
+
+	    String usersInUnitTxt = "( ";
+	    UserViewInterface[] usersInUnit = BeanFactory.getUserManagerBean().getAllUsers(userInfo, true);
+	    for (UserViewInterface ui : usersInUnit)
+	      usersInUnitTxt += "'" + ui.getUsername() + "',";
+	    usersInUnitTxt = StringUtils.chop(usersInUnitTxt) + " )";
+
+	    try {
+	      db = DatabaseInterface.getConnection(userInfo);
+	      db.setAutoCommit(true);
+	      int nField = 1;
+	      // 1: userid
+	      final String userFilter = "userid=?";
+	      final StringBuilder sQuery = new StringBuilder(
+	          "select a.*,p.pnumber from activity a,process p where p.flowid=a.flowid and p.pid=a.pid and p.subpid=a.subpid and status=0 and userid in ")
+	          .append(usersInUnitTxt);
+	      final StringBuilder sQueryDelegated = new StringBuilder(
+	          "select a.*,p.pnumber from activity_delegated a,process p where p.flowid=a.flowid and p.pid=a.pid and p.subpid=a.subpid and status=0 and  userid in ")
+	          .append(usersInUnitTxt);
+
+	      st = db.prepareStatement(sQuery.toString());
+
+	      rs = st.executeQuery();
+	      int counter = -1;
+	      while (rs.next()) {
+	        int flowid = rs.getInt("flowid");
+
+	        Activity wle = new Activity(userid, flowid, rs.getInt("pid"), rs.getInt("subpid"), rs.getInt("type"),
+	            rs.getInt("priority"), rs.getTimestamp("created"), rs.getTimestamp("started"), rs.getTimestamp("archived"), rs
+	                .getString("description"), rs.getString("url"), rs.getInt("status"), rs.getInt("notify"));
+	        wle.profilename = rs.getString("profilename");
+	        wle.pnumber = rs.getString("pnumber");
+	        if (rs.getInt("read_flag") == 1) {
+	          wle.setRead();
+	        } else {
+	          wle.setUnread();
+	        }
+	        wle.mid = rs.getInt("mid");
+	        l.add(wle);
+	      }
+	      DatabaseInterface.closeResources(st, rs);
+	      st = null;
+	      rs = null;
+
+	      result = l.listIterator();
+	    } catch (SQLException sqle) {
+	      Logger.error(userid, this, "getUserActivities", "sql exception: " + sqle.getMessage(), sqle);
+	      result = null;
+	    } catch (Exception e) {
+	      Logger.error(userid, this, "getUserActivities", "exception: " + e.getMessage(), e);
+	      result = null;
+	    } finally {
+	      DatabaseInterface.closeResources(db, st, rs);
+	    }
+	    return result;
+	  }
 }

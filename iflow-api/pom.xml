@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>pt.iknow.iflow</groupId>
 		<artifactId>iflow</artifactId>
-		<version>4.2.2</version>
+		<version>4.2.0</version>
 	</parent>
 
 	<name>iFlow API</name>

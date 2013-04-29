@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
                            iFlow Release Notes                                
 -------------------------------------------------------------------------------
-Version 4.2.0 - Ractual
+Version 4.2.0 - 
 	New Features:
          - 1224 - Remover Categoria do processo
 	Bug fixes:

@@ -574,6 +574,12 @@
       		<id>Codehaus Snapshots</id>
       		<url>http://snapshots.repository.codehaus.org/</url>
   		</repository>
+  		<repository>
+		    <id>snapshot-repository.java.net</id>
+		    <name>Java.net Snapshot Repository for Maven</name>
+		    <url>https://maven.java.net/content/repositories/snapshots/</url>
+		    <layout>default</layout>
+		</repository>
 	</repositories>
 	<pluginRepositories>
 	    <pluginRepository>

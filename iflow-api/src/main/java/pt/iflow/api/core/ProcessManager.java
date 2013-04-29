@@ -620,4 +620,6 @@ public interface ProcessManager extends UserProcsConst {
 
   public abstract ListIterator<Activity> getUserActivitiesOrderByPid(UserInfoInterface userInfo);
   public abstract ListIterator<Activity> getUserActivitiesOrderFilters(UserInfoInterface userInfo, int anFlowId, FlowFilter filter);
+  
+  public abstract ListIterator<Activity> getUserAndSubordinatesActivities(UserInfoInterface ui);
 }

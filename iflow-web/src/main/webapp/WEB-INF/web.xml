@@ -589,6 +589,23 @@ Disabled. Use servlet container defaults
       <servlet-name>FlowSchedule</servlet-name>
       <url-pattern>/Admin/flow_schedule_delete</url-pattern>
    </servlet-mapping>
+   
+   <!-- REST Servlet -->
+   <servlet>
+    <servlet-name>iFlow REST Service</servlet-name>
+    <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+    <init-param>
+      <param-name>com.sun.jersey.config.property.packages</param-name>
+      <param-value>pt.iflow.services.rest</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>iFlow REST Service</servlet-name>
+    <url-pattern>/iFlowRest/*</url-pattern>
+  </servlet-mapping>
+  
+  
    <!--
    To specify mime mappings, create a file named mime-mappings.xml, put it in your project's mergedir.
    Organize mime-mappings.xml following this DTD slice:
