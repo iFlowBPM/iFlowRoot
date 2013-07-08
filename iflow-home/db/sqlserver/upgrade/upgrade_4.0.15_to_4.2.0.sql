@@ -2,7 +2,7 @@
 ALTER TABLE documents ADD tosign int NOT NULL DEFAULT 1;
 
 CREATE TABLE folder (
-  id NUMBER(11) NOT NULL IDENTITY,
+  id NUMERIC(11) NOT NULL IDENTITY,
   name VARCHAR(50)  NOT NULL,
   color VARCHAR(10),
   userid VARCHAR(100) NOT NULL,
@@ -17,13 +17,13 @@ ADD FOREIGN KEY (folderid)
 REFERENCES folder(id)
 
 CREATE TABLE comment (
-  id NUMBER(11) NOT NULL IDENTITY,
+  id NUMERIC(11) NOT NULL IDENTITY,
   date DATETIME NOT NULL,
   userid VARCHAR(100) NOT NULL,
   comment VARCHAR(125) NOT NULL,
-  flowid NUMBER NOT NULL,
-  pid NUMBER NOT NULL,
-  subpid NUMBER NOT NULL DEFAULT 1,
+  flowid NUMERIC NOT NULL,
+  pid NUMERIC NOT NULL,
+  subpid NUMERIC NOT NULL DEFAULT 1,
   PRIMARY KEY (id),
   FOREIGN KEY (flowid, pid, subpid)
     REFERENCES process (flowid, pid, subpid)
@@ -33,11 +33,11 @@ CREATE TABLE comment (
 GO
 
 CREATE TABLE comment_history (
-  id NUMBER(11) NOT NULL IDENTITY,
+  id NUMERIC(11) NOT NULL IDENTITY,
   comment VARCHAR(125) NOT NULL,
-  flowid NUMBER NOT NULL,
-  pid NUMBER NOT NULL,
-  subpid NUMBER NOT NULL DEFAULT 1,
+  flowid NUMERIC NOT NULL,
+  pid NUMERIC NOT NULL,
+  subpid NUMERIC NOT NULL DEFAULT 1,
   userid VARCHAR(100) NOT NULL,
   date DATETIME NOT NULL,
   PRIMARY KEY (id),
@@ -49,7 +49,7 @@ CREATE TABLE comment_history (
 GO
 
 CREATE TABLE label (
-  id NUMBER(11) NOT NULL IDENTITY,
+  id NUMERIC(11) NOT NULL IDENTITY,
   name VARCHAR(50)  NOT NULL,
   description VARCHAR(125),
   icon VARCHAR(50),
@@ -60,11 +60,11 @@ CREATE TABLE label (
 GO
 
 CREATE TABLE process_label (
-  id NUMBER(11) NOT NULL IDENTITY,
-  labelid NUMBER NOT NULL,
-  flowid NUMBER NOT NULL,
-  pid NUMBER NOT NULL,
-  subpid NUMBER NOT NULL DEFAULT 1,
+  id NUMERIC(11) NOT NULL IDENTITY,
+  labelid NUMERIC NOT NULL,
+  flowid NUMERIC NOT NULL,
+  pid NUMERIC NOT NULL,
+  subpid NUMERIC NOT NULL DEFAULT 1,
   PRIMARY KEY (id),
   FOREIGN KEY (labelid)
     REFERENCES label (id)
@@ -78,11 +78,11 @@ CREATE TABLE process_label (
 GO
 
 CREATE TABLE process_label_history (
-  id NUMBER(11) NOT NULL IDENTITY,
-  labelid NUMBER  NOT NULL,
-  flowid NUMBER NOT NULL,
-  pid NUMBER NOT NULL,
-  subpid NUMBER NOT NULL DEFAULT 1,
+  id NUMERIC(11) NOT NULL IDENTITY,
+  labelid NUMERIC  NOT NULL,
+  flowid NUMERIC NOT NULL,
+  pid NUMERIC NOT NULL,
+  subpid NUMERIC NOT NULL DEFAULT 1,
   userid VARCHAR(100) NOT NULL, 
   date DATETIME NOT NULL,
   PRIMARY KEY (id),
@@ -98,12 +98,12 @@ CREATE TABLE process_label_history (
 GO
 
 CREATE TABLE deadline (
-  id NUMBER(11) NOT NULL IDENTITY,
+  id NUMERIC(11) NOT NULL IDENTITY,
   deadline VARCHAR(20),
   userid VARCHAR(100) NOT NULL,
-  flowid NUMBER NOT NULL,
-  pid NUMBER NOT NULL,
-  subpid NUMBER NOT NULL DEFAULT 1,
+  flowid NUMERIC NOT NULL,
+  pid NUMERIC NOT NULL,
+  subpid NUMERIC NOT NULL DEFAULT 1,
   PRIMARY KEY (id),
   FOREIGN KEY (flowid, pid, subpid)
     REFERENCES process (flowid, pid, subpid)
@@ -113,11 +113,11 @@ CREATE TABLE deadline (
 GO
 
 CREATE TABLE deadline_history (
-  id NUMBER(11) NOT NULL IDENTITY,
+  id NUMERIC(11) NOT NULL IDENTITY,
   deadline VARCHAR(20),
-  flowid NUMBER NOT NULL,
-  pid NUMBER NOT NULL,
-  subpid NUMBER NOT NULL DEFAULT 1,
+  flowid NUMERIC NOT NULL,
+  pid NUMERIC NOT NULL,
+  subpid NUMERIC NOT NULL DEFAULT 1,
   userid VARCHAR(100) NOT NULL,
   date DATETIME NOT NULL,
   PRIMARY KEY (id),
@@ -129,7 +129,7 @@ CREATE TABLE deadline_history (
 GO
 
 CREATE TABLE user_session (
-  id NUMBER(11) NOT NULL IDENTITY,
+  id NUMERIC(11) NOT NULL IDENTITY,
   userid VARCHAR(100) NOT NULL,
   session  VARBINARY(max) NOT NULL,
   PRIMARY KEY (id)
@@ -166,21 +166,21 @@ insert into flow_settings (flowid, name, description, value, isquery, mdate)
 select flowid, 'FLOW_MENU_ACCESSIBLE', 'Permitir visualizar no menu.', 'Sim', 0, '2011-11-21 10:00:00' from flow;
 GO
 
-ALTER TABLE flow ADD max_block_id NUMBER(11);
+ALTER TABLE flow ADD max_block_id NUMERIC(11);
 GO
 
 CREATE TABLE subflow_block_mapping (
-  id NUMBER(11) NOT NULL IDENTITY,
+  id NUMERIC(11) NOT NULL IDENTITY,
   created timestamp NOT NULL,
   flowname varchar(64) NOT NULL,
   sub_flowname varchar(64) NOT NULL,
-  original_blockid NUMBER(11) NOT NULL,
-  mapped_blockid NUMBER(11) NOT NULL,
+  original_blockid NUMERIC(11) NOT NULL,
+  mapped_blockid NUMERIC(11) NOT NULL,
   PRIMARY KEY (id) 
 )
 GO
 
-ALTER TABLE flow_history ADD max_block_id NUMBER(11);
+ALTER TABLE flow_history ADD max_block_id NUMERIC(11);
 
 ALTER TABLE process DROP PRIMARY KEY,
  ADD PRIMARY KEY  USING BTREE(flowid, pid, subpid, pnumber);
