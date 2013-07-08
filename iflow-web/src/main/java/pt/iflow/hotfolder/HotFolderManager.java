@@ -33,127 +33,173 @@ public class HotFolderManager extends Thread {
   }
 
   public static HotFolderManager get() {
-    if(null == _hotfolderManager) _hotfolderManager = new HotFolderManager();
+    if(null == _hotfolderManager) 
+      _hotfolderManager = new HotFolderManager();
     return _hotfolderManager;
   }
 
   public static void startManager() {
     Logger.adminInfo("HotFolderManager", "startManager", "Starting...");
-    get().start();
+    try{
+      get().start();
+    }catch(Exception e){
+      Logger.adminError("HotFolderManager", "startManager", "Error starting thread.", e);
+    }
   }
 
   public static void stopManager() {
     Logger.adminInfo("HotFolderManager", "stopManager", "Stopping...");
-    get().shutdown();
+
+    try{
+      get().shutdown();
+    }catch(Exception e){
+      Logger.adminError("HotFolderManager", "startManager", "Error stoping thread.", e);
+    }
   }
 
   private void prepareAndStartChecker(int flowid) throws Exception {
+    try{
     prepareChecker(flowid);
+    }catch(Exception e){
+      Logger.adminError("HotFolderManager", "prepareAndStartChecker", "Error preparing checker.", e);
+    }
+    try{
     startChecker(flowid, FlowStatus.CHECK_FLOW);
+    }catch(Exception e){ 
+      Logger.adminError("HotFolderManager", "prepareAndStartChecker", "Error starting checker.", e);
+    }
   }
   
   public void run() {
+    
     FlowHolder fholder = BeanFactory.getFlowHolderBean();
-    Collection<Integer> flowids = fholder.listFlowIds(userInfo);
-    for (int flowid : flowids) {
-      try {
-        prepareAndStartChecker(flowid);
-        Logger.adminInfo("HotFolderManager", "run", "Flow " + flowid + " processed.");
-      } 
-      catch (Exception e) {
-        Logger.adminError("HotFolderManager", "run", "Error preparing flow " + flowid, e);
-      }
+    
+    try{
+        Collection<Integer> flowids = fholder.listFlowIds(userInfo);
+
+        for (int flowid : flowids) {
+            try {
+              prepareAndStartChecker(flowid);
+              Logger.adminInfo("HotFolderManager", "run", "Flow " + flowid + " processed.");
+            } 
+            catch (Exception e) {
+              Logger.adminError("HotFolderManager", "run", "Error preparing flow " + flowid, e);
+            }
+        }
+    }catch(Exception e){
+      Logger.adminError("HotFolderManager", "run", "Error getting flow list for user "+userInfo.getUtilizador(), e);
     }
+   
 
     // add settings listener
-    BeanFactory.getFlowSettingsBean().addFlowSettingsListener(this.getClass().getName(), new FlowSettingsListener() {
-      public void settingsChanged(int flowid) {
-        Logger.adminTrace("HotFolderManager", "settingsChanged", "entered for flow " + flowid);
-        try {
-          prepareAndStartChecker(flowid);
-          Logger.adminInfo("HotFolderManager", "settingsChanged", 
-              "Flow " + flowid + " re-processed.");
-        } 
-        catch (Exception e) {
-          Logger.adminError("HotFolderManager", "settingsChanged", 
-              "error preparing checker for flow " + flowid, e);
-        }
-      }
-    });
+    try{
+        BeanFactory.getFlowSettingsBean().addFlowSettingsListener(this.getClass().getName(), new FlowSettingsListener() {
+          public void settingsChanged(int flowid) {
+            Logger.adminTrace("HotFolderManager", "settingsChanged", "entered for flow " + flowid);
+            try {
+              prepareAndStartChecker(flowid);
+              Logger.adminInfo("HotFolderManager", "settingsChanged", 
+                  "Flow " + flowid + " re-processed.");
+            } 
+            catch (Exception e) {
+              Logger.adminError("HotFolderManager", "settingsChanged", 
+                  "error preparing checker for flow " + flowid, e);
+            }
+          }
+        });
+    }catch(Exception e){
+      Logger.adminError("HotFolderManager", "run", "Error adding settings listener.", e);
+    }
+    
+    try{
+        fholder.addNewFlowListener(this.getClass().getName(), new NewFlowListener() {
+          public void flowAdded(int flowid) {
+            Logger.adminTrace("HotFolderManager", "flowAdded", "entered for flow " + flowid);
+            
+            try {
+              prepareAndStartChecker(flowid);
+              Logger.adminInfo("HotFolderManager", "flowAdded", 
+                  "Flow " + flowid + " initialized.");
+            } 
+            catch (Exception e) {
+              Logger.adminError("HotFolderManager", "flowAdded", 
+                  "error initializing checker for flow " + flowid, e);
+            }        
+          }
+        });
+    }catch(Exception e){
+      Logger.adminError("HotFolderManager", "run", "Error adding new flow listener.", e);
+    }
+    
+    try{
+        fholder.addFlowDeployListener(this.getClass().getName(), new FlowDeployListener() {
+          public void goOffline(int flowid) {
+            Logger.adminTrace("HotFolderManager", "goOffline", "entered for flow " + flowid);
+            stopChecker(flowid);
+          }
+    
+          public void goOnline(int flowid) {
+            Logger.adminTrace("HotFolderManager", "goOnline", "entered for flow " + flowid);
+            try {
+              startChecker(flowid, FlowStatus.ONLINE);
+            } catch (Exception e) {
+              Logger.adminError("HotFolderManager", "goOnline", 
+                  "error starting checker for flow " + flowid, e);
+            }
+          }
+        });
+    }catch(Exception e){
+      Logger.adminError("HotFolderManager", "run", "Error adding new flow deploy listener.", e);
+    }
 
-    fholder.addNewFlowListener(this.getClass().getName(), new NewFlowListener() {
-      public void flowAdded(int flowid) {
-        Logger.adminTrace("HotFolderManager", "flowAdded", "entered for flow " + flowid);
-        
-        try {
-          prepareAndStartChecker(flowid);
-          Logger.adminInfo("HotFolderManager", "flowAdded", 
-              "Flow " + flowid + " initialized.");
-        } 
-        catch (Exception e) {
-          Logger.adminError("HotFolderManager", "flowAdded", 
-              "error initializing checker for flow " + flowid, e);
-        }        
-      }
-    });
-
-    fholder.addFlowDeployListener(this.getClass().getName(), new FlowDeployListener() {
-      public void goOffline(int flowid) {
-        Logger.adminTrace("HotFolderManager", "goOffline", "entered for flow " + flowid);
-        stopChecker(flowid);
-      }
-
-      public void goOnline(int flowid) {
-        Logger.adminTrace("HotFolderManager", "goOnline", "entered for flow " + flowid);
-        try {
-          startChecker(flowid, FlowStatus.ONLINE);
-        } catch (Exception e) {
-          Logger.adminError("HotFolderManager", "goOnline", 
-              "error starting checker for flow " + flowid, e);
-        }
-      }
-    });
-
-    fholder.addFlowVersionListener(this.getClass().getName(), new FlowVersionListener() {
-      public void newVersion(int flowid) {
-        Logger.adminTrace("HotFolderManager", "newVersion", "entered for flow " + flowid);
-        try {
-          prepareAndStartChecker(flowid);
-          Logger.adminInfo("HotFolderManager", "newVersion", 
-              "Flow " + flowid + " re-processed.");
-        } 
-        catch (Exception e) {
-          Logger.adminError("HotFolderManager", "newVersion", 
-              "error preparing checker for flow " + flowid, e);
-        }        
-      }
-    });
+    try{
+        fholder.addFlowVersionListener(this.getClass().getName(), new FlowVersionListener() {
+          public void newVersion(int flowid) {
+            Logger.adminTrace("HotFolderManager", "newVersion", "entered for flow " + flowid);
+            try {
+              prepareAndStartChecker(flowid);
+              Logger.adminInfo("HotFolderManager", "newVersion", 
+                  "Flow " + flowid + " re-processed.");
+            } 
+            catch (Exception e) {
+              Logger.adminError("HotFolderManager", "newVersion", 
+                  "error preparing checker for flow " + flowid, e);
+            }        
+          }
+        });
+    }catch(Exception e){
+      Logger.adminError("HotFolderManager", "run", "Error adding new flow version listener.", e);
+    }
   }
 
   private void prepareChecker(int flowid) throws Exception {
 
-    stopChecker(flowid);
-
-    FlowSettings settingsbean = BeanFactory.getFlowSettingsBean();
-    HotFolderConfig hfconfig = HotFolderConfig.parseAndValidate(flowid, settingsbean.getFlowSettings(flowid));
-
-    if (hfconfig == null) {
-      checkers.put(flowid, null);
-      Logger.adminInfo("HotFolderManager", "prepareChecker", 
-          "no hotfolder configuration for flow " + flowid);
-      return;
-    }
+    try{
+        stopChecker(flowid);
     
-    try {
-      FlowFolderChecker fchecker = new FlowFolderChecker(hfconfig);
-      checkers.put(flowid, fchecker);
-      Logger.adminInfo("HotFolderManager", "prepareChecker", 
-          "hotfolder checker prepared for flow " + flowid);
-    }
-    catch (Exception e) {
-      checkers.remove(flowid);
-      Logger.adminError("HotFolderManager", "prepareChecker", 
-          "hotfolder checker for flow " + flowid + " throw exception:", e);      
+        FlowSettings settingsbean = BeanFactory.getFlowSettingsBean();
+        HotFolderConfig hfconfig = HotFolderConfig.parseAndValidate(flowid, settingsbean.getFlowSettings(flowid));
+    
+        if (hfconfig == null) {
+          checkers.put(flowid, null);
+          Logger.adminInfo("HotFolderManager", "prepareChecker", 
+              "no hotfolder configuration for flow " + flowid);
+          return;
+        }
+        
+        try {
+          FlowFolderChecker fchecker = new FlowFolderChecker(hfconfig);
+          checkers.put(flowid, fchecker);
+          Logger.adminInfo("HotFolderManager", "prepareChecker", 
+              "hotfolder checker prepared for flow " + flowid);
+        }
+        catch (Exception e) {
+          checkers.remove(flowid);
+          Logger.adminError("HotFolderManager", "prepareChecker", 
+              "hotfolder checker for flow " + flowid + " throw exception:", e);      
+        }
+    }catch(Exception e){
+      Logger.adminError("HotFolderManager", "prepareChecker", "Error preparing checker for flow " + flowid + " throw exception:", e);
     }
   }
 

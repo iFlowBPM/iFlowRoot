@@ -7,6 +7,7 @@ import java.util.StringTokenizer;
 import org.apache.commons.lang.StringUtils;
 
 import pt.iflow.api.flows.FlowSetting;
+import pt.iflow.api.utils.Logger;
 
 public class HotFolderConfig {
 
@@ -54,35 +55,37 @@ public class HotFolderConfig {
   
   public static HotFolderConfig parse(int flowid, FlowSetting[] settings) {  
     HotFolderConfig ret = new HotFolderConfig(flowid);
-    
-    for (FlowSetting setting : settings) {
-      if (StringUtils.equals(setting.getName(), ONOFF)) {
-        ret.on = StringUtils.equals(CONFIG_OPTION_YES, setting.getValue());
-      }      
-      else if (StringUtils.equals(setting.getName(), SUBS_FOLDERS)) {
-        ret.subsFolders = new ArrayList<String>();
-        if (StringUtils.isNotEmpty(setting.getValue())) {
-          StringTokenizer st = new StringTokenizer(setting.getValue(), SUBS_FOLDER_SEP);
-          while (st.hasMoreTokens()) {
-            String val = st.nextToken().trim();
-            if (StringUtils.isNotEmpty(val))
-              ret.subsFolders.add(val);            
+    try{
+          for (FlowSetting setting : settings) {
+            if (StringUtils.equals(setting.getName(), ONOFF)) {
+              ret.on = StringUtils.equals(CONFIG_OPTION_YES, setting.getValue());
+            }      
+            else if (StringUtils.equals(setting.getName(), SUBS_FOLDERS)) {
+              ret.subsFolders = new ArrayList<String>();
+              if (StringUtils.isNotEmpty(setting.getValue())) {
+                StringTokenizer st = new StringTokenizer(setting.getValue(), SUBS_FOLDER_SEP);
+                while (st.hasMoreTokens()) {
+                  String val = st.nextToken().trim();
+                  if (StringUtils.isNotEmpty(val))
+                    ret.subsFolders.add(val);            
+                }
+              }
+            }                   
+            else if (StringUtils.equals(setting.getName(), SEARCH_DEPTH)) {
+              String sdepth = setting.getValue(); 
+              if (StringUtils.isNotEmpty(sdepth) && StringUtils.isNumeric(sdepth))
+                ret.depth = Integer.parseInt(sdepth); 
+            }
+            else if (StringUtils.equals(setting.getName(), DOC_VAR)) {
+              ret.docVar = setting.getValue(); 
+            }
+            else if (StringUtils.equals(setting.getName(), IN_USER)) {
+              ret.inUser = setting.getValue(); 
+            }
           }
-        }
-      }                   
-      else if (StringUtils.equals(setting.getName(), SEARCH_DEPTH)) {
-        String sdepth = setting.getValue(); 
-        if (StringUtils.isNotEmpty(sdepth) && StringUtils.isNumeric(sdepth))
-          ret.depth = Integer.parseInt(sdepth); 
-      }
-      else if (StringUtils.equals(setting.getName(), DOC_VAR)) {
-        ret.docVar = setting.getValue(); 
-      }
-      else if (StringUtils.equals(setting.getName(), IN_USER)) {
-        ret.inUser = setting.getValue(); 
-      }
+    }catch(Exception e){
+      Logger.adminError("HotFolderConfig", "parse", "Error parsing settings for flow "+flowid+".", e);
     }
-  
     return ret;
   }
   

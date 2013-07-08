@@ -43,19 +43,32 @@ public class FlowFolderChecker implements Runnable {
    * @param messageParser the message parser to parse new mail messages
    */
   public FlowFolderChecker(HotFolderConfig hfconfig) {
-    this.hfconfig = hfconfig;
-    managerUser = (UserInfoManagerInterface)BeanFactory.getUserInfoFactory().newClassManager(this.getClass().getName());
-    
-    IFlowData fd = BeanFactory.getFlowBean().getFlow(managerUser, hfconfig.getFlowId());
-    managerUser.setOrganizationId(fd.getOrganizationId());
+    try{
+        this.hfconfig = hfconfig;
+        managerUser = (UserInfoManagerInterface)BeanFactory.getUserInfoFactory().newClassManager(this.getClass().getName());
+        
+        try{
+            IFlowData fd = BeanFactory.getFlowBean().getFlow(managerUser, hfconfig.getFlowId());
+            managerUser.setOrganizationId(fd.getOrganizationId());
+        }catch(Exception e){
+          Logger.adminError(signature, "FlowFolderChecker", "Error getting IFlowData.", e);
+        }
+
+    }catch(Exception e){
+      Logger.adminError(signature, "FlowFolderChecker", "Error instantiate object.", e);
+    }
   }
 
   public void stop() {
     Logger.adminInfo(signature, "stop", getId() + "signaling thread to stop.");
     stop = true;
     if (worker != null) {
-      worker.interrupt();
-      worker = null;
+      try{
+          worker.interrupt();
+          worker = null;
+      }catch(Exception e){
+        Logger.adminError(signature, "stop", getId() + "Error stoping thread.", e);
+      }
     }
   }
   
@@ -67,9 +80,13 @@ public class FlowFolderChecker implements Runnable {
       return;
     }
     
-    worker = new Thread(this, getId());
-    stop=false;
-    worker.start();    
+    try{
+        worker = new Thread(this, getId());
+        stop=false;
+        worker.start();
+    }catch (Exception e) {
+      Logger.adminError(signature, "start", getId() + "Error starting thread.", e);
+    }
   }
   
   public String getId() {
@@ -82,20 +99,20 @@ public class FlowFolderChecker implements Runnable {
 
     while (!stop) {
       try {      
-        try {
-          processFolders(hfconfig.getSubsFolders());
-        } 
-        catch (Exception e) {
-          Logger.adminError(signature, "run", getId() + "caught exception", e);
-        }
-
-        try {
-          Logger.adminInfo(signature, "run", 
-              getId() + "sleeping for " + Const.HOT_FOLDER_SEARCH_INTERVAL + "ms");
-          Thread.sleep(Const.HOT_FOLDER_SEARCH_INTERVAL);
-        }
-        catch (InterruptedException e) {        
-        }
+            try {
+              processFolders(hfconfig.getSubsFolders());
+            } 
+            catch (Exception e) {
+              Logger.adminError(signature, "run", getId() + "caught exception", e);
+            }
+    
+            try {
+              Logger.adminInfo(signature, "run", getId() + "sleeping for " + Const.HOT_FOLDER_SEARCH_INTERVAL + "ms");
+              Thread.sleep(Const.HOT_FOLDER_SEARCH_INTERVAL);
+            }
+            catch (InterruptedException e) {
+              Logger.adminError(signature, "run", "Error thread sleeping.", e);         
+            }
       }
       catch (Exception master) {
         Logger.adminError(signature, "run", getId() + "caught unexpected exception", master);
@@ -104,33 +121,36 @@ public class FlowFolderChecker implements Runnable {
     Logger.adminInfo(signature, "run", getId() + "done checking folders");
   }
 
-  private void processFolders(List<String> folders) {
-    
-    List<String> depthFolders = new ArrayList<String>();
-    for (String folder : folders) {
-      depthFolders.add(folder);
-    }    
-    for (int depth=0; hfconfig.getDepth() == -1 || depth <= hfconfig.getDepth(); depth++ ) {
-
-      Logger.adminDebug(signature, "processFolders", 
-          getId() + "processing folders for depth " + 
-          depth + ": " + depthFolders.size() + " total folders to check...");
-
-      List<String> nextDepthFolders = new ArrayList<String>();  
-
-      for (String folder : depthFolders) {
-        nextDepthFolders.addAll(processFolder(folder));
-      }   
+  private void processFolders(List<String> folders) { 
+    try{
+          List<String> depthFolders = new ArrayList<String>();
+          for (String folder : folders) {
+            depthFolders.add(folder);
+          }    
+          for (int depth=0; hfconfig.getDepth() == -1 || depth <= hfconfig.getDepth(); depth++ ) {
       
-      if (nextDepthFolders.size() == 0) 
-        break;
+            Logger.adminDebug(signature, "processFolders", 
+                getId() + "processing folders for depth " + 
+                depth + ": " + depthFolders.size() + " total folders to check...");
       
-      depthFolders = nextDepthFolders;
+            List<String> nextDepthFolders = new ArrayList<String>();  
+      
+            for (String folder : depthFolders) {
+              nextDepthFolders.addAll(processFolder(folder));
+            }   
+            
+            if (nextDepthFolders.size() == 0) 
+              break;
+            
+            depthFolders = nextDepthFolders;
+          }
+    }catch(Exception e){
+      Logger.adminError(signature, "processFolders","ERROR processing folders.",e);
     }
   }
 
   private List<String> processFolder(String folder) {
-    
+    Logger.adminDebug(signature, "processFolder", "Processing folder " + folder);
     try {
       File ff = new File(folder);
       if (ff.isDirectory()) {
@@ -149,11 +169,11 @@ public class FlowFolderChecker implements Runnable {
         }
       }
       else {
-        Logger.adminWarning(signature, "processFolder", 
-            getId() + "folder " + folder + " is not a directory");
+        Logger.adminWarning(signature, "processFolder",getId() + "folder " + folder + " is not a directory");
       }      
     }
-    catch (Exception e) {      
+    catch (Exception e) {
+      Logger.adminError(signature, "processFolder","ERROR processing folder "+folder+".",e);
     }
     return new ArrayList<String>();
   }
@@ -186,9 +206,14 @@ public class FlowFolderChecker implements Runnable {
       
       Date now = Calendar.getInstance().getTime();
       
+      ProcessData procData = null;
+      try{
+        procData = BeanFactory.getProcessManagerBean().createProcess(ui, hfconfig.getFlowId()); 
+      }catch(Exception e){
+        Logger.adminError(signature, "processFile","ERROR creating process data for flow "+getId()+" with user " + ui.getUtilizador());
+        throw e;
+      }
       
-      ProcessData procData = BeanFactory.getProcessManagerBean().createProcess(ui, hfconfig.getFlowId()); 
-
       String docVarName = hfconfig.getDocVar();
       Set<File> errors = procData.addDocuments(ui, docVarName, Arrays.asList(file));
       if (errors.contains(file)) {
@@ -258,9 +283,15 @@ public class FlowFolderChecker implements Runnable {
   }
   
   private String genHash(File f, Date dt) {
-    return MessageFormat.format("{0}-{1}-{2}", 
-        String.valueOf(hfconfig.getFlowId()), 
-        String.valueOf(dt.getTime()), 
-        String.valueOf(f.getAbsolutePath().hashCode()));
+    String hash = "";
+    try{
+      hash = MessageFormat.format("{0}-{1}-{2}", 
+          String.valueOf(hfconfig.getFlowId()), 
+          String.valueOf(dt.getTime()), 
+          String.valueOf(f.getAbsolutePath().hashCode()));
+    }catch(Exception e){
+      Logger.adminError(signature, "genHash", "Error generating hash.", e);
+    }
+    return hash; 
   }
 }
