@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>pt.iknow.iflow</groupId>
 		<artifactId>iflow-connectors</artifactId>
-		<version>4.2.0</version>
+		<version>4.2.2</version>
 	</parent>
 
 	<name>iFlow Connectors :: Alfresco Connector</name>

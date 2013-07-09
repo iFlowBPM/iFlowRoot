@@ -3,7 +3,7 @@
   <parent>
     <artifactId>iflow</artifactId>
     <groupId>pt.iknow.iflow</groupId>
-    <version>4.2.0</version>
+    <version>4.2.2</version>
   </parent>
   <groupId>pt.iknow.iflow</groupId>
   <artifactId>vfs-connector</artifactId>
