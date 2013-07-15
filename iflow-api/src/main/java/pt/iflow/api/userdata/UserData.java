@@ -23,11 +23,11 @@ public interface UserData extends IMappedData {
   public static final String USERNAME = "USERNAME";
   public static final String FULL_NAME = "FULL_NAME";
   public static final String EMAIL = "EMAIL";
-  public static final String EMPLOYEE_NUMBER = "EMPLOYEE_NUMBER";
+  public static final String EMPLOYEE_NUMBER = "EMPLOYEEID";
   public static final String ORG_NAME = "ORG_NAME";
   public static final String ORG_ID = "ORG_ID";
   public static final String UNIT_NAME = "UNIT_NAME";
-  public static final String UNIT_ID= "UNITID";
+  public static final String UNIT_ID = "UNITID";
   public static final String MOBILE_NUMBER = "MOBILE_NUMBER";
   public static final String ORGADM = "ORGADM";
   public static final String PASSWORD_RESET = "PASSWORD_RESET";

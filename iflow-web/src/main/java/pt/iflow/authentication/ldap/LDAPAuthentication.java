@@ -16,12 +16,9 @@ import java.util.Properties;
 
 import pt.iflow.api.authentication.Authentication;
 import pt.iflow.api.authentication.AuthenticationInfo;
-import pt.iflow.api.userdata.UserData;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.Utils;
 import pt.iflow.ldap.LDAPInterface;
-import pt.iflow.ldap.LDAPMapping;
-import pt.iflow.userdata.common.MappedUserData;
 import pt.iknow.utils.ldap.LDAPDirectory;
 
 /**
@@ -43,6 +40,8 @@ public class LDAPAuthentication implements Authentication {
   private static String LIST_PROFILE_USERS = "(&(ou=Profiles)(objectClass=groupOfNames)(cn={0}))";
   private static String LIST_USERS = "";
   private static String USERID = "";
+  private static String FULL_NAME = "";
+  private static String EMPLOYEE_NUMBER = "";
   private static String LDAP_SESSION_ATTR = "sessionID";
   
   private static String generateSessionId(String username) {
@@ -74,6 +73,16 @@ public class LDAPAuthentication implements Authentication {
     String userId = (String) parameters.get("USERID");
     if(!(userId==null||"".equals(userId))) {
       USERID = userId;
+    }
+
+    String fullName = (String) parameters.get("FULL_NAME");
+    if(!(fullName==null||"".equals(fullName))) {
+      FULL_NAME = fullName;
+    }
+    
+    String employeeNumber = (String) parameters.get("EMPLOYEE_NUMBER");
+    if(!(employeeNumber==null||"".equals(employeeNumber))) {
+      EMPLOYEE_NUMBER = employeeNumber;
     }
     
     // if false, authenticate users using a bind dn mask. otherwise search for the user
@@ -177,23 +186,28 @@ public class LDAPAuthentication implements Authentication {
     return false;
   }
 
-  public List<String> getAllUsersForSync(String orgId) {
-    List<String> retObj = null;
+  public List<String[]> getAllUsersForSync(String orgId) {
+    List<String[]> retObj = null;
     try {
       Logger.debug(null, this, "getAllUsersForSync", "Performing LDAP search " + LIST_USERS);
       Collection<Map<String,String>> users = LDAPInterface.searchDeep(LIST_USERS);
       if (users == null) {
         Logger.debug(null,this,"getAllUsersForSync","EMPTY USER LIST");
-        retObj = new ArrayList<String>();
+        retObj = new ArrayList<String[]>();
       }
       else {
-        retObj = new ArrayList<String>(users.size());
+        retObj = new ArrayList<String[]>(users.size());
         for(Map<String,String> userMap : users) {
-          retObj.add(userMap.get(USERID));
+          String[] newUser = new String[] {"", "", ""};
+          newUser[0] = userMap.get(USERID);
+          if (null != FULL_NAME && !"".equals(FULL_NAME))
+            newUser[1] = userMap.get(FULL_NAME);
+          if (null != EMPLOYEE_NUMBER && !"".equals(EMPLOYEE_NUMBER))
+            newUser[2] = userMap.get(EMPLOYEE_NUMBER);
+          retObj.add(newUser);
         }
       }
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       Logger.error("ADMIN", this, "getAllUsersForSync", "Error retrieving user list.", e);
     }
     return retObj;

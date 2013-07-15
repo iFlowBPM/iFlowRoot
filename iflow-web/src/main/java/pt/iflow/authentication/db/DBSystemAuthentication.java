@@ -252,8 +252,8 @@ public class DBSystemAuthentication implements Authentication,UserDataAccess {
   }
 
   //Não há nada para sincronizar neste caso
-  public List<String> getAllUsersForSync(String orgId) {
-    return new ArrayList<String>();
+  public List<String[]> getAllUsersForSync(String orgId) {
+    return null;
   }
 
 }

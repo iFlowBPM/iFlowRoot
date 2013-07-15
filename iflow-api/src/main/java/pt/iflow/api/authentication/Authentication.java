@@ -26,7 +26,7 @@ public interface Authentication {
   public boolean checkUserSession(String username, String sessionID);
   public AuthenticationInfo loginUser(String username, String password);
   public Collection<Map<String,String>> getProfileUsers(String profileID);
-  public List<String> getAllUsersForSync(String orgId);
+  public List<String[]> getAllUsersForSync(String orgId);
   public void init(Properties parameters);
  
 }

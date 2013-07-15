@@ -93,14 +93,14 @@ public class UsersSyncManager extends Thread {
   }
 
   private void syncUsers() {
-    List<String> users = userAuthentication.getAllUsersForSync(orgId);
+    List<String[]> users = userAuthentication.getAllUsersForSync(orgId);
     
-    Iterator<String> iter = users.iterator();
+    Iterator<String[]> iter = users.iterator();
     while (iter.hasNext()) {
-      String user = iter.next();
-      if (!usersInDB.contains(user)) {
+      String[] user = iter.next();
+      if (!usersInDB.contains(user[0])) {
         addUser(user);
-        usersInDB.add(user);
+        usersInDB.add(user[0]);
       }
     }
   }
@@ -131,7 +131,7 @@ public class UsersSyncManager extends Thread {
     return retObj;
   }
 
-  private ArrayList<String> addUser(String user) {
+  private ArrayList<String> addUser(String[] user) {
     ArrayList<String> retObj = new ArrayList<String>();  
     DataSource ds = null;
     Connection db = null;
@@ -142,7 +142,10 @@ public class UsersSyncManager extends Thread {
       db = ds.getConnection();
       db.setAutoCommit(true);
       st = db.createStatement();
-      String query = DBQueryManager.processQuery(UsersSyncManager.INSERT_USER, new Object[]{user, unitId});
+      String username = user[1] == null ? "" : user[1];
+      String employeeId = user[2] == null ? "" : user[2];
+      String query = DBQueryManager.processQuery(UsersSyncManager.INSERT_USER, 
+                                                 new Object[]{user[0], unitId, username, employeeId});
       st.executeUpdate(query);
     } catch (SQLException sqle) {
       Logger.adminError("UsersSyncManager", "addUser", "Error Inserting User from Database", sqle);

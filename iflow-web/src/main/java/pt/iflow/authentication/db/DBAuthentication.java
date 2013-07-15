@@ -7,7 +7,6 @@
 package pt.iflow.authentication.db;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -133,8 +132,8 @@ public class DBAuthentication implements Authentication {
   }
 
   //Não há nada para sincronizar neste caso
-  public List<String> getAllUsersForSync(String orgId) {
-    return new ArrayList<String>();
+  public List<String[]> getAllUsersForSync(String orgId) {
+    return null;
   }
 
 }

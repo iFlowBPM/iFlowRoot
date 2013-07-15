@@ -52,6 +52,7 @@ CREATE TABLE `flow` (
   `name_idx18` varchar(64),
   `name_idx19` varchar(64),
   `seriesid` int,
+  `max_block_id` INT;
   type_code varchar(1) default 'W',
   PRIMARY KEY (`flowid`),
   INDEX `ind_flow` (`enabled`)
@@ -298,6 +299,7 @@ CREATE TABLE `activity` (
   `profilename` VARCHAR(256),
   `read_flag` INT(1) NULL DEFAULT 1,
   `mid` INT NULL DEFAULT 0,
+  `folderid` INT NULL;
   PRIMARY KEY (`flowid`, `pid`, `subpid`, `userid`),
   CONSTRAINT `activity_process_fk` FOREIGN KEY `activity_process_fk` (`flowid`, `pid`, `subpid`)
     REFERENCES `process` (`flowid`, `pid`, `subpid`)
@@ -670,7 +672,17 @@ CREATE TABLE `users` (
   `sessionid` VARCHAR(150)  NULL,
   `activated` INTEGER (1) NOT NULL,
   `password_reset` INTEGER (1) DEFAULT 1 NOT NULL,
+  `department` varchar(50),
+  `employeeid` varchar(50),
+  `manager` varchar(50),
+  `telephonenumber` varchar(50),
+  `title` varchar(50),
   `orgadm` INTEGER (1) DEFAULT 0 NOT NULL,
+  `orgadm_users` INT(1) UNSIGNED NOT NULL DEFAULT 1,
+  `orgadm_flows` INT(1) UNSIGNED NOT NULL DEFAULT 1,
+  `orgadm_processes` INT(1) UNSIGNED NOT NULL DEFAULT 1,
+  `orgadm_resources` INT(1) UNSIGNED NOT NULL DEFAULT 1,
+  `orgadm_org` INT(1) UNSIGNED NOT NULL DEFAULT 1,
   PRIMARY KEY (`userid`),
   UNIQUE INDEX `uk_users_sessionid` (`sessionid`(150)),
   UNIQUE INDEX `uk_users_username` (`username`(100)),
@@ -733,6 +745,7 @@ create table flow_history (
         flowversion         int,
         modified            DATETIME not null,
         `comment`           varchar(512),
+		`max_block_id` 		int,
         primary key (id)
 )
 ENGINE = INNODB DEFAULT CHARSET=utf8;
@@ -1348,8 +1361,6 @@ begin
   set mydate := now();
   select userid, mid into olduser, oldmid from activity where pid = apid and flowid = aflowid and status = 0 group by pid, flowid;
 
-
-
   update activity set userid = auserid, created = mydate, started = mydate, archived = mydate, profilename = auserid
   where pid = apid and flowid = aflowid and userid = olduser and mid = oldmid;
 END
@@ -1682,8 +1693,6 @@ CREATE TABLE `folder` (
 )
 ENGINE = INNODB DEFAULT CHARSET=utf8;
 
-ALTER TABLE `activity` ADD COLUMN `folderid` INT NULL;
-
 ALTER TABLE `activity` 
   ADD CONSTRAINT `activity_folder_fk`
   FOREIGN KEY (`folderid` )
@@ -1867,8 +1876,6 @@ CREATE TABLE `serial_code_templates` (
 )
 ENGINE = INNODB DEFAULT CHARSET=utf8;
 
-ALTER TABLE flow ADD COLUMN `max_block_id` INT;
-
 DROP TABLE IF EXISTS subflow_block_mapping;
 CREATE TABLE  subflow_block_mapping (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
@@ -1880,20 +1887,12 @@ CREATE TABLE  subflow_block_mapping (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
-ALTER TABLE flow_history ADD COLUMN `max_block_id` INT;
-
 DELIMITER ;
 create view process_intervenients (userid, pid) as
     select distinct userid, pid from activity
     union 
     select distinct userid, pid from activity_history;
 DELIMITER ;
-
-alter table users add column department varchar(50);
-alter table users add column employeeid varchar(50);
-alter table users add column manager varchar(50);
-alter table users add column telephonenumber varchar(50);
-alter table users add column title varchar(50);
 
 CREATE TABLE `serial_code_templates` (
   `template` VARCHAR(50) NOT NULL,
@@ -1906,11 +1905,3 @@ CREATE TABLE `serial_code_templates` (
 );
 
 ALTER TABLE `iflow`.`reporting` ADD INDEX `IDX_REPORTING`(`flowid`, `pid`, `subpid`);
-
-ALTER TABLE `iflow`.`users`
- ADD COLUMN `orgadm_users` INT(1) UNSIGNED NOT NULL DEFAULT 1 AFTER `title`,
- ADD COLUMN `orgadm_flows` INT(1) UNSIGNED NOT NULL DEFAULT 1 AFTER `orgadm_users`,
- ADD COLUMN `orgadm_processes` INT(1) UNSIGNED NOT NULL DEFAULT 1 AFTER `orgadm_flows`,
- ADD COLUMN `orgadm_resources` INT(1) UNSIGNED NOT NULL DEFAULT 1 AFTER `orgadm_processes`,
- ADD COLUMN `orgadm_org` INT(1) UNSIGNED NOT NULL DEFAULT 1 AFTER `orgadm_resources`
-;
