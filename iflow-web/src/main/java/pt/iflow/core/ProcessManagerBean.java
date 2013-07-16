@@ -1104,8 +1104,7 @@ public class ProcessManagerBean implements ProcessManager {
           
         }
         else {
-          boolean onlySaveOnChange = Const.SAVE_PROCESSHISTORY_WHEN.equals(Const.SAVE_PROCESSHISTORY_WHEN_ONCHANGE);
-          if (!onlySaveOnChange || (onlySaveOnChange && doSaveProcessHistory(procData.hasChanged())) ){
+          if (doSaveProcessHistory(procData.hasChanged())) {
             sbQuery = new StringBuilder();
             sbQuery.append("insert into process_history ");
             sbQuery.append("(flowid,pid,subpid,mid,creator,created,");
