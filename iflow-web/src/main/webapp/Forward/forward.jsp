@@ -20,7 +20,7 @@ String popupReturnBlockId = null;
     block = flow.getBlock(userInfo, procData);
     
   	
-    //Caso esteja a correr em popup e o bloco não seja de popup, sair no erro
+    //Caso esteja a correr em popup e o bloco nï¿½o seja de popup, sair no erro
     if( popupReturnBlockId != null && !block.canRunInPopupBlock())
     	block = null;
 	
@@ -60,6 +60,7 @@ String popupReturnBlockId = null;
     Activity a = new Activity(login, flowid, pid, subpid, 0, 0, sDescription, url, 0);
 	a.setRead();
     pm.updateActivity(userInfo, a);
+    pm.modifyProcessData(userInfo, procData);
 
     sNextPage = sURL_PREFIX + sNextPage;
 
