@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import pt.iflow.api.core.FolderManager;
@@ -20,33 +19,6 @@ public class FolderManagerBean implements FolderManager {
 
 	  private static FolderManagerBean instance = null;
 	  
-	  final static HashMap<String,String> nextColors = new HashMap<String, String>();
-	  final static String COLORS[] = new String[]{
-		  "#9cc",
-		  "#fc9",
-		  "#f9c",
-		  "#cc9",
-		  "#c9c",
-		  "#99c",
-		  "#9c9",
-		  "#c99",
-		  "#dbb",
-		  "#fe8"
-	  };
-	  
-	  static {
-		  for (int i=0; i< COLORS.length; i++) {
-			  if (i==0) {
-				  nextColors.put(COLORS[COLORS.length-1], COLORS[i]);
-			  }
-			  else {
-				  nextColors.put(COLORS[i-1], COLORS[i]);
-			  }
-		  }
-	  }
-	  
-
-	
 	  public static FolderManagerBean getInstance() {
 		    if (null == instance)
 		      instance = new FolderManagerBean();
@@ -138,8 +110,7 @@ public class FolderManagerBean implements FolderManager {
 	   	  try {
 		      db = DatabaseInterface.getConnection(userInfo);
 		      st = db.createStatement();
-              //st.executeUpdate("Update folder set name='"+foldername+"' , color='"+color+"' where id="+folderid);
-              st.executeUpdate("Update folder set name='"+foldername+"' where id="+folderid);
+              st.executeUpdate("Update folder set name='"+foldername+"', color='"+color+"' where id="+folderid);
 		   } catch (SQLException sqle) {
 		    	Logger.error(userInfo.getUtilizador(), this, "editFolder","caught sql exception: " + sqle.getMessage(), sqle);
 		   } finally {
@@ -152,22 +123,6 @@ public class FolderManagerBean implements FolderManager {
 		  Statement st = null;
 		  String query = "";
 		  try {
-			  List<Folder> userFolders = getUserFolders(userInfo);
-
-			  // get last color of first color if empty
-			  if (userFolders.size()==0) {
-				  color = nextColors.get(COLORS[COLORS.length-1]);
-			  }
-			  else {
-				  color = userFolders.get(userFolders.size()-1).getColor();
-			  }
-			  // next from last
-			  color = nextColors.get(color);
-			  if (color == null) { // current color does not exists
-				  // get first
-			    color = COLORS[0];
-			  }
-
 			  db = DatabaseInterface.getConnection(userInfo);
 			  st = db.createStatement();
 			  query = "insert into folder (name, color, userid) values ('"+foldername+"','"+color+"','"+userInfo.getUtilizador()+"')";

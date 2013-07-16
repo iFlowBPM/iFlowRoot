@@ -712,6 +712,8 @@ function editFolder(folderid, from){
 	if (from == '1') {
 		var obj = document.getElementById('name_'+folderid);
 		if (obj!=null) obj.style.display='none';
+		obj = document.getElementById('color_'+folderid);
+		if (obj!=null) obj.style.display='none';
 		obj = document.getElementById('bt_edit_'+folderid);
 		if (obj!=null) obj.style.display='none';
 		obj = document.getElementById('bt_delete_'+folderid);
@@ -719,26 +721,31 @@ function editFolder(folderid, from){
 		obj = document.getElementById('bt_confirm_'+folderid);
 		if (obj!=null) obj.style.display='inline-block';
 		obj = document.getElementById('bt_cancel_'+folderid);
+		if (obj!=null) obj.style.display='inline-block';
+		obj = document.getElementById('bt_pickColor_'+folderid);
 		if (obj!=null) obj.style.display='inline-block';
 		obj = document.getElementById('edit_'+folderid);
 		if (obj!=null) obj.style.display='inline-block';
 		if (folderid=='0') {
 			  if (obj!=null) obj.value='';
-			  obj = document.getElementById('color_'+folderid);
+			  obj = document.getElementById('bt_pickColor_'+folderid);
 			  if (obj!=null) obj.style.display='inline-block';
 			}
 		obj = document.getElementById('edit_'+folderid);
-		if (obj!=null) obj.focus();		
+		if (obj!=null) obj.focus();	
 	} else if (from == '0') {
 		document.activities_form.mode.value='1';
 		document.activities_form.nextstartindex.value='<%=nNextStartIndex%>';
-		//var cor = getHex(document.getElementById('color_'+folderid).style.backgroundColor);
 		var editname = escape(document.getElementById('edit_'+folderid).value);
-		if(editname != "") 
-			tabber_right(2, '<%=response.encodeURL("actividades.jsp")%>?editfolder='+folderid+'&editname='+editname/*+'&color='+cor*/);
+		var cor = escape(document.getElementById('bt_pickColor_'+folderid).color);
+		alert(cor);
+		if(editname != "" && cor != "ffffff") 
+			tabber_right(2, '<%=response.encodeURL("actividades.jsp")%>?editfolder='+folderid+'&editname='+editname+'&color='+cor);
 	} else {
 		var obj = document.getElementById('name_'+folderid);
 		if (obj!=null) obj.style.display='inline-block';
+		obj = document.getElementById('color_'+folderid);
+		if (obj!=null) obj.style.display='';
 		obj = document.getElementById('bt_edit_'+folderid);
 		if (obj!=null) obj.style.display='inline-block';
 		obj = document.getElementById('bt_delete_'+folderid);
@@ -747,12 +754,12 @@ function editFolder(folderid, from){
 		if (obj!=null) obj.style.display='none';
 		obj = document.getElementById('bt_cancel_'+folderid);
 		if (obj!=null) obj.style.display='none';
+		obj = document.getElementById('bt_pickColor_'+folderid);
+		if (obj!=null) obj.style.display='inline-block';
 		obj = document.getElementById('edit_'+folderid);
 		if (obj!=null) obj.style.display='none';
-		if (folderid=='0') {
-			obj = document.getElementById('color_'+folderid);
-			if (obj!=null) obj.style.display='none';
-		}
+		obj = document.getElementById('bt_pickColor_'+folderid);
+		if (obj!=null) obj.style.display='none';
 	}
 }
 
@@ -780,6 +787,8 @@ function selectAll(){
         }
     }
 }
+
+jscolor.bind();
 </script>
 
 
@@ -825,7 +834,6 @@ function selectAll(){
 		     </select>	 
 		    <% } %>
 		<% } %>
-				
 <%  if (alData.size() > 0) { %>
       <%=(nShowFlowId > 0) ? messages.getString("actividades.introMsg.flowId", "<b>"
             + BeanFactory.getFlowHolderBean().getFlow(userInfo, nShowFlowId).getName() + "</b>") : ""%>
@@ -1076,35 +1084,36 @@ function selectAll(){
 			<div style="margin:1px;border:1px solid #eee">
 			<table style="padding:0px;">
 			<tr>
-			<td width="4px" id="color_<%=folders.get(i).getFolderid()%>" 
-				style="background:<%=folders.get(i).getColor()%>">
+			<td width="4px" id="color_<%=folders.get(i).getFolderid()%>" style="background:<%=folders.get(i).getColor()%>">
 			</td>
 			<td style="width:15em;text-align:left;font-family:sans-serif;font-size:13px;color:#333;">
-			<span id="name_<%=folders.get(i).getFolderid()%>" style="padding-left:5px"><%=folders.get(i).getName()%></span>
+				<input id="bt_pickColor_<%=folders.get(i).getFolderid()%>" class="color {valueElement:'myValue_<%=folders.get(i).getFolderid()%>'}"  style="width: 10px;display:none;" maxlength="0" > 
+				<input id="myValue_<%=folders.get(i).getFolderid()%>" type="hidden" value = "<%=folders.get(i).getColor()%>" style="width: 0px;">
+				<span id="name_<%=folders.get(i).getFolderid()%>" style="padding-left:5px"><%=folders.get(i).getName()%></span>
 		  		<input type="text" value="<%=folders.get(i).getName()%>" id="edit_<%=folders.get(i).getFolderid()%>" 
 		  		style="display:none;width:10em">
 			</td>
 			<td style="width:4em;">
-		  	<a id="bt_edit_<%=folders.get(i).getFolderid()%>" 
-		  		style="display:inline-block" title="<%=messages.getString("actividades.folder.editar")%>" href="javascript:editFolder('<%=folders.get(i).getFolderid()%>','1');">
-				<img border="0" src="images/icon_modify.png" class="toolTipImg" href="javascript:editFolder('<%=folders.get(i).getFolderid()%>','1');">
-			</a>
-
-		  	<a id="bt_delete_<%=folders.get(i).getFolderid()%>" 
-		  		style="display:inline-block" title="<%=messages.getString("actividades.folder.apagar")%>" href="javascript:if(confirm('<%=messages.getString("actividades.folder.delete")%>')){deleteFolder('<%=folders.get(i).getFolderid()%>')};">
-				<img border="0" src="images/button_cancel.png" class="toolTipImg" href="javascript:if(confirm('<%=messages.getString("actividades.folder.delete")%>')){deleteFolder('<%=folders.get(i).getFolderid()%>')};">
-			</a>
-		  	
-		  	<a id="bt_confirm_<%=folders.get(i).getFolderid()%>" 
-		  		style="display:none" href="javascript:editFolder('<%=folders.get(i).getFolderid()%>','0');" title="<%=messages.getString("actividades.folder.confirm")%>">
-				<img border="0" src="images/icon_ok.png"  class="toolTipImg" href="javascript:editFolder('<%=folders.get(i).getFolderid()%>','0');">
-			</a>
-
-		  	<a id="bt_cancel_<%=folders.get(i).getFolderid()%>" 
-		  		style="display:none" href="javascript:editFolder('<%=folders.get(i).getFolderid()%>','-1');" title="<%=messages.getString("actividades.folder.cancelar")%>">
-				<img border="0" src="images/icon_revert.png" class="toolTipImg" href="javascript:editFolder('<%=folders.get(i).getFolderid()%>','-1');">
-			</a>
-
+			  	<a id="bt_edit_<%=folders.get(i).getFolderid()%>" 
+			  		style="display:inline-block" title="<%=messages.getString("actividades.folder.editar")%>" href="javascript:editFolder('<%=folders.get(i).getFolderid()%>','1');">
+					<img border="0" src="images/icon_modify.png" class="toolTipImg" href="javascript:editFolder('<%=folders.get(i).getFolderid()%>','1');">
+				</a>
+	
+			  	<a id="bt_delete_<%=folders.get(i).getFolderid()%>" 
+			  		style="display:inline-block" title="<%=messages.getString("actividades.folder.apagar")%>" href="javascript:if(confirm('<%=messages.getString("actividades.folder.delete")%>')){deleteFolder('<%=folders.get(i).getFolderid()%>')};">
+					<img border="0" src="images/button_cancel.png" class="toolTipImg" href="javascript:if(confirm('<%=messages.getString("actividades.folder.delete")%>')){deleteFolder('<%=folders.get(i).getFolderid()%>')};">
+				</a>
+			  	
+			  	<a id="bt_confirm_<%=folders.get(i).getFolderid()%>" 
+			  		style="display:none" href="javascript:editFolder('<%=folders.get(i).getFolderid()%>','0');" title="<%=messages.getString("actividades.folder.confirm")%>">
+					<img border="0" src="images/icon_ok.png"  class="toolTipImg" href="javascript:editFolder('<%=folders.get(i).getFolderid()%>','0');">
+				</a>
+	
+			  	<a id="bt_cancel_<%=folders.get(i).getFolderid()%>" 
+			  		style="display:none" href="javascript:editFolder('<%=folders.get(i).getFolderid()%>','-1');" title="<%=messages.getString("actividades.folder.cancelar")%>">
+					<img border="0" src="images/icon_revert.png" class="toolTipImg" href="javascript:editFolder('<%=folders.get(i).getFolderid()%>','-1');">
+				</a>
+	
 			</td>
 			</tr>
 			</table>
@@ -1116,6 +1125,7 @@ function selectAll(){
 							
 			</td>
 			<td>
+			<input id="bt_pickColor_0"  class="color {valueElement:'myValue'}"  style="display:none;width: 10px;" maxlength="0">
 			<input type="text" value="" id="edit_0" style="display:none;width:15em">
 			</td>
 			<td>
@@ -1128,7 +1138,12 @@ function selectAll(){
 		  		style="display:none" href="javascript:editFolder('0','-1');">
 				<img border="0" src="images/icon_revert.png" title="<%=messages.getString("actividades.folder.cancelar")%>::<%=messages.getString("actividades.folder.cancelar")%>" class="toolTipImg" href="javascript:editFolder('0','-1');">
 			</a>
+	
+
+			
+		
 			</td>
+			
 			</tr>
 			<tr>
 			<td colspan="3">
@@ -1175,8 +1190,7 @@ function selectAll(){
 		<input type="hidden" name="orderby" value="<%=orderBy%>" >
    </form>
    
-   
-   <script language="JavaScript">
+<script language="JavaScript" >
 	function setScroll(pos) {	
 		setScrollPosition(pos);
 	}
