@@ -5767,7 +5767,7 @@ public class ProcessManagerBean implements ProcessManager {
 	      StringBuilder sQuery = new StringBuilder(DBQueryManager.processQuery("ProcessManager.get_activity_filters_user", new Object[]{ userid }));
 	      
 	      if(!filter.getFolderid().equals("0"))
-	    	  sQuery.append("and folderid="+filter.getFolderid());
+	    	  sQuery.append(" and folderid="+filter.getFolderid());
 	      
 	       if(!filter.getLabelid().equals("0"))
              sQuery.append(" and a.pid in ( select pid from process_label where labelid="+filter.getLabelid()+") ");
