@@ -1,6 +1,9 @@
 ------------------------------------------------------------------------------
                            iFlow Upgrade How To                               
 
+V4.2.0 - [R20120618] - V4.2.0 - [R20130802]
+ - Para definir uma língua de defeito para o iFlow adicionar DEFAULT_LOCALE=en-US ao iflow.properties.
+
 V4.2.0 - [R20120423] - V4.2.0 - [R20120618]
  - Para se poder usar o serviço tmn SMS express é necessario Criar/editar as propriedades do iflow
 	 #tmn sms express configuration

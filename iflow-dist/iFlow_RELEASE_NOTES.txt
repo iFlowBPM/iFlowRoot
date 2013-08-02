@@ -4,6 +4,7 @@
 Version 4.2.0
 [Actual]
 	New Features:
+		 - Possibilidade de escolher uma língua de defeito para o iFlow (diferente da língua do servidor)
          - 1224 - Remover Categoria do processo
 	Bug fixes:
    		 - 1296 - Erro ao abrir um ficheiro a partir do email
