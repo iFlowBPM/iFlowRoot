@@ -7,6 +7,7 @@
 package pt.iflow.startup;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import pt.iflow.api.events.EventManager;
 import pt.iflow.api.licensing.LicenseServiceFactory;
+import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.core.NotificationManagerBean;
 import pt.iflow.datasources.DSLoader;
@@ -116,6 +118,11 @@ public class StartupServlet extends HttpServlet {
    * @throws ServletException if an error occure
    */
   public void init() throws ServletException {
+    
+    if (Const.DEFAULT_LOCALE != null) {
+      String[] tmp = Const.DEFAULT_LOCALE.split("-");
+      Locale.setDefault(new Locale(tmp[0], tmp[1]));
+    }
 	// perform updates prior to init
     Logger.warning("", this, "", "StartupServlet: Starting UpdateManager!!");
     if ( UpdateManager.SYS_UPDATE != null && getServletContext().getRealPath(UpdateManager.SYS_UPDATE) != null) {

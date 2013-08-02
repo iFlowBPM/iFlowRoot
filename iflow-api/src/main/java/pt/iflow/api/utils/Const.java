@@ -1,6 +1,8 @@
 package pt.iflow.api.utils;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -181,9 +183,7 @@ public class Const {
   public static final int nSESSION_SUBPID = -10;
   public static final int NO_MID = -55;
 
-
   public static String sDEFAULT_PROCESS_LOCATION = Const.sPROCESS_IN_SESSION;
-
 
   public static final String sFLOW_ENTRY_PAGE_TITLE = "FLOW_ENTRY_PAGE_TITLE";
   public static final String sFLOW_ENTRY_PAGE_TITLE_DESC = "Title P&aacute;g. Entrada";
@@ -398,6 +398,20 @@ public class Const {
   public static final String SESSION_COOKIE_USERNAME = "SESSION_COOKIE_USERNAME";
   public static final String SESSION_COOKIE_PASSWORD = "SESSION_COOKIE_PASSWORD";
 
+  //Default Locate
+  public static String DEFAULT_LOCALE = null;
+  public static final String sDEFAULT_LOCALE_PT_PT = "pt-PT";
+  public static final String sDEFAULT_LOCALE_EN_US = "en-US";
+  public static final String sDEFAULT_LOCALE_ES_ES = "es-ES";
+  
+  private static List<String> ALLOWED_LOCALES = new ArrayList<String>();
+
+  static {
+    ALLOWED_LOCALES.add(sDEFAULT_LOCALE_PT_PT);
+    ALLOWED_LOCALES.add(sDEFAULT_LOCALE_EN_US);
+    ALLOWED_LOCALES.add(sDEFAULT_LOCALE_ES_ES);
+  }
+
   static {
     try {
       updateConstants();
@@ -567,6 +581,11 @@ public class Const {
       nEXPORT_MODE = nEXPORT_MODE_CSV;
     }
 
+    stmp = Setup.getProperty("DEFAULT_LOCALE");
+    if (stmp != null && ALLOWED_LOCALES.contains(stmp)) {
+      Const.DEFAULT_LOCALE = stmp;
+    }
+    
     // click timeout stuff
     CLICK_TIMEOUT = Setup.getPropertyInt(CLICK_TIMEOUT_NAME);  
 
