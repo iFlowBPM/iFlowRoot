@@ -446,15 +446,15 @@ public class ADAuthentication implements Authentication {
 
     if (charsIndexes.isEmpty()) {
       try {
-        Logger.debug(null, this, "getAllUsersForSync", "Performing LDAP search " + _listUsersByPagesOthers);
+        Logger.debug(null, this, "getNextPageUsersForSync", "Performing LDAP search " + _listUsersByPagesOthers);
         Collection<Map<String,String>> users = LDAPInterface.searchDeep(_listUsersByPagesOthers);
         if (users == null || users.isEmpty()) {
-          Logger.debug(null,this,"getAllUsersForSync","EMPTY USER LIST");
+          Logger.debug(null,this,"getNextPageUsersForSync","EMPTY USER LIST");
         } else {
           retObj = transformResults(users);
         }
       } catch (Exception e) {
-        Logger.error("ADMIN", this, "getAllUsersForSync", "Error retrieving user list.", e);
+        Logger.error("ADMIN", this, "getNextPageUsersForSync", "Error retrieving user list.", e);
       }
       charsIndexes.add(0);
       
@@ -466,10 +466,10 @@ public class ADAuthentication implements Authentication {
           sb.append(chars[charsIndexes.get(i)]);
         }
         String sAux = MessageFormat.format(_listUsersByPages, sb.toString());
-        Logger.debug(null, this, "getAllUsersForSync", "Performing LDAP search " + sAux);
+        Logger.debug(null, this, "getNextPageUsersForSync", "Performing LDAP search " + sAux);
         Collection<Map<String,String>> users = LDAPInterface.searchDeep(sAux);
         if (users == null || users.isEmpty()) {
-          Logger.debug(null,this,"getAllUsersForSync","EMPTY USER LIST");
+          Logger.debug(null,this,"getNextPageUsersForSync","EMPTY USER LIST");
         } else if (users.size() >= _listUsersMaxPage) {
           charsIndexes.add(0);
           return getNextPageUsersForSync();
@@ -478,7 +478,7 @@ public class ADAuthentication implements Authentication {
         }
       }
       catch (Exception e) {
-        Logger.error("ADMIN", this, "getAllUsersForSync", "Error retrieving user list.", e);
+        Logger.error("ADMIN", this, "getNextPageUsersForSync", "Error retrieving user list.", e);
       }
       updateSearchParameters();
     }
@@ -487,8 +487,8 @@ public class ADAuthentication implements Authentication {
   
   private List<Map<String, String>> transformResults(Collection<Map<String,String>> users) {
     List<Map<String, String>> retObj = new ArrayList<Map<String, String>>();
-    Map<String,String> retUserMap = new HashMap<String, String>();
     for(Map<String,String> userMap : users) {
+      Map<String,String> retUserMap = new HashMap<String, String>();
       for (String prop : _listPropertiesToImport) {
         retUserMap.put(prop, userMap.get(_propertiesVar.get(prop)));
       }
