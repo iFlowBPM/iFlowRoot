@@ -23,9 +23,16 @@ public String getUserId() {
  * @see pt.iflow.web.userdata.views.userViewInterface#getEmail()
  */
 public String getEmail() {
-    return get(EMAIL);
-  }
-  
+    return get(EMAIL_ADDRESS);
+}
+
+/* (non-Javadoc)
+* @see pt.iflow.web.userdata.views.userViewInterface#getEmployeeNumber()
+*/
+public String getEmployeeNumber() {
+  return get(EMPLOYEE_NUMBER);
+}
+
   /* (non-Javadoc)
  * @see pt.iflow.web.userdata.views.userViewInterface#getUsername()
  */

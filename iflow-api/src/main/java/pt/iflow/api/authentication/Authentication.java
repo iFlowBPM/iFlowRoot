@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import pt.iflow.api.utils.Const;
+
 /**
  * 
  * <p>Title: </p>
@@ -26,7 +28,14 @@ public interface Authentication {
   public boolean checkUserSession(String username, String sessionID);
   public AuthenticationInfo loginUser(String username, String password);
   public Collection<Map<String,String>> getProfileUsers(String profileID);
-  public List<String[]> getAllUsersForSync(String orgId);
+  public List<Map<String, String>> getUsersForSync();
   public void init(Properties parameters);
+  public boolean hasMoreUserToProcess();
+  public boolean doSyncronizeUsers();
+  public String getSyncOrgId();
+  public String getSyncUnitId();
+  public int getSyncThreadCicle();
+  public boolean shouldUpdateUser();
+  public boolean shouldUpdateThisColumn(String prop);
  
 }

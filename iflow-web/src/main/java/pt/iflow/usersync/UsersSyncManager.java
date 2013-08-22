@@ -7,12 +7,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
 import pt.iflow.api.authentication.Authentication;
 import pt.iflow.api.db.DBQueryManager;
 import pt.iflow.api.db.DatabaseInterface;
+import pt.iflow.api.userdata.UserData;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.Utils;
@@ -22,12 +24,13 @@ public class UsersSyncManager extends Thread {
 
   private static UsersSyncManager instance = null;
   private static final String INSERT_USER = "UsersSyncManager.INSERT_USER";
+  private static final String UPDATE_USER = "UsersSyncManager.UPDATE_USER";
   private int sleepTime = -1;
   private boolean keepRunning = false;
   private ArrayList<String> usersInDB = null;
-  private Authentication userAuthentication = null;
-  private String orgId = Const.USERSYNC_ORGID;
-  private String unitId = Const.USERSYNC_UNITID;
+  private static Authentication userAuthentication = null;
+  private String orgId = "";
+  private String unitId = "";
 
   private UsersSyncManager() {
   }
@@ -40,7 +43,8 @@ public class UsersSyncManager extends Thread {
   }
 
   public static void startManager() {
-    if (Const.USERSYNC_ON) {
+    userAuthentication = AccessControlManager.getAuthentication();
+    if (userAuthentication.doSyncronizeUsers()) {
       UsersSyncManager mng = get();
       mng.keepRunning = true;
       mng.start();
@@ -48,7 +52,7 @@ public class UsersSyncManager extends Thread {
   }
 
   public static void stopManager() {
-    if (Const.USERSYNC_ON) {
+    if (userAuthentication.doSyncronizeUsers()) {
       UsersSyncManager mng = get();
       mng.keepRunning = false;
       mng.interrupt();
@@ -56,18 +60,20 @@ public class UsersSyncManager extends Thread {
   }
 
   public void run() {
-    if (!Const.USERSYNC_ON) return;
+    if (!userAuthentication.doSyncronizeUsers()) return;
 
-    userAuthentication = AccessControlManager.getAuthentication();
-    usersInDB = getAllUsersFromDB();
+    orgId = userAuthentication.getSyncOrgId();
+    unitId = userAuthentication.getSyncUnitId();
 
-    sleepTime = Const.USERSYNC_THREAD_CICLE;
+    sleepTime = userAuthentication.getSyncThreadCicle();
     if (sleepTime == -1) {
       // default sleep time 24 hours
       sleepTime = 1440;
     }
     // in minutes -> sleepTime x (60000 milisec)
     sleepTime = sleepTime * 60000;
+
+    usersInDB = getAllUsersFromDB();
 
     while (keepRunning) {
       try {
@@ -93,16 +99,22 @@ public class UsersSyncManager extends Thread {
   }
 
   private void syncUsers() {
-    List<String[]> users = userAuthentication.getAllUsersForSync(orgId);
-    
-    Iterator<String[]> iter = users.iterator();
-    while (iter.hasNext()) {
-      String[] user = iter.next();
-      if (!usersInDB.contains(user[0])) {
-        addUser(user);
-        usersInDB.add(user[0]);
+    do {
+      List<Map<String, String>> users = userAuthentication.getUsersForSync();
+      
+      Iterator<Map<String, String>> iter = users.iterator();
+      while (iter.hasNext()) {
+        Map<String, String> user = iter.next();
+        String userId = user.get(UserData.ID);
+        boolean forUpdate = usersInDB.contains(userId); 
+        if (!forUpdate || userAuthentication.shouldUpdateUser()) {
+          saveUser(getUserValues(user, forUpdate), forUpdate);
+        }
+        if (!forUpdate) {
+          usersInDB.add(userId);
+        }
       }
-    }
+    } while (userAuthentication.hasMoreUserToProcess());
   }
     
   private ArrayList<String> getAllUsersFromDB() {
@@ -131,7 +143,7 @@ public class UsersSyncManager extends Thread {
     return retObj;
   }
 
-  private ArrayList<String> addUser(String[] user) {
+  private ArrayList<String> saveUser(ArrayList<Object> user, boolean forUpdate) {
     ArrayList<String> retObj = new ArrayList<String>();  
     DataSource ds = null;
     Connection db = null;
@@ -142,10 +154,9 @@ public class UsersSyncManager extends Thread {
       db = ds.getConnection();
       db.setAutoCommit(true);
       st = db.createStatement();
-      String username = user[1] == null ? "" : user[1];
-      String employeeId = user[2] == null ? "" : user[2];
-      String query = DBQueryManager.processQuery(UsersSyncManager.INSERT_USER, 
-                                                 new Object[]{user[0], unitId, username, employeeId});
+      String query = DBQueryManager.processQuery((forUpdate ? UsersSyncManager.UPDATE_USER : UsersSyncManager.INSERT_USER), 
+                                                  user.toArray());
+      Logger.debug("", this, "saveUser", "query: " + query);
       st.executeUpdate(query);
     } catch (SQLException sqle) {
       Logger.adminError("UsersSyncManager", "addUser", "Error Inserting User from Database", sqle);
@@ -155,5 +166,89 @@ public class UsersSyncManager extends Thread {
       DatabaseInterface.closeResources(db, st, rs);
     }
     return retObj;
+  }
+  
+  private ArrayList<Object> getUserValues(Map<String, String> user, boolean forUpdate) {
+    ArrayList<Object> arr = new ArrayList<Object>();
+    String stmp = "";
+    boolean updateThis = false;
+    //unitid
+    if (!forUpdate) arr.add(unitId);
+    //username
+    stmp = user.get(UserData.USERNAME);
+    arr.add(stmp != null ? "'" + stmp + "'" : "''");
+    //email_address
+    updateThis = !forUpdate || userAuthentication.shouldUpdateThisColumn(UserData.EMAIL_ADDRESS);
+    stmp = user.get(UserData.EMAIL_ADDRESS);
+    arr.add(updateThis ? (stmp != null ? "'" + stmp + "'" : "''") : "email_address");
+    //gender
+    updateThis = !forUpdate || userAuthentication.shouldUpdateThisColumn(UserData.GENDER);
+    stmp = user.get(UserData.GENDER);
+    arr.add(updateThis ? (stmp != null ? "'" + stmp + "'" : "''") : "gender");
+    //first_name
+    updateThis = !forUpdate || userAuthentication.shouldUpdateThisColumn(UserData.FIRST_NAME);
+    stmp = user.get(UserData.FIRST_NAME);
+    arr.add(updateThis ? (stmp != null ? "'" + stmp + "'" : "''") : "first_name");
+    //last_name
+    updateThis = !forUpdate || userAuthentication.shouldUpdateThisColumn(UserData.LAST_NAME);
+    stmp = user.get(UserData.LAST_NAME);
+    arr.add(updateThis ? (stmp != null ? "'" + stmp + "'" : "''") : "last_name");
+    //phone_number
+    updateThis = !forUpdate || userAuthentication.shouldUpdateThisColumn(UserData.PHONE_NUMBER);
+    stmp = user.get(UserData.PHONE_NUMBER);
+    arr.add(updateThis ? (stmp != null ? "'" + stmp + "'" : "''") : "phone_number");
+    //fax_number
+    updateThis = !forUpdate || userAuthentication.shouldUpdateThisColumn(UserData.FAX_NUMBER);
+    stmp = user.get(UserData.FAX_NUMBER);
+    arr.add(updateThis ? (stmp != null ? "'" + stmp + "'" : "''") : "fax_number");
+    //mobile_number
+    updateThis = !forUpdate || userAuthentication.shouldUpdateThisColumn(UserData.MOBILE_NUMBER);
+    stmp = user.get(UserData.MOBILE_NUMBER);
+    arr.add(updateThis ? (stmp != null ? "'" + stmp + "'" : "''") : "mobile_number");
+    //company_phone
+    updateThis = !forUpdate || userAuthentication.shouldUpdateThisColumn(UserData.COMPANY_PHONE);
+    stmp = user.get(UserData.COMPANY_PHONE);
+    arr.add(updateThis ? (stmp != null ? "'" + stmp + "'" : "''") : "company_phone");
+    //department
+    updateThis = !forUpdate || userAuthentication.shouldUpdateThisColumn(UserData.DEPARTMENT);
+    stmp = user.get(UserData.DEPARTMENT);
+    arr.add(updateThis ? (stmp != null ? "'" + stmp + "'" : "''") : "department");
+    //employee_number
+    updateThis = !forUpdate || userAuthentication.shouldUpdateThisColumn(UserData.EMPLOYEE_NUMBER);
+    stmp = user.get(UserData.EMPLOYEE_NUMBER);
+    arr.add(updateThis ? (stmp != null ? "'" + stmp + "'" : "''") : "employee_number");
+    //manager
+    updateThis = !forUpdate || userAuthentication.shouldUpdateThisColumn(UserData.MANAGER);
+    stmp = user.get(UserData.MANAGER);
+    arr.add(updateThis ? (stmp != null ? "'" + stmp + "'" : "''") : "manager");
+    //title
+    updateThis = !forUpdate || userAuthentication.shouldUpdateThisColumn(UserData.TITLE);
+    stmp = user.get(UserData.TITLE);
+    arr.add(updateThis ? (stmp != null ? "'" + stmp + "'" : "''") : "title");
+    //orgadm
+    updateThis = !forUpdate || userAuthentication.shouldUpdateThisColumn(UserData.ORGADM);
+    stmp = user.get(UserData.ORGADM);
+    arr.add(updateThis ? (stmp != null ? stmp : "0") : "orgadm");
+    //orgadm_users
+    updateThis = !forUpdate || userAuthentication.shouldUpdateThisColumn(UserData.ORGADM_USERS);
+    stmp = user.get(UserData.ORGADM_USERS);
+    arr.add(updateThis ? (stmp != null ? stmp : "1") : "orgadm_users");
+    //orgadm_flows
+    updateThis = !forUpdate || userAuthentication.shouldUpdateThisColumn(UserData.ORGADM_FLOWS);
+    stmp = user.get(UserData.ORGADM_FLOWS);
+    arr.add(updateThis ? (stmp != null ? stmp : "1") : "orgadm_flows");
+    //orgadm_processes
+    updateThis = !forUpdate || userAuthentication.shouldUpdateThisColumn(UserData.ORGADM_PROCESSES);
+    stmp = user.get(UserData.ORGADM_PROCESSES);
+    arr.add(updateThis ? (stmp != null ? stmp : "1") : "orgadm_processes");
+    //orgadm_resources
+    updateThis = !forUpdate || userAuthentication.shouldUpdateThisColumn(UserData.ORGADM_RESOURCES);
+    stmp = user.get(UserData.ORGADM_RESOURCES);
+    arr.add(updateThis ? (stmp != null ? stmp : "1") : "orgadm_resources");
+    //orgadm_org
+    updateThis = !forUpdate || userAuthentication.shouldUpdateThisColumn(UserData.ORGADM_ORG);
+    stmp = user.get(UserData.ORGADM_ORG);
+    arr.add(updateThis ? (stmp != null ? stmp : "1") : "orgadm_org");
+    return arr;
   }
 }

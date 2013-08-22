@@ -35,7 +35,7 @@ public class BlockGetAuthInfo extends Block {
   
   protected static final String sDEFAULT_KEY_USER_ID = UserData.ID;
   protected static final String sDEFAULT_KEY_NUM_EMP = UserData.EMPLOYEE_NUMBER;
-  protected static final String sDEFAULT_KEY_USER_EMAIL = UserData.EMAIL;
+  protected static final String sDEFAULT_KEY_USER_EMAIL = UserData.EMAIL_ADDRESS;
   protected static final String sDEFAULT_KEY_ORGANICAL_UNIT = OrganizationalUnitData.UNITCODE;
 
   protected static final char cINPUT = 'I';

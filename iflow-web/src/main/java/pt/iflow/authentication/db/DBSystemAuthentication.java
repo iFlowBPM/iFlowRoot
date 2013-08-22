@@ -252,8 +252,36 @@ public class DBSystemAuthentication implements Authentication,UserDataAccess {
   }
 
   //Não há nada para sincronizar neste caso
-  public List<String[]> getAllUsersForSync(String orgId) {
+  public List<Map<String, String>> getUsersForSync() {
     return null;
   }
+  
+  public boolean hasMoreUserToProcess() {
+    return false;
+  }
 
+  public boolean doSyncronizeUsers() {
+    return false;
+  }
+
+  public String getSyncOrgId() {
+    return "";
+  }
+  
+  public String getSyncUnitId() {
+    return "";
+  }
+  
+  public int getSyncThreadCicle(){
+    return 10000000;
+  } 
+
+  public boolean shouldUpdateUser() {
+    return false;
+  }
+
+  public boolean shouldUpdateThisColumn(String prop) {
+    return false;
+  }
+  
 }

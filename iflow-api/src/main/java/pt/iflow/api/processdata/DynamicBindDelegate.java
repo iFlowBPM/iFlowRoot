@@ -16,6 +16,7 @@ import pt.iflow.api.processtype.DataTypeEnum;
 import pt.iflow.api.userdata.UserData;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.DataSetVariables;
+import pt.iknow.utils.StringUtilities;
 /**
  * <p>Não é tão perfeito como queria, mas aqui vai uma explicação:</p>
  * <p>Para cada variavel dinâmica:
@@ -91,7 +92,9 @@ public class DynamicBindDelegate implements BindDelegate {
     if(!StringUtils.equals(userName, currentUser)) {
       UserData userInfo = BeanFactory.getAuthProfileBean().getUserInfo(currentUser);
       userName = userInfo == null ? null : currentUser;
-      userId = userInfo == null ? null : userInfo.get(UserData.EMPLOYEE_NUMBER);
+      String aux = userInfo.get(UserData.EMPLOYEE_NUMBER);
+      if (StringUtilities.isEmpty(aux)) aux = userInfo.get(UserData.EMPLOYEE_NUMBER_DEPRECATED);
+      userId = userInfo == null ? null : aux;
       fullName = userInfo == null ? null : userInfo.get(UserData.FULL_NAME);
     }
   }

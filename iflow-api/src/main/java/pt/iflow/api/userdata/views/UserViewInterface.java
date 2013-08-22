@@ -6,7 +6,8 @@ public interface UserViewInterface {
 	public static final String USERNAME = "USERNAME";
 	public static final String FIRST_NAME = "FIRST_NAME";
 	public static final String LAST_NAME = "LAST_NAME";
-	public static final String EMAIL = "EMAIL_ADDRESS";
+	public static final String EMPLOYEE_NUMBER = "EMPLOYEE_NUMBER";
+	public static final String EMAIL_ADDRESS = "EMAIL_ADDRESS";
 	public static final String UNITID = "UNITID";
 	public static final String MOBILE = "MOBILE_NUMBER";
 	public static final String FAX = "FAX_NUMBER";
@@ -24,7 +25,9 @@ public interface UserViewInterface {
 	public abstract String getUserId();
 
 	public abstract String getEmail();
-
+	
+	public abstract String getEmployeeNumber();
+	
 	public abstract String getUsername();
 
 	public abstract String getFirstName();

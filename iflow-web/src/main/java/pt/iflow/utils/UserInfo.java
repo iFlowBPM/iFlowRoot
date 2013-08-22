@@ -27,6 +27,7 @@ import pt.iflow.api.utils.UserSettings;
 import pt.iflow.api.utils.Utils;
 import pt.iflow.msg.Messages;
 import pt.iflow.userdata.common.GuestUserData;
+import pt.iknow.utils.StringUtilities;
 import pt.iknow.utils.crypt.CryptUtils;
 
 /**
@@ -507,7 +508,9 @@ public class UserInfo implements Serializable, UserInfoInterface {
    * @see pt.iknow.utils.UserInfoInterface#getUserId()
    */
   public String getUserId() {
-    return this.getUserInfo(UserData.EMPLOYEE_NUMBER);
+    String aux = this.getUserInfo(UserData.EMPLOYEE_NUMBER);
+    if (StringUtilities.isEmpty(aux)) aux = this.getUserInfo(UserData.EMPLOYEE_NUMBER_DEPRECATED);
+    return aux;
   }
 
   /*
@@ -604,7 +607,7 @@ public class UserInfo implements Serializable, UserInfoInterface {
   }
 
   public String getOrgUnitID() {
-    return this.getUserInfo(UserData.UNIT_ID);
+    return this.getUserInfo(UserData.UNITID);
   }
 
   public boolean isUnitManager() {

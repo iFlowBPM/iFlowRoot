@@ -60,11 +60,6 @@ public class Const {
   public static boolean PROFILESYNC_ON = false;
   public static String PROFILESYNC_ORGID = "1";
 
-  public static int USERSYNC_THREAD_CICLE = -1;
-  public static boolean USERSYNC_ON = false;
-  public static String USERSYNC_ORGID = "1";
-  public static String USERSYNC_UNITID = "1";
-
   public static String sMAIL_ADM_ERROR_NOTIFY = null;
   public static String sMAIL_SERVER = null;
   public static int nMAIL_PORT = 25;
@@ -443,15 +438,10 @@ public class Const {
     DELEGATION_THREAD_CICLE = Setup.getPropertyInt("DELEGATION_THREAD_CICLE");
     PROFILESYNC_THREAD_CICLE = Setup.getPropertyInt("PROFILESYNC_THREAD_CICLE");
     PROFILESYNC_ON = false;
-    USERSYNC_THREAD_CICLE = Setup.getPropertyInt("USERSYNC_THREAD_CICLE");
-    USERSYNC_ON = false;
     DEBUG_PROC_XML = false;
     DONT_LOG_IN_DB = false;
     try {
       PROFILESYNC_ON = Boolean.parseBoolean(Setup.getProperty("PROFILESYNC_ON"));
-    } catch (Exception e) {}
-    try {
-      USERSYNC_ON = Boolean.parseBoolean(Setup.getProperty("USERSYNC_ON"));
     } catch (Exception e) {}
     try {
       DEBUG_PROC_XML = Boolean.parseBoolean(Setup.getProperty("DEBUG_PROC_XML"));
@@ -463,9 +453,6 @@ public class Const {
       SEARCH_ALL_USER_PROCS_BY_DEFAULT = Boolean.parseBoolean(Setup.getProperty("SEARCH_ALL_USER_PROCS_BY_DEFAULT"));
     } catch (Exception e) {}
     PROFILESYNC_ORGID = Setup.getProperty("PROFILESYNC_ORGID");
-    USERSYNC_ORGID = Setup.getProperty("USERSYNC_ORGID");
-    USERSYNC_UNITID = Setup.getProperty("USERSYNC_UNITID");
-    
     sMAIL_ADM_ERROR_NOTIFY = Setup.getProperty("MAIL_ADM_ERROR_NOTIFY");
     sMAIL_SERVER = Setup.getProperty("MAIL_SERVER");
     nMAIL_PORT = Setup.getPropertyInt("MAIL_PORT");

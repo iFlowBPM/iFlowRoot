@@ -673,9 +673,9 @@ CREATE TABLE `users` (
   `activated` INTEGER (1) NOT NULL,
   `password_reset` INTEGER (1) DEFAULT 1 NOT NULL,
   `department` varchar(50),
-  `employeeid` varchar(50),
+  `employee_number` varchar(50),
   `manager` varchar(50),
-  `telephonenumber` varchar(50),
+  `telephonenumber` varchar(50);
   `title` varchar(50),
   `orgadm` INTEGER (1) DEFAULT 0 NOT NULL,
   `orgadm_users` INT(1) UNSIGNED NOT NULL DEFAULT 1,

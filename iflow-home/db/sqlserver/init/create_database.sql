@@ -627,8 +627,18 @@ CREATE TABLE users (
   company_phone VARCHAR(20) NULL,
   sessionid VARCHAR(150) NULL,
   activated INT NOT NULL,
+  department varchar(50),
+  employee_number varchar(50),
+  manager varchar(50),
+  telephonenumber varchar(50),
+  title varchar(50),
   password_reset INT DEFAULT 1 NOT NULL,
   orgadm INT DEFAULT 0 NOT NULL,
+  orgadm_users NUMERIC(1)  NOT NULL DEFAULT 1,
+  orgadm_flows NUMERIC(1)  NOT NULL DEFAULT 1,
+  orgadm_processes NUMERIC(1)  NOT NULL DEFAULT 1,
+  orgadm_resources NUMERIC(1)  NOT NULL DEFAULT 1,
+  orgadm_org NUMERIC(1)  NOT NULL DEFAULT 1,
   PRIMARY KEY (userid),
   --CONSTRAINT uk_users_sessionid UNIQUE (sessionid), -- UNIQUES com NULLS em SQLServer nï¿½o funcionam bem
   CONSTRAINT uk_users_username UNIQUE (username),
@@ -1963,22 +1973,6 @@ INSERT INTO label (name, description, icon) values ('Urgente', 'Tarefas urgentes
 INSERT INTO label (name, description, icon) values ('Importante', 'Tarefas importantes', 'label_important.png');
 INSERT INTO label (name, description, icon) values ('Nota', 'Tarefas anotadas', 'label_normal.png');
 
-alter table users add department varchar(50);
-GO
-alter table users add employeeid varchar(50);
-GO
-alter table users add manager varchar(50);
-GO
-alter table users add telephonenumber varchar(50);
-GO
-alter table users add title varchar(50);
 GO
 CREATE INDEX IDX_REPORTING ON dbo.reporting(flowid , pid ,subpid );
-GO
-ALTER TABLE dbo.users ADD 
-  orgadm_users NUMERIC(1)  NOT NULL DEFAULT 1,
-  orgadm_flows NUMERIC(1)  NOT NULL DEFAULT 1,
-  orgadm_processes NUMERIC(1)  NOT NULL DEFAULT 1,
-  orgadm_resources NUMERIC(1)  NOT NULL DEFAULT 1,
-  orgadm_org NUMERIC(1)  NOT NULL DEFAULT 1;
 GO
