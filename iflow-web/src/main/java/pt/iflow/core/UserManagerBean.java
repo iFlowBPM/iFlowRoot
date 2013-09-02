@@ -469,7 +469,8 @@ public class UserManagerBean implements UserManager {
         Logger.debug(userInfo.getUtilizador(), this, "modifyProfile", "QUERY=" + sql.toString());
       }
 
-      pst = db.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
+      //pst = db.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
+      pst = db.prepareStatement(sql.toString(), new String [] {ProfilesTO.PROFILE_ID});
       pst.setString(1, profile.getName());
       pst.setString(2, profile.getDescription());
       pst.setString(3, profile.getOrganizationId());
