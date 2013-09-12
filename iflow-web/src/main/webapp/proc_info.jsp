@@ -130,17 +130,21 @@
     %>
   <span id ="end_process_process_annotations_span"></span>
   <script language="JavaScript" type="text/javascript">
-    parent.showProcessFowardAnnotations(<%=flowid%>,<%=pid%>,<%=subpid%>,'<%=sFrom%>', '<%=labelId%>', '<%=labelName%>');
-
-    
+	if (parent.showProcessFowardAnnotations)
+	  parent.showProcessFowardAnnotations(<%=flowid%>,<%=pid%>,<%=subpid%>,'<%=sFrom%>', '<%=labelId%>', '<%=labelName%>');
   </script>
 <% } %>
 
 <div class="button_box">
   <form action="#" onsubmit="return false;">
-    <input class="regular_button_01" <%if (userInfo.isGuest()) {%> type="hidden" <%} else {%> type="button" <%}%> name="close" value="<if:message string="button.close"/>" onclick="parent.saveForwardToProcessAnnotations('true');if(parent && parent.close_process) parent.close_process(3); return false;" />
+    <input class="regular_button_01" <%if (userInfo.isGuest()) {%> type="hidden" <%} else {%> type="button" <%}%> name="close" value="<if:message string="button.close"/>" onclick="if(parent.saveForwardToProcessAnnotations)parent.saveForwardToProcessAnnotations('true');if(parent && parent.close_process) parent.close_process(3); return false;" />
     <% if (pid > 0 && "forward".equals(sFrom)){ %>
-    <input class="regular_button_02" <%if (userInfo.isGuest()) {%> type="hidden" <%} else {%> type="button" <%}%> name="close" value="<if:message string="button.send.anottation"/>" onclick="parent.saveForwardToProcessAnnotations('true');if(parent && parent.close_process) parent.close_process(3); return false;" />
+    <input id="annotationButton" class="regular_button_02" <%if (userInfo.isGuest()) {%> type="hidden" <%} else {%> type="button" <%}%> name="close" value="<if:message string="button.send.anottation"/>" onclick="parent.saveForwardToProcessAnnotations('true');if(parent && parent.close_process) parent.close_process(3); return false;" />
+  <script language="JavaScript" type="text/javascript">
+	if (!parent.showProcessFowardAnnotations) //not brilliant... Check if the function is the to know if annotations are to be used
+      document.getElementById('annotationButton').style.display = 'none';     
+  </script>
+
     <% } %>
   </form>
 </div>
