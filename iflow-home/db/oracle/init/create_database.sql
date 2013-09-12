@@ -1901,6 +1901,7 @@ create view process_intervenients (userid, pid) as
     select distinct userid, pid from activity_history;
     
 alter table users add column department varchar(50);
+alter table users add column employeeid varchar(50);
 alter table users add column employee_number varchar(50);
 alter table users add column manager varchar(50);
 alter table users add column telephonenumber varchar(50);

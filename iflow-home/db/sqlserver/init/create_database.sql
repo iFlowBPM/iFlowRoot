@@ -629,6 +629,7 @@ CREATE TABLE users (
   activated INT NOT NULL,
   department varchar(50),
   employee_number varchar(50),
+  employeeid varchar(50),
   manager varchar(50),
   telephonenumber varchar(50),
   title varchar(50),
