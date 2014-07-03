@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -12,6 +13,7 @@ import org.apache.commons.lang.StringUtils;
 
 import pt.iflow.api.core.AuthProfile;
 import pt.iflow.api.core.BeanFactory;
+import pt.iflow.api.core.UserManager;
 import pt.iflow.api.db.DBConnectionWrapper;
 import pt.iflow.api.db.ExistingTransactionException;
 import pt.iflow.api.flows.Flow;
@@ -19,6 +21,7 @@ import pt.iflow.api.processdata.ProcessData;
 import pt.iflow.api.transition.FlowRolesTO;
 import pt.iflow.api.userdata.OrganizationalUnitData;
 import pt.iflow.api.userdata.UserData;
+import pt.iflow.api.userdata.views.OrganizationViewInterface;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.UserInfoInterface;
@@ -741,4 +744,63 @@ public class UserInfo implements Serializable, UserInfoInterface {
         return cypher.decrypt(p);
       }
   }
+
+  public void loginSSO(String employeeid) {
+    if (this._bLogged) {
+      // already logged
+      return;
+    }
+
+    this._sUtilizador = null;
+    this._sIntranetSessionId = null;
+    this._sAuthProfile = null;
+
+    Logger.trace("USER with employeeid " + employeeid + " requesting LOGIN");
+    String asLogin=null;
+    AuthProfile ap = BeanFactory.getAuthProfileBean();
+    UserManager userManager = BeanFactory.getUserManagerBean();
+    
+    this._bIsSysAdmin=true;    
+    OrganizationViewInterface[] allOrg = userManager.getAllOrganizations(this);
+    for(OrganizationViewInterface org: allOrg){
+	    Collection<UserData> allUserData = ap.getAllUsers(org.getOrganizationId());
+	    for(UserData userData: allUserData)
+	    	if(StringUtils.equalsIgnoreCase(userData.get("employeeid"), employeeid)){
+	    		asLogin = userData.getUsername();
+	    		break;
+	    	}
+    }
+    this._bIsSysAdmin=false;
+    	
+    String sUsername = ap.fixUsername(asLogin);
+    Logger.trace("Username fixed to: " + sUsername);
+
+    Messages msg = StringUtils.isNotEmpty(cookieLang) ? 
+        Messages.getInstance(cookieLang) : Messages.getInstance();
+    
+    try {          	
+      if(StringUtils.isNotBlank(sUsername))	    
+    	  this._bLogged = true;          
+      
+      if (!this._bLogged) {
+    	this._sError = msg.getString("login.error.sso.user_invalid");
+        return;
+      }
+      
+      this._sError = null;
+      this._sUtilizador = sUsername;
+      this._sIntranetSessionId = null;
+      this._sAuthProfile = null;
+      this._sFeedKey =  Utils.encrypt(sUsername + "#" + "");;
+      this.loginTime = Calendar.getInstance().getTimeInMillis();      
+      this.loadUserInfo(sUsername, ap);
+      this.updatePrivileges();
+
+    } catch (Throwable e) {
+      Logger.error(sUsername, this, "login", "Exception: " + e.getMessage(), e);
+      this._sError = msg.getString("login.error.generic.sso");
+	  this._bLogged = false;
+    }	  	  
+  }
+  
 }

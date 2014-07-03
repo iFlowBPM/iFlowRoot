@@ -29,6 +29,8 @@ public class Setup {
     private static final String DMS_PROP_FILE = "dms.properties";
     private static final String CERT_PROP_FILE = "certificates.properties";
     private static final String SIGN_PROP_FILE = "signatures.properties";
+    private static final String SSO_PROP_FILE = "sso.properties";
+    
     
     // Hashtable with properties keys,values
     private static Properties _pMainProperties = new Properties();
@@ -191,6 +193,24 @@ public class Setup {
         
         try {
             sFile = FilenameUtils.concat(_configHome, SIGN_PROP_FILE);
+            // Open properties file and get contents
+            propertiesFile = new FileInputStream(sFile);
+            newExtraProperties.load(propertiesFile);
+        } catch (Exception e) {
+          Logger.error("", "Setup", "loadProperties", "Setup: unable to load properties file (" + sFile + ").", e);
+          System.exit(1);
+        } finally {
+            if (null != propertiesFile) {
+                try {
+                    propertiesFile.close();
+                } catch (IOException e) {
+                }
+            }
+            propertiesFile = null;
+        }
+        
+        try {
+            sFile = FilenameUtils.concat(_configHome, SSO_PROP_FILE);
             // Open properties file and get contents
             propertiesFile = new FileInputStream(sFile);
             newExtraProperties.load(propertiesFile);

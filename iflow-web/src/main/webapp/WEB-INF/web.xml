@@ -284,6 +284,10 @@ Disabled. Use servlet container defaults
     <servlet-class>pt.iflow.servlets.FlowScheduleServlet</servlet-class>
   </servlet>
   <servlet>
+    <servlet-name>SSOService</servlet-name>
+    <servlet-class>pt.iflow.servlets.SSOServiceServlet</servlet-class>
+  </servlet>  
+  <servlet>
     <description>Proxy timestamping service</description>
     <display-name>TSAService</display-name>
     <servlet-name>TSAService</servlet-name>
@@ -588,6 +592,10 @@ Disabled. Use servlet container defaults
    <servlet-mapping>
       <servlet-name>FlowSchedule</servlet-name>
       <url-pattern>/Admin/flow_schedule_delete</url-pattern>
+   </servlet-mapping>
+   <servlet-mapping>
+      <servlet-name>SSOService</servlet-name>
+      <url-pattern>/saml2/SSOService</url-pattern>
    </servlet-mapping>
    
    <!-- REST Servlet -->

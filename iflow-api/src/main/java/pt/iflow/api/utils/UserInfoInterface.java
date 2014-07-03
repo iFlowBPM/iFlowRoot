@@ -19,6 +19,8 @@ public interface UserInfoInterface {
 	public abstract void setFlowPageHTML(String flowPageHTML);
 
 	public abstract void login(String asLogin, String asPassword);
+	
+	public abstract void loginSSO(String employeeid);
 
 	public abstract byte[] getPassword();
 	

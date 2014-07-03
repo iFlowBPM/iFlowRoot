@@ -151,8 +151,9 @@ public class BlockParseTxtFile extends Block {
         for (int i = 0; i < listNames.length; i++) {
           String varName = listNames[i];
           ProcessListVariable listVar = procData.getList(varName);
+          listVar.clear();
           for (int j = 0; j < result.get(i).size(); j++)
-            listVar.parseAndSetItemValue(j, result.get(i).get(j));
+            listVar.parseAndAddNewItem(result.get(i).get(j));
         }
 
         outPort = portSuccess;

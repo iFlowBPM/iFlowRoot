@@ -163,6 +163,7 @@ public class BlockSQLDelete extends BlockSQL {
     	  ds = Utils.getUserDataSource(sDataSource);
           if (null == ds) {
         	  procData.setError("Não foi possível ligar à base de dados.");
+        	  Logger.error(login,this,"after","Not possible to connect to datasource: " + sDataSource);
         	  outPort = portError;
           } 
           else {
