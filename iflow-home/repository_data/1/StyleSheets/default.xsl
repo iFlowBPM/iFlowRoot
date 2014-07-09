@@ -556,7 +556,7 @@ label.subheader {
   		<script type="text/javascript" src="{$url_prefix}/javascript/mootools.js"/>
   		<script type="text/javascript" src="{$url_prefix}/javascript/FormFunctions.js"/>
   		<script type="text/javascript" src="{$url_prefix}/javascript/Stickman.MultiUpload.js"/>
-        <script type="text/javascript" src="{$url_prefix}/javascript/livevalidation_standalone.js"> </script>
+        
         <script type="text/javascript" src="{$url_prefix}/Themes/{$theme}/javascript/theme.js"> </script>
   		
 		<!-- Carrega codigo javacript de interaccao com a applet e prepara o ambiente -->

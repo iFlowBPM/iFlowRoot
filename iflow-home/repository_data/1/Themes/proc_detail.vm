@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="${url_prefix}/Themes/${orgTheme}/css/tips.css" type="text/css">
   <link rel="stylesheet" type="text/css" media="all" href="${url_prefix}/javascript/calendar/calendar-iflow.css" title="cal-iflow" />
   <link rel="stylesheet" type="text/css" href="${url_prefix}/javascript/yahoo/container/assets/skins/sam/container.css" />
-  <link rel="stylesheet" type="text/css" href="${url_prefix}/javascript/yahoo/assets/dpSyntaxHighlighter.css">
+  
   <link rel="stylesheet" type="text/css" href="${url_prefix}/javascript/yahoo/button/assets/skins/sam/button.css" />
   
   <link rel="shortcut icon" href="images/favicon.ico" />

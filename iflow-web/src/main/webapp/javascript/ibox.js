@@ -116,7 +116,7 @@ function iBox(opts) {
 	  bg = ";background-color:"+this.bgColor;
 	}
     
-    var indicator_img_html = "<img name=\"ibox_indicator\" src=\""+this.indicatorImgPath+"\" alt=\"Loading...\" style=\"width:128px;height:128px;\"/>"; // don't remove the name
+    var indicator_img_html = "<img name=\"ibox_indicator\" src=\""+ /**this.indicatorImgPath+**/ "\" alt=\"Loading...\" style=\"width:128px;height:128px;\"/>"; // don't remove the name
 	// a trick on just creating an ibox wrapper then doing an innerHTML on our root ibox element
 	var strHTML = "<div id=\"ibox_w\" style=\"display:none"+bg+";\"></div>";
 	strHTML +=	"<div id=\"ibox_progress\" style=\"display:none;\">";

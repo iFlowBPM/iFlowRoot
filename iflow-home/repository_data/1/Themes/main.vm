@@ -68,7 +68,7 @@
 	<script type="text/javascript" src="javascript/ajax_processing.js"></script>
 	<script type="text/javascript" src="javascript/iflow_main.js"></script>
 	<script type="text/javascript" src="$response.encodeURL('javascript/encodedURLS.jsp')"></script>
-	<script type="text/javascript" src="javascript/css.js"></script>
+	
 	<script type="text/javascript" src="javascript/tutorial.js"></script>
 	<script type="text/javascript" src="javascript/processAnnotations.js"></script>
 
@@ -390,7 +390,7 @@
     
 	<div id="section10_div" class="tab_body" align=left>
       <div id="section6_header_div" class="header_div">
-      	<img style="opacity: 0.3;filter:alpha(opacity=0);" class="help_button" src="Themes/${orgTheme}/images/trans18.gif"/>
+      	
       </div>
       <div class="main_div">
         <div id="section10_nav_div" class="nav_div">
@@ -402,7 +402,7 @@
 
 	<div id="section4_div" class="tab_body" align=left>
       <div id="section6_header_div" class="header_div">
-      	<img style="opacity: 0.3;filter:alpha(opacity=0);" class="help_button" src="Themes/${orgTheme}/images/trans18.gif"/>
+      	
       </div>
       <div class="main_div">
         <div id="section4_nav_div" class="nav_div">
