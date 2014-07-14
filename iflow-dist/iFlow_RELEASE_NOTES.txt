@@ -1,8 +1,41 @@
 -------------------------------------------------------------------------------
                            iFlow Release Notes                                
 -------------------------------------------------------------------------------
+Version 4.2.5
+[actual]
+	New Features:
+		- SSO Login trough SAML		
+	Bug fixes:
+		- clientside dead reference removal
+	Known Issues:
+
+Version 4.2.4
+	New Features:
+		- Importing user information from AD an LDAP
+	Bug fixes:
+	Known Issues:
+
+Version 4.2.3
+	New Features:
+		- REST Upload to Hotfolder
+	Bug fixes:
+		- Database script correction
+	Known Issues:
+
+Version 4.2.2
+	New Features:		
+	Bug fixes:
+		- iFlowHome restoration
+	Known Issues:
+
+Version 4.2.1
+	New Features:
+		- JSP License message
+		- Iflow Virtual File System 
+	Bug fixes:
+	Known Issues:
+
 Version 4.2.0
-[Actual]
 	New Features:
 		 - Possibilidade de escolher uma língua de defeito para o iFlow (diferente da língua do servidor)
          - 1224 - Remover Categoria do processo
