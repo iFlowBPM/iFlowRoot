@@ -7,7 +7,9 @@ Disabled. Use servlet container defaults
     <session-timeout>30</session-timeout> 
 </session-config> 
 -->
-
+<session-config>
+     <tracking-mode>COOKIE</tracking-mode>
+</session-config>
     <!--
     To use non XDoclet filters, create a filters.xml file that
     contains the additional filters (eg Sitemesh) and place it in your
@@ -40,6 +42,22 @@ Disabled. Use servlet container defaults
       <filter-name>SysAdmAuthenticationFilter</filter-name>
       <filter-class>pt.iflow.servlets.SysAdmAuthenticationFilter</filter-class>
    </filter>
+   <filter>
+      <filter-name>RemoteFileInclusionFilterFilter</filter-name>
+      <filter-class>pt.iflow.servlets.RemoteFileInclusionFilter</filter-class>
+   </filter>
+   <filter>
+      <filter-name>MySQLInjectionFilter</filter-name>
+      <filter-class>pt.iflow.servlets.MySQLInjectionFilter</filter-class>
+   </filter>
+   <filter>
+      <filter-name>XSSFilter</filter-name>
+      <filter-class>pt.iflow.servlets.XSSFilter</filter-class>
+   </filter>
+   <filter>
+      <filter-name>CSRFFilter</filter-name>
+      <filter-class>pt.iflow.servlets.CSRFFilter</filter-class>
+   </filter>
 
     <!--
     To use non XDoclet filter-mappings, create a filter-mappings.xml file that
@@ -70,7 +88,23 @@ Disabled. Use servlet container defaults
       <filter-name>SysAdmAuthenticationFilter</filter-name>
       <url-pattern>/Admin/login.jsp</url-pattern>
    </filter-mapping>
-
+   <filter-mapping>
+      <filter-name>RemoteFileInclusionFilterFilter</filter-name>
+      <url-pattern>/*</url-pattern>
+   </filter-mapping>
+ 	<filter-mapping>
+      <filter-name>MySQLInjectionFilter</filter-name>
+      <url-pattern>/*</url-pattern>
+   </filter-mapping>
+   <filter-mapping>
+      <filter-name>XSSFilter</filter-name>
+      <url-pattern>/*</url-pattern>
+   </filter-mapping>
+   <filter-mapping>
+      <filter-name>CSRFFilter</filter-name>
+      <url-pattern>/*</url-pattern>      
+   </filter-mapping>
+   
    <listener>
 	 <listener-class>org.apache.axis.transport.http.AxisHTTPSessionListener</listener-class>
    </listener>
@@ -608,10 +642,10 @@ Disabled. Use servlet container defaults
     </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
-  <servlet-mapping>
+  <!-- servlet-mapping>
     <servlet-name>iFlow REST Service</servlet-name>
     <url-pattern>/iFlowRest/*</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping -->
   
   
    <!--
