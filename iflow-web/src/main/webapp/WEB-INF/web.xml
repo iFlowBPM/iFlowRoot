@@ -7,9 +7,7 @@ Disabled. Use servlet container defaults
     <session-timeout>30</session-timeout> 
 </session-config> 
 -->
-<session-config>
-     <tracking-mode>COOKIE</tracking-mode>
-</session-config>
+
     <!--
     To use non XDoclet filters, create a filters.xml file that
     contains the additional filters (eg Sitemesh) and place it in your

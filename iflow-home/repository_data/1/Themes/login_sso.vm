@@ -48,7 +48,23 @@
 					<input id="link_search_span" class="regular_button_01" type="button" name="filter" value="Login" onClick="document.dados.submit();" />
 				</div>
 			</div>
-			</br>			
+			
+			#if ($isOverFailureLimit)
+			    </br>
+				<div style="width: 320px; margin: auto;">
+					<img alt="Challenge" id="challenge_kap" src="http://localhost:8480/iFlow/kaptcha">
+					</br></br>					
+					<div class="user_info lp_field_label">
+						Kaptcha 
+					</div>
+					<div class="item lp_field_input">				
+						<input type="text" value="" id="challenge" name="challenge" size="5" maxlength="5">
+					</div>
+				</div>    	
+			#end
+												
+		    						
+			</br>
 			<a href="./saml2/index.jsp?entityprovider=1" class="user_info" style="font-size: 1.2em;">SSO Login 1</a></br>
 			<a href="./saml2/index.jsp?entityprovider=2" class="user_info" style="font-size: 1.2em;">SSO Login 2</a></br>
 			<a href="./saml2/index.jsp?entityprovider=3" class="user_info" style="font-size: 1.2em;">SSO Login 3</a></br>

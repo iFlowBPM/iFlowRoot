@@ -399,6 +399,9 @@ public class Const {
   public static final String sDEFAULT_LOCALE_EN_US = "en-US";
   public static final String sDEFAULT_LOCALE_ES_ES = "es-ES";
   
+  public static String MAX_LOGIN_ATTEMPTS = "MAX_LOGIN_ATTEMPTS";
+  public static String MAX_LOGIN_ATTEMPTS_WAIT = "MAX_LOGIN_ATTEMPTS_WAIT";
+  
   private static List<String> ALLOWED_LOCALES = new ArrayList<String>();
 
   static {
