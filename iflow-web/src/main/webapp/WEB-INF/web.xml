@@ -55,6 +55,26 @@ Disabled. Use servlet container defaults
    <filter>
       <filter-name>CSRFFilter</filter-name>
       <filter-class>pt.iflow.servlets.CSRFFilter</filter-class>
+      <init-param>
+      	<param-name>pt.iflow.filter_exception0</param-name>
+      	<param-value>/iFlow/login.jsp</param-value>
+      </init-param>
+      <init-param>
+      	<param-name>pt.iflow.filter_exception1</param-name>
+      	<param-value>/iFlow</param-value>
+      </init-param>
+      <init-param>
+      	<param-name>pt.iflow.filter_exception2</param-name>
+      	<param-value>/iFlow/</param-value>
+      </init-param>
+      <init-param>
+      	<param-name>pt.iflow.filter_exception3</param-name>
+      	<param-value>/iFlow/Admin/login.jsp</param-value>
+      </init-param>
+      <init-param>
+      	<param-name>pt.iflow.filter_exception4</param-name>
+      	<param-value>/iFlow/dispatcher</param-value>
+      </init-param>
    </filter>
 
     <!--
