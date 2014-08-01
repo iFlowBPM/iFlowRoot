@@ -20,14 +20,16 @@ import org.apache.commons.lang.StringUtils;
 public class CSRFFilter implements Filter {
 	
 	private List<String> filterException;
+	private FilterConfig filterConfig;
 
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
 
-		Boolean validSubmisson = true;
+		Boolean validSubmisson = false;
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		String referer = httpRequest.getHeader("referer");
 		String requestURI = httpRequest.getRequestURI();
+		
 		try {
 			if ( filterException.contains(requestURI))
 				validSubmisson = true;
@@ -37,7 +39,7 @@ public class CSRFFilter implements Filter {
 				validSubmisson = true;
 		} catch (MalformedURLException e) {
 			validSubmisson = false;
-		}
+		} 
 
 		if (validSubmisson)
 			chain.doFilter(request, response);
@@ -58,6 +60,8 @@ public class CSRFFilter implements Filter {
 			if (StringUtils.startsWith(aux, "pt.iflow.filter_exception"))
 				filterException.add(fc.getInitParameter(aux));
 		}
+		
+		this.filterConfig = fc;
 	}
 
 }

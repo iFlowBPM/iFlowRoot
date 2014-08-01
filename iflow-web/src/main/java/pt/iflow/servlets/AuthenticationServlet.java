@@ -185,10 +185,14 @@ public class AuthenticationServlet extends javax.servlet.http.HttpServlet implem
       sessionUsername = ServletUtils.newCookie(Const.SESSION_COOKIE_USERNAME, login);
       sessionPassword = ServletUtils.newCookie(Const.SESSION_COOKIE_PASSWORD, Utils.encrypt(password));
       response.addCookie(sessionUsername);
-      response.addCookie(sessionPassword);
-    } else
-    	LoginAttemptCounterController.markFailedAttempt(getServletContext(), request);
+      response.addCookie(sessionPassword);      
+    }    	
 
+    if (result.isAuth)
+    	SynchronizerTokenController.register(getServletContext(), login);
+    else
+    	LoginAttemptCounterController.markFailedAttempt(getServletContext(), request);
+    
     // used in ibox login
     if(StringUtils.equals(source, "assync") && result.isAuth) {
       ServletUtils.forward(request, response, "/javascript/encodedURLS.jsp");
