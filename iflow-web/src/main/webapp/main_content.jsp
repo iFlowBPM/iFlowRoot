@@ -377,7 +377,7 @@ function cleanFilter(){
         } else {
 			StringBuffer sbAnnotationIcon = new StringBuffer();        	
 			sbAnnotationIcon.append("<a href=\"javascript:parent.viewAnnotations('").append(sFlowId).append("','").append(sPid).append("','").append(sSubPid).append("','dashboard');\">");
-			sbAnnotationIcon.append("<img width=\"16\" height=\"16\" class=\"toolTipImg\" src=\"AnnotationIconsServlet?icon_name='"+annotationIcon+"'&ts='"+System.currentTimeMillis()+"'\" border=\"0\">");
+			sbAnnotationIcon.append("<img width=\"16\" height=\"16\" class=\"toolTipImg\" src=\"AnnotationIconsServlet?icon_name="+annotationIcon+"&ts='"+System.currentTimeMillis()+"'\" border=\"0\">");
 			sbAnnotationIcon.append("</a>");
 			imgParam = sbAnnotationIcon.toString();
           //imgParam = "<img class=\"toolTipImg\" src=\"AnnotationIconsServlet?icon_name='"+annotationIcon+"'&ts='"+System.currentTimeMillis()+"'\" border=\"0\" \">";

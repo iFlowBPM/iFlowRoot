@@ -95,7 +95,7 @@
              
 	       #if($hasFolder > 0)         
 	        <td onclick="javascript:menuonoff('atribuir$row')" title="$action_move">
-	        <img class="toolTipImg" src="AnnotationIconsServlet?icon_name='action.png'&ts='$iconTime' border="0">
+	        <img class="toolTipImg" src="AnnotationIconsServlet?icon_name=action.png&ts='$iconTime' border="0">
 		   	<div id="atribuir$row" style="display:none;position:absolute;z-index:1;background:none repeat scroll 0 0 #FFFFFF;border-color:#888888;border-style:solid;border-width:1px 1px 2px;text-align:left;padding:2px 5px"><table>
 		    	#foreach($folder in $folders)
 		    	  <tr><td style="background:$folder.getColor();width:4px;"></td>

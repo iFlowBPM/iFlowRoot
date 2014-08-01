@@ -933,7 +933,7 @@ jscolor.bind();
         String accao = "<td></td>";
         if(folders.size() > 0){
           
-          String imgParam = "AnnotationIconsServlet?icon_name='action.png'&ts='"+System.currentTimeMillis()+"'";
+          String imgParam = "AnnotationIconsServlet?icon_name=action.png&ts='"+System.currentTimeMillis()+"'";
           imgParam = "<img class=\"toolTipImg\" src=\""+imgParam+"\" border=\"0\">";  
           
             accao = "<td onclick=\"javascript:menuonoff('atribui"+row+"')\" title=\""+messages.getString("actividades.folder.move")+"\">";
@@ -988,7 +988,7 @@ jscolor.bind();
         if (iconName != null && !"".equals(iconName)) {
           annotationIcon.append("<a href=\"javascript:parent.viewAnnotations('").append(nflowid).append("','").append(npid).append("','").append(nsubpid).append("');\">");
           String imgParam = "";
-          imgParam = "AnnotationIconsServlet?icon_name='"+iconName+"'&ts='"+System.currentTimeMillis()+"'";
+          imgParam = "AnnotationIconsServlet?icon_name="+iconName+"&ts='"+System.currentTimeMillis()+"'";
           annotationIcon.append("<img width=\"16\" height=\"16\" class=\"toolTipImg\" src=\"").append(imgParam).append("\" border=\"0\" title=\"").append(messages.getString("actividades.msg.dica.annotation")).append("\">");
           annotationIcon.append("</a>");
         }

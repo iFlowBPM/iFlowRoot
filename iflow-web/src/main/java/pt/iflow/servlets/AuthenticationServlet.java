@@ -151,6 +151,9 @@ public class AuthenticationServlet extends javax.servlet.http.HttpServlet implem
     String password = request.getParameter("password");
     String sDoRedirect = request.getParameter("do_redirect");
     String nextUrl = request.getParameter("url"); 
+    //Fix for stupid ESAPI non causal bug
+    if(StringUtils.contains(nextUrl, "main.jsp") && !StringUtils.equals(nextUrl, "main.jsp"))
+    	nextUrl="main.jsp";
     String source = request.getParameter("source");
     String keepSession = request.getParameter("keep_session");
 
