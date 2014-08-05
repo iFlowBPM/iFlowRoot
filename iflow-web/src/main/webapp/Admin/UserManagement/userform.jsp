@@ -30,6 +30,7 @@
     return sErrorMsg;
   }
 %><%
+FormDataSanitizer.FormDataParameterSanitize(fdFormData);
 	boolean bEdit = false;
   boolean bEditUsername = false;
   IErrorHandler errorHandler = null;

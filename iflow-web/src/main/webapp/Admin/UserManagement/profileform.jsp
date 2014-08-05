@@ -16,6 +16,7 @@
 </if:checkUserAdmin>
 
 <%
+FormDataSanitizer.FormDataParameterSanitize(fdFormData);
 	UserManager manager = BeanFactory.getUserManagerBean();
 	String sOper = fdFormData.getParameter("oper");
 	String sErrorMsg = "";

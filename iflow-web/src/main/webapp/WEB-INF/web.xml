@@ -76,6 +76,10 @@ Disabled. Use servlet container defaults
       	<param-value>/iFlow/dispatcher</param-value>
       </init-param>
    </filter>
+   <filter>
+  		<filter-name>DisableUrlSessionFilter</filter-name>
+	  	<filter-class>pt.iflow.servlets.DisableUrlSessionFilter</filter-class>
+	</filter>
 
     <!--
     To use non XDoclet filter-mappings, create a filter-mappings.xml file that
@@ -122,6 +126,10 @@ Disabled. Use servlet container defaults
       <filter-name>CSRFFilter</filter-name>
       <url-pattern>/*</url-pattern>      
    </filter-mapping>
+   <filter-mapping>
+	  <filter-name>DisableUrlSessionFilter</filter-name>
+	  <url-pattern>/*</url-pattern>
+	</filter-mapping>
    
    <listener>
 	 <listener-class>org.apache.axis.transport.http.AxisHTTPSessionListener</listener-class>
