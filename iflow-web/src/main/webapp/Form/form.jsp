@@ -8,7 +8,7 @@ request.setAttribute("inFrame", "true");
 <%@ include file="../inc/initProcInfo.jspf"%>
 <%@ include file="../inc/checkProcAccess.jspf"%><%
 
-FormDataSanitizer.FormDataParameterSanitize(fdFormData);
+
 //TODO
 String popupReturnBlockId = null;
 

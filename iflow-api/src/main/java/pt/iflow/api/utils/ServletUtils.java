@@ -140,6 +140,7 @@ public class ServletUtils {
     // guardar lang actual
     Cookie cookie = new Cookie(name, value);
     cookie.setMaxAge(15*DAY);
+    cookie.setSecure(true);
     // cookie.setPath("/");
     return cookie;
   }

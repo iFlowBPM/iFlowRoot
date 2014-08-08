@@ -36,9 +36,12 @@
 %><%@ page import="pt.iflow.api.transition.*"
 %><%@ page import="com.infosistema.crypto.Base64"
 %><%@ page import="pt.iflow.utils.FormDataSanitizer"
+%><%@ page import="org.apache.commons122.fileupload.servlet.ServletFileUpload"
 %><%
     // TODO move sizing constants to properties (in iflow property file)
 FormData fdFormData = FormUtils.parseRequest(request, Const.nUPLOAD_THRESHOLD_SIZE, Const.nUPLOAD_MAX_SIZE,Const.fUPLOAD_TEMP_DIR);
+if(ServletFileUpload.isMultipartContent(request))
+	FormDataSanitizer.FormDataParameterSanitize(fdFormData);
 %><%@ include file = "checkSession.jspf" 
 %><%////////////////////////// Application Data //////////////////////////
     // Date urldate = new Date();

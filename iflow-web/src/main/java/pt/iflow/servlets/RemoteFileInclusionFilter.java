@@ -11,6 +11,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -30,6 +31,11 @@ public class RemoteFileInclusionFilter implements Filter {
 					failedParameter = true;;
 			} catch (MalformedURLException e) {}
 		}
+		
+		HttpServletResponse httpResponse = (HttpServletResponse) response;
+		httpResponse.addHeader("X-Content-Type-Options", "nosniff");
+		httpResponse.addHeader("Cache-Control", "no-cache");
+		httpResponse.addHeader("Pragma", "no-cache");
 		
 		if(!failedParameter)
 			chain.doFilter(request, response);

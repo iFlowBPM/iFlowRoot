@@ -15,10 +15,13 @@
 	  <script type="text/javascript" src="javascript/iflow_main.js"></script>
 	  <script type="text/javascript" src="javascript/login.js"></script>
 	</head>
+
 	
-	<body class="lp_body ${maintenance}" >
-	
-		<form name="dados" method="post" action="${dados.action}">
+	<body class="lp_body ${maintenance}" style="padding-top:10%">
+    <style type="text/css">
+		p {font-size:1.5em}
+	</style>
+		<form name="dados" method="post" action="${dados.action}" autocomplete="off">
 			<input type="hidden" name="url" value="${dados.url}"/>
 			<input type="hidden" name="${dados.ufidName}" value="${dados.ufidValue}"/>
 			<input type="hidden" name="source" value="internet"/>
@@ -26,13 +29,20 @@
 			<input type="hidden" name="do_redirect" value="true"/>
 			<input type="hidden" name="url" value="main.jsp"/>
 			<input type="hidden" name="sso" value="false"/>
-			<div class="lp_login_box">
-			    <div class="error_msg lp_error_msg">
+		<div style="margin-left:auto;margin-right:auto;background:url('barclays.png') no-repeat;width:604px;height:441px;padding-top:70px">
+			<div>
+				<p>Acesso via Single Sign On</p>
+			    <span style="font-size:1.2em;text-decoration:underline;color:white;position:relative;top:0px"><a href="./saml2/index.jsp?entityprovider=1" class="user_info" style="font-size: 1.2em;">Login Integrado</a></span>
+			</div>
+			
+			<div class="lp_login_box" style="background:none;margin-top:50px;">
+				<p>Acesso Local</p>
+			    <div class="error_msg lp_error_msg" style="margin-top:-10px;height:25px">
 			        #if ($hasError)
 			        	$loginError
 			        #end
-			    </div>	
-				<div class="user_info lp_field_label">
+			    </div>
+ 				<div class="user_info lp_field_label">
 					$msg.get('login.field.user')
 				</div>
 				<div class="item lp_field_input">
@@ -47,31 +57,33 @@
 				<div class="lp_login_button">
 					<input id="link_search_span" class="regular_button_01" type="button" name="filter" value="Login" onClick="document.dados.submit();" />
 				</div>
-			</div>
-			
-			#if ($isOverFailureLimit)
+				
+				#if ($isOverFailureLimit)
 			    </br>
 				<div style="width: 320px; margin: auto;">
-					<img alt="Challenge" id="challenge_kap" src="http://localhost:8480/iFlow/kaptcha">
-					</br></br>					
+					<img alt="Challenge" id="challenge_kap" src="/iFlow/kaptcha" style="padding-left: 30%;">
+					</br>			
 					<div class="user_info lp_field_label">
 						Kaptcha 
 					</div>
 					<div class="item lp_field_input">				
-						<input type="text" value="" id="challenge" name="challenge" size="5" maxlength="5">
+						<input type="text" value="" id="challenge" name="challenge" size="15" maxlength="5">
 					</div>
 				</div>    	
 			#end
-												
-		    						
-			</br>
-			<a href="./saml2/index.jsp?entityprovider=1" class="user_info" style="font-size: 1.2em;">SSO Login 1</a></br>
-			<a href="./saml2/index.jsp?entityprovider=2" class="user_info" style="font-size: 1.2em;">SSO Login 2</a></br>
-			<a href="./saml2/index.jsp?entityprovider=3" class="user_info" style="font-size: 1.2em;">SSO Login 3</a></br>
-			<a href="./saml2/index.jsp?entityprovider=4" class="user_info" style="font-size: 1.2em;">SSO Login 4</a></br>
+			</div>
+			
+			
+</div>
+			
 		</form>
+		
+
+		
+		
 		<script type="text/javascript">
 			register(document.dados, document.dados.login, document.dados.password);
 		</script>
+
 	</body>
 </html>
