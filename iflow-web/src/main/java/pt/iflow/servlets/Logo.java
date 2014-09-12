@@ -115,6 +115,7 @@ public class Logo extends HttpServlet {
       response.setHeader("Content-Disposition", "inline;filename=logo.png");
       OutputStream out = response.getOutputStream();
       response.setContentLength(size);
+      response.setContentType("image/png;charset=UTF-8");
       copyTo(input, out);
       out.flush();
       out.close();
