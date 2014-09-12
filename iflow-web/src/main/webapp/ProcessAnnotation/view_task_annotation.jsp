@@ -48,7 +48,7 @@ if (sHideButtonId == null || "".equals(sHideButtonId)){
         <li>
         <% for(int i=0; i < labels.size(); i++){ 
              if(labels.get(i).getCheck()){%>
-             <img src="AnnotationIconsServlet?label_name='<%=labels.get(i).getName()%>'&ts='+<%=System.currentTimeMillis() %>+'" width="16px" height="16px"/>
+             <img src="AnnotationIconsServlet?label_name=<%=labels.get(i).getName()%>&ts='+<%=System.currentTimeMillis() %>+'" width="16px" height="16px"/>
                 <%=labels.get(i).getName()%><br/>
         <%   }
            }%>
