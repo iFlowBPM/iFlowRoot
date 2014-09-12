@@ -1791,6 +1791,18 @@ INSERT INTO QRTZ_LOCKS values('MISFIRE_ACCESS')
 --     END  QRTZ    --
 -- -------------------
 
+CREATE TABLE hotfolder_files (
+	entryid INT NOT NULL IDENTITY,
+	path VARCHAR(1000) NOT NULL,
+	flowid int not null,
+	in_user varchar(100) not null,
+  	entry_date timestamp not null,
+  	processed_path varchar(1000),
+  	created_pid int,
+  	CONSTRAINT PK_HOTF PRIMARY KEY (entryid)
+);
+GO
+
 CREATE NONCLUSTERED INDEX idx_fsh_pid ON flow_state_history(pid)
 GO
 CREATE VIEW process_intervenients AS
