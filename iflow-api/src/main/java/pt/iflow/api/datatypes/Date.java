@@ -7,6 +7,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 
 import pt.iflow.api.blocks.FormProps;
@@ -324,7 +325,7 @@ public class Date implements DataTypeInterface {
     if (formData.hasParameter(name)) {   
       String formValue = formData.getParameter(name);
       if (StringUtils.isNotEmpty(formValue)) {
-        value = dateFormat.parse(formValue);
+    	value = dateFormat.parse(StringEscapeUtils.unescapeHtml(formValue));
       }
     }
     return value;

@@ -51,6 +51,10 @@ Disabled. Use servlet container defaults
    <filter>
       <filter-name>XSSFilter</filter-name>
       <filter-class>pt.iflow.servlets.XSSFilter</filter-class>
+      <init-param>
+      	<param-name>pt.iflow.filter_exception0</param-name>
+      	<param-value>/</param-value>
+      </init-param>      
    </filter>
    <filter>
       <filter-name>CSRFFilter</filter-name>
@@ -75,10 +79,18 @@ Disabled. Use servlet container defaults
       	<param-name>pt.iflow.filter_exception4</param-name>
       	<param-value>/iFlow/dispatcher</param-value>
       </init-param>
+      <init-param>
+      	<param-name>pt.iflow.filter_exception5</param-name>
+      	<param-value>/iFlow/saml2/SSOService</param-value>
+      </init-param>
    </filter>
    <filter>
   		<filter-name>DisableUrlSessionFilter</filter-name>
 	  	<filter-class>pt.iflow.servlets.DisableUrlSessionFilter</filter-class>
+	</filter>
+	<filter>
+  		<filter-name>DisableSomeHTTPRequestsFilter</filter-name>
+	  	<filter-class>pt.iflow.servlets.DisableSomeHTTPRequestsFilter</filter-class>
 	</filter>
 
     <!--
@@ -130,6 +142,11 @@ Disabled. Use servlet container defaults
 	  <filter-name>DisableUrlSessionFilter</filter-name>
 	  <url-pattern>/*</url-pattern>
 	</filter-mapping>
+	<filter-mapping>
+	  <filter-name>DisableSomeHTTPRequestsFilter</filter-name>
+	  <url-pattern>/*</url-pattern>	  
+	</filter-mapping>		
+	
    
    <listener>
 	 <listener-class>org.apache.axis.transport.http.AxisHTTPSessionListener</listener-class>

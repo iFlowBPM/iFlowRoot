@@ -34,8 +34,9 @@ public class RemoteFileInclusionFilter implements Filter {
 		
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
 		httpResponse.addHeader("X-Content-Type-Options", "nosniff");
-		httpResponse.addHeader("Cache-Control", "no-cache");
+		httpResponse.addHeader("Cache-Control", "no-store");
 		httpResponse.addHeader("Pragma", "no-cache");
+		httpResponse.addHeader("X-Frame-Options", "SAMEORIGIN");
 		
 		if(!failedParameter)
 			chain.doFilter(request, response);

@@ -1,14 +1,15 @@
 package pt.iflow.servlets;
 
 import java.io.IOException;
-import java.net.URLEncoder;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 
 import pt.iflow.api.core.AuthProfile;
 import pt.iflow.api.core.BeanFactory;
@@ -20,10 +21,9 @@ import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.Setup;
 import pt.iflow.api.utils.UserInfoInterface;
 import pt.iflow.api.utils.UserSettings;
-import pt.iflow.applet.StringUtils;
+import pt.iflow.api.utils.Utils;
 import pt.iflow.core.PersistSession;
 import pt.iflow.saml.onelogin.AccountSettings;
-import pt.iflow.saml.onelogin.saml.AuthRequest;
 import pt.iflow.saml.onelogin.saml.Response;
 import pt.iflow.servlets.AuthenticationServlet.AuthenticationResult;
 
@@ -45,6 +45,8 @@ public class SSOServiceServlet extends javax.servlet.http.HttpServlet implements
 		if (StringUtils.isBlank(samlXMLB64Response))
 			samlXMLB64Response = request.getAttribute("SAMLResponse").toString();
 		//samlXMLB64Response = org.apache.commons.lang.StringUtils.replaceChars(samlXMLB64Response, ' ', '+');
+		//samlXMLB64Response = "PHNhbWxwOlJlc3BvbnNlIHhtbG5zOnNhbWxwPSJ1cm46b2FzaXM6bmFtZXM6dGM6&#xd;&#xa;U0FNTDoyLjA6cHJvdG9jb2wiIERlc3RpbmF0aW9uPSJodHRwczovL2JhcmNsYXlz&#xd;&#xa;cXVhbC5jbC5pbmZvc2lzdGVtYS5jb20vaUZsb3cvc2FtbDIvU1NPU2VydmljZSIg&#xd;&#xa;SUQ9ImlkLTdNZ001cTZySGQ4QVFPYnJFMjgtOTNmWEIzby0iIElzc3VlSW5zdGFu&#xd;&#xa;dD0iMjAxNC0wOS0wNVQxMzo1MTo1OVoiIFZlcnNpb249IjIuMCI&#x2b;PHNhbWw6SXNz&#xd;&#xa;dWVyIHhtbG5zOnNhbWw9InVybjpvYXNpczpuYW1lczp0YzpTQU1MOjIuMDphc3Nl&#xd;&#xa;cnRpb24iIEZvcm1hdD0idXJuOm9hc2lzOm5hbWVzOnRjOlNBTUw6Mi4wOm5hbWVp&#xd;&#xa;ZC1mb3JtYXQ6ZW50aXR5Ij5odHRwOi8vZmVkZXJhdGlvbnVhdC5iYXJjYXBpbnQu&#xd;&#xa;Y29tL2ZlZC9pZHA8L3NhbWw6SXNzdWVyPjxzYW1scDpTdGF0dXM&#x2b;PHNhbWxwOlN0&#xd;&#xa;YXR1c0NvZGUgVmFsdWU9InVybjpvYXNpczpuYW1lczp0YzpTQU1MOjIuMDpzdGF0&#xd;&#xa;dXM6U3VjY2VzcyIvPjwvc2FtbHA6U3RhdHVzPjxzYW1sOkFzc2VydGlvbiB4bWxu&#xd;&#xa;czpzYW1sPSJ1cm46b2FzaXM6bmFtZXM6dGM6U0FNTDoyLjA6YXNzZXJ0aW9uIiBJ&#xd;&#xa;RD0iaWQtLUVvQ1JCZlU2VC1lRTREMnBValdCbnRIWEJ3LSIgSXNzdWVJbnN0YW50&#xd;&#xa;PSIyMDE0LTA5LTA1VDEzOjUxOjU5WiIgVmVyc2lvbj0iMi4wIj48c2FtbDpJc3N1&#xd;&#xa;ZXIgRm9ybWF0PSJ1cm46b2FzaXM6bmFtZXM6dGM6U0FNTDoyLjA6bmFtZWlkLWZv&#xd;&#xa;cm1hdDplbnRpdHkiPmh0dHA6Ly9mZWRlcmF0aW9udWF0LmJhcmNhcGludC5jb20v&#xd;&#xa;ZmVkL2lkcDwvc2FtbDpJc3N1ZXI&#x2b;PGRzaWc6U2lnbmF0dXJlIHhtbG5zOmRzaWc9&#xd;&#xa;Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvMDkveG1sZHNpZyMiPjxkc2lnOlNpZ25l&#xd;&#xa;ZEluZm8&#x2b;PGRzaWc6Q2Fub25pY2FsaXphdGlvbk1ldGhvZCBBbGdvcml0aG09Imh0&#xd;&#xa;dHA6Ly93d3cudzMub3JnLzIwMDEvMTAveG1sLWV4Yy1jMTRuIyIvPjxkc2lnOlNp&#xd;&#xa;Z25hdHVyZU1ldGhvZCBBbGdvcml0aG09Imh0dHA6Ly93d3cudzMub3JnLzIwMDAv&#xd;&#xa;MDkveG1sZHNpZyNyc2Etc2hhMSIvPjxkc2lnOlJlZmVyZW5jZSBVUkk9IiNpZC0t&#xd;&#xa;RW9DUkJmVTZULWVFNEQycFVqV0JudEhYQnctIj48ZHNpZzpUcmFuc2Zvcm1zPjxk&#xd;&#xa;c2lnOlRyYW5zZm9ybSBBbGdvcml0aG09Imh0dHA6Ly93d3cudzMub3JnLzIwMDAv&#xd;&#xa;MDkveG1sZHNpZyNlbnZlbG9wZWQtc2lnbmF0dXJlIi8&#x2b;PGRzaWc6VHJhbnNmb3Jt&#xd;&#xa;IEFsZ29yaXRobT0iaHR0cDovL3d3dy53My5vcmcvMjAwMS8xMC94bWwtZXhjLWMx&#xd;&#xa;NG4jIi8&#x2b;PC9kc2lnOlRyYW5zZm9ybXM&#x2b;PGRzaWc6RGlnZXN0TWV0aG9kIEFsZ29y&#xd;&#xa;aXRobT0iaHR0cDovL3d3dy53My5vcmcvMjAwMC8wOS94bWxkc2lnI3NoYTEiLz48&#xd;&#xa;ZHNpZzpEaWdlc3RWYWx1ZT56ekRzVzl2aFkvaGRWRXhtOHpyOHRZK28xS2s9PC9k&#xd;&#xa;c2lnOkRpZ2VzdFZhbHVlPjwvZHNpZzpSZWZlcmVuY2U&#x2b;PC9kc2lnOlNpZ25lZElu&#xd;&#xa;Zm8&#x2b;PGRzaWc6U2lnbmF0dXJlVmFsdWU&#x2b;WUpIV1hnZVF5S1k0U2hMR2hmOTdxajZ6&#xd;&#xa;NWREMGR3SWg2VENhODVVMHBOWXg0dE9EQUE2QU9wWnk1Vzd2NlFmYkRiS1VkR0FK&#xd;&#xa;VjZld21XQWY3K0ZmYU9uSEJoZXNiVk9DazBSc2hHdXlacG5lZm1CQzRLcXZxd3dG&#xd;&#xa;aDQrSG91SFFBaVE3L1Y5UUdKc3ZucnFCNXVaYmpKSnFmeXhFd0EwakwyR09nRXpn&#xd;&#xa;TkczNm5ZbjN2akEyQ3FrUVJ6RVhvcEorSDh5cnNQVFVyRG1NYzFJMHBES3VPS1hJ&#xd;&#xa;ck5qandKdmhLWklYUkY2emFFZWRnb1VvUVJCQzFXN3pCZUM1bTdhUFR4T1ZOSHA3&#xd;&#xa;dGhPOGVTZlhnV3g3cVZNRXhuN2hmQ2orYVlrWHVKMk9LaTM1USsvaHl6SlJZa2RN&#xd;&#xa;dThhaXlRR0F6U2lyMjFaVzlFcTU5bkhDWnJOZ2pRPT08L2RzaWc6U2lnbmF0dXJl&#xd;&#xa;VmFsdWU&#x2b;PC9kc2lnOlNpZ25hdHVyZT48c2FtbDpTdWJqZWN0PjxzYW1sOk5hbWVJ&#xd;&#xa;RCBGb3JtYXQ9InVybjpvYXNpczpuYW1lczp0YzpTQU1MOjEuMTpuYW1laWQtZm9y&#xd;&#xa;bWF0Olg1MDlTdWJqZWN0TmFtZSI&#x2b;RTIwMDEwMTc4PC9zYW1sOk5hbWVJRD48c2Ft&#xd;&#xa;bDpTdWJqZWN0Q29uZmlybWF0aW9uIE1ldGhvZD0idXJuOm9hc2lzOm5hbWVzOnRj&#xd;&#xa;OlNBTUw6Mi4wOmNtOmJlYXJlciI&#x2b;PHNhbWw6U3ViamVjdENvbmZpcm1hdGlvbkRh&#xd;&#xa;dGEgTm90T25PckFmdGVyPSIyMDE0LTA5LTA1VDE0OjA2OjU5WiIgUmVjaXBpZW50&#xd;&#xa;PSJodHRwczovL2JhcmNsYXlzcXVhbC5jbC5pbmZvc2lzdGVtYS5jb20vaUZsb3cv&#xd;&#xa;c2FtbDIvU1NPU2VydmljZSIvPjwvc2FtbDpTdWJqZWN0Q29uZmlybWF0aW9uPjwv&#xd;&#xa;c2FtbDpTdWJqZWN0PjxzYW1sOkNvbmRpdGlvbnMgTm90QmVmb3JlPSIyMDE0LTA5&#xd;&#xa;LTA1VDEzOjQxOjU5WiIgTm90T25PckFmdGVyPSIyMDE0LTA5LTA1VDE0OjA2OjU5&#xd;&#xa;WiI&#x2b;PHNhbWw6QXVkaWVuY2VSZXN0cmljdGlvbj48c2FtbDpBdWRpZW5jZT5odHRw&#xd;&#xa;czovL2JhcmNsYXlzcXVhbC5jbC5pbmZvc2lzdGVtYS5jb20vaUZsb3c8L3NhbWw6&#xd;&#xa;QXVkaWVuY2U&#x2b;PC9zYW1sOkF1ZGllbmNlUmVzdHJpY3Rpb24&#x2b;PC9zYW1sOkNvbmRp&#xd;&#xa;dGlvbnM&#x2b;PHNhbWw6QXV0aG5TdGF0ZW1lbnQgQXV0aG5JbnN0YW50PSIyMDE0LTA5&#xd;&#xa;LTA1VDEzOjUxOjU4WiIgU2Vzc2lvbkluZGV4PSJpZC1WMnZGLVQ3WW9xN2JuWWNn&#xd;&#xa;Qi1lNDJqOE55eG8tIiBTZXNzaW9uTm90T25PckFmdGVyPSIyMDE0LTA5LTA1VDEz&#xd;&#xa;OjUyOjA4WiI&#x2b;PHNhbWw6QXV0aG5Db250ZXh0PjxzYW1sOkF1dGhuQ29udGV4dENs&#xd;&#xa;YXNzUmVmPnVybjpvYXNpczpuYW1lczp0YzpTQU1MOjIuMDphYzpjbGFzc2VzOktl&#xd;&#xa;cmJlcm9zPC9zYW1sOkF1dGhuQ29udGV4dENsYXNzUmVmPjwvc2FtbDpBdXRobkNv&#xd;&#xa;bnRleHQ&#x2b;PC9zYW1sOkF1dGhuU3RhdGVtZW50Pjwvc2FtbDpBc3NlcnRpb24&#x2b;PC9z&#xd;&#xa;YW1scDpSZXNwb25zZT4&#x3d;&#xd;&#xa;";
+		samlXMLB64Response = StringEscapeUtils.unescapeHtml(samlXMLB64Response);		
 		result.nextUrl = "../main.jsp";
 		UserInfoInterface ui = BeanFactory.getUserInfoFactory().newUserInfo();
 		AuthProfile ap = BeanFactory.getAuthProfileBean();
@@ -80,7 +82,7 @@ public class SSOServiceServlet extends javax.servlet.http.HttpServlet implements
 		    boolean isAuth = result.isAuth = ui.isLogged();
 
 		    if (isAuth) {
-
+		     	
 		      /////////////////////////////
 		      //
 		      // Now set some session vars
@@ -122,7 +124,7 @@ public class SSOServiceServlet extends javax.servlet.http.HttpServlet implements
 			ui.loginSSO(null);
 			session.setAttribute("login_error", ui.getError());			
 		} finally{
-			response.sendRedirect(result.nextUrl);
+			response.sendRedirect(result.nextUrl+"?" + Utils.makeSycnhronizerToken());
 		}
 	}
 

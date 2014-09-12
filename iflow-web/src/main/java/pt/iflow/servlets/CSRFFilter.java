@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -16,6 +17,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+
+import pt.iflow.api.utils.Utils;
 
 public class CSRFFilter implements Filter {
 	
@@ -31,7 +34,9 @@ public class CSRFFilter implements Filter {
 		String requestURI = httpRequest.getRequestURI();
 		
 		try {
-			if ( filterException.contains(requestURI))
+			if (Utils.validateSynchronizerToken(request, true))
+				validSubmisson = true;
+			else if ( filterException.contains(requestURI))
 				validSubmisson = true;
 			else if (referer == null)
 				validSubmisson = false;			

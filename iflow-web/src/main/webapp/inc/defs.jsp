@@ -41,7 +41,7 @@
     // TODO move sizing constants to properties (in iflow property file)
 FormData fdFormData = FormUtils.parseRequest(request, Const.nUPLOAD_THRESHOLD_SIZE, Const.nUPLOAD_MAX_SIZE,Const.fUPLOAD_TEMP_DIR);
 if(ServletFileUpload.isMultipartContent(request))
-	FormDataSanitizer.FormDataParameterSanitize(fdFormData);
+	FormDataSanitizer.FormDataParameterSanitize(fdFormData, application);
 %><%@ include file = "checkSession.jspf" 
 %><%////////////////////////// Application Data //////////////////////////
     // Date urldate = new Date();
