@@ -222,8 +222,10 @@
     document.getElementById('div_menu').style.display='block';
     document.getElementById('div_proc_menu_expanded').style.display='none';
     document.getElementById('div_proc_menu_colapsed').style.display='block';
-    document.getElementById('link_process_help').style.display='none';
-    document.getElementById('link_process_help').style.display='block';
+    try{
+    	document.getElementById('link_process_help').style.display='none';
+    	document.getElementById('link_process_help').style.display='block';
+    } catch(err){} 
     document.getElementById('div_main').style.height='auto';
     document.getElementById('div_main').className='main';   
     document.getElementById('section3_header_div').style.height='35px';
