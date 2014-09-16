@@ -1,0 +1,13 @@
+  .content_div, .content_div_3c {
+  	float: right;
+  	clear: right;
+  	position:relative;
+    right:30px;
+  }
+
+  .nav_div {
+  	float:left;
+  	width:20%;
+  }
+
+  

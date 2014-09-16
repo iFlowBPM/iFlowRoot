@@ -29,13 +29,13 @@
 			<input type="hidden" name="do_redirect" value="true"/>
 			<input type="hidden" name="url" value="main.jsp"/>
 			<input type="hidden" name="sso" value="false"/>
-		<div style="margin-left:auto;margin-right:auto;background:url('barclays.png') no-repeat;width:604px;height:441px;padding-top:70px">
+		<div style="margin-left:auto;margin-right:auto;width:604px;height:441px">
 			<div>
 				<p>Acesso via Single Sign On</p>
 			    <span style="font-size:1.2em;text-decoration:underline;color:white;position:relative;top:0px"><a href="./saml2/index.jsp?entityprovider=1" class="user_info" style="font-size: 1.2em;">Login Integrado</a></span>
 			</div>
 			
-			<div class="lp_login_box" style="background:none;margin-top:50px;">
+			<div class="lp_login_box" style="margin-top:50px;">
 				<p>Acesso Local</p>
 			    <div class="error_msg lp_error_msg" style="margin-top:-10px;height:25px">
 			        #if ($hasError)

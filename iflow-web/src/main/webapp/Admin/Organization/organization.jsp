@@ -32,6 +32,7 @@ OrganizationThemeData orgTheme = BeanFactory.getOrganizationThemeBean().getOrgan
 			<if:formSelect name="style" edit="<%= bEdit %>" value='<%=orgTheme.getThemeName() %>' labelkey="organization.propertiesform.field.style">
 			    <if:formOption value="default" />
 			    <if:formOption value="classic" />
+			    <if:formOption value="next2014" />
 		    </if:formSelect>
 			<if:formSelect name="menuLocation" edit="<%= bEdit %>" value='<%= orgTheme.getMenuLocation() %>' labelkey="organization.propertiesform.field.menuLocation">
 			    <if:formOption labelkey="organization.propertiesform.field.menuLocation.label.left" value="left"/>
