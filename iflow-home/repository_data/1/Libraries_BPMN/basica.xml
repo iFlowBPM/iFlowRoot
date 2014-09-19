@@ -154,7 +154,7 @@
 		<description>Condition</description>
 		<i18n>library.basic.block.condition</i18n>
 	</XmlBlock>
-  <XmlBlock>
+  <!--  XmlBlock>
     <class>BlockBifurcacao</class>
     <XmlPort>
       <name>portIn</name>
@@ -186,8 +186,8 @@
     <image>bpmn_gateway_paralel.png</image>
     <description>Fork</description>
     <i18n>library.utils.block.fork</i18n>
-  </XmlBlock>
-  <XmlBlock>
+  </XmlBlock -->
+  <!-- XmlBlock>
     <class>BlockSincronizacao</class>
     <XmlPort>
       <name>portIn</name>
@@ -220,8 +220,8 @@
     <image>bpmn_gateway_paralel.png</image>
     <description>Join</description>
     <i18n>library.utils.block.sync</i18n>
-  </XmlBlock>
-  <XmlBlock>
+  </XmlBlock -->
+  <!-- XmlBlock>
     <class>BlockJuncaoExclusiva</class>
     <XmlPort>
       <name>portIn</name>
@@ -253,5 +253,5 @@
     <image>bpmn_gateway_exclusive.png</image>
     <description>Merge</description>
     <i18n>library.utils.block.merge</i18n>
-  </XmlBlock>
+  </XmlBlock -->
 </XmlLibrary>
