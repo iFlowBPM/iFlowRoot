@@ -216,8 +216,9 @@ public class SubFlowDataExpander {
     // get the var mapping of subflow
 
     XmlBlockType subFlowBlock = subFlowData.getPrimaryBlock();
-    int size = (subFlowBlock .getXmlAttributeCount() - 1) / 4 - 1; // raio de conta
-
+    int size = 1;
+    if(subFlowBlock .getXmlAttributeCount()>8)
+    	size = (subFlowBlock .getXmlAttributeCount() - 1) / 4 - 1; // raio de conta
     if (size < 0){
       size = 0; // FIXME correcção temporaria de subfluxo sem variaveis, 
     }
