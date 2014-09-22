@@ -154,6 +154,86 @@
 		<description>Condition</description>
 		<i18n>library.basic.block.condition</i18n>
 	</XmlBlock>
+	<XmlBlock>
+		<class>BlockMultiCondition</class>
+		<XmlPort>
+			<name>portIn</name>
+			<description>portIn</description>
+			<in_out>in</in_out>
+			<position>
+				<x>-5</x>
+				<y>25</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portTrueC1</name>
+			<description>portTrueC1</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>5</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portTrueC2</name>
+			<description>portTrueC2</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>15</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portTrueC3</name>
+			<description>portTrueC3</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>25</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portTrueC4</name>
+			<description>portTrueC1</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>35</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portFalse</name>
+			<description>portFalse</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>50</y>
+			</position>
+		</XmlPort>
+		<XmlAttribute>
+			<name>condition0</name>
+			<description>Se</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>condition1</name>
+			<description>Senão, Verifica Se</description>
+			<value></value>
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>condition2</name>
+			<description>Senão, Verifica Se</description>
+			<value></value>
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>condition3</name>
+			<description>Senão, Verifica Se</description>
+			<value></value>
+		</XmlAttribute>
+		<image>bpmn_multi_condicao.png</image>
+		<description>MultiCondition</description>
+		<i18n>library.basic.block.multi_condition</i18n>
+	</XmlBlock>
   <!--  XmlBlock>
     <class>BlockBifurcacao</class>
     <XmlPort>
