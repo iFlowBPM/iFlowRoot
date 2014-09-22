@@ -340,11 +340,11 @@ public class SubFlowDataExpander {
     if (SubFlowDataSuportClass.SUBFLOW_BLOCK == subFlowData.getTypeOfSubFlowImplementation()){
       // 1.Connect beginning of subflow
       for (XmlBlock block : xmlFlow.getXmlBlock()){
-        if(block.getId()==subFlowBlock.getXmlPort(0).getConnectedBlockId()){ // é bloco que liga ao subFluxo
+        //if(block.getId()==subFlowBlock.getXmlPort(0).getConnectedBlockId()){ // é bloco que liga ao subFluxo
           for (XmlPort port : block.getXmlPort())
             if (port.getConnectedBlockId() == subFlowBlock.getId())
               port.setConnectedBlockId(rawSubFlow[0].getId());
-        }
+        //}
       }
     }
 
