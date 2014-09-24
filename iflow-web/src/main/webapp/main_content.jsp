@@ -35,6 +35,9 @@ function filterActivity(id, op){
 	if(op == 3){ //filtrar folder
 		tabber_right(1, '<%=response.encodeURL("main_content.jsp")%>?filterfolder='+id);
 	}
+	if(op == 4){ //filtrar comment
+		tabber_right(1, '<%=response.encodeURL("main_content.jsp")%>?filtercomment='+id);
+	}
 }
 function cleanFilter(){
 	tabber_right(1, '<%=response.encodeURL("main_content.jsp")%>?cleanFilter=1');
@@ -233,6 +236,7 @@ function cleanFilter(){
 	    session.removeAttribute("filterlabel");
 	    session.removeAttribute("filterdays");
 	    session.removeAttribute("filterfolder");
+	    session.removeAttribute("filtercomment");
 	  }
 	  //FILTER BY FOLDER
 	  int selectedFolder = 0;
@@ -283,14 +287,115 @@ function cleanFilter(){
 		  }
 	  }
 	  
+	  //FILTER BY DAYS
+	  boolean selectedComment = false;
+	  String filtercomment = fdFormData.getParameter("filtercomment");
+	  if(filtercomment!=null){
+	    session.setAttribute("filtercomment",filtercomment); // Utilizador actualizou valor
+	  }
+	  if (filtercomment == null){
+		  filtercomment = (String) session.getAttribute("filtercomment");
+	  }
+	  if(filtercomment!=null){
+		  try{
+			  selectedComment = "1".equals(filtercomment);
+		  }catch(Exception e){
+			  selectedComment = false;
+		  }
+	  }
+	  
 	  //GET ACTIVITIES
 	  FlowFilter filter = new FlowFilter();
 	  filter.setFolderid(""+selectedFolder);
 	  filter.setLabelid(""+selectedLabel);
 	  filter.setDeadline(""+selectedDays);
+	  filter.setComment(selectedComment);
 	  filter.setOrderType("desc");
 	  ListIterator<Activity> it = pm.getUserActivitiesOrderFilters(userInfo, -1, filter);
-
+	  
+	  //GET ACTIVITIES IN LABELS
+	  FlowFilter filterLabels = new FlowFilter();
+	  ListIterator<Activity> itLabels = null;
+	  int itLabelsSize, itLabelsSizeUnread;
+	  filterLabels.setLabelid("1");
+	  filterLabels.setFolderid("0");
+	  itLabels = pm.getUserActivitiesOrderFilters(userInfo, -1, filterLabels);
+	  itLabelsSize=0;
+	  itLabelsSizeUnread=0;
+	  while(itLabels!=null && itLabels.hasNext()){
+		  Activity a = itLabels.next();
+		  if(hmFlows.containsKey("" + a.getFlowid())){
+			  itLabelsSize++;
+			  if(!a.isRead())
+				  itLabelsSizeUnread++;  
+		  }		  
+	  }
+	  hsSubstLocal.put("label1Count", itLabelsSize);
+	  hsSubstLocal.put("label1CountUnread", itLabelsSizeUnread);
+	  
+	  filterLabels.setLabelid("2");
+	  itLabels = pm.getUserActivitiesOrderFilters(userInfo, -1, filterLabels);
+	  itLabelsSize=0;
+	  itLabelsSizeUnread=0;
+	  while(itLabels!=null && itLabels.hasNext()){
+		  Activity a = itLabels.next();
+		  if(hmFlows.containsKey("" + a.getFlowid())){
+			  itLabelsSize++;
+			  if(!a.isRead())
+				  itLabelsSizeUnread++;  
+		  }		  
+	  }
+	  hsSubstLocal.put("label2Count", itLabelsSize);
+	  hsSubstLocal.put("label2CountUnread", itLabelsSizeUnread);
+	  
+	  filterLabels.setLabelid("3");
+	  itLabels = pm.getUserActivitiesOrderFilters(userInfo, -1, filterLabels);
+	  itLabelsSize=0;
+	  itLabelsSizeUnread=0;
+	  while(itLabels!=null && itLabels.hasNext()){
+		  Activity a = itLabels.next();
+		  if(hmFlows.containsKey("" + a.getFlowid())){
+			  itLabelsSize++;
+			  if(!a.isRead())
+				  itLabelsSizeUnread++;  
+		  }		  
+	  }
+	  hsSubstLocal.put("label3Count", itLabelsSize);
+	  hsSubstLocal.put("label3CountUnread", itLabelsSizeUnread);
+	  
+	  filterLabels.setLabelid("0");
+	  filterLabels.setDeadline("6");
+	  itLabels = pm.getUserActivitiesOrderFilters(userInfo, -1, filterLabels);
+	  itLabelsSize=0;
+	  itLabelsSizeUnread=0;
+	  while(itLabels!=null && itLabels.hasNext()){
+		  Activity a = itLabels.next();
+		  if(hmFlows.containsKey("" + a.getFlowid())){
+			  itLabelsSize++;
+			  if(!a.isRead())
+				  itLabelsSizeUnread++;  
+		  }		  
+	  }
+	  hsSubstLocal.put("label4Count", itLabelsSize);
+	  hsSubstLocal.put("label4CountUnread", itLabelsSizeUnread);
+	  	  
+	  filterLabels.setComment(true);
+	  filterLabels.setDeadline("0");
+	  itLabels = pm.getUserActivitiesOrderFilters(userInfo, -1, filterLabels);
+	  itLabelsSize=0;
+	  itLabelsSizeUnread=0;
+	  while(itLabels!=null && itLabels.hasNext()){
+		  Activity a = itLabels.next();
+		  if(hmFlows.containsKey("" + a.getFlowid())){
+			  itLabelsSize++;
+			  if(!a.isRead())
+				  itLabelsSizeUnread++;  
+		  }		  
+	  }
+	  hsSubstLocal.put("label5Count", itLabelsSize);
+	  hsSubstLocal.put("label5CountUnread", itLabelsSizeUnread);
+	  
+	  
 	  //PUT TO VM
 	  hsSubstLocal.put("selectedLabel", selectedLabel);
 	  hsSubstLocal.put("selectedDays", selectedDays);

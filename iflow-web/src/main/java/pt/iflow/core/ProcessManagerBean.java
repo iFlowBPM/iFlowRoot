@@ -5849,6 +5849,9 @@ public class ProcessManagerBean implements ProcessManager {
 	          if(filter.ignoreFlow(flowid)) {
 	            continue;
 	          }
+	          if(filter.isComment() && StringUtils.isBlank(BeanFactory.getProcessAnnotationManagerBean().getProcessComment(userInfo, rs.getInt("flowid"), rs.getInt("pid"), rs.getInt("subpid")).getComment())){
+	        	  continue;
+	          }
 	          if(filter.hasSizeLimit()) {
 	            counter++;
 	            if (counter - filter.getStartIndex() > filter.getNumElements()) {

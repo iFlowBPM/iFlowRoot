@@ -17,6 +17,7 @@ public class FlowFilter {
   private String folderid = "0";
   private String labelid = "0";
   private String deadline = "0";
+  private boolean comment=false;
   
   public boolean isValid() {
     return StringUtils.isNotEmpty(pnumber) || dateAfter != null || dateBefore != null || hasSizeLimit();
@@ -149,4 +150,12 @@ public class FlowFilter {
   public boolean ignoreFlow(int flowid) {
     return this.getIgnoreFlow() == null ? false : this.getIgnoreFlow().ignoreFlow(flowid);
   }
+
+public boolean isComment() {
+	return comment;
+}
+
+public void setComment(boolean comment) {
+	this.comment = comment;
+}
 }
