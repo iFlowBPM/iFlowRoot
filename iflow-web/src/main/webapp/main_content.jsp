@@ -27,16 +27,16 @@ function removeActivityFolder(sactivity){
 
 function filterActivity(id, op){
 	if(op==1){ //filtrar label
-		tabber_right(1, '<%=response.encodeURL("main_content.jsp")%>?filterlabel='+id);
+		tabber_right(1, '<%=response.encodeURL("main_content.jsp")%>?cleanFilter=1&filterlabel='+id);
 	}
 	if(op == 2){ //filtrar days
-		tabber_right(1, '<%=response.encodeURL("main_content.jsp")%>?filterdays='+id);
+		tabber_right(1, '<%=response.encodeURL("main_content.jsp")%>?cleanFilter=1&filterdays='+id);
 	}
 	if(op == 3){ //filtrar folder
-		tabber_right(1, '<%=response.encodeURL("main_content.jsp")%>?filterfolder='+id);
+		tabber_right(1, '<%=response.encodeURL("main_content.jsp")%>?cleanFilter=1&filterfolder='+id);
 	}
 	if(op == 4){ //filtrar comment
-		tabber_right(1, '<%=response.encodeURL("main_content.jsp")%>?filtercomment='+id);
+		tabber_right(1, '<%=response.encodeURL("main_content.jsp")%>?cleanFilter=1&filtercomment='+id);
 	}
 }
 function cleanFilter(){
