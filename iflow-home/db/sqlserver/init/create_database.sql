@@ -421,6 +421,7 @@ CREATE TABLE documents (
   flowid int not null default 0,
   pid int not null default 0,
   subpid int not null default 0,
+  numass int NOT NULL DEFAULT 0,
   tosign int NOT NULL DEFAULT 1,
   PRIMARY KEY (docid))
 GO
@@ -796,7 +797,7 @@ CREATE TABLE notifications (
   created DATETIME,
   sender varchar(192),
   message varchar(500),
-  flowid INT NULL DEFAULT 0,
+  link VARCHAR(45) DEFAULT 'false' NOT NULL,
   constraint notifications_pk primary key (id))
 GO
 
