@@ -327,32 +327,40 @@ public class ADAuthentication implements Authentication {
    */
   public boolean checkUser(String username, String password) {
     boolean retVal = false;
-
+    Logger.debug(null,this,"checkUser","starting with username: " + username);
     try {
       if (username != null && !username.equals("") && password != null
           && !password.equals("")) {
 
         String bindDn = "";
+        Logger.debug(null,this,"checkUser","Auth user by search: " + _authUserBySearch);
         if(_authUserBySearch) {
+          Logger.debug(null,this,"checkUser","Search by user uid: " + _searchByUserUid);
           String query = MessageFormat.format(_searchByUserUid, new Object[] {username});
           Logger.debug(null,this,"checkUser","Performing LDAP search " + query);
           bindDn = LDAPInterface.getDN(query);
+          Logger.debug(null,this,"checkUser","bindDn :" + bindDn);
         } else {
           try {
+        	Logger.debug(null,this,"checkUser","Search by user uid: " + _searchByUserUid);
             String query = MessageFormat.format(_searchByUserUid, new Object[] {username});
             Logger.debug(null,this,"checkUser","Performing LDAP search " + query);
             bindDn = LDAPInterface.getDN(query);
+            Logger.debug(null,this,"checkUser","bindDn :" + bindDn +", userBinDN: " +_userBindDN + ", BaseDN: " + LDAPInterface.getBaseDN());
             bindDn = MessageFormat.format(_userBindDN, new Object[] {bindDn, LDAPInterface.getBaseDN()});
           } catch (Exception e) {
+        	Logger.debug(null,this,"checkUser","No anonymous acccess to LDAP, exception: " + e);
             Logger.debug(null,this,"checkUser","No anonymous acccess to LDAP. Using config bind dn");
             bindDn = MessageFormat.format(_userBindDN, new Object[] {username});
+            Logger.debug(null,this,"checkUser","Using config bind dn, bindDn :" + bindDn +", userBinDN: " +_userBindDN);
           }
         }
-        Logger.debug(null,this,"checkUser","user bind dn = " + bindDn);
-        retVal = LDAPInterface.checkBindPassword(bindDn, password);
+        Logger.debug(null,this,"checkUser","user bind dn = " + bindDn);      
+        retVal = LDAPInterface.checkBindPassword(bindDn, password) || LDAPInterface.checkBindPassword(username, password) || LDAPInterface.checkBindPassword("DN=" + username, password) || LDAPInterface.checkBindPassword("PN=" + username, password);
       }
     }
     catch (Exception e) {
+      Logger.error(null,this,"checkUser","global exception = " + e);
       e.printStackTrace();
     }
     return retVal;

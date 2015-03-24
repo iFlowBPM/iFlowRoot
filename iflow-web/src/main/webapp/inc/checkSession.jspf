@@ -14,7 +14,13 @@ if(null == session.getAttribute(Const.USER_INFO)) {
 
 	  String uri = request.getRequestURI();
 	  if (uri.indexOf("/main.jsp") > 0) {
-        ServletUtils.sendEncodeRedirect(response, "login.jsp");
+		//may come from alternate login pages  
+		HttpServletRequest httpRequest = (HttpServletRequest) request;
+		String referer = httpRequest.getHeader("referer");
+		if(referer==null || "".equals(referer))
+			referer="login.jsp";
+		
+        ServletUtils.sendEncodeRedirect(response, referer);
 	    return;
 	  }
       out.println("session-expired");

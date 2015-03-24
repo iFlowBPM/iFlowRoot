@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 
 import javax.activation.MimetypesFileTypeMap;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 
 import pt.iflow.api.core.BeanFactory;
@@ -55,6 +56,7 @@ public class RepositoryEditor {
       }
 
       Repository rep = BeanFactory.getRepBean();
+      content = StringEscapeUtils.unescapeHtml(content);
       byte[] data = content.getBytes();
 
       if (StringUtils.equals(type, ResourceNavConsts.STYLESHEETS)) {

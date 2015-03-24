@@ -21,7 +21,8 @@ String popupReturnBlockId = null;
     int op = Integer.parseInt(sOp);
     
     Block bBlockJSP = null;
-    
+    if(fdFormData.getParameter("_button_clicked_id")!=null)
+    	session.setAttribute("_button_clicked_id", fdFormData.getParameter("_button_clicked_id"));
     String currMid = String.valueOf(pm.getModificationId(userInfo, procData.getProcessHeader()));
 
     HashMap<String, String> hmHidden = new HashMap<String, String>();
@@ -245,6 +246,10 @@ String popupReturnBlockId = null;
             procData.setTempData(Const.sSWITCH_PROC_RETURN_PARENT, null);
             session.removeAttribute(Const.sSWITCH_PROC_SESSION_ATTRIBUTE);
         }
+        
+        //button_clicked_id for auto scrolling the form
+        hmHidden.put("_button_clicked_id", ""+session.getAttribute("_button_clicked_id"));
+     	session.removeAttribute("_button_clicked_id");
         
         oa = new Object[4];
         oa[0] = userInfo;

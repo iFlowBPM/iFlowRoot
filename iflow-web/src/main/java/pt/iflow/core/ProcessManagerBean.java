@@ -5798,9 +5798,11 @@ public class ProcessManagerBean implements ProcessManager {
 	      }
 
 	      if(filter.getOrderType() != null && filter.getOrderType().equals("desc")){
-	          sQueryDelegated.append(" order by iconid asc, created desc"); 
+	          sQueryDelegated.append(" order by iconid asc, created desc");
+	    	  //sQueryDelegated.append(" order by created desc");
 	      }else{
 	          sQueryDelegated.append(" order by iconid asc, created asc");
+	    	  //sQueryDelegated.append(" order by created asc");
 	      }
 	      
 	      

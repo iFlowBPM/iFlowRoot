@@ -557,7 +557,7 @@ public class FlowHolderBean implements FlowHolder {
             db = Utils.getDataSource().getConnection();
             
             pst = db
-                    .prepareStatement("SELECT flowfile FROM sub_flow WHERE organizationid=? UNION SELECT name as flowfile from sub_flow_template");
+                    .prepareStatement("SELECT flowfile FROM sub_flow WHERE organizationid=? UNION SELECT name as flowfile from sub_flow_template order by flowfile");
             
             // 1st read user flow
             pst.setString(1, userInfo.getOrganization());
@@ -1235,8 +1235,8 @@ public class FlowHolderBean implements FlowHolder {
 
                   Logger.debug(userInfo.getUtilizador(), this, "buildFlow", "Settings saved");
                   //saving max blockID and subflow mapping if they exist - useful for auditing subflows
-                  saveSubFlowExpansionResult(subFlowBlockMappings,subFlowDataExpander.findMaxblockId(), flowId, userInfo) ;
-            resyncDeployedFlowWithSubFlow(userInfo, subFlowBlockMappings, flowId, fd);
+                  if (saveSubFlowExpansionResult(subFlowBlockMappings,subFlowDataExpander.findMaxblockId(), flowId, userInfo))
+                	  resyncDeployedFlowWithSubFlow(userInfo, subFlowBlockMappings, flowId, fd);
                 }
                 setBuildDate(userInfo, flowId);
               }
@@ -1273,61 +1273,44 @@ public class FlowHolderBean implements FlowHolder {
     PreparedStatement pst = null;
     Flow flowBean = BeanFactory.getFlowBean();
 
-    List<Integer> oldOriginalBlockId = new ArrayList<Integer>(), oldMappedBlockId = new ArrayList<Integer>();
-    List<String> subFlowName = new ArrayList<String>();
-
     try {
       db = Utils.getDataSource().getConnection();
-      pst = db
-          .prepareStatement("select original_blockid, sub_flowname, bm.mapped_blockid from iflow.subflow_block_mapping bm, iflow.flow_state fs "
-              + "where bm.flowname=? and fs.flowid = ? and fs.state = bm.mapped_blockid "
-              + "and bm.created=(select max(created) from iflow.subflow_block_mapping where flowname=? and created<(select max(created) from iflow.subflow_block_mapping where flowname=?))");
+      pst = db.prepareStatement("SELECT created FROM iflow.subflow_block_mapping s where flowname=? group by created order by created desc");
       pst.setString(1, subFlowBlockMappings.get(0).getMainFlowName());
-      pst.setInt(2, flowId);
-      pst.setString(3, subFlowBlockMappings.get(0).getMainFlowName());
-      pst.setString(4, subFlowBlockMappings.get(0).getMainFlowName());
-
       ResultSet rst = pst.executeQuery();
-      while (rst.next()) {
-        oldOriginalBlockId.add(rst.getInt(1));
-        subFlowName.add(rst.getString(2));
-        oldMappedBlockId.add(rst.getInt(3));
-      }
+      
+      rst.next();
+      Timestamp lastMapping =  rst.getTimestamp(1);
+      rst.next();
+      Timestamp preiousMapping = rst.getTimestamp(1);
+      
+      pst = db.
+    		  prepareStatement("SELECT O.mapped_blockid as oid, N.mapped_blockid as nid FROM " +
+    				  			"(SELECT sub_flowname, original_blockid,mapped_blockid FROM iflow.subflow_block_mapping s where flowname=? and created=?) O " +
+    				  			"left join " +
+    				  			"(SELECT sub_flowname, original_blockid,mapped_blockid FROM iflow.subflow_block_mapping s where flowname=? and created=?) N " +    				  			
+    				  			"on (O.original_blockid=N.original_blockid and O.sub_flowname=N.sub_flowname) order by oid desc"); 
+      pst.setString(1, subFlowBlockMappings.get(0).getMainFlowName());
+      pst.setTimestamp(2, preiousMapping);
+      pst.setString(3, subFlowBlockMappings.get(0).getMainFlowName());
+      pst.setTimestamp(4, lastMapping);
+      rst = pst.executeQuery();
+      
+      while(rst.next())
+    	  flowBean.resyncFlow(userInfo, flowId, rst.getInt(1), rst.getInt(2), true, fd);
+      
     } catch (Exception e) {
       Logger.error(userInfo.getUtilizador(), this, "resyncDeployedFlowWithSubFlow", "exception caught", e);
       e.printStackTrace();
     } finally {
       DatabaseInterface.closeResources(db, pst);
     }
-
-      for (int i = 0; i < oldOriginalBlockId.size(); i++) {
-        Integer newOriginalBlockId = null;
-        for (SubFlowMapping mapping : subFlowBlockMappings)
-          if (mapping.getMappedBlockId() == oldMappedBlockId.get(i)) {
-            newOriginalBlockId = mapping.getOriginalBlockId();
-            break;
-          }
-
-        if (newOriginalBlockId != null && oldOriginalBlockId.get(i) != newOriginalBlockId) {
-          Integer newMappedBlockIdState = null;
-          for (SubFlowMapping mapping : subFlowBlockMappings)
-            if (mapping.getOriginalBlockId() == oldOriginalBlockId.get(i) && mapping.getSubFlowName().equals(subFlowName.get(i))) {
-              newMappedBlockIdState = mapping.getMappedBlockId();
-              break;
-            }
-        if (newMappedBlockIdState == null) {
-          Logger.error(userInfo.getUtilizador(), this, "resyncDeployedFlowWithSubFlow", "invalid state to resync");
-          throw new Exception("resyncDeployedFlowWithSubFlow, invalid state to resync");
-        }
-          flowBean.resyncFlow(userInfo, flowId, oldMappedBlockId.get(i), newMappedBlockIdState, true, fd);
-        }
-      }
   }
 
-  private void saveSubFlowExpansionResult(List<SubFlowMapping> subFlowBlockMappings, Integer maxblockId, int flowId,
+  private Boolean saveSubFlowExpansionResult(List<SubFlowMapping> subFlowBlockMappings, Integer maxblockId, int flowId,
       UserInfoInterface userInfo) {
-    
-    if(subFlowBlockMappings.size() == 0) return;
+	  Boolean mappingsChanged = false;
+    if(subFlowBlockMappings.size() == 0) return mappingsChanged;
     
     Connection db = null;
     PreparedStatement pst = null;
@@ -1339,7 +1322,7 @@ public class FlowHolderBean implements FlowHolder {
       pst.execute();
 
       // check if mappings have changed before saving them
-      Boolean mappingsChanged = false;
+      
       pst = db
           .prepareStatement("select flowname, sub_flowname, original_blockid, mapped_blockid from iflow.subflow_block_mapping "
               + "bm where bm.flowname=? and bm.created=(select max(created) from iflow.subflow_block_mapping where flowname=?) order by id");
@@ -1373,12 +1356,14 @@ public class FlowHolderBean implements FlowHolder {
           pst.execute();
         }
       }
+      return mappingsChanged;
     } catch (Exception e) {
       Logger.error(userInfo.getUtilizador(), this, "readFlow", "exception caught", e);
       e.printStackTrace();
     } finally {
       DatabaseInterface.closeResources(db, pst);
     }
+	return mappingsChanged;
   }
 
     private DBFlow readFlow(UserInfoInterface userInfo, int flowId) {
@@ -1792,7 +1777,7 @@ public class FlowHolderBean implements FlowHolder {
         return notok;
     }
     
-    public static class FlowSecurityException extends SecurityException {
+    public static class FlowSecurityException extends Exception {
         /**
    * 
    */

@@ -19,10 +19,22 @@ import org.owasp.esapi.ESAPI;
 
 public class XSSFilter implements Filter {
 
+	//chars exception list
 	private List<String> filterException;
+	//paths exception list
+	private List<String> filterURLException;
 	
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
+		HttpServletRequest httpRequest = (HttpServletRequest) request;
+		String requestURI = httpRequest.getRequestURI();
+		
+		for(String fue: filterURLException)
+			if ( requestURI.startsWith(fue)){
+				chain.doFilter(request, response);
+				return;
+			}
+		
 		chain.doFilter(new XSSFilteredRequest(request), response);
 	}
 
@@ -32,11 +44,14 @@ public class XSSFilter implements Filter {
 	public void init(FilterConfig fc) throws ServletException {
 		Enumeration<?> parameterNames = fc.getInitParameterNames();
 		filterException = new ArrayList<String>();
+		filterURLException = new ArrayList<String>();
 		
 		while(parameterNames.hasMoreElements()){
 			String aux = parameterNames.nextElement().toString();
 			if (StringUtils.startsWith(aux, "pt.iflow.filter_exception"))
 				filterException.add(fc.getInitParameter(aux));
+			if (StringUtils.startsWith(aux, "pt.iflow.filter_url_exception"))
+				filterURLException.add(fc.getInitParameter(aux));
 		}			
 		fc.getServletContext().setAttribute("pt.iflow.servlets.XSSFilter.exception", filterException);
 	}

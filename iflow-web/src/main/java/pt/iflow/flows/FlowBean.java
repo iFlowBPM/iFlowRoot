@@ -2489,7 +2489,7 @@ public class FlowBean implements Flow {
       Block block = null;
       if (fd == null || fd.hasError()) {
         sbError.append("Flow inv&aacute;lido.<br>");
-      } else if (fd.isOnline()) {
+      } else if (fd.isOnline() && !force) {
         sbError.append("O flow est&aacute; online, pelo que n&atilde;o pode ser re-sincronizado.<br>");
       } else {
         block = getBlockById(fd, anOldBlockId);
@@ -2497,11 +2497,11 @@ public class FlowBean implements Flow {
           sbError.append("O estado antigo escolhido corresponde a um estado ainda v&aacute;lido no flow.<br>");
         } else {
           block = this.getBlockById(fd, anNewBlockId);
-          if (block == null) {
+          if (block == null && !force) {
             sbError.append("O novo estado escolhido n&atilde;o &eacute; v&aacute;lido no flow.<br>");
           } else {
             boolean isDeployed = BeanFactory.getFlowHolderBean().isOnline(userInfo, anFlowId);
-            if (isDeployed) {
+            if (isDeployed && !force) {
               sbError.append("O flow encontra-se activo.<br>");
             } else {
 

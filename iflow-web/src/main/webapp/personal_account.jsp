@@ -176,7 +176,7 @@
   	<if:formInput type="text" name="companyPhone" value="${user.companyPhone}" labelkey="userform.field.companyPhone" edit="${bEdit}" maxlength="20"/>
 	<% } %>
 	<% for (int i = 0; i < listExtraValues.length; i++) { %>
-	  <if:formInput name="<%=\"extra_\"+listExtraProperties[i]%>" label="<%=listExtraProperties[i]%>" type="text" value='<%=listExtraValues[i]%>' edit="<%=bEdit%>" required="false" maxlength="50" />
+	  <if:formInput name="<%=\"extra_\"+listExtraProperties[i]%>" labelkey='<%="userform.field."+listExtraProperties[i]%>' type="text" value='<%=listExtraValues[i]%>' edit="<%=bEdit%>" required="false" maxlength="50" />
 	<% } %>
   </c:when>
   <c:otherwise>

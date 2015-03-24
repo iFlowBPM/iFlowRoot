@@ -109,7 +109,7 @@ public class AppletServlet extends HttpServlet {
           InputStream cpStoreIn = null;
           PrivateKey privateKey;
           Certificate [] certChain;
-          final String alias = "iKnowCert";
+          final String alias = "infosistema.com";
           final char [] password = "iknow256".toCharArray();
           try {
             cpStoreIn = AppletServlet.class.getResourceAsStream("store");

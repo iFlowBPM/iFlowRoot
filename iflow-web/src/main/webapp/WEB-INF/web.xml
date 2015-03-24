@@ -54,7 +54,19 @@ Disabled. Use servlet container defaults
       <init-param>
       	<param-name>pt.iflow.filter_exception0</param-name>
       	<param-value>/</param-value>
+      </init-param>     
+      <init-param>
+      	<param-name>pt.iflow.filter_url_exception0</param-name>
+      	<param-value>/iFlow/Admin</param-value>
       </init-param>      
+      <init-param>
+      	<param-name>pt.iflow.filter_url_exception1</param-name>
+      	<param-value>/iFlow/AuthenticationServlet</param-value>
+      </init-param>
+      <init-param>
+      	<param-name>pt.iflow.filter_url_exception2</param-name>
+      	<param-value>/iFlow//AuthenticationBICServlet</param-value>
+      </init-param>       
    </filter>
    <filter>
       <filter-name>CSRFFilter</filter-name>
@@ -130,7 +142,7 @@ Disabled. Use servlet container defaults
       <filter-name>MySQLInjectionFilter</filter-name>
       <url-pattern>/*</url-pattern>
    </filter-mapping>
-   <filter-mapping>
+	<filter-mapping>
       <filter-name>XSSFilter</filter-name>
       <url-pattern>/*</url-pattern>
    </filter-mapping>
@@ -384,6 +396,12 @@ Disabled. Use servlet container defaults
 	  <servlet-name>AdminServlet</servlet-name>
 	  <servlet-class>org.apache.axis.transport.http.AdminServlet</servlet-class>
 	  <load-on-startup>100</load-on-startup>
+  </servlet>
+  
+   <servlet>
+	  <display-name>Authentication AD for BIC Servlet</display-name>
+	  <servlet-name>AuthenticationBICServlet</servlet-name>
+	  <servlet-class>pt.iflow.servlets.AuthenticationBICServlet</servlet-class>	  
   </servlet>
 
    <!-- end of axis -->
@@ -685,6 +703,11 @@ Disabled. Use servlet container defaults
     </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
+  
+     <servlet-mapping>
+      <servlet-name>AuthenticationBICServlet</servlet-name>
+      <url-pattern>/AuthenticationBICServlet</url-pattern>
+   </servlet-mapping>
   <!-- servlet-mapping>
     <servlet-name>iFlow REST Service</servlet-name>
     <url-pattern>/iFlowRest/*</url-pattern>

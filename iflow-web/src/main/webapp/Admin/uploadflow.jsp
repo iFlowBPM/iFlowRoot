@@ -18,7 +18,7 @@
 						<if:message string="flow_settings.import.label"/>
 					</label>
 					<input type="file" name="file" />
-				</li>
+				</li>				
 				<li>
 					<label for="create_version">
 						<if:message string="flow_settings.import.create_version"/>
@@ -30,6 +30,12 @@
 						<if:message string="flow_settings.import.version_note"/>
 					</label>
 					<textarea rows="5" cols="40" name="version_note" id="version_note" disabled="disabled"></textarea>
+				</li>
+				<li>
+					<label for="is_subflow">
+						<if:message string="flow_settings.import.is_subflow"/>
+					</label>
+					<input type="checkbox" name="is_subflow" id="is_subflow" value="yes" />
 				</li>
 			</ol>
 		</fieldset>

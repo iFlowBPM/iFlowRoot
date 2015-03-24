@@ -31,13 +31,13 @@ if(!window['Json']) Json = top.Json;
  * @param flowid Identificador do fluxo
  * @param pid Identificador do processo
  * @param subpid Identificador do subprocesso
- * @param varName Variável onde será guardado o ficheiro
+ * @param varName Vari?vel onde ser? guardado o ficheiro
  * @param signatureType Tipo de assinatura a efectuar (NONE, XADES, PDF, PKCS7)
- * @param encryptionType Tipo de encriptação a efectuar (NONE, PKI)
+ * @param encryptionType Tipo de encripta??o a efectuar (NONE, PKI)
  * 
  * @return Identificador do ficheiro carregado
  */
-function uploadFile(varName, signatureType, encryptionType, max) {
+function uploadFile(varName, signatureType, encryptionType, max, sig_pos_style_java) {
 	if(!IFLOW_APPLET_ELEM)  {
 		alert('Applet nao foi configurada');
 		return null;
@@ -46,6 +46,7 @@ function uploadFile(varName, signatureType, encryptionType, max) {
 	if (checkLimits(varName)) {
 		return null;
 	}
+
 	// preparar o objecto com argumentos
 	var obj = {};
 	obj[IFLOW_APPLET_ELEM.FLOWID] = document.getElementById('flowid').value;
@@ -57,8 +58,10 @@ function uploadFile(varName, signatureType, encryptionType, max) {
 
 	var taskId = IFLOW_APPLET_ELEM.uploadFile(
 			document.cookie,
-			Json.toString(obj)
+			Json.toString(obj),
+			sig_pos_style_java
 	);
+
 	checkLimits(varName);
 	// setTimeout('checkTaskStatus("'+taskId+'")', TIMEOUT_DELAY);
 }
@@ -70,18 +73,17 @@ function updateMax(max) {
 		this.BIG_MAX = 0;
 	}
 }
-
 /**
  * Modificar ficheiro existente. Permite reassinar ou encriptar um documento existente na base de dados.
  * 
  * @param varName Variavel do documento
  * @param fileId Identificador do ficheiro
  * @param signatureType Tipo de assinatura a efectuar (NONE, XADES, PDF, PKCS7)
- * @param encrptionType Tipo de encriptação a efectuar (NONE, PKI)
+ * @param encrptionType Tipo de encripta??o a efectuar (NONE, PKI)
  * 
  * @return Identificador do ficheiro carregado
  */
-function modifyFile(varName, fileId, signatureType, encryptionType) {
+function modifyFile(varName, fileId, signatureType, encryptionType, sig_pos_style_java) {
 	if(!IFLOW_APPLET_ELEM)  {
 		alert('Applet nao foi configurada');
 		return null;
@@ -99,21 +101,22 @@ function modifyFile(varName, fileId, signatureType, encryptionType) {
 
 	return IFLOW_APPLET_ELEM.modifyFile(
 			document.cookie,
-			Json.toString(obj)
+			Json.toString(obj), 
+			sig_pos_style_java
 	);
 }
 
 /**
- * Substituir ficheiro existente. O ficheiro poderá ser assinado ou encriptado.
+ * Substituir ficheiro existente. O ficheiro poder? ser assinado ou encriptado.
  * 
  * @param varName Variavel do documento
  * @param fileId Identificador do ficheiro
  * @param signatureType Tipo de assinatura a efectuar (NONE, XADES, PDF, PKCS7)
- * @param encrptionType Tipo de encriptação a efectuar (NONE, PKI)
+ * @param encrptionType Tipo de encripta??o a efectuar (NONE, PKI)
  * 
  * @return Identificador do ficheiro carregado
  */
-function replaceFile(varName, fileId, signatureType, encryptionType) {
+function replaceFile(varName, fileId, signatureType, encryptionType, sig_pos_style_java) {
 	if(!IFLOW_APPLET_ELEM)  {
 		alert('Applet nao foi configurada');
 		return null;
@@ -131,7 +134,8 @@ function replaceFile(varName, fileId, signatureType, encryptionType) {
 
 	return IFLOW_APPLET_ELEM.replaceFile(
 			document.cookie,
-			Json.toString(obj)
+			Json.toString(obj), 
+			sig_pos_style_java
 	);
 }
 
@@ -143,7 +147,7 @@ function replaceFile(varName, fileId, signatureType, encryptionType) {
  * @param subpid Identificador do subprocesso
  * @param fileId Identificador do ficheiro
  * @param signatureType Tipo de assinatura a efectuar (NONE, XADES, PDF, PKCS7)
- * @param encrptionType Tipo de encriptação a efectuar (NONE, PKI)
+ * @param encrptionType Tipo de encripta??o a efectuar (NONE, PKI)
  * 
  * @return Identificador do ficheiro carregado
  */
@@ -177,7 +181,7 @@ function downloadFile(varName, fileId, signatureType, encryptionType) {
  * @param subpid Identificador do subprocesso
  * @param fileId Identificador do ficheiro
  * 
- * @return Mensagem com resultado da validação
+ * @return Mensagem com resultado da valida??o
  */
 function verifiyFile(varName, fileId) {
 	if(!IFLOW_APPLET_ELEM)  {
@@ -205,9 +209,9 @@ function verifiyFile(varName, fileId) {
  * @param flowid Identificador do fluxo
  * @param pid Identificador do processo
  * @param subpid Identificador do subprocesso
- * @param varName Variável onde será guardado o ficheiro
+ * @param varName Vari?vel onde ser? guardado o ficheiro
  * @param signatureType Tipo de assinatura a efectuar (NONE, XADES, PDF, PKCS7)
- * @param encrptionType Tipo de encriptação a efectuar (NONE, PKI)
+ * @param encrptionType Tipo de encripta??o a efectuar (NONE, PKI)
  * @param fileFormat Formato do ficheiro (PDF, JPG, TIFF, etc)
  * 
  * @return Identificador do ficheiro carregado
@@ -239,12 +243,12 @@ function scanFile(varName, signatureType, encryptionType, fileFormat, max) {
 	return ret;
 }
 
-// Gestão de certificados
+// Gest?o de certificados
 
 /**
- * Carregamento e/ou substituição de certificados digitais de utilizador
+ * Carregamento e/ou substitui??o de certificados digitais de utilizador
  * @param userid Identificador do utilizador
- * @param certificateType Tipo de certificado (autenticação, encriptação, assinatura)
+ * @param certificateType Tipo de certificado (autentica??o, encripta??o, assinatura)
  * 
  * @return 
  */
@@ -337,7 +341,7 @@ function changeFileState(docid) {
 		document.getElementById('lock_'+docid).style.display="inline";
 }
 
-//As funcoes de exemplo nas quais me devo basear são estas:
+//As funcoes de exemplo nas quais me devo basear s?o estas:
 function loadSignedFile(signatureType,varname) {
 	var fileDesc;
 	if(!IFLOW_APPLET_ELEM)  {
@@ -355,7 +359,7 @@ function addFileElem(myObject) {
 	
 	if(!myObject) return;
 	
-	filename = myObject.name;
+	filename = myObject.name.replace('&apos;', '\'');
 	fileid = myObject.id;
 	varname = myObject.varname;
 
@@ -365,9 +369,9 @@ function addFileElem(myObject) {
 		'alt':'Delete',
 		'title':'Delete'
 	});
-//	delete_button.setAttribute('onclick',"removeFile('" + fileid + "','"+varname+"')"); //Não funciona no IE
+//	delete_button.setAttribute('onclick',"removeFile('" + fileid + "','"+varname+"')"); //N?o funciona no IE
 	
-	delete_button.onclick = function(){ // Solução para IE
+	delete_button.onclick = function(){ // Solu??o para IE
 		removeFile(fileid,varname);
 	    return true;
 	};

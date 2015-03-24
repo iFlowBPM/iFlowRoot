@@ -3,6 +3,8 @@ package pt.iflow.datasources;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
+import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
@@ -56,15 +58,20 @@ public class IFlowDataSource implements DataSource {
     ds.setLoginTimeout(seconds);
   }
 
-  public boolean isWrapperFor(Class cl) {
-	  //TODO not needed
-	  return true;
-  }
-  
-  public Class<? extends DataSource> unwrap(Class cl) {
-	//TODO not needed
-	  return null;
-  }
+public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+public <T> T unwrap(Class<T> iface) throws SQLException {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+public boolean isWrapperFor(Class<?> iface) throws SQLException {
+	// TODO Auto-generated method stub
+	return false;
+}
   
 
 }

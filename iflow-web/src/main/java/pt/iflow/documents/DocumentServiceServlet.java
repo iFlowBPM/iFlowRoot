@@ -122,7 +122,7 @@ public class DocumentServiceServlet extends HttpServlet implements AppletDocPara
     // User must be authenticated
     UserInfoInterface userInfo = (UserInfoInterface) session.getAttribute(Const.USER_INFO);
     if (null == userInfo) {
-      Logger.error("<unknown>", this, "doGet", "Invalid user/user not authenticated.");
+      Logger.error("<unknown>", this, "doGet", "Invalid user/user not authenticated. ->" + session.getId());
       response.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found");
       return;
     }

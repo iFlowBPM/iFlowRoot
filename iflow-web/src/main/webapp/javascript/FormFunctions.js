@@ -162,7 +162,7 @@ function disableForm() {
 	if (document.getElementById('_formLoadingDiv')) {
 		document.getElementById('_formLoadingDiv').style.display='';
 		if (document.forms && document.forms.length > 0 && document.forms[0])
-			document.forms[0].style.display='none';
+			document.forms[0].style.display='';
 	}
 	backToTop();
 }
@@ -182,7 +182,7 @@ function camouflageForm() {
 	var el = document.getElementById('_formLoadingDiv');
 	if (el) {
 		el.style.display='';
-		el.style.backgroundColor='lightBlue';
+		el.style.backgroundColor='';
 		el.style.border='2px outset lightBlue';
 		el.style.opacity='0.5';
 		SetOpacity(el, 50);

@@ -327,17 +327,21 @@ public class LDAPAuthentication implements Authentication {
    */
   public boolean checkUser(String username, String password) {
     boolean retVal = false;
-
+    Logger.debug(null,this,"checkUser","starting with username: " + username );
     try {
       if (username != null && !username.equals("") && password != null
           && !password.equals("")) {
 
         String bindDn = "";
+        Logger.debug(null,this,"checkUser","Auth user by search: " + _authUserBySearch);
         if(_authUserBySearch) {
+          Logger.debug(null,this,"checkUser","Search by user uid: " + _searchByUserUid);
           String query = MessageFormat.format(_searchByUserUid, new Object[] {username});
           Logger.debug(null,this,"checkUser","Performing LDAP search " + query);
           bindDn = LDAPInterface.getDN(query);
+          Logger.debug(null,this,"checkUser","bindDn :" + bindDn);
         } else {
+          Logger.debug(null,this,"checkUser","userBindDn :" +_userBindDN);
           bindDn = MessageFormat.format(_userBindDN,new Object[] {username});
         }
         Logger.debug(null,this,"checkUser","user bind dn = " + bindDn);
@@ -345,6 +349,7 @@ public class LDAPAuthentication implements Authentication {
       }
     }
     catch (Exception e) {
+      Logger.error(null,this,"checkUser","global exception = " + e);
       e.printStackTrace();
     }
     return retVal;

@@ -148,7 +148,9 @@
     <% } %>
   </form>
 </div>
-
+  <script language="JavaScript" type="text/javascript">
+  parent.document.getElementById('section3_content_div').style.height='800px';
+  </script>
 
 <% out.println(ProcessEndDisplay.processTasks(userInfo, response)); %>
 
