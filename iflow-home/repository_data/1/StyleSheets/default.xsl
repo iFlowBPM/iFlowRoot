@@ -558,7 +558,9 @@ label.subheader {
   		<script type="text/javascript" src="{$url_prefix}/javascript/Stickman.MultiUpload.js"/>
         
         <script type="text/javascript" src="{$url_prefix}/Themes/{$theme}/javascript/theme.js"> </script>
-  		
+  		<script type="text/javascript" src="{$url_prefix}/javascript/ckeditor/ckeditor.js"/>
+		<script type="text/javascript" src="{$url_prefix}/javascript/ckeditor/adapters/jquery.js"/>
+		
 		<!-- Carrega codigo javacript de interaccao com a applet e prepara o ambiente -->
 		<script type="text/javascript" src="{$url_prefix}/javascript/applet_functions.js"> </script>
 		<script type="text/javascript">
@@ -1120,6 +1122,12 @@ label.subheader {
 		
 							<xsl:if test="type='button'">
 						<xsl:text>&nbsp;</xsl:text>
+						<a>
+							<xsl:attribute name="id">anchor_<xsl:value-of select="id/text()"/>
+							</xsl:attribute>
+							<xsl:attribute name="name">anchor_<xsl:value-of select="id/text()"/>
+							</xsl:attribute>
+						</a>
 						<button align="center" valign="center" class="button" type="submit">
 							<xsl:attribute name="name">
 								<xsl:value-of select="name/text()"/>
@@ -1166,49 +1174,43 @@ label.subheader {
                         <xsl:text>&nbsp;</xsl:text>
                     </xsl:if>
 
-                    <xsl:if test="type='rich_textarea'">
-                        <div class="yui-skin-sam" align="left">
-                            <textarea name="{variable}" rows="{rows}">
-                                <xsl:attribute name="id">
-                                    <xsl:value-of select="variable/text()"/>
-                                    </xsl:attribute>
-                                <xsl:if test="string-length(cols) &gt; 0">
-                                    <xsl:attribute name="cols">
-                                    <xsl:value-of select="cols/text()"/>
-                                    </xsl:attribute>
-                                </xsl:if>
-                                <xsl:if test="string-length(width) &gt; 0">
-                                    <xsl:attribute name="style">
-                                    <xsl:text>width:</xsl:text><xsl:value-of select="width/text()"/>
-                                    </xsl:attribute>
-                                </xsl:if>
-                                <xsl:attribute name="class">
-                                    <xsl:text>txt</xsl:text>
-                                    <xsl:if test="disabled='true' or readonly='true'">
-                                    <xsl:text> readonly</xsl:text>
-                                    </xsl:if>
-                                    </xsl:attribute>
-                                <xsl:if test="disabled='true' or readonly='true'">
-                                    <xsl:attribute name="readonly"><xsl:text>readonly</xsl:text>
-                                    </xsl:attribute>
-                                </xsl:if>
-
-                                <xsl:apply-templates select="value/text()"/>
-                            </textarea>
-                        </div>
-
-                        <xsl:if test="string-length(is_rich_text_area) &gt; 0">
-                            <script type="text/javascript">
-                                <xsl:value-of select="rich_text_area_script/text()"/>
-                            </script>
-                        </xsl:if>
-
-		
-		
-		
-		
-        <xsl:apply-templates select="suffix"/>
-      </xsl:if>
+					<xsl:if test="type='rich_textarea'">
+						<div class="" align="right">
+							<xsl:attribute name="style">
+								<xsl:choose>
+									<xsl:when test="string-length(height) &gt; 0">
+										<xsl:text>height:</xsl:text><xsl:value-of select="height/text()+165" />;
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:text>height:465;</xsl:text>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:attribute>
+							<textarea name="{variable}" >
+								<xsl:attribute name="id">
+									<xsl:value-of select="variable/text()" />
+								</xsl:attribute>
+								<xsl:attribute name="class">
+									<xsl:text></xsl:text>
+									<xsl:if test="disabled='true' or readonly='true'">
+										<xsl:text> readonly</xsl:text>
+									</xsl:if>
+									</xsl:attribute>
+								<xsl:if test="disabled='true' or readonly='true'">
+									<xsl:attribute name="readonly">
+										<xsl:text>readonly</xsl:text>
+									</xsl:attribute>
+								</xsl:if>
+								<xsl:apply-templates select="value/text()" />
+							</textarea>							
+						</div>
+						<xsl:if test="string-length(is_rich_text_area) &gt; 0">
+							<script type="text/javascript">
+								<xsl:value-of select="rich_text_area_script/text()" />
+							</script>
+						</xsl:if>
+						<xsl:apply-templates select="suffix" />
+					</xsl:if>
 
 	  
     </li>	  

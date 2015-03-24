@@ -83,7 +83,16 @@
       <in_out>out</in_out>
       <position>
         <x>105</x>
-        <y>27</y>
+        <y>15</y>
+      </position>
+    </XmlPort>
+    <XmlPort>
+      <name>portError</name>
+      <description>portError</description>
+      <in_out>out</in_out>
+      <position>
+        <x>105</x>
+        <y>45</y>
       </position>
     </XmlPort>
     <className>pt.iknow.floweditor.blocks.AlteraAtributosBeanShell</className>
