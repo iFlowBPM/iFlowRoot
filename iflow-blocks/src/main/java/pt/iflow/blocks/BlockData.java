@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -35,6 +36,7 @@ import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -42,7 +44,13 @@ import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -404,6 +412,24 @@ public class BlockData extends Block {
       return size;
     }
 
+    
+    private void parsePOI(byte [] odsData) throws IOException, InvalidFormatException{
+    	ByteArrayInputStream bai=new ByteArrayInputStream(odsData);
+    	org.apache.poi.ss.usermodel.Workbook workbook = WorkbookFactory.create(bai);
+        Sheet worksheet = workbook.getSheetAt(0);			            
+        for(int i=0; i<worksheet.getPhysicalNumberOfRows(); i++){
+        	Row row1 = worksheet.getRow(i);
+        	ArrayList<String> tempRowData = new ArrayList<String>();
+        	for(int j=0; j < row1.getLastCellNum(); j++){
+        		Cell cellA1 = row1.getCell((short) j);
+        		if (cellA1==null)
+        			tempRowData.add("");
+        		else
+        			tempRowData.add(cellA1.getStringCellValue());
+        	}
+        	data.add(tempRowData);
+        }             
+    }
     // XSLX - Excel 2007 Spreadsheet parser/importer
     private void parseXSLX(byte [] odsData) throws Exception {
       SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
@@ -417,13 +443,15 @@ public class BlockData extends Block {
             // found content
             Logger.debug("", this, "", "found content tag. Parsing...");
             sharedStringMode=false;
-            parser.parse(new UnclosableInputStream(zin), this);
+            //parser.parse(new UnclosableInputStream(zin), this);
+            parsePOI(odsData);            
             found = true;
-          } else if (e.getName().equalsIgnoreCase("xl/sharedStrings.xml")) {
+          } else if (false && e.getName().equalsIgnoreCase("xl/sharedStrings.xml")) {
             // found content
             Logger.debug("", this, "", "shares strings content tag. Parsing...");
             sharedStringMode=true;
-            parser.parse(new UnclosableInputStream(zin), this);
+            //parser.parse(new UnclosableInputStream(zin), this);
+            parsePOI(odsData);
           }
         }
         zin.close();
@@ -981,7 +1009,7 @@ public class BlockData extends Block {
           for (int col=0; altmp != null && col < altmp.size(); col++) {
             stmp = altmp.get(col);
             if (stmp == null) stmp = "";
-            label = new Label(col, row, stmp);
+            label = new Label(col, row, StringEscapeUtils.unescapeHtml(stmp));
             wsSheet.addCell(label);
           }
         }  

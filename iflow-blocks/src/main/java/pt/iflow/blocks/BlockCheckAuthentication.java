@@ -1,5 +1,7 @@
 package pt.iflow.blocks;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 import pt.iflow.api.blocks.Block;
 import pt.iflow.api.blocks.Port;
 import pt.iflow.api.core.AuthProfile;
@@ -80,10 +82,10 @@ public class BlockCheckAuthentication extends Block {
       String sPass = null;
 
       sLogin = this.getAttribute(LOGIN_ATTR);
-      sLogin = procData.transform(userInfo, sLogin);
+      sLogin = StringEscapeUtils.unescapeHtml(procData.transform(userInfo, sLogin));
 
       try {
-        sPass = procData.transform(userInfo, this.getAttribute(PASS_ATTR));
+        sPass = StringEscapeUtils.unescapeHtml(procData.transform(userInfo, this.getAttribute(PASS_ATTR)));
       }
       catch (Exception ee) {}
 

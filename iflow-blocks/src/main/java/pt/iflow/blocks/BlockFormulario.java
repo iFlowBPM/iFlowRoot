@@ -1219,12 +1219,13 @@ public class BlockFormulario extends Block implements FormOperations {
             String image = formButton.getAttribute(FormButton.ATTR_IMAGE);
             if (StringUtils.isNotEmpty(image)) {
               if (image.indexOf("http://") == -1) {
-                if (Const.APP_PORT == -1) {
-                  image = Const.APP_PROTOCOL + "://" + Const.APP_HOST + stmp3;
-                }
-                else {
-                  image = Const.APP_PROTOCOL + "://" + Const.APP_HOST + ":" + Const.APP_PORT + stmp3;
-                }
+//                if (Const.APP_PORT == -1) {
+//                  image = Const.APP_PROTOCOL + "://" + Const.APP_HOST + stmp3;
+//                }
+//                else {
+//                  image = Const.APP_PROTOCOL + "://" + Const.APP_HOST + ":" + Const.APP_PORT + stmp3;
+//                }
+            	  image = "../" + image;
               }
               sbXml.append("<buttonimage><src>").append(image).append("</src>");
               sbXml.append("<alt>").append(tooltip).append("</alt>");

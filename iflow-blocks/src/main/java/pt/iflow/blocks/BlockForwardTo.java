@@ -4,6 +4,7 @@ import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 
 import pt.iflow.api.blocks.Block;
@@ -124,8 +125,8 @@ public class BlockForwardTo extends Block implements MessageBlock {
                 String destinationProfile = null;
                 
                 if (sType.equals(BlockForwardTo.sFORWARD_TO_PROFILE_TEXT)) {
-                    try {
-                        destinationProfile = procData.transform(userInfo, sProfileText);
+                    try {                    	
+                        destinationProfile = StringEscapeUtils.unescapeHtml(procData.transform(userInfo, sProfileText));
                     } catch (Exception e) {
                       // not able to transform.. assume original text
                       Logger.warning(login, this, "after", 

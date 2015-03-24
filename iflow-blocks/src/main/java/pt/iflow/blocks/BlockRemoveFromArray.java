@@ -83,8 +83,8 @@ public class BlockRemoveFromArray extends Block {
 	    String login = userInfo.getUtilizador();
 	    StringBuffer logMsg = new StringBuffer();
 
-	    String sArraysVar = this.getAttribute(ARRAYS);
-	    String sIndexVar = this.getAttribute(INDEX);
+	    String sArraysVar = getAttribute(ARRAYS);
+	    String sIndexVar = getParsedAttribute(userInfo, INDEX, procData);
 	    
 	    if (StringUtilities.isEmpty(sArraysVar)) {
 	      Logger.error(login, this, "after", procData.getSignature() + "empty value for Arrays attribute");
