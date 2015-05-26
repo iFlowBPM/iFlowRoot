@@ -3,9 +3,9 @@
 %><%@page import="pt.iflow.offline.OfflineManager"
 %><%@page import="pt.iflow.api.documents.DocumentData"
 %><%@ taglib uri="http://jakarta.apache.org/taglibs/core" prefix="c" 
-%><%@ taglib uri="http://www.iknow.pt/jsp/jstl/iflow" prefix="if" 
-%><%@ include file = "inc/defs.jsp"
-%><%
+%><%@ taglib uri="http://www.iknow.pt/jsp/jstl/iflow" prefix="if" %>
+<%@ include file = "inc/defs.jsp"%>
+<%
 
 //TODO
 String popupReturnBlockId = null;

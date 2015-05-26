@@ -134,11 +134,14 @@
     String[] idx = new String[Const.INDEX_COLUMN_COUNT];
     String proc_search = fdFormData.getParameter("proc_search");
     if (StringUtils.equals("true", proc_search)) {
-      for (int i = 0; i < Const.INDEX_COLUMN_COUNT; i++)
+      for (int i = 0; i < Const.INDEX_COLUMN_COUNT; i++){
         idx[i] = fdFormData.getParameter("idx" + i);
+        if("null".equals(idx[i]))
+        	idx[i]="";
+      }
     } else {
       for (int i = 0; i < Const.INDEX_COLUMN_COUNT; i++)
-        idx[i] = null;
+        idx[i] = "";
     }
 
     if (hmConfig != null) {

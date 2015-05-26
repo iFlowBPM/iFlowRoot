@@ -27,7 +27,12 @@ public class FormDataSanitizer {
 			
 			for(int i=0; i<valuesOld.length; i++){
 				String escapedHTML = ESAPI.encoder().encodeForHTML(valuesOld[i]);
+				//unescape regular accentuated vowels
 				escapedHTML = revertAccents(escapedHTML);
+				//unescape the Ç
+				escapedHTML = StringUtils.replace(escapedHTML, "&ccedil;", "ç");
+				escapedHTML = StringUtils.replace(escapedHTML, "&Ccedil;", "Ç");
+				
 				String escapedSQL = ESAPI.encoder().encodeForSQL(new MySQLCodec(MySQLCodec.Mode.ANSI), escapedHTML);
 				
 				List<String> filterException = (List<String>)sc.getAttribute("pt.iflow.servlets.XSSFilter.exception");

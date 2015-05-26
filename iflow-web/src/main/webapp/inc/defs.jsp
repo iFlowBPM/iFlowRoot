@@ -76,8 +76,8 @@ if(ServletFileUpload.isMultipartContent(request))
     String unit = userInfo.getOrgUnit();
     String bank = userInfo.getCompanyName();
     
-    String css = themeData.getCssURL();
-    String logo = themeData.getLogoURL();
+    String css = themeData==null?"":themeData.getCssURL();
+    String logo = themeData==null?"":themeData.getLogoURL();
     
     int userflowid = -1;
     String userflowname = null;
