@@ -11,8 +11,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringReader;
+import java.math.BigDecimal;
 import java.text.Format;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -47,10 +49,10 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -416,7 +418,8 @@ public class BlockData extends Block {
     private void parsePOI(byte [] odsData) throws IOException, InvalidFormatException{
     	ByteArrayInputStream bai=new ByteArrayInputStream(odsData);
     	org.apache.poi.ss.usermodel.Workbook workbook = WorkbookFactory.create(bai);
-        Sheet worksheet = workbook.getSheetAt(0);			            
+        Sheet worksheet = workbook.getSheetAt(0);			     
+        SimpleDateFormat sdf = new SimpleDateFormat(Const.sDEF_DATE_FORMAT);
         for(int i=0; i<worksheet.getPhysicalNumberOfRows(); i++){
         	Row row1 = worksheet.getRow(i);
         	ArrayList<String> tempRowData = new ArrayList<String>();
@@ -424,8 +427,22 @@ public class BlockData extends Block {
         		Cell cellA1 = row1.getCell((short) j);
         		if (cellA1==null)
         			tempRowData.add("");
-        		else
-        			tempRowData.add(cellA1.getStringCellValue());
+        		else{   
+        			if (cellA1.getCellType()==Cell.CELL_TYPE_STRING)
+        				tempRowData.add(cellA1.getStringCellValue());
+        			else if (cellA1.getCellType()==Cell.CELL_TYPE_NUMERIC && DateUtil.isCellDateFormatted(cellA1))
+        				tempRowData.add(sdf.format(DateUtil.getJavaDate(cellA1.getNumericCellValue())));
+        			else if (cellA1.getCellType()==Cell.CELL_TYPE_NUMERIC)
+        				tempRowData.add("" + new BigDecimal( cellA1.getNumericCellValue()));
+        			else if (cellA1.getCellType()==Cell.CELL_TYPE_BLANK)
+        				tempRowData.add("");
+        			else if (cellA1.getCellType()==Cell.CELL_TYPE_BOOLEAN)
+        				tempRowData.add("" + cellA1.getBooleanCellValue());
+        			else if (cellA1.getCellType()==Cell.CELL_TYPE_FORMULA)
+        				tempRowData.add("" + cellA1.getCellFormula());
+        			else if (cellA1.getCellType()==Cell.CELL_TYPE_ERROR)
+        				tempRowData.add("");
+        			}
         	}
         	data.add(tempRowData);
         }             
@@ -495,48 +512,99 @@ public class BlockData extends Block {
         for(int sheetNum = 0; sheetNum < sheets; sheetNum++) {
           HSSFSheet sheet = workBook.getSheetAt(sheetNum);
           int colCount = -1;
-          int rowCount = sheet.getLastRowNum() + 1;
+          int rowCount = sheet.getPhysicalNumberOfRows();
           List<List<Object>> sheetList = new ArrayList<List<Object>>(rowCount);
 
-          for (Iterator<?> rit = sheet.rowIterator(); rit.hasNext(); ) {
-            HSSFRow row = (HSSFRow)rit.next();
-            List<Object> line = new ArrayList<Object>();
-            for (Iterator<?> cit = row.cellIterator(); cit.hasNext(); ) {
-              HSSFCell cell = (HSSFCell)cit.next();
-              int type = cell.getCellType();
-              Object value = "";
+          for(int i=0; i<sheet.getPhysicalNumberOfRows(); i++){
+          	Row row1 = sheet.getRow(i);
+          	List<Object> line = new ArrayList<Object>();
+          	if(colCount<row1.getLastCellNum())
+          		colCount=row1.getLastCellNum();
+          	for(int j=0; j < row1.getLastCellNum(); j++){
+          		Cell cell = row1.getCell((short) j);
+          		if (cell==null)
+          			line.add("");
+          		else{
+          			int type = cell.getCellType();
+                    Object value = "";
 
-              switch (type) {
-              case HSSFCell.CELL_TYPE_STRING:
-                value = cell.getRichStringCellValue().getString();
-                break;
-              case HSSFCell.CELL_TYPE_BOOLEAN:
-                value = new Boolean(cell.getBooleanCellValue());
-                break;
-              case HSSFCell.CELL_TYPE_NUMERIC:
-                if(HSSFDateUtil.isCellDateFormatted(cell)) {
-                  value = cell.getDateCellValue();
-                } else {
-                  Number val = cell.getNumericCellValue();
-                  value = val;
-                }
-                break;
-              case HSSFCell.CELL_TYPE_ERROR:
-                value = "#ERR" + cell.getErrorCellValue();
-                break;
-              case HSSFCell.CELL_TYPE_FORMULA:
-                // value = cell.getCellFormula();
-                // break;
-              case HSSFCell.CELL_TYPE_BLANK:
-              default:
-                value = ""; // NOT SUPPORTED
-              }
-
-              line.add(value);
-            }
-            sheetList.add(line);
-            if(colCount < line.size()) colCount = line.size();
+                    switch (type) {
+                    case HSSFCell.CELL_TYPE_STRING:
+                      value = cell.getRichStringCellValue().getString();
+                      break;
+                    case HSSFCell.CELL_TYPE_BOOLEAN:
+                      value = new Boolean(cell.getBooleanCellValue());
+                      break;
+                    case HSSFCell.CELL_TYPE_NUMERIC:
+                      if(HSSFDateUtil.isCellDateFormatted(cell)) {
+                        value = cell.getDateCellValue();
+                        
+                      } else if(cell.getCellStyle().getDataFormatString().contains("%")){
+                    	 value = (new BigDecimal( cell.getNumericCellValue())).multiply(new BigDecimal(100)) + "%" ;
+                      } else {
+//                        Number val = cell.getNumericCellValue();
+//                        value = val;
+                    	 value = new BigDecimal( cell.getNumericCellValue());
+                      }
+                      break;
+                    case HSSFCell.CELL_TYPE_ERROR:
+                      value = "#ERR" + cell.getErrorCellValue();
+                      break;
+                    case HSSFCell.CELL_TYPE_FORMULA:
+                      value = cell.getCellFormula();
+                      break;
+                    case HSSFCell.CELL_TYPE_BLANK:
+                    default:
+                      value = ""; // NOT SUPPORTED
+                    }
+                    
+                    line.add(value);
+          		}
+          			
+          	}
+          	sheetList.add(line);
           }
+          
+          
+//          for (Iterator<?> rit = sheet.rowIterator(); rit.hasNext(); ) {
+//            HSSFRow row = (HSSFRow)rit.next();
+//            List<Object> line = new ArrayList<Object>();
+//            for (Iterator<?> cit = row.cellIterator(); cit.hasNext(); ) {
+//              HSSFCell cell = (HSSFCell)cit.next();
+//              int type = cell.getCellType();
+//              Object value = "";
+//
+//              switch (type) {
+//              case HSSFCell.CELL_TYPE_STRING:
+//                value = cell.getRichStringCellValue().getString();
+//                break;
+//              case HSSFCell.CELL_TYPE_BOOLEAN:
+//                value = new Boolean(cell.getBooleanCellValue());
+//                break;
+//              case HSSFCell.CELL_TYPE_NUMERIC:
+//                if(HSSFDateUtil.isCellDateFormatted(cell)) {
+//                  value = cell.getDateCellValue();
+//                } else {
+//                  Number val = cell.getNumericCellValue();
+//                  value = val;
+//                }
+//                break;
+//              case HSSFCell.CELL_TYPE_ERROR:
+//                value = "#ERR" + cell.getErrorCellValue();
+//                break;
+//              case HSSFCell.CELL_TYPE_FORMULA:
+//                // value = cell.getCellFormula();
+//                // break;
+//              case HSSFCell.CELL_TYPE_BLANK:
+//              default:
+//                value = ""; // NOT SUPPORTED
+//              }
+//
+//              line.add(value);
+//            }
+//            sheetList.add(line);
+//            if(colCount < line.size()) colCount = line.size();
+//          }
           this.rowcount.put(sheetNum, rowCount);
           this.colcount.put(sheetNum, colCount);
           this.data.add(sheetList);

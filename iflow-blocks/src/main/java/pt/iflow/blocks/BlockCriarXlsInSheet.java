@@ -116,7 +116,10 @@ public class BlockCriarXlsInSheet extends Block {
         		HSSFRow auxRow = tempSheet.createRow(row);
         		for(short cell=0; cell <= createdSheet.getRow(row).getLastCellNum(); cell++){
         			HSSFCell auxCell = auxRow.createCell(cell);
-        			auxCell.setCellValue( createdSheet.getRow(row).getCell(cell).toString() );
+        			if(createdSheet.getRow(row).getCell(cell)==null)
+        				auxCell.setCellValue( "" );
+        			else
+        				auxCell.setCellValue( createdSheet.getRow(row).getCell(cell).toString() );
         		}
         	}
         	
