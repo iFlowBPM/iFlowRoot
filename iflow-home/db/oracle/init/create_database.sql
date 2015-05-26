@@ -181,6 +181,7 @@ create table activity (
     profilename     varchar2(256),
     read_flag       number(1) default 1,
     mid		 	    int default 0,
+    folderid 		INT,
     constraint activity_pk primary key (userid,flowid,pid,subpid)
 );
 
@@ -533,7 +534,7 @@ create table links_flows (
     flowid   int default 0,
     name     varchar2(64) default null,
     url      varchar2(256) default null,
-    organizationid varchar2(50) default '1' not null constraint nl_links_flows_orgid,
+    organizationid varchar2(50) default '1' not null,
     constraint links_flows_pk primary key (linkid)
 );
 
@@ -586,9 +587,21 @@ CREATE TABLE ORGANIZATIONAL_UNITS (
     ORGANIZATIONID                   NUMBER   (38) CONSTRAINT NL_ORG_UNIT_ORGID NOT NULL,
     NAME                             VARCHAR2 (50) CONSTRAINT NL_ORG_UNIT_NAME NOT NULL,
     DESCRIPTION                      VARCHAR2 (150),
-    CONSTRAINT PK_ORGANIZATIONAL_UNITS PRIMARY KEY (UNITID)
+    CONSTRAINT PK_ORGANIZATIONAL_UNITS PRIMARY KEY (UNITID),
     CONSTRAINT UN_ORGANIZATIONAL_UNITS_NAME UNIQUE (NAME)
 );
+
+create or replace 
+trigger OUNITS_PK_TRIGGER  
+   before insert on "ORGANIZATIONAL_UNITS" 
+   for each row 
+begin  
+   if inserting then 
+      if :NEW."UNITID" is null then 
+         select SEQ_ORGANIZATIONAL_UNIT.nextval into :NEW."UNITID" from dual; 
+      end if; 
+   end if; 
+end;
 
 CREATE SEQUENCE SEQ_ORGANIZATION START WITH 1 INCREMENT BY 1 MINVALUE 1 NOMAXVALUE CACHE 20 NOCYCLE ORDER;
 CREATE TABLE ORGANIZATIONS (
@@ -836,7 +849,7 @@ create table flow_history (
         data                blob constraint flow_history_data_nn not null,
         flowversion         int,
         modified            date constraint flow_history_mod_nn not null,
-        "comment"           varchar2(512),
+        "COMMENT"           varchar2(512),
         constraint flow_history_pk primary key (id)
 );
 create sequence seq_flow_history increment by 1 start with 1 nocycle order;
@@ -857,7 +870,7 @@ create table sub_flow_history (
         data                blob constraint sub_flow_history_data_nn not null,
         flowversion         int,
         modified            date constraint sub_flow_history_mod_nn not null,
-        "comment"           varchar2(512),
+        "COMMENT"           varchar2(512),
         constraint sub_flow_history_pk primary key (id)
 );
 create sequence seq_sub_flow_history increment by 1 start with 1 nocycle order;
@@ -1325,7 +1338,7 @@ FOR EACH ROW
 BEGIN
 SELECT SEQ_ORGANIZATION.NEXTVAL INTO :NEW.ORGANIZATIONID FROM DUAL;
 END;
-/
+
 
 
 CREATE OR REPLACE TRIGGER TRIG_INSERT_ORGANIZATIONALUNIT
@@ -1886,10 +1899,10 @@ create table user_passimage (
         userid                int constraint userid_nn not null,
         passimage             blob,
         rubimage             blob,
-        constraint passid_pk primary key (passid)
+        constraint passid_pk primary key (passid),
         constraint fk_userid foreign key (userid)
-        references users (userid)
-        on delete cascade,
+        references users (userid),
+        on delete cascade
 );
 create sequence seq_passid increment by 1 start with 1 nocycle order;
 
@@ -1900,18 +1913,313 @@ create view process_intervenients (userid, pid) as
     union 
     select distinct userid, pid from activity_history;
     
-alter table users add column department varchar(50);
-alter table users add column employeeid varchar(50);
-alter table users add column employee_number varchar(50);
-alter table users add column manager varchar(50);
-alter table users add column telephonenumber varchar(50);
-alter table users add column title varchar(50);
+alter table USERS add  department varchar(50);
+alter table users add  employeeid varchar(50);
+alter table users add  employee_number varchar(50);
+alter table users add  manager varchar(50);
+alter table users add  telephonenumber varchar(50);
+alter table users add  title varchar(50);
 
-alter table users add column orgadm_users NUMBER(1)  NOT NULL DEFAULT 1,
-alter table users add column orgadm_flows NUMBER(1)  NOT NULL DEFAULT 1,
-alter table users add column orgadm_processes NUMBER(1)  NOT NULL DEFAULT 1,
-alter table users add column orgadm_resources NUMBER(1)  NOT NULL DEFAULT 1,
-alter table users add column orgadm_org NUMBER(1)  NOT NULL DEFAULT 1;
+alter table users add  orgadm_users NUMBER(1) DEFAULT 1 NOT NULL;
+alter table users add  orgadm_flows NUMBER(1) DEFAULT 1 NOT NULL;
+alter table users add  orgadm_processes NUMBER(1) DEFAULT 1 NOT NULL;
+alter table users add  orgadm_resources NUMBER(1) DEFAULT 1 NOT NULL;
+alter table users add  orgadm_org NUMBER(1) DEFAULT 1 NOT NULL;
 
+CREATE TABLE folder (
+  id INT NOT NULL,
+  name VARCHAR(50)  NOT NULL,
+  color VARCHAR(10),
+  userid VARCHAR(100) NOT NULL,
+  PRIMARY KEY (id)
+);
+CREATE SEQUENCE SEQ_FOLDER START WITH 1 INCREMENT BY 1 MINVALUE 1 NOMAXVALUE CACHE 20 NOCYCLE ORDER;
+
+create or replace 
+trigger FOLDER_PK_TRIGGER  
+   before insert on "FOLDER" 
+   for each row  
+   BEGIN
+   if inserting then 
+      if :NEW."ID" is null then 
+         select SEQ_FOLDER.nextval into :NEW."ID" from dual; 
+      end if; 
+   end if; 
+  END;
+  
+  ALTER TABLE activity 
+  ADD CONSTRAINT activity_folder_fk  FOREIGN KEY 
+  (folderid )
+  REFERENCES folder 
+  (id );
+  
+  CREATE TABLE "COMMENT" 
+(
+  ID NUMBER NOT NULL 
+, "date" DATE NOT NULL 
+, USERID VARCHAR2(100) NOT NULL 
+, "COMMENT" VARCHAR2(125) NOT NULL 
+, FLOWID NUMBER NOT NULL 
+, PID NUMBER NOT NULL 
+, SUBPID NUMBER DEFAULT 1 NOT NULL 
+, CONSTRAINT "comment_PK" PRIMARY KEY 
+  (
+    ID 
+  )
+  ENABLE 
+);
+
+ALTER TABLE "COMMENT"
+ADD CONSTRAINT "comment_process_fk" FOREIGN KEY
+(  FLOWID , PID , SUBPID )
+REFERENCES PROCESS
+(  FLOWID , PID , SUBPID )
+ENABLE;
+
+CREATE SEQUENCE SEQ_COMMENT START WITH 1 INCREMENT BY 1 MINVALUE 1 NOMAXVALUE CACHE 20 NOCYCLE ORDER;
+
+create or replace 
+trigger COMMENT_PK_TRIGGER  
+   before insert on "COMMENT" 
+   for each row  
+   BEGIN
+   if inserting then 
+      if :NEW."ID" is null then 
+         select SEQ_FOLDER.nextval into :NEW."ID" from dual; 
+      end if; 
+   end if; 
+  END;
+
+ CREATE TABLE comment_history (
+  id INT NOT NULL,
+  "COMMENT" VARCHAR(125) NOT NULL,
+  flowid INT NOT NULL,
+  pid INT NOT NULL,
+  subpid INT DEFAULT 1 NOT NULL,
+  userid VARCHAR(100) NOT NULL,
+  "date" DATE NOT NULL,
+  PRIMARY KEY (id)
+);
+
+ALTER TABLE comment_history
+ADD CONSTRAINT "comment_history_process_fk" FOREIGN KEY
+(  FLOWID , PID , SUBPID )
+REFERENCES PROCESS
+(  FLOWID , PID , SUBPID )
+ENABLE;
+
+CREATE SEQUENCE SEQ_COMMENT_HISTORY START WITH 1 INCREMENT BY 1 MINVALUE 1 NOMAXVALUE CACHE 20 NOCYCLE ORDER;
+create or replace 
+trigger COMMENT_HISTORY_PK_TRIGGER  
+   before insert on comment_history
+   for each row  
+   BEGIN
+   if inserting then 
+      if :NEW."ID" is null then 
+         select SEQ_COMMENT_HISTORY.nextval into :NEW."ID" from dual; 
+      end if; 
+   end if; 
+  END;
+  
+ CREATE TABLE label (
+  id INT NOT NULL,
+  name VARCHAR(50)  NOT NULL,
+  description VARCHAR(125),
+  icon VARCHAR(50),
+  PRIMARY KEY (id),
+  CONSTRAINT uk_label UNIQUE (name, icon)
+);
+
+CREATE SEQUENCE SEQ_LABEL START WITH 1 INCREMENT BY 1 MINVALUE 1 NOMAXVALUE CACHE 20 NOCYCLE ORDER;
+create or replace 
+trigger LABEL_PK_TRIGGER  
+   before insert on label
+   for each row  
+   BEGIN
+   if inserting then 
+      if :NEW."ID" is null then 
+         select SEQ_LABEL.nextval into :NEW."ID" from dual; 
+      end if; 
+   end if; 
+  END;
+  
+ CREATE TABLE process_label (
+  id INT NOT NULL,
+  labelid INT NOT NULL,
+  flowid INT NOT NULL,
+  pid INT NOT NULL,
+  subpid INT DEFAULT 1 NOT NULL,
+  PRIMARY KEY (id),
+  CONSTRAINT process_label_label_fk FOREIGN KEY (labelid) REFERENCES label (id) ENABLE,    
+  CONSTRAINT process_label_process_fk FOREIGN KEY (flowid, pid, subpid) REFERENCES process (flowid, pid, subpid) ENABLE    
+);
+
+CREATE SEQUENCE SEQ_PROCESS_LABEL START WITH 1 INCREMENT BY 1 MINVALUE 1 NOMAXVALUE CACHE 20 NOCYCLE ORDER;
+create or replace 
+trigger PROCESS_LABEL_PK_TRIGGER  
+   before insert on comment_history
+   for each row  
+   BEGIN
+   if inserting then 
+      if :NEW."ID" is null then 
+         select SEQ_PROCESS_LABEL.nextval into :NEW."ID" from dual; 
+      end if; 
+   end if; 
+  END;
+  
+CREATE TABLE process_label_history (
+  id INT NOT NULL,
+  labelid INT  NOT NULL,
+  flowid INT NOT NULL,
+  pid INT NOT NULL,
+  subpid INT DEFAULT 1 NOT NULL,
+  userid VARCHAR(100) NOT NULL, 
+  "date" DATE NOT NULL,
+  PRIMARY KEY (id),
+  CONSTRAINT process_label_history_label_fk FOREIGN KEY (labelid) REFERENCES label (id) ENABLE,
+  CONSTRAINT process_label_history_process_fk FOREIGN KEY (flowid, pid, subpid) REFERENCES process (flowid, pid, subpid) ENABLE
+);
+CREATE SEQUENCE SEQ_PROCESS_LABEL_H START WITH 1 INCREMENT BY 1 MINVALUE 1 NOMAXVALUE CACHE 20 NOCYCLE ORDER;
+create or replace 
+trigger PROCESS_LABEL_H_PK_TRIGGER  
+   before insert on comment_history
+   for each row  
+   BEGIN
+   if inserting then 
+      if :NEW."ID" is null then 
+         select SEQ_PROCESS_LABEL_H.nextval into :NEW."ID" from dual; 
+      end if; 
+   end if; 
+  END;
+
+ CREATE TABLE deadline (
+  id INT NOT NULL,
+  deadline VARCHAR(20),
+  userid VARCHAR(100) NOT NULL,
+  flowid INT NOT NULL,
+  pid INT NOT NULL,
+  subpid INT DEFAULT 1 NOT NULL,
+  PRIMARY KEY (id),
+  CONSTRAINT deadline_process_fk FOREIGN KEY (flowid, pid, subpid) REFERENCES process (flowid, pid, subpid) ENABLE
+);
+CREATE SEQUENCE SEQ_DEADLINE START WITH 1 INCREMENT BY 1 MINVALUE 1 NOMAXVALUE CACHE 20 NOCYCLE ORDER;
+create or replace 
+trigger DEADLINE_PK_TRIGGER  
+   before insert on comment_history
+   for each row  
+   BEGIN
+   if inserting then 
+      if :NEW."ID" is null then 
+         select SEQ_DEADLINE.nextval into :NEW."ID" from dual; 
+      end if; 
+   end if; 
+  END;
+  
+ CREATE TABLE deadline_history (
+  id INT NOT NULL,
+  deadline VARCHAR(20),
+  flowid INT NOT NULL,
+  pid INT NOT NULL,
+  subpid INT DEFAULT 1 NOT NULL,
+  userid VARCHAR(100) NOT NULL,
+  "date" DATE NOT NULL,
+  PRIMARY KEY (id),
+  CONSTRAINT deadline_history_process_fk FOREIGN KEY (flowid, pid, subpid) REFERENCES process (flowid, pid, subpid) ENABLE
+);
+CREATE SEQUENCE SEQ_DEADLINE_H START WITH 1 INCREMENT BY 1 MINVALUE 1 NOMAXVALUE CACHE 20 NOCYCLE ORDER;
+create or replace 
+trigger DEADLINE_H_PK_TRIGGER  
+   before insert on comment_history
+   for each row  
+   BEGIN
+   if inserting then 
+      if :NEW."ID" is null then 
+         select SEQ_DEADLINE_H.nextval into :NEW."ID" from dual; 
+      end if; 
+   end if; 
+  END;
+  
+drop view all_process_annotation_icons;
+create view all_process_annotation_icons (iconid, flowid, pid, subpid) as
+select 0 iconid, flowid, pid, subpid from "COMMENT"
+union
+select pl.labelid iconid, pl.flowid, pl.pid, pl.subpid from process_label pl
+union
+select 99999 iconid, flowid, pid, subpid from deadline;
+
+drop view annotation_icons;
+create view annotation_icons (iconid, icon) as
+select 0 iconid, 'label_comment.png' from dual
+union
+select id iconid, icon icon from label
+union
+select 99999 iconid, 'label_clock.png' from dual;
+
+drop view process_annotation_icon_link;
+create view process_annotation_icon_link (iconid, flowid, pid, subpid) as
+select min(iconid), flowid, pid, subpid from all_process_annotation_icons
+group by flowid, pid, subpid;
+
+DROP VIEW process_annotation_icon;
+CREATE VIEW process_annotation_icon (flowid, pid, subpid, icon, iconid) as
+select flowid, pid, subpid, ai.icon, ai.iconid 
+from process_annotation_icon_link pail 
+inner join annotation_icons ai on pail.iconid = ai.iconid;
+
+DROP TABLE user_session;
+CREATE TABLE user_session (
+  id INT NOT NULL,
+  userid VARCHAR(100) NOT NULL,
+  "session"  BLOB NOT NULL,
+  PRIMARY KEY (id)
+);
+CREATE SEQUENCE SEQ_USER_SESSION START WITH 1 INCREMENT BY 1 MINVALUE 1 NOMAXVALUE CACHE 20 NOCYCLE ORDER;
+create or replace 
+trigger USER_SESSION_PK_TRIGGER  
+   before insert on user_session
+   for each row  
+   BEGIN
+   if inserting then 
+      if :NEW."ID" is null then 
+         select SEQ_USER_SESSION.nextval into :NEW."ID" from dual; 
+      end if; 
+   end if; 
+  END;
+  
+DROP TABLE serial_code_templates;
+
+CREATE TABLE serial_code_templates (
+  template VARCHAR(50) NOT NULL,
+  name VARCHAR(50) NOT NULL,
+  description VARCHAR(500),
+  callback VARCHAR(50),
+  flag VARCHAR(50),
+  organization VARCHAR(50) NOT NULL,
+  PRIMARY KEY (template, name)
+);
+
+DROP TABLE subflow_block_mapping;
+CREATE TABLE  subflow_block_mapping (
+  id INT NOT NULL,
+  created date NOT NULL,
+  flowname varchar(64) NOT NULL,
+  sub_flowname varchar(64) NOT NULL,
+  original_blockid int NOT NULL,
+  mapped_blockid int NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE SEQUENCE SEQ_SFLOW_MAPPING START WITH 1 INCREMENT BY 1 MINVALUE 1 NOMAXVALUE CACHE 20 NOCYCLE ORDER;
+create or replace 
+trigger SFLOW_MAPPING_PK_TRIGGER  
+   before insert on subflow_block_mapping
+   for each row  
+   BEGIN
+   if inserting then 
+      if :NEW."ID" is null then 
+         select SEQ_SFLOW_MAPPING.nextval into :NEW."ID" from dual; 
+      end if; 
+   end if; 
+  END;
 commit;
 
