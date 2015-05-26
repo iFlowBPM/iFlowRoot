@@ -56,7 +56,6 @@ import pt.iflow.api.xml.codegen.flow.XmlAttribute;
 import pt.iflow.api.xml.codegen.flow.XmlBlock;
 import pt.iflow.api.xml.codegen.flow.XmlCatalogVarAttribute;
 import pt.iflow.api.xml.codegen.flow.XmlFlow;
-import pt.iknow.utils.security.SecurityException;
 
 /**
  * 
@@ -1169,7 +1168,7 @@ public class FlowHolderBean implements FlowHolder {
 
               //Resolve subflows inside the main flow
               SubFlowDataExpander subFlowDataExpander = new SubFlowDataExpander(flow,new Integer(flowId));
-              List<SubFlowMapping> subFlowBlockMappings = subFlowDataExpander.expandSubFlow(userInfo);
+              List<SubFlowMapping>  subFlowBlockMappings = subFlowDataExpander.expandSubFlow(userInfo);
               
         // Resolve form templates
         FormTemplateResolver formTemplateResolver = new FormTemplateResolver(flow);
@@ -1310,7 +1309,7 @@ public class FlowHolderBean implements FlowHolder {
   private Boolean saveSubFlowExpansionResult(List<SubFlowMapping> subFlowBlockMappings, Integer maxblockId, int flowId,
       UserInfoInterface userInfo) {
 	  Boolean mappingsChanged = false;
-    if(subFlowBlockMappings.size() == 0) return mappingsChanged;
+    if(subFlowBlockMappings==null || subFlowBlockMappings.size() == 0) return mappingsChanged;
     
     Connection db = null;
     PreparedStatement pst = null;
@@ -1324,7 +1323,7 @@ public class FlowHolderBean implements FlowHolder {
       // check if mappings have changed before saving them
       
       pst = db
-          .prepareStatement("select flowname, sub_flowname, original_blockid, mapped_blockid from iflow.subflow_block_mapping "
+          .prepareStatement("select flowname, sub_flowname, original_blockid, mapped_blockid from subflow_block_mapping "
               + "bm where bm.flowname=? and bm.created=(select max(created) from iflow.subflow_block_mapping where flowname=?) order by id");
       pst.setString(1, subFlowBlockMappings.get(0).getMainFlowName());
       pst.setString(2, subFlowBlockMappings.get(0).getMainFlowName());

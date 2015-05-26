@@ -1255,7 +1255,8 @@ public class FlowData implements IFlowData {
      List<Block> result = new ArrayList<Block>();
      Port[] ports = block.getOutPorts(null);
      for (Port port : ports) {
-       result.add(getBlock(port.getConnectedBlockId()));
+    	 if(port!=null)
+    		 result.add(getBlock(port.getConnectedBlockId()));
      }
      return result;
    }

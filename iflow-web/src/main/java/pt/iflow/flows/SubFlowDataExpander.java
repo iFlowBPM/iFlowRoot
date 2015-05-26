@@ -77,7 +77,9 @@ public class SubFlowDataExpander {
     for (XmlAttribute xmlAttribute : subFlowBlock.getXmlAttribute())
       if (SUB_FLOW_NAME_ATTRIBUTE_START.equals("" + xmlAttribute.getName().charAt(0))) {
         byte[] sXml = BeanFactory.getFlowHolderBean().readSubFlowData(userInfo, xmlAttribute.getValue());
-        XmlFlow xmlSubFlow = FlowMarshaller.unmarshal(sXml);
+        XmlFlow xmlSubFlow = null;
+        if(sXml!=null)
+        	xmlSubFlow = FlowMarshaller.unmarshal(sXml);
 
         subFlowData = new SubFlowDataSuportClass();
         subFlowData.setPrimaryBlock(subFlowBlock);
@@ -90,6 +92,9 @@ public class SubFlowDataExpander {
 
   public List<SubFlowMapping> expandSubFlow(UserInfoInterface userInfo) throws Exception {
     List<SubFlowMapping> blockMappings = new ArrayList<SubFlowMapping>();
+    
+    if(userInfo.getUtilizador().startsWith("Manager-"))
+    	return blockMappings;
 
     while (this.containsSubFlow()) {
       List<SubFlowDataSuportClass> subFlowElements = getAllSubFlowsReferencesFromFlow(userInfo);
