@@ -14,6 +14,7 @@ import java.util.TimerTask;
 
 import javax.sql.DataSource;
 
+import pt.iflow.api.cluster.JobManager;
 import pt.iflow.api.core.AuthProfile;
 import pt.iflow.api.core.BeanFactory;
 import pt.iflow.api.db.DBQueryManager;
@@ -49,7 +50,8 @@ public class NotificationManagerBean implements NotificationManager {
     purgeThread = new Timer();
     purgeThread.scheduleAtFixedRate(new TimerTask() {
       public void run() {
-        NotificationManagerBean.getInstance().purgeOldMessages();
+    	  if(JobManager.getInstance().isMyBeatValid())
+    		  NotificationManagerBean.getInstance().purgeOldMessages();
       }
     }, 0L, 1000L*60*60*24);
     

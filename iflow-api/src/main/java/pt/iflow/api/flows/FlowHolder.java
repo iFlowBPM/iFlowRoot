@@ -384,4 +384,11 @@ public interface FlowHolder {
   public boolean updateFlowType(UserInfoInterface userInfo, int flowid);
 
   public boolean updateFlowShowInMenuRequirement(UserInfoInterface userInfo, int flowid);
+  
+  /**
+   * refreshes the flow cache without triggering cluster syncronization
+   * @param userInfo
+   * @param flowId
+   */
+  public void refreshCacheFlow(UserInfoInterface userInfo, int flowId);
 }

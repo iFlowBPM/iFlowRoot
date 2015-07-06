@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Hashtable;
 import java.util.Map;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 
 import pt.iflow.api.blocks.Block;
@@ -162,6 +163,11 @@ public class BlockCriarDocumento extends Block {
       }
     }
     return htProps;
+  }
+  
+  public static void main(String arhs[]){
+	  String a=StringEscapeUtils.unescapeHtml("&lt;p&gt;&amp;aacute&#x3b;&amp;agrave&#x3b; &amp;amp&#x3b;asda&lt;/p&gt;&#xd;&#xa;");
+	  int i=0;
   }
   
   /**

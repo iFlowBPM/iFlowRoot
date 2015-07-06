@@ -1690,6 +1690,7 @@ insert into counter values ('docid',1,SYSDATE);
 insert into counter values ('emailid',1,SYSDATE);
 insert into counter values ('cid',1,SYSDATE);
 insert into counter values ('flowid',0,SYSDATE);
+insert into counter values ('nodekey',0,SYSDATE);
 
 insert into profiles (name,description) values ('Admin','Administrador');
 insert into profiles (name,description) values ('Manager','Organic Unit Manager');
@@ -2223,3 +2224,28 @@ trigger SFLOW_MAPPING_PK_TRIGGER
   END;
 commit;
 
+CREATE SEQUENCE SEQ_NODEKEY INCREMENT BY 1 MINVALUE 1 CACHE 20;
+
+CREATE TABLE ACTIVE_NODE 
+(
+  NODEKEY VARCHAR2(50) NOT NULL , 
+  EXPIRATION DATE NOT NULL , 
+  CONSTRAINT ACTIVE_NODE_PK PRIMARY KEY ( NODEKEY )  ENABLE 
+);
+
+CREATE OR REPLACE 
+PROCEDURE GET_NEXT_NODEKEY 
+(
+  RETNODEKEY OUT NUMBER  
+) IS 
+BEGIN
+  SELECT SEQ_NODEKEY.NEXTVAL INTO RETNODEKEY FROM DUAL;
+END;
+
+CREATE SEQUENCE sqe_sorefresh INCREMENT BY 1 MINVALUE 1 CACHE 20;
+
+CREATE TABLE  sharedobjectrefresh (
+  id number,
+  flowid number ,
+  CONSTRAINT sorefresh_pk PRIMARY KEY ( id )  ENABLE 
+);

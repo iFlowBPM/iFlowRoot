@@ -402,6 +402,14 @@ public class Const {
   public static String MAX_LOGIN_ATTEMPTS = "MAX_LOGIN_ATTEMPTS";
   public static String MAX_LOGIN_ATTEMPTS_WAIT = "MAX_LOGIN_ATTEMPTS_WAIT";
   
+  //Cluester support enabled
+  public static Boolean CLUSTER_ENABLED;
+  
+  //Job Manager times in seconds for Cluster support
+  public static Long BEAT_ACTIVE_TIME;
+  public static Long BEAT_ACTIVE_CHECK_TIME;
+  public static Long BEAT_INACTIVE_CHECK_TIME;
+  
   private static List<String> ALLOWED_LOCALES = new ArrayList<String>();
 
   static {
@@ -726,6 +734,26 @@ public class Const {
 		sRUBRIC_UPLOAD=Setup.getProperty("RUBRIC_UPLOAD");
     } catch (Exception e) { 
     	sRUBRIC_UPLOAD=sNO; 
+    }
+	try { 
+		CLUSTER_ENABLED = Boolean.parseBoolean(Setup.getProperty("CLUSTER_ENABLED"));
+    } catch (Exception e) { 
+    	CLUSTER_ENABLED=Boolean.FALSE;
+    }
+	try { 
+		BEAT_ACTIVE_TIME=Long.parseLong(Setup.getProperty("BEAT_ACTIVE_TIME"));
+    } catch (Exception e) { 
+    	BEAT_ACTIVE_TIME=new Long(10000); 
+    }
+	try { 
+		BEAT_ACTIVE_CHECK_TIME=Long.parseLong(Setup.getProperty("BEAT_ACTIVE_CHECK_TIME"));
+    } catch (Exception e) { 
+    	BEAT_ACTIVE_CHECK_TIME=new Long(5000); 
+    }
+	try { 
+		BEAT_INACTIVE_CHECK_TIME=Long.parseLong(Setup.getProperty("BEAT_INACTIVE_CHECK_TIME"));
+    } catch (Exception e) { 
+    	BEAT_INACTIVE_CHECK_TIME=new Long(15000); 
     }
     
   }

@@ -21,6 +21,7 @@ import javax.sql.DataSource;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 
+import pt.iflow.api.cluster.JobManager;
 import pt.iflow.api.core.AuthProfile;
 import pt.iflow.api.core.BeanFactory;
 import pt.iflow.api.db.DBQueryManager;
@@ -84,7 +85,8 @@ public class DelegationManager extends Thread {
 
   public void run() {
     while (keepRunning) {
-      try {
+      
+    	try {
         sleepTime = Const.DELEGATION_THREAD_CICLE;
         if (sleepTime == -1) {
           // default sleep time is 5 minutes
@@ -93,10 +95,11 @@ public class DelegationManager extends Thread {
         // in minutes -> sleepTime x (60000 milisec)
         sleepTime = sleepTime * 60000; 
 
-        DelegationManager delegationManager = get();
-        delegationManager.checkTimeOutDelegationsDB();
-        delegationManager.checkInconsistencesDB();
-
+        if(JobManager.getInstance().isMyBeatValid()){
+	        DelegationManager delegationManager = get();
+	        delegationManager.checkTimeOutDelegationsDB();
+	        delegationManager.checkInconsistencesDB();
+        }
         Logger.adminInfo("DelegationManager", "run", "NextSleepTime= " + sleepTime + " msec");
         
         sleep(sleepTime);

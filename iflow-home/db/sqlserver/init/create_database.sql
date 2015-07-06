@@ -1621,6 +1621,7 @@ INSERT INTO counter VALUES ('docid',1,GETDATE())
 INSERT INTO counter VALUES ('emailid',1,GETDATE())
 INSERT INTO counter VALUES ('cid',1,GETDATE())
 INSERT INTO counter VALUES ('flowid',0,GETDATE())
+INSERT INTO counter VALUES ('nodekey',0,GETDATE())
 GO
 
 SET IDENTITY_INSERT organizations ON
@@ -1990,3 +1991,29 @@ INSERT INTO label (name, description, icon) values ('Nota', 'Tarefas anotadas', 
 GO
 CREATE INDEX IDX_REPORTING ON dbo.reporting(flowid , pid ,subpid );
 GO
+
+INSERT INTO counter VALUES ('nodekey',0,GETDATE());
+
+CREATE TABLE  dbo.active_node (
+  nodekey varchar(50) NOT NULL,
+  expiration DATETIME NOT NULL,
+  PRIMARY KEY (nodekey)
+);
+
+CREATE PROCEDURE get_next_pid 
+  @retnodekey INT OUT
+AS
+BEGIN
+	DECLARE @tmp INT
+    set @retnodekey = 1
+    select value into @tmp from counter where name='nodekey'
+    update counter set value=(@tmp +1) where  name='nodekey'
+    select value into @retnodekey from counter where name='nodekey'    
+END
+GO
+
+CREATE TABLE  dbo.sharedobjectrefresh (
+  id int NOT NULL IDENTITY,
+  flowid int NOT NULL,
+  PRIMARY KEY (id)
+);

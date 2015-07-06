@@ -1,17 +1,10 @@
 package pt.iflow.blocks;
 
-import java.net.URL;
-
-import NET.webserviceX.www.Currency;
-import NET.webserviceX.www.CurrencyConvertorLocator;
-import NET.webserviceX.www.CurrencyConvertorSoap;
-
 import pt.iflow.api.blocks.Block;
 import pt.iflow.api.blocks.Port;
 import pt.iflow.api.processdata.ProcessData;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.UserInfoInterface;
-import pt.iknow.utils.StringUtilities;
 
 /**
  * </p>
@@ -95,20 +88,20 @@ public class BlockCurrencyConvertor extends Block {
 	    String sTOVar = getParsedAttribute(userInfo, TO, procData);
 	    String sRATEVar = getAttribute(RATE);
 
-	    if (StringUtilities.isEmpty(sURLVar) || StringUtilities.isEmpty(sFROMVar) || StringUtilities.isEmpty(sTOVar) || StringUtilities.isEmpty(sRATEVar)) {
-	      Logger.error(login, this, "after", procData.getSignature() + "empty value for attributes");
-	      outPort = portError;
-	    } else
-	      try {	    	  
-	    	  CurrencyConvertorLocator locator = new CurrencyConvertorLocator();
-	  		  CurrencyConvertorSoap ccs = locator.getCurrencyConvertorSoap(new URL(sURLVar));
-	  		  double result = ccs.conversionRate(Currency.fromString(sFROMVar), Currency.fromString(sTOVar));
-	  		  
-	  		  procData.set(sRATEVar, result);
-	      } catch (Exception e) {
-	        Logger.error(login, this, "after", procData.getSignature() + "caught exception: " + e.getMessage(), e);
-	        outPort = portError;
-	      }
+//	    if (StringUtilities.isEmpty(sURLVar) || StringUtilities.isEmpty(sFROMVar) || StringUtilities.isEmpty(sTOVar) || StringUtilities.isEmpty(sRATEVar)) {
+//	      Logger.error(login, this, "after", procData.getSignature() + "empty value for attributes");
+//	      outPort = portError;
+//	    } else
+//	      try {	    	  
+//	    	  CurrencyConvertorLocator locator = new CurrencyConvertorLocator();
+//	  		  CurrencyConvertorSoap ccs = locator.getCurrencyConvertorSoap(new URL(sURLVar));
+//	  		  double result = ccs.conversionRate(Currency.fromString(sFROMVar), Currency.fromString(sTOVar));
+//	  		  
+//	  		  procData.set(sRATEVar, result);
+//	      } catch (Exception e) {
+//	        Logger.error(login, this, "after", procData.getSignature() + "caught exception: " + e.getMessage(), e);
+//	        outPort = portError;
+//	      }
 
 	    logMsg.append("Using '" + outPort.getName() + "';");
 	    Logger.logFlowState(userInfo, procData, this, logMsg.toString());

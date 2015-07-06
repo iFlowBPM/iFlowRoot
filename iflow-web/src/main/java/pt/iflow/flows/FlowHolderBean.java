@@ -26,6 +26,7 @@ import org.apache.commons.lang.StringUtils;
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.ValidationException;
 
+import pt.iflow.api.cluster.SharedObjectRefreshManager;
 import pt.iflow.api.core.AdministrationFlowScheduleInterface;
 import pt.iflow.api.core.BeanFactory;
 import pt.iflow.api.core.ProcessCatalogue;
@@ -68,10 +69,12 @@ public class FlowHolderBean implements FlowHolder {
     
     private static final int MAX_COMMENT_SIZE = 512;
     
+    private static final String HMFLOWDATA_KEY= "FlowHolderBean._hmFlowData";       
+    
     // KEY: flowid(Integer) | VALUE: data (FlowData)
-    final private HashMap<String, Map<Integer, FlowData>> _hmFlowData = new HashMap<String, Map<Integer, FlowData>>();
+    private HashMap<String, Map<Integer, FlowData>> _hmFlowData = new HashMap<String, Map<Integer, FlowData>>();
     // KEY: flowid(Integer) | VALUE: date (java.util.Date)
-    final private HashMap<Integer, Date> _hmFlowBuildDate = new HashMap<Integer, Date>();
+    private HashMap<Integer, Date> _hmFlowBuildDate = new HashMap<Integer, Date>();
     
     // used in Logger methods
     private static FlowHolder instance = null;
@@ -1096,6 +1099,32 @@ public class FlowHolderBean implements FlowHolder {
         return fd;
     }
     
+    public synchronized void refreshCacheFlow(UserInfoInterface userInfo, int flowId){
+        FlowData fd=null;
+		try {
+            fd = buildFlowData(userInfo, flowId, false);
+        } catch (FlowSecurityException e) {
+            Logger.error(userInfo.getUtilizador(), this, "getFlow",
+                    "Error building flow id = " + flowId
+                            + " returning customized flowdata");
+            fd = e.getFlowData();
+        } catch (Throwable t) {
+          t.printStackTrace();
+        }
+        if (null == fd) {
+            Logger.error(userInfo.getUtilizador(), this, "getFlow",
+                    "Build a null flow for flow id = " + flowId);
+        } else {
+        	String org = userInfo.getOrganization();            
+            if (!_hmFlowData.containsKey(org) || _hmFlowData.get(org) == null) {
+                _hmFlowData.put(org, new HashMap<Integer, FlowData>());
+            }
+            Map<Integer, FlowData> orgFlowData = _hmFlowData.get(org);            
+            orgFlowData.put(new Integer(fd.getId()), fd);
+        }
+    }
+    
+    
     private synchronized FlowData buildFlowData(UserInfoInterface userInfo,
             int flowId, boolean deploy) throws FlowSecurityException {
         // TODO externalize this
@@ -1697,6 +1726,7 @@ public class FlowHolderBean implements FlowHolder {
             int anFlowId) {
         Integer iId = new Integer(anFlowId);
         String org = userInfo.getOrganization();
+        SharedObjectRefreshManager.getInstance().checkAndRefresh();
         if (!_hmFlowData.containsKey(org))
             return false;
         Map<Integer, FlowData> orgFlowData = _hmFlowData.get(org);
@@ -1708,6 +1738,7 @@ public class FlowHolderBean implements FlowHolder {
     private synchronized void clearCachedFlow(UserInfoInterface userInfo, int flowId) {
         Integer iId = new Integer(flowId);
         String org = userInfo.getOrganization();
+        SharedObjectRefreshManager.getInstance().checkAndRefresh();
         if (_hmFlowData.containsKey(org)) {
             Map<Integer, FlowData> orgFlowData = _hmFlowData.get(org);
             if (null != orgFlowData) {
@@ -1716,8 +1747,8 @@ public class FlowHolderBean implements FlowHolder {
                   fd.setOnline(false);
                 }
             }
-        }
-        _hmFlowBuildDate.remove(iId);
+        }        
+        _hmFlowBuildDate.remove(iId);        
         
     }
     
@@ -1725,6 +1756,7 @@ public class FlowHolderBean implements FlowHolder {
             int flowId) {
         FlowData fd = null;
         String org = userInfo.getOrganization();
+        SharedObjectRefreshManager.getInstance().checkAndRefresh();
         if (_hmFlowData.containsKey(org)) {
             Map<Integer, FlowData> orgFlowData = _hmFlowData.get(org);
             if (null != orgFlowData)
@@ -1736,17 +1768,21 @@ public class FlowHolderBean implements FlowHolder {
     private synchronized void setCachedFlow(UserInfoInterface userInfo,
             FlowData flowData) {
         String org = userInfo.getOrganization();
+        SharedObjectRefreshManager.getInstance().checkAndRefresh();
         if (!_hmFlowData.containsKey(org) || _hmFlowData.get(org) == null) {
             _hmFlowData.put(org, new HashMap<Integer, FlowData>());
         }
         Map<Integer, FlowData> orgFlowData = _hmFlowData.get(org);
+        SharedObjectRefreshManager.getInstance().addRefreshToDo(flowData.getId());
         orgFlowData.put(new Integer(flowData.getId()), flowData);
+        
     }
     
     private synchronized Collection<FlowData> getCachedFlows(
             UserInfoInterface userInfo) {
         Collection<FlowData> coll = new ArrayList<FlowData>();
         String org = userInfo.getOrganization();
+        SharedObjectRefreshManager.getInstance().checkAndRefresh();
         if (_hmFlowData.containsKey(org)) {
             Map<Integer, FlowData> orgFlowData = _hmFlowData.get(org);
             if (null != orgFlowData)
@@ -1756,14 +1792,14 @@ public class FlowHolderBean implements FlowHolder {
     }
     
     private synchronized void setBuildDate(UserInfoInterface userInfo,
-            int flowId) {
-        _hmFlowBuildDate.put(new Integer(flowId), new Date());
+            int flowId) {    	
+        _hmFlowBuildDate.put(new Integer(flowId), new Date());       
     }
     
     private synchronized boolean buildDateNotOk(UserInfoInterface userInfo,
             int flowId) {
         boolean notok = false;
-        Integer iId = new Integer(flowId);
+        Integer iId = new Integer(flowId);        
         if (_hmFlowBuildDate.containsKey(iId)) {
             Date dtOld = _hmFlowBuildDate.get(iId);
             Date dtNow = new Date();
@@ -2501,7 +2537,7 @@ public class FlowHolderBean implements FlowHolder {
         return retObj;
     }
 
-    private void notifyNewFlow(UserInfoInterface userInfo, int flowid) {
+    private void notifyNewFlow(UserInfoInterface userInfo, int flowid) {      
       for (NewFlowListener listener : newflowListeners.values()) {
         try {
           listener.flowAdded(flowid);
@@ -2515,17 +2551,17 @@ public class FlowHolderBean implements FlowHolder {
           "notified listeners for new flow " + flowid);
     }
     
-    public void addNewFlowListener(String id, NewFlowListener listener) {
-      newflowListeners.put(id, listener);      
+    public void addNewFlowListener(String id, NewFlowListener listener) {      
+      newflowListeners.put(id, listener);          
     }
 
-    public void removeNewFlowListener(String id) {
+    public void removeNewFlowListener(String id) {      
       if (newflowListeners.containsKey(id)) {
         newflowListeners.remove(id);
-      }
+      }      
     }
 
-    private void notifyDeploy(UserInfoInterface userInfo, int flowid, boolean bOnline) {
+    private void notifyDeploy(UserInfoInterface userInfo, int flowid, boolean bOnline) {      
       for (FlowDeployListener l : deploylisteners.values()) {
         try {
           if (bOnline) {
@@ -2544,17 +2580,17 @@ public class FlowHolderBean implements FlowHolder {
           "notified listeners for flow " + flowid);
     }
     
-    public void addFlowDeployListener(String id, FlowDeployListener listener) {
-      deploylisteners.put(id, listener);
+    public void addFlowDeployListener(String id, FlowDeployListener listener) {      
+      deploylisteners.put(id, listener);      
     }
 
-    public void removeFlowDeployListener(String id) {
-      if (deploylisteners.containsKey(id)) {
-        deploylisteners.remove(id);
-      }
+    public void removeFlowDeployListener(String id) {    	
+    	if (deploylisteners.containsKey(id)) {
+    		deploylisteners.remove(id);
+    	}    	
     }
 
-    private void notifyVersion(UserInfoInterface userInfo, int flowid) {
+    private void notifyVersion(UserInfoInterface userInfo, int flowid) {      
       for (FlowVersionListener l : versionlisteners.values()) {
         try {
           l.newVersion(flowid);
@@ -2568,14 +2604,14 @@ public class FlowHolderBean implements FlowHolder {
           "notified listeners for flow " + flowid);
     }
 
-    public void addFlowVersionListener(String id, FlowVersionListener listener) {
-      versionlisteners.put(id, listener);
+    public void addFlowVersionListener(String id, FlowVersionListener listener) {    	
+        versionlisteners.put(id, listener);    	
     }
 
-    public void removeFlowVersionListener(String id) {
+    public void removeFlowVersionListener(String id) {      
       if (versionlisteners.containsKey(id)) {
         versionlisteners.remove(id);
-      }
+      }       
     }
     
     public String getFlowOrganizationid(int flowid) {

@@ -15,6 +15,7 @@ import javax.sql.DataSource;
 import org.apache.commons.lang.StringEscapeUtils;
 
 import pt.iflow.api.authentication.Authentication;
+import pt.iflow.api.cluster.JobManager;
 import pt.iflow.api.db.DBQueryManager;
 import pt.iflow.api.db.DatabaseInterface;
 import pt.iflow.api.userdata.UserData;
@@ -79,14 +80,15 @@ public class UsersSyncManager extends Thread {
 
     while (keepRunning) {
       try {
-        try {
-          get().syncUsers();
-          if (Logger.isDebugEnabled()) {
-            Logger.adminDebug("UsersSyncManager", "run", "NextSleepTime= " + sleepTime + " msec");
-          }
-        } catch (Exception e) {
-          Logger.adminWarning("UsersSyncManager", "run", "Failed to check users: ", e);
-        }
+    	if(JobManager.getInstance().isMyBeatValid())
+	        try {
+	          get().syncUsers();
+	          if (Logger.isDebugEnabled()) {
+	            Logger.adminDebug("UsersSyncManager", "run", "NextSleepTime= " + sleepTime + " msec");
+	          }
+	        } catch (Exception e) {
+	          Logger.adminWarning("UsersSyncManager", "run", "Failed to check users: ", e);
+	        }
         sleep(sleepTime);
       } catch (InterruptedException e) {
         if (keepRunning) {

@@ -27,6 +27,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import pt.iflow.api.cluster.SharedObjectRefreshManager;
 import pt.iflow.api.connectors.DMSConnectorUtils;
 import pt.iflow.api.core.BeanFactory;
 import pt.iflow.api.db.DBQueryManager;
@@ -44,10 +45,9 @@ import pt.iknow.utils.StringUtilities;
 
 public class FlowSettingsBean implements FlowSettings {
 
-  private static FlowSettingsBean instance = null;
-
-  private Hashtable<String, FlowSettingsListener> listeners = new Hashtable<String, FlowSettingsListener>();
+  private static FlowSettingsBean instance = null;  
   
+  private Hashtable<String, FlowSettingsListener> listeners = new Hashtable<String, FlowSettingsListener>();
   
   public static FlowSettingsBean getInstance() {
     if (null == instance)
@@ -633,7 +633,7 @@ public class FlowSettingsBean implements FlowSettings {
   public void refreshFlowSettings(UserInfoInterface userInfo, int flowid) {
     Logger.debug(userInfo.getUtilizador(), this, "refreshFlowSettings", 
         "refreshing flow " + flowid);    
-    BeanFactory.getFlowHolderBean().refreshFlow(userInfo, flowid);
+    BeanFactory.getFlowHolderBean().refreshFlow(userInfo, flowid);    
     if (listeners.size() > 0) {
       Logger.debug(userInfo.getUtilizador(), this, "refreshFlowSettings", 
           "notifying settings listeners for flow " + flowid);
@@ -770,13 +770,15 @@ public class FlowSettingsBean implements FlowSettings {
     return response;
   }
 
-  public void addFlowSettingsListener(String id, FlowSettingsListener listener) {
-    listeners.put(id, listener);
+  public void addFlowSettingsListener(String id, FlowSettingsListener listener) {    
+	  
+	  listeners.put(id, listener);
+	  
   }
 
-  public void removeFlowSettingsListener(String id) {
+  public void removeFlowSettingsListener(String id) {	
     if (listeners.containsKey(id)) {
       listeners.remove(id);
-    }
+    }    
   }
 }

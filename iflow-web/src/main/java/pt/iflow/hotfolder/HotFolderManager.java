@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import pt.iflow.api.core.BeanFactory;
 import pt.iflow.api.flows.FlowDeployListener;
@@ -14,6 +16,7 @@ import pt.iflow.api.flows.FlowSettingsListener;
 import pt.iflow.api.flows.FlowVersionListener;
 import pt.iflow.api.flows.IFlowData;
 import pt.iflow.api.flows.NewFlowListener;
+import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.UserInfoInterface;
 import pt.iflow.api.utils.hotfolder.FlowFolderChecker;
@@ -34,7 +37,7 @@ public class HotFolderManager extends Thread {
 
   public static HotFolderManager get() {
     if(null == _hotfolderManager) 
-      _hotfolderManager = new HotFolderManager();
+      _hotfolderManager = new HotFolderManager();    	
     return _hotfolderManager;
   }
 
@@ -169,7 +172,7 @@ public class HotFolderManager extends Thread {
         });
     }catch(Exception e){
       Logger.adminError("HotFolderManager", "run", "Error adding new flow version listener.", e);
-    }
+    }    
   }
 
   private void prepareChecker(int flowid) throws Exception {
@@ -249,5 +252,6 @@ public class HotFolderManager extends Thread {
       int flowid = flowids.next();
       stopChecker(flowid);      
     }
-  }
+  }  
+  
 }

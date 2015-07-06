@@ -23,6 +23,7 @@ import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
+import pt.iflow.api.cluster.JobManager;
 import pt.iflow.api.core.BeanFactory;
 import pt.iflow.api.core.Repository;
 import pt.iflow.api.core.ResourceModifiedListener;
@@ -162,183 +163,184 @@ public class EmailManager extends Thread {
 
       this.signalThreadCycle();
 
-      try {
-        
-
-        String query = "";
-
-        if (Const.nEMAIL_MANAGER_LIMIT > 0) {
-        	query = DBQueryManager.processQuery(EmailManager.EMAILS_LIMIT, new Object[]{new Integer(Const.nEMAIL_MANAGER_LIMIT)});
-        } else {
-        	query = DBQueryManager.processQuery(EmailManager.EMAILS_NO_LIMIT);
-        }
-
-        Logger.adminDebug("EmailManager", "run", "EMAILMANAGER QUERY=" + query);
-
-        ds = Utils.getDataSource();
-        db = ds.getConnection();
-        db.setAutoCommit(false);
-        st = db.createStatement();
-        rs = st.executeQuery(query);
-
-        altmp = new ArrayList<String>();
-        while (rs != null && rs.next()) {
-          altmp.add(rs.getString("eid"));
-        }
-        if (rs != null && altmp.size() == 0) {
-          // no results
-          this._nEmptyCycleCount++;
-        }
-        else {
-          this._nEmptyCycleCount = 0;
-        }
-        rs.close();
-        rs = null;
-
-        lCurrTimestamp = (new java.util.Date()).getTime();
-
-        for (int i = 0; i < altmp.size(); i++) {
-          sId = altmp.get(i);
-
-          sError = null;
-          email = null;
-
-          try {
-
-            query = DBQueryManager.processQuery(EmailManager.EMAIL_DATA, new Object[]{sId});
-
-            Logger.adminDebug("EmailManager", "run", "EMAILMANAGER QUERY=" + query);
-            sError = "email db fetch";
-
-            rs = st.executeQuery(query);
-            if (rs.next()) {
-              stmp = rs.getString("eserver");
-              int port = rs.getInt("eport");
-              email = new Email(stmp, port);
-
-              // ID
-              email.setId(sId);
-
-              // FROM
-              stmp = rs.getString("efrom");
-              email.setFrom(stmp);
-
-              sError = "TO set";
-
-              // TO
-              stmp = parseBlobStream(rs.getBinaryStream("eto"));
-              email.setTo(Utils.tokenize(stmp, sSEPARATOR));
-
-              // CC
-              try {
-                stmp = parseBlobStream(rs.getBinaryStream("ecc"));
-                if (stmp != null && !stmp.equals("")) {
-                  email.setCc(Utils.tokenize(stmp, sSEPARATOR));
-                }
-              }
-              catch (Exception e3) {
-                Logger.adminError("EmailManager", "run", "Exception3: EMAIL " + sId + ": CC set FAILED: " + e3.getMessage(), e3);
-              }
-
-              sError = "SUBJECT set";
-
-              // SUBJECT
-              stmp = rs.getString("esubject");
-              email.setSubject(stmp);
-
-              sError = "BODY set";
-
-              // BODY
-              stmp = parseBlobStream(rs.getBinaryStream("ebody"));
-              email.setMsgText(stmp);
-
-              // HTML
-              if (rs.getInt("ehtml") == 1) {
-                email.setHtml(true);
-              }
-              else {
-                email.setHtml(false);
-              }
-
-              // CREATED
-              tstmp = rs.getTimestamp("ecreated");
-              if (tstmp != null) {
-                email.setCreatedTimestamp(tstmp.getTime());
-              }
-
-              // Number tries
-              tries = rs.getInt("etries");
-              
-              // Next send
-              nextSend = rs.getTimestamp("enext_send");
-              
-              // Last send
-              lastSent = rs.getTimestamp("elast_send");
-              
-              // Use TLS
-              email.setStartTls(rs.getInt("etls") == 1);
-              
-              // Use Auth
-              email.setAuth(rs.getInt("eauth") == 1);
-              
-              // SMTP username
-              email.setUser(rs.getString("euser"));
-              
-              // SMTP password
-              email.setPass(rs.getString("epass"));
-              
-            }
-            else {
-              email = null;
-            }
-            rs.close();
-            rs = null;
-
-            if (email != null) {
-
-              sError = "email send";
-
-              email.disableEmailManager();
-              btmp = false;
-              try {
-                if (email.sendMsg()) {
-                  sError = "email delete";
-                  btmp = true;
-                  query = DBQueryManager.processQuery(EmailManager.DELETE_EMAIL, new Object[]{sId});
-                  st.executeUpdate(query);
-                  sError += " commit";
-                  db.commit();
-                }
-                else {
-                  processErroneousEmail(sId, email, lCurrTimestamp, db, st, tries, lastSent, nextSend);
-                }
-              }
-              catch (Exception e4) {
-                Logger.adminError("EmailManager", "run", "Exception4: EMAIL " + sId + " FAILED (" + sError + "): " + e4.getMessage(), e4);
-                if (btmp) {
-                  db.rollback();
-                }
-                Logger.adminWarning("EmailManager", "run", "ADDING " + sId + " TO BLACK LIST");
-              }
-            }
-            else {
-              processErroneousEmail(sId, email, lCurrTimestamp, db, st, tries, lastSent, nextSend);
-            }
-          }
-          catch (Exception e2) {
-            Logger.adminError("EmailManager", "run", "Exception2: EMAIL " + sId + " FAILED (" + sError + "): " + e2.getMessage(), e2);
-            processErroneousEmail(sId, email, lCurrTimestamp, db, st, tries, lastSent, nextSend);
-          }
-        }
-      }
-      catch (Exception e) {
-        e.printStackTrace();
-        Logger.adminError("EmailManager", "run", "RUN EXCEPTION: " + e.getMessage(), e);
-      }
-      finally {
-        DatabaseInterface.closeResources(db, st, rs);
-        ds = null;
-      }
+      if(JobManager.getInstance().isMyBeatValid())
+	      try {
+	        
+	
+	        String query = "";
+	
+	        if (Const.nEMAIL_MANAGER_LIMIT > 0) {
+	        	query = DBQueryManager.processQuery(EmailManager.EMAILS_LIMIT, new Object[]{new Integer(Const.nEMAIL_MANAGER_LIMIT)});
+	        } else {
+	        	query = DBQueryManager.processQuery(EmailManager.EMAILS_NO_LIMIT);
+	        }
+	
+	        Logger.adminDebug("EmailManager", "run", "EMAILMANAGER QUERY=" + query);
+	
+	        ds = Utils.getDataSource();
+	        db = ds.getConnection();
+	        db.setAutoCommit(false);
+	        st = db.createStatement();
+	        rs = st.executeQuery(query);
+	
+	        altmp = new ArrayList<String>();
+	        while (rs != null && rs.next()) {
+	          altmp.add(rs.getString("eid"));
+	        }
+	        if (rs != null && altmp.size() == 0) {
+	          // no results
+	          this._nEmptyCycleCount++;
+	        }
+	        else {
+	          this._nEmptyCycleCount = 0;
+	        }
+	        rs.close();
+	        rs = null;
+	
+	        lCurrTimestamp = (new java.util.Date()).getTime();
+	
+	        for (int i = 0; i < altmp.size(); i++) {
+	          sId = altmp.get(i);
+	
+	          sError = null;
+	          email = null;
+	
+	          try {
+	
+	            query = DBQueryManager.processQuery(EmailManager.EMAIL_DATA, new Object[]{sId});
+	
+	            Logger.adminDebug("EmailManager", "run", "EMAILMANAGER QUERY=" + query);
+	            sError = "email db fetch";
+	
+	            rs = st.executeQuery(query);
+	            if (rs.next()) {
+	              stmp = rs.getString("eserver");
+	              int port = rs.getInt("eport");
+	              email = new Email(stmp, port);
+	
+	              // ID
+	              email.setId(sId);
+	
+	              // FROM
+	              stmp = rs.getString("efrom");
+	              email.setFrom(stmp);
+	
+	              sError = "TO set";
+	
+	              // TO
+	              stmp = parseBlobStream(rs.getBinaryStream("eto"));
+	              email.setTo(Utils.tokenize(stmp, sSEPARATOR));
+	
+	              // CC
+	              try {
+	                stmp = parseBlobStream(rs.getBinaryStream("ecc"));
+	                if (stmp != null && !stmp.equals("")) {
+	                  email.setCc(Utils.tokenize(stmp, sSEPARATOR));
+	                }
+	              }
+	              catch (Exception e3) {
+	                Logger.adminError("EmailManager", "run", "Exception3: EMAIL " + sId + ": CC set FAILED: " + e3.getMessage(), e3);
+	              }
+	
+	              sError = "SUBJECT set";
+	
+	              // SUBJECT
+	              stmp = rs.getString("esubject");
+	              email.setSubject(stmp);
+	
+	              sError = "BODY set";
+	
+	              // BODY
+	              stmp = parseBlobStream(rs.getBinaryStream("ebody"));
+	              email.setMsgText(stmp);
+	
+	              // HTML
+	              if (rs.getInt("ehtml") == 1) {
+	                email.setHtml(true);
+	              }
+	              else {
+	                email.setHtml(false);
+	              }
+	
+	              // CREATED
+	              tstmp = rs.getTimestamp("ecreated");
+	              if (tstmp != null) {
+	                email.setCreatedTimestamp(tstmp.getTime());
+	              }
+	
+	              // Number tries
+	              tries = rs.getInt("etries");
+	              
+	              // Next send
+	              nextSend = rs.getTimestamp("enext_send");
+	              
+	              // Last send
+	              lastSent = rs.getTimestamp("elast_send");
+	              
+	              // Use TLS
+	              email.setStartTls(rs.getInt("etls") == 1);
+	              
+	              // Use Auth
+	              email.setAuth(rs.getInt("eauth") == 1);
+	              
+	              // SMTP username
+	              email.setUser(rs.getString("euser"));
+	              
+	              // SMTP password
+	              email.setPass(rs.getString("epass"));
+	              
+	            }
+	            else {
+	              email = null;
+	            }
+	            rs.close();
+	            rs = null;
+	
+	            if (email != null) {
+	
+	              sError = "email send";
+	
+	              email.disableEmailManager();
+	              btmp = false;
+	              try {
+	                if (email.sendMsg()) {
+	                  sError = "email delete";
+	                  btmp = true;
+	                  query = DBQueryManager.processQuery(EmailManager.DELETE_EMAIL, new Object[]{sId});
+	                  st.executeUpdate(query);
+	                  sError += " commit";
+	                  db.commit();
+	                }
+	                else {
+	                  processErroneousEmail(sId, email, lCurrTimestamp, db, st, tries, lastSent, nextSend);
+	                }
+	              }
+	              catch (Exception e4) {
+	                Logger.adminError("EmailManager", "run", "Exception4: EMAIL " + sId + " FAILED (" + sError + "): " + e4.getMessage(), e4);
+	                if (btmp) {
+	                  db.rollback();
+	                }
+	                Logger.adminWarning("EmailManager", "run", "ADDING " + sId + " TO BLACK LIST");
+	              }
+	            }
+	            else {
+	              processErroneousEmail(sId, email, lCurrTimestamp, db, st, tries, lastSent, nextSend);
+	            }
+	          }
+	          catch (Exception e2) {
+	            Logger.adminError("EmailManager", "run", "Exception2: EMAIL " + sId + " FAILED (" + sError + "): " + e2.getMessage(), e2);
+	            processErroneousEmail(sId, email, lCurrTimestamp, db, st, tries, lastSent, nextSend);
+	          }
+	        }
+	      }
+	      catch (Exception e) {
+	        e.printStackTrace();
+	        Logger.adminError("EmailManager", "run", "RUN EXCEPTION: " + e.getMessage(), e);
+	      }
+	      finally {
+	        DatabaseInterface.closeResources(db, st, rs);
+	        ds = null;
+	      }
 
       this.signalThreadCycle();
 

@@ -30,10 +30,12 @@
 			<input type="hidden" name="url" value="main.jsp"/>
 			<input type="hidden" name="sso" value="false"/>
 		<div style="margin-left:auto;margin-right:auto;width:604px;height:441px">
+			#if (!$isLoginAvaliadoras)
 			<div>
 				<p>Acesso via Single Sign On</p>
 			    <span style="font-size:1.2em;text-decoration:underline;color:white;position:relative;top:0px"><a href="./saml2/index.jsp?entityprovider=1" class="user_info" style="font-size: 1.2em;">Login Integrado</a></span>
 			</div>
+			#end
 			
 			<div class="lp_login_box" style="margin-top:50px;">
 				<p>Acesso Local</p>
