@@ -1019,7 +1019,7 @@ public class DocumentsBean implements Documents {
       try {
         File f = new File(url);
         if (!f.isDirectory()) FileUtils.forceMkdir(f);
-        return url + "\\" + fileName;
+        return FilenameUtils.concat(url,fileName);
       } catch (Exception e) {
       }
     }

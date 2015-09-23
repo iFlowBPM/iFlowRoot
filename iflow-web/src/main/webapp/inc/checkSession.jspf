@@ -13,7 +13,7 @@ if(null == session.getAttribute(Const.USER_INFO)) {
 	  }
 
 	  String uri = request.getRequestURI();
-	  if (uri.indexOf("/main.jsp") > 0) {
+	  if (uri.indexOf("/main.jsp") > 0 || uri.indexOf("/inicio_flow.jsp") > 0) {
 		//may come from alternate login pages  
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		String referer = httpRequest.getHeader("referer");

@@ -15,45 +15,32 @@
 	  <script type="text/javascript" src="javascript/iflow_main.js"></script>
 	  <script type="text/javascript" src="javascript/login.js"></script>
 	</head>
+
 	
-	<body class="lp_body ${maintenance}" >
-	
-		<form name="dados" method="post" action="${dados.action}">
+	<body class="lp_body ${maintenance}" style="padding-top:10%">
+    <style type="text/css">
+		p {font-size:1.5em}
+	</style>
+		<form name="dados" method="post" action="${dados.action}" autocomplete="off">
 			<input type="hidden" name="url" value="${dados.url}"/>
 			<input type="hidden" name="${dados.ufidName}" value="${dados.ufidValue}"/>
 			<input type="hidden" name="source" value="internet"/>
 			<input type="hidden" name="is_system" value="false"/>
 			<input type="hidden" name="do_redirect" value="true"/>
 			<input type="hidden" name="url" value="main.jsp"/>
-
-			#if (!$isInstallLocal)
-				<div class="lp_top_nav_pos">
-					<div class="lp_top_nav_text" style="float:left;">
-						<a class="lp_top_nav_link" href="http://www.iflowbpm.com/">iflowbpm.pt</a> 
-						: <a class="lp_top_nav_link" href="register">$msg.get('login.link.register')</a>
-						#if ($useEmail)
-							: <a class="lp_top_nav_link" href="resetPassword">$msg.get('login.link.passwordRecover')</a>
-						#end
-						#if ($isInstallDemo)
-							: <a class="lp_top_nav_link" href="Admin/login.jsp">$msg.get('login.link.admin')</a>
-						#end
-					</div>
-				</div>
-			#end
+			<input type="hidden" name="sso" value="false"/>
+		<div style="margin-left:auto;margin-right:auto;background:no-repeat;width:604px;height:280px;padding-top:0px">
+			<div>
+			</div>
 			
-			#if ($isInMaintenance)
-				<div>
-					<span class="maintenance_login_message">$msg.get('maintenance.loginMessage')</span>
-				</div>
-			#end
-
-			<div class="lp_login_box">
-			    <div class="error_msg lp_error_msg">
+			<div class="lp_login_box" style="background:white url('PublicFiles/logo-iflowbpm.png') no-repeat 20px 20px;margin-top:20px;padding-top:100px;height:160px;">
+				<!--<p>$msg.get('login.msg.localAccess')</p>-->
+			    <div class="error_msg lp_error_msg" style="margin-top:-10px;height:25px">
 			        #if ($hasError)
-			        	${loginError}
+			        	$loginError
 			        #end
-			    </div>	
-				<div class="user_info lp_field_label">
+			    </div>
+ 				<div class="user_info lp_field_label">
 					$msg.get('login.field.user')
 				</div>
 				<div class="item lp_field_input">
@@ -65,15 +52,37 @@
 				<div class="item lp_field_input">
 					<input type="password" name="password" id="password" size="15" maxlength="40"/>
 				</div>
+		       #if ($isOverFailureLimit)
+				<div style="width: 320px; margin: auto;">
+					<img alt="Challenge" id="challenge_kap" src="/iFlow/kaptcha" style="padding-left: 175px;margin-bottom:4px;">
+					<br/>			
+					<div class="user_info lp_field_label">
+						Preencha texto da imagem
+					</div>
+					<div class="item lp_field_input">				
+						<input type="text" value="" id="challenge" name="challenge" size="15" maxlength="5">
+					</div>
+					<br/>
+				</div>
+			#end
 				<div class="lp_login_button">
 					<input id="link_search_span" class="regular_button_01" type="button" name="filter" value="Login" onClick="document.dados.submit();" />
 				</div>
+				
 			</div>
-			<div class="lp_footer_nav">
+			
+			
+			
+</div>
+				<div class="lp_footer_nav">
 				<a class="lp_top_nav_link" style="color:#5D7891;" href="http://infosistema.pt">$msg.get('iflow.copyright')</a>
-				<br><span class="lp_top_nav_text ${maintenance}">iFlow Version ${version}</span>
-			</div>
+				<br><span class="lp_top_nav_text ${maintenance}">iFlowBPM Version 4.2.5</span>
+			</div>		
 		</form>
+		
+
+		
+		
 		<script type="text/javascript">
 			register(document.dados, document.dados.login, document.dados.password);
 		</script>

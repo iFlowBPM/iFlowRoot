@@ -1,10 +1,11 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>iFlow - enterprise process modeling</title>
 	<link rel="stylesheet" type="text/css" media="all" href="javascript/calendar/calendar-iflow.css" title="cal-iflow" />
 	<link rel="stylesheet" type="text/css" href="javascript/yahoo/container/assets/skins/sam/container.css" />
+
 	<link rel="stylesheet" type="text/css" href="javascript/yahoo/button/assets/skins/sam/button.css" />
 	<link rel="stylesheet" href="Themes/${orgTheme}/css/tips.css" type="text/css">
 	<link rel="stylesheet" href="Themes/${orgTheme}/css/iflow_main.css" type="text/css">
@@ -14,14 +15,8 @@
       <link rel="stylesheet" href="Themes/${orgTheme}/css/menuright.css" type="text/css"  />
     #else
       <link rel="stylesheet" href="Themes/${orgTheme}/css/menuleft.css" type="text/css"  />
-	#end
-    <link rel="stylesheet" type="text/css" href="javascript/yahoo/assets/skins/sam/skin.css" />
-    <link rel="stylesheet" type="text/css" href="javascript/yahoo/menu/assets/skins/sam/menu.css" />
-    <link rel="stylesheet" type="text/css" href="javascript/yahoo/button/assets/skins/sam/button.css" />
-    <link rel="stylesheet" type="text/css" href="javascript/yahoo/fonts/fonts-min.css" />
-    <link rel="stylesheet" type="text/css" href="javascript/yahoo/container/assets/skins/sam/container.css" />
-    <link rel="stylesheet" type="text/css" href="javascript/yahoo/editor/assets/skins/sam/editor.css" />
-
+    #end
+    
 	<link rel="shortcut icon" href="images/favicon.ico" />
 	<!--[if IE]>
 		<link rel="stylesheet" href="Themes/${orgTheme}/css/iflow_ie.css" type="text/css">
@@ -38,7 +33,6 @@
 	<![endif]-->
 
 	<!-- locale stuff -->
-	<script type="text/javascript" src="javascript/jscolor/jscolor.js"></script> 
 	<script type="text/javascript" src="javascript/messages.js"> </script><!-- default messages -->
 	<script type="text/javascript" src="javascript/messages_${lang}.js"> </script> <!-- localized version override -->
 	<script type="text/javascript" src="javascript/ibox.js"> </script>
@@ -49,19 +43,13 @@
 	<script type="text/javascript" src="javascript/yahoo/event/event-min.js"></script>
 	<script type="text/javascript" src="javascript/yahoo/connection/connection-min.js"></script>
 	<script type="text/javascript" src="javascript/yahoo/dom/dom-min.js"></script>
-	<script type="text/javascript" src="javascript/yahoo/element/element-min.js"></script>
-	<script type="text/javascript" src="javascript/yahoo/button/button-min.js"></script>
+
+
 	<script type="text/javascript" src="javascript/yahoo/dragdrop/dragdrop-min.js"></script>
 	<script type="text/javascript" src="javascript/yahoo/animation/animation-min.js"></script>
 	<script type="text/javascript" src="javascript/yahoo/container/container-min.js"></script>
 	<script type="text/javascript" src="javascript/yahoo/yahoo-dom-event/yahoo-dom-event.js"></script>
-	<script type="text/javascript" src="javascript/yahoo/treeview/treeview.js"></script>
-
-    <script type="text/javascript" src="javascript/yahoo/container/container_core.js"></script>
-    <script type="text/javascript" src="javascript/yahoo/menu/menu-min.js"></script>
-    <script type="text/javascript" src="javascript/yahoo/editor/editor.js"></script>
-
-    <script type="text/javascript" src="javascript/html/encoder.js"></script>
+	<script type="text/javascript" src="javascript/yahoo/treeview/treeview-min.js"></script>
 
 	<script type="text/javascript" src="javascript/mootools.js"></script>
 
@@ -70,9 +58,9 @@
 	<script type="text/javascript" src="$response.encodeURL('javascript/encodedURLS.jsp')"></script>
 	
 	<script type="text/javascript" src="javascript/tutorial.js"></script>
-	<script type="text/javascript" src="javascript/processAnnotations.js"></script>
 	<script type="text/javascript" src="$response.encodeURL('javascript/applet.js')"></script>
-    <script type="text/javascript" src="javascript/applet_functions.js"></script>
+<script type="text/javascript" src="javascript/processAnnotations.js"></script>
+	<script type="text/javascript" src="javascript/applet_functions.js"></script>
 
 	<script language="JavaScript">
 	function calcFrameHeight(frameName) {
@@ -168,15 +156,29 @@
 			#end
 
 			#* Inject applet inside element body (right here...) *#
-			setApplet('div_applet');
-			getAppletElem();
- 			
+			//setApplet('div_applet');
+			//getAppletElem();
+			
 		}
+
 	</script>  
-   
+
 </head>
 
-<body onresize="javascript:mainResize()">
+<body onresize="/*javascript:mainResize()*/">
+
+<style type="text/css">
+#main {
+    width: 93%;
+}
+
+.nav_div {
+    padding: 0 10px 10px;
+    width: 20%;
+}
+</style>
+   
+
 	<div class="yui-skin-sam">
 		<div id="userdialog">
 		</div>
@@ -187,9 +189,7 @@
 		<div id="popupdialog">
 		</div>
 	</div>
-
-    <div id="appletHolder" style="display:none"></div>
-
+	
 	<div id="autoSaveMessage" style="display:none">
 		<form name="loginform">
 		
@@ -239,6 +239,7 @@
 			$date
 		</div>
 		<div id="div_menu_link" class="menu_link">
+		<div id="warnmessage" style="color:#777;position:relative;float:left;font-family:verdana;font-size:15px;font-weight:bold;font-style:italic">Ambiente de Demonstração</div>
 		  #if($sys_admin == "yes" && $license_ok == "no")
 			<a class="menu_link" href="$response.encodeURL($url_prefix,'Admin/licenseValidation.jsp')?ts=$ts"  title="$license_error_tooltip"><img src="images/warning.png" class="noToolTipsImg" width="16" height="16" border="0">&nbsp;$license_error_msg</a><br><br>
 		  #end
@@ -286,11 +287,15 @@
 				<div id="button5_span" class="tab_button_span"><input type="button" id="button5" value="$field_delegations" class="tab_button" onClick="this.blur();tabber_load(5,gestaoTarefasNavJSP)" title="$tooltip_delegations" /></div>
 			#end
 			  #if($org_admin == "yes")
-				<div id="button10_span" class="tab_button_span"><input type="button" id="button10" value="$field_reports" class="tab_button" onClick="this.blur();tabber_load(10,reportsNavJSP)" title="$tooltip_reports" /></div>
+			  	#if("$Tab10" != "no")	
+					<div id="button10_span" class="tab_button_span"><input type="button" id="button10" value="$field_reports" class="tab_button" onClick="this.blur();tabber_load(10,reportsNavJSP)" title="$tooltip_reports" /></div>
+				#end
 				<div id="button4_span" class="tab_button_span"><input type="button" id="button4" value="$field_admin" class="tab_button" onClick="this.blur();tabber_load(4,adminNavJSP)" title="$tooltip_orgadmin" /></div>
 			  #else
 			   #if($supervisor == "yes")
-			    <div id="button10_span" class="tab_button_span"><input type="button" id="button10" value="$field_reports" class="tab_button" onClick="this.blur();tabber_load(10,reportsNavJSP)" title="$tooltip_reports" /></div>
+			   		#if("$Tab10" != "no")	
+						<div id="button10_span" class="tab_button_span"><input type="button" id="button10" value="$field_reports" class="tab_button" onClick="this.blur();tabber_load(10,reportsNavJSP)" title="$tooltip_reports" /></div>
+					#end
 	    	   #end
 			  #end
 		  #else
@@ -307,9 +312,10 @@
 #else
 
   <div id="div_main" class="main">
+    
     <div id="section1_div" class="tab_body">
       <div id="section1_header_div" class="header_div">
-      	<a href="javascript:showHelpDialogItem('dashboard');"><img class="help_button" src="Themes/${orgTheme}/images/question_mark_qm.png"/></a>
+<!--      	<a href="javascript:showHelpDialogItem('dashboard');"><img class="help_button" src="Themes/${orgTheme}/images/question_mark_qm.png"/></a>-->
       </div>
       <div class="main_div">
         <div id="section1_nav_div" class="nav_div">
@@ -321,7 +327,7 @@
 
     <div id="section2_div" class="tab_body" align=left>
       <div id="section2_header_div" class="header_div">
-      	<a href="javascript:showHelpDialogItem('tasks');"><img class="help_button" src="Themes/${orgTheme}/images/question_mark_qm.png"/></a>
+<!--      	<a href="javascript:showHelpDialogItem('tasks');"><img class="help_button" src="Themes/${orgTheme}/images/question_mark_qm.png"/></a>-->
       </div>
       <div class="main_div">
         <div id="section2_nav_div" class="nav_div">
@@ -333,7 +339,7 @@
 
     <div id="section8_div" class="tab_body" align=left>
       <div id="section8_header_div" class="header_div">
-      	<a href="javascript:showHelpDialogItem('myprocesses');"><img class="help_button" src="Themes/${orgTheme}/images/question_mark_qm.png"/></a>
+<!--      	<a href="javascript:showHelpDialogItem('myprocesses');"><img class="help_button" src="Themes/${orgTheme}/images/question_mark_qm.png"/></a>-->
       </div>
       <div class="main_div">
         <div id="section8_nav_div" class="nav_div">
@@ -345,7 +351,7 @@
 
     <div id="section3_div" class="tab_body" align=left>
       <div id="section3_header_div" class="header_div">
-      	<a id="link_process_help" href="javascript:showHelpDialogItem('processes');"><img class="help_button" src="Themes/${orgTheme}/images/question_mark_qm.png"/></a>
+<!--      	<a id="link_process_help" href="javascript:showHelpDialogItem('processes');"><img class="help_button" src="Themes/${orgTheme}/images/question_mark_qm.png"/></a>-->
       </div>
       <div class="main_div">
 #if($procMenuVisible == "yes")
@@ -358,18 +364,18 @@
         <div id="section3_content_div" class="content_div" style="width:94%;right:2%;">
 #end
       	  <div id="div_proc_menu_colapsed" class="proc_menu_colapsed" style="display:none;">
-			<img id="butclose" class="proc_menu_button" src="$url_prefix/images/close.png" onclick="javascript:close_process(3);"/>
-			<img id="butexpand" class="proc_menu_button"  src="$url_prefix/images/detach.png" onclick="expand();"/>
-			<img id="butinfocol" class="proc_menu_button" style="width:auto; display:none;" src="$url_prefix/images/info.png" onclick="info();"/>
+			<!--img id="butclose" class="proc_menu_button" style="display:block;" src="$url_prefix/images/close.png" onclick="javascript:close_process(3);"/-->
+			<img id="butexpand" class="proc_menu_button"  style="display:block;" src="$url_prefix/images/printer.png" onclick="window.frames['open_proc_frame'].print();"/>
+			<!--img id="butinfocol" class="proc_menu_button" style="width:auto; display:none;" src="$url_prefix/images/info.png" onclick="info();"/-->
 			<span id ="process_annotations_span_colapsed"></span>
 		  </div>
 	      <div id="div_proc_menu_expanded" class="proc_menu_expanded" style="display:none;">
-			<img id="butclose" class="proc_menu_button" src="$url_prefix/images/close.png" onclick="javascript:close_process(3);"/>
+			<!--img id="butclose" class="proc_menu_button" src="$url_prefix/images/close.png" onclick="javascript:close_process(3);"/-->
 			<img id="butcolapse" class="proc_menu_button" src="$url_prefix/images/attach.png" onclick="colapse();"/>
-			<img id="butinfoexp" class="proc_menu_button" style="width:auto; display:none;" src="$url_prefix/images/info.png" onclick="info();"/>
+			<!--img id="butinfoexp" class="proc_menu_button" style="width:auto; display:none;" src="$url_prefix/images/info.png" onclick="info();"/-->
 			<span id ="process_annotations_span_expanded"></span>
 	      </div>
-          <iframe onload="document.getElementById("open_proc_frame").contentWindow.document.body.scrollTop=0;calcFrameHeight('open_proc_frame');" id="open_proc_frame" name="open_proc_frame" frameborder="0" scrolling="auto" marginheight="0" marginwidth="0" width="100%" height="100%" src="" class="open_proc_frame_colapsed" style="display:block;">
+          <iframe onload="calcFrameHeight('open_proc_frame');" id="open_proc_frame" name="open_proc_frame" frameborder="0" scrolling="auto" marginheight="0" marginwidth="0" width="100%" height="100%" src="" class="open_proc_frame_colapsed" style="display:block;">
            your browser does not support iframes or they are disabled at this time
           </iframe>
         </div>
@@ -378,7 +384,7 @@
     
     <div id="section5_div" class="tab_body" align=left>
       <div id="section5_header_div" class="header_div">
-      	<a href="javascript:showHelpDialogItem('delegations');"><img class="help_button" src="Themes/${orgTheme}/images/question_mark_qm.png"/></a>
+<!--      	<a href="javascript:showHelpDialogItem('delegations');"><img class="help_button" src="Themes/${orgTheme}/images/question_mark_qm.png"/></a>-->
       </div>
       <div class="main_div">
         <div id="section5_nav_div" class="nav_div">
@@ -402,7 +408,7 @@
 
 	<div id="section4_div" class="tab_body" align=left>
       <div id="section6_header_div" class="header_div">
-      	
+
       </div>
       <div class="main_div">
         <div id="section4_nav_div" class="nav_div">
@@ -465,33 +471,6 @@
     
 	<div id="overlay_shade">	  
 	</div>	
-
-
-	#if($org_admin == "yes")
-	
-	<!--
-	  <div id="tutorial" style="display:${tutorialDisplay};">
-	  	<div class="hd">Tutorial</div>
-			<div style="float:left;">
-				<ul id="select_tutorial" style="padding-left: 20px;">
-					<script type="text/javascript">
-						generateOptions();
-					</script>
-				</ul>
-				<div style="float:left;">
-					<a style="margin-left: 0px; color:white; text-decoration:underline;font-weight: bold;" href="javascript:resetTutorial();">$linkReset</a>
-					<a style="margin-right: 0px; color:white; text-decoration:underline;font-weight: bold;" href="javascript:closeTutorial();">$linkClose</a>
-				</div>
-			</div>
-	  </div>
-
-	  <div id="tutorial_bubble" class="tutorialbox" style="display:none;">
-	    <div>$tutorialBubbleMsg</div>
-	  </div>
-	  -->
-	  
-    #end
-
 
 	<script type="text/javascript">
   

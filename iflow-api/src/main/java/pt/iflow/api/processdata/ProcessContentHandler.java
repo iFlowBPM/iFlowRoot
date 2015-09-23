@@ -148,42 +148,49 @@ class ProcessContentHandler extends DefaultHandler {
 
   public void endElement(String uri, String localName, String name) throws SAXException {
     String tag = name;
+    Token var=null;
+    ProcessSimpleVariable processVar=null;
+    ProcessListVariable listVar=null;
+    Token listToken=null;
+    ProcessListItemList itemList= null;
+    ProcessListItem item = null;
     if(_namespaceAware) tag = localName; // if namespace aware, localName contains tag without prefix, just like we want
     try {
       // check pending text...
       setText();
-      Token var = treeParserStack.pop();
+       var = treeParserStack.pop();
 
-      if(tag.equals(ProcessXml.ELEMENT_ERROR)) {
+      ProcessDataType type;
+	if(tag.equals(ProcessXml.ELEMENT_ERROR)) {
         if(null != processError)
           _pd.initError(processError.text);
         processError = null;
       } else if(tag.equals(ProcessXml.ELEMENT_VAR)) {
-        ProcessDataType type = _catalogue.getDataType(var.name);
+         type = _catalogue.getDataType(var.name);
         
         if (type == null) {
           Logger.error(null, this, "endElement", "null type for var \"" + var.name + "\"(removed/renamed var in catalogue?). Ignoring...");
         }
         else {
           if(!type.isBindable()) {
-            ProcessSimpleVariable processVar = new ProcessSimpleVariable(type, var.name);
+             processVar = new ProcessSimpleVariable(type, var.name);
             processVar._value = new InternalValue(processVar._type, var.text);
             _pd.set(processVar, false);
           }
         }
       } else if(tag.equals(ProcessXml.ELEMENT_LISTVAR)) {
-        ProcessListVariable listVar = new ProcessListVariable(var.listType, var.name);
+         listVar = new ProcessListVariable(var.listType, var.name);
         listVar.setItems(var.itemList);
         _pd.setList(listVar, false);
       } else if(tag.equals(ProcessXml.ELEMENT_LISTITEM)) {
-        Token listToken = treeParserStack.peek();
-        ProcessListItemList itemList = listToken.itemList;
-        ProcessDataType type = listToken.listType;
+         listToken = treeParserStack.peek();
+         itemList = listToken.itemList;
+         type = listToken.listType;
         if (type == null) {
           Logger.error(null, this, "endElement", "null type for list item for list var \"" + listToken.name + "\"(removed/renamed var in catalogue?). Ignoring...");
         }
         else {        
-          ProcessListItem item = new ProcessListItem(new InternalValue(type, var.text));
+           item = new ProcessListItem(new InternalValue(type, var.text));
           itemList.set(var.pos, item);
         }
       } else if(tag.equals(ProcessXml.ELEMENT_APPDATA)) {

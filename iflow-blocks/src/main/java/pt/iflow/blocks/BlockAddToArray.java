@@ -1,8 +1,11 @@
 package pt.iflow.blocks;
 
+import org.apache.commons.lang.StringUtils;
+
 import pt.iflow.api.blocks.Block;
 import pt.iflow.api.blocks.Port;
 import pt.iflow.api.processdata.ProcessData;
+import pt.iflow.api.processdata.ProcessListItem;
 import pt.iflow.api.processdata.ProcessListVariable;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.UserInfoInterface;
@@ -25,6 +28,7 @@ public class BlockAddToArray extends Block {
 
   private static final String ARRAYS = "Arrays";
   private static final String ELEMENTS = "Elements";
+  private static final String NODUPLICATES = "NoDuplicates";
   
   public BlockAddToArray(int anFlowId, int id, int subflowblockid, String filename) {
     super(anFlowId, id, subflowblockid, filename);
@@ -84,6 +88,7 @@ public class BlockAddToArray extends Block {
 
     String sArraysVar = this.getAttribute(ARRAYS);
     String sElementsVar = this.getAttribute(ELEMENTS);
+    String sNoDuplicatesVar = getParsedAttribute(userInfo, NODUPLICATES, procData);
     
     if (StringUtilities.isEmpty(sArraysVar)) {
       Logger.error(login, this, "after", procData.getSignature() + "empty value for Arrays attribute");
@@ -93,6 +98,7 @@ public class BlockAddToArray extends Block {
       outPort = portError;
     } else
       try {
+    	Boolean disallowDuplicates = "1".equals(sNoDuplicatesVar) || "true".equalsIgnoreCase(sNoDuplicatesVar);
     	String[] arrayNames = sArraysVar.split(",");
     	String [] alementNames = sElementsVar.split(",");
     	
@@ -100,7 +106,17 @@ public class BlockAddToArray extends Block {
     		ProcessListVariable listVar = procData.getList(arrayNames[i]);
     		Object simpleValue = procData.eval(userInfo, alementNames[i]);
     		
-    		listVar.addNewItem(simpleValue);
+    		if(!disallowDuplicates)
+    			listVar.addNewItem(simpleValue);    	
+    		else{
+	    		Boolean foundDuplicate=false;
+	    		for(ProcessListItem item: listVar.getItems())
+	    			if(item.getValue().equals(simpleValue))
+	    				foundDuplicate=true;
+	    		
+	    		if(!foundDuplicate)
+	    			listVar.addNewItem(simpleValue);
+    		}
     	}    	
 
         outPort = portSuccess;

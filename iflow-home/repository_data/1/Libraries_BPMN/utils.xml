@@ -825,6 +825,11 @@
             <description>Elements</description>
             <value />
         </XmlAttribute>
+        <XmlAttribute>
+            <name>NoDuplicates</name>
+            <description>Disallow duplicate elements?</description>
+            <value />
+        </XmlAttribute>
      	<image>bpmn_task.png</image>
         <description>Add element to array</description>
         <i18n>library.dms.block.add_to_array</i18n>

@@ -159,8 +159,8 @@ public class UsersSyncManager extends Thread {
       db = ds.getConnection();
       db.setAutoCommit(true);
       st = db.createStatement();
-      for(int i=0; i<user.size(); i++)
-    	  user.set(i, StringEscapeUtils.escapeSql(user.get(i).toString()));      
+      //for(int i=0; i<user.size(); i++)
+    	//  user.set(i, StringEscapeUtils.escapeSql(user.get(i).toString()));      
       String query = DBQueryManager.processQuery((forUpdate ? UsersSyncManager.UPDATE_USER : UsersSyncManager.INSERT_USER), 
                                                   user.toArray());
       Logger.debug("", this, "saveUser", "query: " + query);

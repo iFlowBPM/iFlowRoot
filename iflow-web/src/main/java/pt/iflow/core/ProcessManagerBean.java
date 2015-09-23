@@ -3585,14 +3585,20 @@ public class ProcessManagerBean implements ProcessManager {
 
         // Get list of users in the profile
         hsProfiles = new HashSet<String>();
-        hsProfiles.add(asProfile);
-        Iterator<String> userIdIterator = (ap.getUsersInProfile(userInfo, asProfile)).iterator();
-        if (userIdIterator != null && userIdIterator.hasNext()) {
-          // Create the activity for each user in the profile
-          while (userIdIterator.hasNext()) {
-            alUsers.add(userIdIterator.next());
-            alProfiles.add(hsProfiles);
-          }
+        String[] asProfileList = asProfile.split(",");
+        for(String asProfileAux: asProfileList){
+	        hsProfiles.add(asProfileAux);
+	        Iterator<String> userIdIterator = (ap.getUsersInProfile(userInfo, asProfileAux)).iterator();
+	        if (userIdIterator != null && userIdIterator.hasNext()) {
+	          // Create the activity for each user in the profile
+	          while (userIdIterator.hasNext()) {
+	        	String nextUser = userIdIterator.next();
+	        	if(!alUsers.contains(nextUser)){
+	        		alUsers.add(nextUser);
+	        		alProfiles.add(hsProfiles);
+	        	}
+	          }
+	        }
         }
       }
 
