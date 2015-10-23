@@ -2,9 +2,9 @@
 <%@ taglib uri="http://jakarta.apache.org/taglibs/core" prefix="c" %>
 <%@ taglib uri="http://www.iknow.pt/jsp/jstl/iflow" prefix="if" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
+<%@ include file = "inc/defs.jsp" %>
 <%
-  UserInfoInterface userInfo = (UserInfoInterface) session.getAttribute(Const.USER_INFO);
+  //UserInfoInterface userInfo = (UserInfoInterface) session.getAttribute(Const.USER_INFO);
 %>
 <%@page import="pt.iflow.api.core.BeanFactory"%>
 <%@page import="pt.iflow.api.utils.UserInfoInterface"%>
