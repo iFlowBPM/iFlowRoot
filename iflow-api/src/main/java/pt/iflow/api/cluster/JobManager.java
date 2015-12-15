@@ -39,7 +39,7 @@ public class JobManager extends Thread {
 
 	public void run() {
 		Logger.debug("System", this, "run", "Started");
-		while (true) {
+		while (true && Const.CLUSTER_ENABLED) {
 			Long nextSleep = (long) 60;
 			if (isBeatExpired()) {
 				Logger.debug("System", this, "run",

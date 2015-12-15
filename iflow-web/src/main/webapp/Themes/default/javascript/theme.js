@@ -9,6 +9,6 @@
 			if(div) div.style.height = (h1 + 40)+ 'px';
 		}
 		//scroll to anchor
-		var anchorName = document.getElementById('anchor_' + document.getElementById('_button_clicked_id').value);
+		var anchorName = document.getElementById(document.getElementById('_button_clicked_id').value);
 		anchorName.scrollIntoView(true);		
 	}

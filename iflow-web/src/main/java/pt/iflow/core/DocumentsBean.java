@@ -678,6 +678,7 @@ public class DocumentsBean implements Documents {
 
         String filePath = rs.getString("docurl");
         if (StringUtils.isNotEmpty(filePath)) {
+        	retObj.setDocurl(filePath);
             File f = new File(filePath);
             length = (int)f.length();
         }

@@ -1308,6 +1308,11 @@ label.subheader {
       </xsl:if>
 
       <xsl:if test="type='link'">
+		<a>
+			<!-- anchor for auto-scrolling -->
+			<xsl:attribute name="id"><xsl:value-of select="text"/></xsl:attribute>
+			<xsl:attribute name="name"><xsl:value-of select="text"/></xsl:attribute>
+		</a>
         <xsl:attribute name="style">
             text-align:<xsl:apply-templates select="align" />
 				  </xsl:attribute>
@@ -1534,8 +1539,12 @@ label.subheader {
   </xsl:template>
 
   <xsl:template match="button">
-    <xsl:text>&nbsp;
+  	<xsl:text>&nbsp;
 		</xsl:text>
+	<!-- a>
+		<xsl:attribute name="id">anchor_<xsl:value-of select="id/text()"/></xsl:attribute>
+		<xsl:attribute name="name">anchor_<xsl:value-of select="id/text()"/></xsl:attribute>
+	</a -->
     <button align="center" valign="center" class="button" type="submit">
       <xsl:attribute name="name">
       <xsl:value-of select="name/text()" />

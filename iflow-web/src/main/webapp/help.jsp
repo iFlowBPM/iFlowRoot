@@ -22,8 +22,11 @@ public void makeHelpData(javax.servlet.jsp.JspWriter outstream, UserInfoInterfac
 				Hashtable<String, Object> htSubst = new Hashtable<String, Object>();
 				htSubst.put("version", Version.VERSION);
 				htSubst.put("build", Version.BUILD);
-				htSubst.put("messages", pt.iflow.msg.Messages.getInstance());
-				
+				if(userInfo.getUserSettings() ==null || userInfo.getUserSettings().getLocale()==null)
+					htSubst.put("messages", pt.iflow.msg.Messages.getInstance());
+				else
+					htSubst.put("messages", pt.iflow.msg.Messages.getInstance(userInfo.getUserSettings().getLocale()));
+					
 		        StringBuffer sHtml = new StringBuffer();
 		
 		        sHtml.append("<div id=\"helpwrapper\" class=\"help_box_wrapper\">");

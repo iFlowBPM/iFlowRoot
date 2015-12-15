@@ -1,0 +1,16 @@
+-------------------------------------------------------------------------------
+                           iFlow Release Notes                                
+-------------------------------------------------------------------------------
+4.2.6-
+
+New Features:
+		 [P14046-7]	Multi instância 
+		 [P14046-6]	Adaptação a Oracle 12c 
+		 [P14046-5]	Adaptação a Websphere 8.5.5 
+		 [P15031-126] 	Enviar anexos no Bloco Email 
+Bug fixes:
+		 [IFLOW4-62] Docs em filesystem Unix 
+		 [IFLOW4-53] Actualização do script oracle 
+		 [IFLOW4-50] Erro no bloco Criar Documento Excel com as múltiplas folhas 
+Known Issues:
+         

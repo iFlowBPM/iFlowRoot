@@ -33,6 +33,8 @@ public class FormDataSanitizer {
 				escapedHTML = StringUtils.replace(escapedHTML, "&ccedil;", "ç");
 				escapedHTML = StringUtils.replace(escapedHTML, "&Ccedil;", "Ç");
 				escapedHTML = StringUtils.replace(escapedHTML, "&#x3a;",":");
+				escapedHTML = StringUtils.replace(escapedHTML, "&#x40;","@");
+				escapedHTML = StringUtils.replace(escapedHTML, "&#x3f;","?");
 				
 				String escapedSQL = ESAPI.encoder().encodeForSQL(new MySQLCodec(MySQLCodec.Mode.ANSI), escapedHTML);
 				

@@ -1,26 +1,36 @@
 package pt.iflow.api.notification;
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
 import javax.mail.Address;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.SendFailedException;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import javax.mail.util.ByteArrayDataSource;
 
 import org.apache.commons.lang.StringUtils;
 
 import pt.iflow.api.processdata.ProcessHeader;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
+import pt.iflow.connector.document.Document;
 
 /**
  * <p>
@@ -52,6 +62,8 @@ public class Email implements Cloneable {
   String from = "";
   String subject = "";
   String msgText = "";
+  Document[] attachment;
+  Boolean compressAttachment;
 
   String processSignature = "";
   
@@ -404,19 +416,53 @@ public class Email implements Cloneable {
         if (iaaCc != null) {
           msg.setRecipients(Message.RecipientType.CC, iaaCc);
         }
-
         msg.setSubject(subject, "UTF-8");
         msg.setSentDate(new java.util.Date());
 
+        //text part
+        MimeBodyPart messageBodyPart = new MimeBodyPart();        
         if (this.bHtml) {
-          msg.setContent(msgText, "text/html; charset=UTF-8");
+        	messageBodyPart.setContent(msgText, "text/html; charset=UTF-8");
+          }
+          else {
+            // If the desired charset is known, you can use
+            // setText(text, charset)
+            // msg.setText(msgText, "UTF-8");
+        	  messageBodyPart.setContent(msgText, "text/plain; charset=UTF-8");
+          } 
+        
+        Multipart multipart = new MimeMultipart();
+        multipart.addBodyPart(messageBodyPart);
+        
+        //attachment
+        if(attachment!=null && attachment.length>0){
+        	if(!compressAttachment)
+        		for(int i=0; i<attachment.length; i++){
+        			messageBodyPart = new MimeBodyPart();
+                	DataSource source = new ByteArrayDataSource(attachment[i].getContent(),"application/octet-stream");
+                	messageBodyPart.setDataHandler(new DataHandler(source));
+                	messageBodyPart.setFileName(attachment[i].getFileName());
+                	multipart.addBodyPart(messageBodyPart);
+        		}        	
+        	else {
+        		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        		ZipOutputStream zos = new ZipOutputStream(baos);
+        		for(int i=0; i<attachment.length; i++){
+	        		ZipEntry entry = new ZipEntry(attachment[i].getFileName());
+	        		entry.setSize(attachment[i].getContent().length);
+	        		zos.putNextEntry(entry);
+	        		zos.write(attachment[i].getContent());
+	        		zos.closeEntry();	        		
+        		}
+        		zos.close();
+        		DataSource source = new ByteArrayDataSource(baos.toByteArray(),"application/zip");
+            	messageBodyPart.setDataHandler(new DataHandler(source));
+            	messageBodyPart.setFileName("email.zip");
+            	multipart.addBodyPart(messageBodyPart);
+        	}
         }
-        else {
-          // If the desired charset is known, you can use
-          // setText(text, charset)
-          // msg.setText(msgText, "UTF-8");
-          msg.setContent(msgText, "text/plain; charset=UTF-8");
-        }
+        
+        msg.setContent(multipart);                             
 
         Transport.send(msg);
         Logger.info("", this, "sendMsg", processSignature + "Mail sent to " + sbTo.toString());
@@ -529,4 +575,20 @@ public class Email implements Cloneable {
   public String getCallingProcessSignature() {
     return this.processSignature;
   }
+
+public Document[] getAttachment() {
+	return attachment;
+}
+
+public void setAttachment(Document[] attachment) {
+	this.attachment = attachment;
+}
+
+public Boolean getCompressAttachment() {
+	return compressAttachment;
+}
+
+public void setCompressAttachment(Boolean compressAttachment) {
+	this.compressAttachment = compressAttachment;
+}
 }

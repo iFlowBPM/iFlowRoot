@@ -30,7 +30,7 @@ create table flow (
         name_idx11              varchar2(64),
         name_idx12              varchar2(64),
         name_idx13              varchar2(64),
-        name_idx14              varchar2(64),
+        name_idx14             varchar2(64),
         name_idx15              varchar2(64),
         name_idx16              varchar2(64),
         name_idx17              varchar2(64),
@@ -38,6 +38,8 @@ create table flow (
         name_idx19              varchar2(64),
         seriesid				number,
         type_code               varchar2(1) default 'W',
+        max_block_id			number,
+        comment					varchar2(512),
         constraint flow_pk primary key (flowid)
 );
 create sequence seq_flow increment by 1 start with 1 nocycle order;
@@ -1459,6 +1461,10 @@ BEGIN
 END;
 /
 
+col maxpid new_value _maxpid
+select max(pid) maxpid from process;
+create sequence SEQ_NEXT_PID start with &&_maxpid increment by 1;
+
 -- gets next available pid (from counter table) and updates counter table for a given flow.
 CREATE OR REPLACE PROCEDURE get_next_pid (retpid OUT NUMBER,
                                           retsubpid OUT NUMBER,
@@ -1467,10 +1473,8 @@ CREATE OR REPLACE PROCEDURE get_next_pid (retpid OUT NUMBER,
                                           acreator IN VARCHAR2) IS
 BEGIN
   BEGIN
-    select value into retpid from counter where name='pid';
-    retpid := retpid + 1;
-    update counter set value=retpid where name='pid';
-     retsubpid := 1;
+    select SEQ_NEX_PID.nextval into retpid from dual;
+    retsubpid := 1;
     insert into process (flowid,pid,subpid,mid,created,creator,pnumber,currentuser) values
         (aflowid,retpid,retsubpid,1,acreatedate,acreator,retpid,acreator);
      insert into process_history (flowid,pid,subpid,mid,created,creator,pnumber,currentuser) values

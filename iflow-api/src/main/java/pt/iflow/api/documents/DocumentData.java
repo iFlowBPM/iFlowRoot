@@ -33,6 +33,7 @@ public class DocumentData implements Document {
   private int subpid;
   private int length;
   private String serials;
+  private String docurl;
 
   public DocumentData() {
     this(-1, null, null, null, 0, 0, 0);
@@ -194,5 +195,13 @@ public class DocumentData implements Document {
   public void setSerials(String serials) {
     this.serials = serials;
   }
+
+public String getDocurl() {
+	return docurl;
+}
+
+public void setDocurl(String docurl) {
+	this.docurl = docurl;
+}
 
 }
