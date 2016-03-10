@@ -256,24 +256,28 @@ public class PDFSignatureImpl implements FileSigner {
      
 
     //Adicionar imagem ao PDF se for para utilizar
-    if(LoadImageAction.getFlagPDF()){
-	    	sap.setAcro6Layers(true);
-	    	Image img = LoadImageAction.getAssImagePDF();
-	    	
-	    	if(LoadImageAction.getPagToSign() == -1)
-	    	    sap.setVisibleSignature(new Rectangle(coord[0], coord[1], coord[0]+img.getWidth(), coord[1]+img.getHeight()), pageCount, null);
-	    	else
-	    		sap.setVisibleSignature(new Rectangle(coord[0], coord[1], coord[0]+img.getWidth(), coord[1]+img.getHeight()), LoadImageAction.getPagToSign(), null);	
-	    	
-	    	sap.setLayer2Text("\n\n(Doc. assinado digitalmente)");
-		    sap.setImage(img);
+    if(!isSignatureVisible()){
+        sap.setLayer2Text("");      
     }else{
-	    	if(LoadImageAction.getPagToSign() == -1)
-		        sap.setVisibleSignature(new Rectangle(coord[0], coord[1], coord[0]+150, coord[1]+40), pageCount, null);
-	    	else
-	    		sap.setVisibleSignature(new Rectangle(coord[0], coord[1], coord[0]+150, coord[1]+40), LoadImageAction.getPagToSign(), null);
-		    
-	    	sap.setLayer2Text(getSignatureText((X509Certificate) chain[0], sap.getSignDate()));
+        if(LoadImageAction.getFlagPDF()){
+    	    	sap.setAcro6Layers(true);
+    	    	Image img = LoadImageAction.getAssImagePDF();
+    	    	
+    	    	if(LoadImageAction.getPagToSign() == -1)
+    	    	    sap.setVisibleSignature(new Rectangle(coord[0], coord[1], coord[0]+img.getWidth(), coord[1]+img.getHeight()), pageCount, null);
+    	    	else
+    	    		sap.setVisibleSignature(new Rectangle(coord[0], coord[1], coord[0]+img.getWidth(), coord[1]+img.getHeight()), LoadImageAction.getPagToSign(), null);	
+    	    	
+    	    	sap.setLayer2Text("\n\n(Doc. assinado digitalmente)");
+    		    sap.setImage(img);
+        }else{
+    	    	if(LoadImageAction.getPagToSign() == -1)
+    		        sap.setVisibleSignature(new Rectangle(coord[0], coord[1], coord[0]+150, coord[1]+40), pageCount, null);
+    	    	else
+    	    		sap.setVisibleSignature(new Rectangle(coord[0], coord[1], coord[0]+150, coord[1]+40), LoadImageAction.getPagToSign(), null);
+    		    
+    	    	sap.setLayer2Text(getSignatureText((X509Certificate) chain[0], sap.getSignDate()));
+        }
     }
 
     PdfSignature dic = new PdfSignature(PdfName.ADOBE_PPKLITE, new PdfName("adbe.pkcs7.detached")); //$NON-NLS-1$
@@ -309,7 +313,7 @@ public class PDFSignatureImpl implements FileSigner {
     if(isUseTSA() && tsaLocation != null)
       tsc = new TSAClientBouncyCastle(tsaLocation);
 
-    //o PIN/PASS dos certificados é pedido aqui
+    //o PIN/PASS dos certificados ï¿½ pedido aqui
     byte[] encodedSig = sgn.getEncodedPKCS7(hash, cal, tsc, ocsp);
     
     if (contentEstimated + 2 < encodedSig.length)
@@ -354,9 +358,9 @@ public class PDFSignatureImpl implements FileSigner {
       outFile = new TempVFile(pdf.getName(), pdf.getVarName());
       fout = outFile.getOutputStream();
    
-      //Verificar se é para rubricar todas as paginas
+      //Verificar se ï¿½ para rubricar todas as paginas
       if(LoadImageAction.getFlagRub()){
-    	  //Verificar se é para utilizar a mesma imagem na rubrica e na assinatura
+    	  //Verificar se ï¿½ para utilizar a mesma imagem na rubrica e na assinatura
     	  if(LoadImageAction.rubimgSameass){  	    
 		      String n = rubricarTodas(pdf);
 		      InputStream input = new FileInputStream(n);
@@ -409,7 +413,7 @@ public class PDFSignatureImpl implements FileSigner {
     return this.active;
   }
 
-  // TODO concluir e validar a verificação de PDFs
+  // TODO concluir e validar a verificaï¿½ï¿½o de PDFs
   public String verify(final IVFile pdf) {
     // Certificados adicionados localmente
     KeyStore kall = PdfPKCS7.loadCacertsKeyStore();
@@ -553,7 +557,7 @@ public String rubricarTodas(IVFile pdffile){
       
 	try {
 
-		//Verificar qual é a imagem para utilizar na rubrica
+		//Verificar qual ï¿½ a imagem para utilizar na rubrica
 		Image img = null;
 		if(LoadImageAction.rubimgSameass)
 			img = LoadImageAction.getAssImagePDF();
@@ -586,7 +590,7 @@ public String rubricarTodas(IVFile pdffile){
         sig.setFieldName("Assinaturas");
         sig.setPage(1);
 
-        //Se a imagem da rubrica n for a mesma da assinatura não mete na ultima pag
+        //Se a imagem da rubrica n for a mesma da assinatura nï¿½o mete na ultima pag
         if(!LoadImageAction.rubimgSameass) 
         	pageCount = pageCount-1;
         

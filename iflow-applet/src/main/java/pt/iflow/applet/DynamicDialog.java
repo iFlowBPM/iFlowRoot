@@ -127,7 +127,7 @@ public class DynamicDialog extends JFrame implements PropertyChangeListener, Act
   private Container createFormPanel() {
     GridBagConstraints gbc = null;
     
-    // Instanciar botões
+    // Instanciar botï¿½es
     okButton = SwingUtils.newButton(Messages.getString("DynamicDialog.3"), ACTION_OK, this); //$NON-NLS-1$
     cancelButton = SwingUtils.newButton(Messages.getString("DynamicDialog.4"), ACTION_CANCEL, this); //$NON-NLS-1$
     progressBar = new JProgressBar();
@@ -173,7 +173,7 @@ public class DynamicDialog extends JFrame implements PropertyChangeListener, Act
     }
     
     
-    // Adicionar botões
+    // Adicionar botï¿½es
     Container buttonPannel = SwingUtils.newPanel();
     buttonPannel.add(okButton);
     buttonPannel.add(cancelButton);
@@ -207,7 +207,7 @@ public class DynamicDialog extends JFrame implements PropertyChangeListener, Act
     if (null == component) return null;
     Container panel = SwingUtils.newPanel();
     panel.setLayout(new GridBagLayout());
-    // ainda não tenho nada alinhavado para isto....
+    // ainda nï¿½o tenho nada alinhavado para isto....
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.gridx = 0;
     gbc.gridy = 0;
@@ -240,7 +240,7 @@ public class DynamicDialog extends JFrame implements PropertyChangeListener, Act
 
     int pos = 0;
     for(DynamicField field : form.getFields()) {
-      // ainda não tenho nada alinhavado para isto....
+      // ainda nï¿½o tenho nada alinhavado para isto....
       GridBagConstraints gbc = new GridBagConstraints();
       gbc.gridx = 0;
       gbc.gridy = pos;
@@ -472,16 +472,6 @@ public class DynamicDialog extends JFrame implements PropertyChangeListener, Act
 
       setVisible(true);
 
-      //    
-      //    // simulate modality
-      //    while(dialog.isVisible()) {
-      //      try {
-      //        Thread.sleep(100);
-      //      } catch (InterruptedException e) {
-      //      }
-      //    }
-      //    
-      //    
     } else {
       actionPerformed(new ActionEvent(okButton, 0, ACTION_OK));
     }
@@ -490,9 +480,6 @@ public class DynamicDialog extends JFrame implements PropertyChangeListener, Act
 
   
   public void actionPerformed(ActionEvent e) {
-	  
-	  //if(!haveCert)      
-		  //JOptionPane.showMessageDialog(this,Messages.getString("FileApplet.44"), Messages.getString("FileApplet.45"), JOptionPane.INFORMATION_MESSAGE);
 	  
     System.out.println(task.getState());
     if(ACTION_OK.equals(e.getActionCommand())) {
@@ -555,7 +542,7 @@ public class DynamicDialog extends JFrame implements PropertyChangeListener, Act
     
     // trigger a timeout script
     applet.removeTask(status);
-    applet.executeScript("setTimeout('updateForm(\\'"+status.getJSON()+"\\')', 100);"); //$NON-NLS-1$ //$NON-NLS-2$
+    applet.executeScript("setTimeout('updateForm(\\'"+status.getJSON().replace("'", "&apos;")+"\\')', 100);"); //$NON-NLS-1$ //$NON-NLS-2$
   }
   
   private void updateOkButtonState() {

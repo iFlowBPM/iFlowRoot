@@ -95,11 +95,17 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
 					<archive>
-						<addMavenDescriptor>true</addMavenDescriptor>
-						<manifest>
-							<addClasspath>true</addClasspath>
-							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-						</manifest>
+					<addMavenDescriptor>true</addMavenDescriptor>
+					<manifest>
+						<addClasspath>true</addClasspath>
+						<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+					</manifest>
+					<manifestEntries>
+						<Trusted-Only>true</Trusted-Only>
+						<Application-Name>infosistema.com</Application-Name>
+						<Permissions>all-permissions</Permissions>
+						<Caller-Allowable-Codebase>*</Caller-Allowable-Codebase>
+					</manifestEntries>
 					</archive>
 				</configuration>
 			</plugin>

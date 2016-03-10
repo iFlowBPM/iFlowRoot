@@ -55,7 +55,7 @@ import com.sun.pdfview.PDFPage;
 		} 
 
 	PDFPage page = null;
-	if(pag == -1) //Caso não receba é para tirar da ultima
+	if(pag == -1) //Caso n receba  para tirar da ultima
 	    page = pdffile.getPage(getNumPagesByPath(filepath));	
 	else
 		page = pdffile.getPage(pag);
@@ -83,7 +83,7 @@ import com.sun.pdfview.PDFPage;
 	} catch (Exception e) { log.error("Erro a adquirir imagens do pdf", e); } 
 
 	PDFPage page = null;
-	if(pag == -1) //Caso não receba é para tirar da ultima
+	if(pag == -1) //Caso n receba  para tirar da ultima
 	    page = pdffile.getPage(getNumPagesByPath(file.getAbsolutePath()));	
 	else
 		page = pdffile.getPage(pag);

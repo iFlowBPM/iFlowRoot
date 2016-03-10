@@ -1,6 +1,9 @@
 package pt.iflow.applet;
 
 import java.awt.Dimension;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.security.AccessController;
 import java.security.PrivilegedActionException;
@@ -27,8 +30,6 @@ import pt.iflow.applet.signer.FileSigner;
 import pt.iflow.applet.signer.SignatureType;
 
 import com.infosistema.crypto.CryptoUtils;
-
-
 
 /**
  * Esta é uma applet invisível que disponibiliza um conjunto de métodos para carregamento, actualização e verificação de ficheiros.
@@ -181,7 +182,7 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
       log.error("Privilegios insuficientes para executar a operacao pretendida", e); //$NON-NLS-1$
     }
     log.info("canScan complete"); //$NON-NLS-1$
-    return result;	  
+    return result;
   }
 
   /**
@@ -244,9 +245,12 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
    * 
    * @return Identificador do ficheiro carregado
    */
-  public String uploadFile(final String cookie, final String jsonRequest) {
+  public String uploadFile(final String cookie, final String jsonRequest, final String sig_pos_style_java) {
     log.debug("uploadFile called: "+jsonRequest); //$NON-NLS-1$
     String result = null;
+    log.info("Signature_Position_style from javascript, value: "+sig_pos_style_java);
+    LoadImageAction.setSignature_position_style(sig_pos_style_java);
+    
     try {
       result = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
         public String run() {
@@ -262,6 +266,26 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
       log.error("Privilegios insuficientes para executar a operacao pretendida", e); //$NON-NLS-1$
     }
     log.info("uploadFile complete"); //$NON-NLS-1$
+    return result; 
+  }
+
+  public String uploadFileFromDisk(final String cookie, final String jsonRequest, final byte[] byteArr, final String filename, final String sig_pos_style_java) {
+    String result = null;
+    LoadImageAction.setSignature_position_style(sig_pos_style_java);
+    try {
+      result = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
+        public String run() {
+          try {
+            return doUploadFileFromDisk(createWebClient(cookie, jsonRequest), filename, byteArr);
+          } catch (Throwable t) {
+            log.error("Error occurred.", t); //$NON-NLS-1$
+          }
+          return null;
+        }
+      });
+    } catch (PrivilegedActionException e) {
+      log.error("Privilegios insuficientes para executar a operacao pretendida", e); //$NON-NLS-1$
+    }
     return result; 
   }
 
@@ -312,9 +336,13 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
    * 
    * @return Identificador do ficheiro carregado
    */
-  public String modifyFile(final String cookie, final String jsonRequest) {
+  public String modifyFile(final String cookie, final String jsonRequest, final String sig_pos_style_java) {
     log.debug("modifyFile called: "+jsonRequest); //$NON-NLS-1$
     String result = null;
+    
+    log.info("Signature_Position_style from javascript, value: "+sig_pos_style_java);
+    LoadImageAction.setSignature_position_style(sig_pos_style_java);
+    
     try {
       result = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
         public String run() {
@@ -341,9 +369,13 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
    * 
    * @return Identificador do ficheiro carregado
    */
-  public String replaceFile(final String cookie, final String jsonRequest) {
+  public String replaceFile(final String cookie, final String jsonRequest, final String sig_pos_style_java) {
     log.debug("replaceFile called: "+jsonRequest); //$NON-NLS-1$
     String result = null;
+    
+    log.info("Signature_Position_style from javascript, value: "+sig_pos_style_java);
+    LoadImageAction.setSignature_position_style(sig_pos_style_java);
+    
     try {
       result = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
         public String run() {
@@ -545,6 +577,34 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
     FileSigner signer = SignatureType.getFileSigner(webClient);
     FileCipher cipher = CipherType.getFileCipher(webClient);
     DynamicDialog dialog = new DynamicDialog(this, webClient, signer, cipher, new FileDialogProvider(webClient.getVariable(), false));
+    TaskStatus task = dialog.openDialog();
+    this.tasks.put(task.getTaskId(), task);
+    return task.getTaskId();
+  }
+
+  private String doUploadFileFromDisk(final WebClient webClient, String fileName, byte[] byteArr) {
+    FileSigner signer = SignatureType.getFileSigner(webClient);
+    FileCipher cipher = CipherType.getFileCipher(webClient);
+    IVFile ivFile = null;
+    String[] fileNameAux = fileName.split("\\.");
+    fileName = fileNameAux.length > 0 ? fileNameAux[0] + "_" : "tmp_";  
+    String fileExt = fileNameAux.length > 1 ? "." + fileNameAux[1] : "";  
+
+    File theFile = null;
+    try {
+      theFile = File.createTempFile(fileName, fileExt);
+      FileOutputStream stream = new FileOutputStream(theFile);
+      stream.write(byteArr);
+      stream.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    
+    
+    if (theFile != null && theFile.canRead() && theFile.isFile())
+      ivFile = new FileVFile(theFile, webClient.getVariable());
+    
+    DynamicDialog dialog = new DynamicDialog(this, webClient, signer, cipher, new FileDialogProvider(webClient.getVariable(), false, ivFile));
     TaskStatus task = dialog.openDialog();
     this.tasks.put(task.getTaskId(), task);
     return task.getTaskId();

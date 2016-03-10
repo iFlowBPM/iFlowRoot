@@ -46,7 +46,8 @@ public class LoadImageAction implements ActionListener {
   
   //Parametros de configuração da applet (CMA)
   public static boolean posMatriz = true; 				// if (true) "MATRIZ" else "COORDENADAS"
-   
+  private static int flagJava = -1;
+  
   //Posição por MATRIZ
   private static int numColunas = 3;
   private static int iniX = 70;
@@ -75,15 +76,28 @@ public class LoadImageAction implements ActionListener {
 	  LoadImageAction.jcbSave = jcbSave;
 	  LoadImageAction.jcbRub = jcbRub;
   }
-  
+  public static void setSignature_position_style(String signature_position_style){
+    if(StringUtils.isEmpty(signature_position_style)){
+      flagJava = -1;
+      iniX = 70;
+      iniY = 110;
+    }else{
+        if(signature_position_style.equals(sMATRIX))
+            posMatriz = true;
+        else
+            posMatriz = false;
+        flagJava = 1;
+    }
+  }
   public static void setSignatureParameters(String signature_position_style, String rubric_image, String rubric_position_style){
 	  
 	  //Verificar se a posição da assinatura é dada por matriz ou por coordenadas
+    if(flagJava == -1){
 	  if(signature_position_style.equals(sMATRIX))
 		  posMatriz = true;
 	  else
 		  posMatriz = false;
-	  
+    }
 	  //Verificar se a imagem da rubrica é igual a da assinatura
 	  if(rubric_image.equals(sSIGNATURE))
 		  rubimgSameass = true;
