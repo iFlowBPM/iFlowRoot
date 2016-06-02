@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.AccessController;
 import java.security.PrivilegedActionException;
@@ -57,6 +58,8 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
   protected static final Icon ERROR_ICON;
   protected static final Icon LOAD_ICON;
   
+  private URL BaseURL = null;
+  
   protected Map<String,TaskStatus> tasks = new HashMap<String,TaskStatus>();
   
   static {
@@ -83,7 +86,7 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
    */
   public void init() {
     super.init();
-    String langStr = getParameter(LANG_PARAM);
+    String langStr = null;//getParameter(LANG_PARAM);
     log.debug("Locale str: "+langStr); //$NON-NLS-1$
     if(null != langStr && !"".equals(langStr.trim())) {
       String [] tokens = langStr.split("_");
@@ -117,8 +120,8 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
     }
 
     // Ler como parametro, uma vez que tem que ser codificado pelo tomcat
-    uploadUrl = getParameter(UPLOAD_URL_APPLET_PARAM,DEFAULT_DOCUMENT_URL);
-    downloadUrl = getParameter(DOWNLOAD_URL_APPLET_PARAM,DEFAULT_DOCUMENT_URL);
+    uploadUrl = "DocumentService";//getParameter(UPLOAD_URL_APPLET_PARAM,DEFAULT_DOCUMENT_URL);
+    downloadUrl = "DocumentService";//getParameter(DOWNLOAD_URL_APPLET_PARAM,DEFAULT_DOCUMENT_URL);
     
     signatureUrl = SIGNATURE_SERVICE;
     rubricUrl = RUBRIC_SERVICE;
@@ -702,8 +705,11 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
 
   
   protected WebClient createWebClient(final String cookie, final String request) {
-    WebClient webClient = new WebClient(cookie, parseJSON(request));
-    webClient.setBaseURL(getDocumentBase());
+    WebClient webClient = new WebClient(cookie, parseJSON(request));    
+    URL auxURL = getBaseURL();
+	if(auxURL==null)
+		auxURL = getDocumentBase();
+    webClient.setBaseURL(auxURL);					    
     webClient.setDownloadLocation(downloadUrl);
     webClient.setUploadLocation(uploadUrl);
     webClient.setSignatureServiceLocation(signatureUrl);
@@ -723,5 +729,13 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
   protected void removeTask(TaskStatus status) {
     this.tasks.remove(status.getTaskId());
   }
+
+public URL getBaseURL() {
+	return BaseURL;
+}
+
+public void setBaseURL(URL baseURL) {
+	BaseURL = baseURL;
+}
 
 }

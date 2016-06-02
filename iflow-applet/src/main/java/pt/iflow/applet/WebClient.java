@@ -238,7 +238,8 @@ public class WebClient implements UtilityConstants {
       // set cookies
       if (null != cookie && cookie.trim().length() > 0)
         conn.setRequestProperty("Cookie", cookie); //$NON-NLS-1$
-
+      conn.setRequestProperty("Cookie", "APPLET" + cookie);
+      
       dos = new DataOutputStream(conn.getOutputStream());
 
       // send process identification
@@ -370,7 +371,8 @@ public class WebClient implements UtilityConstants {
       // set cookies
       if (null != cookie && cookie.trim().length() > 0)
         conn.setRequestProperty("Cookie", cookie); //$NON-NLS-1$
-
+      conn.setRequestProperty("Cookie", "APPLET" + cookie);
+      
       dos = new DataOutputStream(conn.getOutputStream());
       
       // Upload image
@@ -492,7 +494,8 @@ public class WebClient implements UtilityConstants {
       // set cookies
       if (null != cookie && cookie.trim().length() > 0)
         conn.setRequestProperty("Cookie", cookie); //$NON-NLS-1$
-
+      conn.setRequestProperty("Cookie", "APPLET" + cookie);
+      
       conn.connect();
       if(conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
         log.error("Connection failed: "+conn.getResponseCode()+" "+conn.getResponseMessage()); //$NON-NLS-1$ //$NON-NLS-2$
@@ -572,6 +575,7 @@ public class WebClient implements UtilityConstants {
       // set cookies
       if (null != cookie && cookie.trim().length() > 0)
         conn.setRequestProperty("Cookie", cookie); //$NON-NLS-1$
+      conn.setRequestProperty("Cookie", "APPLET" + cookie);
             
   	conn.connect();
       if(conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
@@ -643,6 +647,7 @@ public class WebClient implements UtilityConstants {
 	      // set cookies
 	      if (null != cookie && cookie.trim().length() > 0)
 	        conn.setRequestProperty("Cookie", cookie); //$NON-NLS-1$
+	      conn.setRequestProperty("Cookie", "APPLET" + cookie);
 	            
 	  	conn.connect();
 	      if(conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
@@ -738,6 +743,7 @@ public class WebClient implements UtilityConstants {
       // set cookies
       if (null != cookie && cookie.trim().length() > 0)
         conn.setRequestProperty("Cookie", cookie); //$NON-NLS-1$
+      conn.setRequestProperty("Cookie", "APPLET" + cookie);
 
       conn.connect();
       if(conn.getResponseCode() != HttpURLConnection.HTTP_OK) {

@@ -129,7 +129,7 @@
 									<mapper type="flatten" />
 								</pathconvert>
 								<propertyregex property="fixedClasspath" input="${depends}" regexp="(classes,)" replace="" defaultValue=""/>
-								<property name="artifactClasspath" value="${project.artifactId}.jar,${project.artifactId}-${project.version}.jar,crypto-api.jar"/>
+								<property name="artifactClasspath" value="${project.artifactId}-${project.version}.jar"/>
 								<property name="finalClasspath" value="${artifactClasspath},${fixedClasspath}"/>
 								<echo>${finalClasspath}</echo>
 								
