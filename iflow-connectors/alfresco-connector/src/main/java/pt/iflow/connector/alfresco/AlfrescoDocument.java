@@ -194,4 +194,14 @@ public class AlfrescoDocument implements DMSDocument, Serializable {
     // TODO Auto-generated method stub
 
   }
+
+public String getDocurl() {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+public void setDocurl(String docurl) {
+	// TODO Auto-generated method stub
+	
+}
 }
