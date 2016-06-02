@@ -50,6 +50,7 @@ public class IMAPMailSSLClient extends IMAPMailClient {
     props.setProperty( "mail.imap.socketFactory.class", SSL_FACTORY);
     props.setProperty( "mail.imap.socketFactory.fallback", "false");
     props.setProperty( "mail.imap.socketFactory.port", String.valueOf(this._nPort));
+    props.setProperty("mail.store.protocol", "imaps");
     
     super.init(props);  
   }

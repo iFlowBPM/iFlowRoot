@@ -11,6 +11,7 @@ public class MailStartSettings {
   private String subjectVar;
   private String sentDateVar;
   private String filesVar;
+  private String textVar;
 
   private LinkedMap<String, String> customProps;
   
@@ -57,6 +58,7 @@ public class MailStartSettings {
     ret.subjectVar = startBlock.getAttribute(IFlowData.sMAIL_START_INFO_PREFIX + IFlowData.MAILSTART_SUBJECT_PROP); 
     ret.sentDateVar = startBlock.getAttribute(IFlowData.sMAIL_START_INFO_PREFIX + IFlowData.MAILSTART_SENT_DATE_PROP);
     ret.filesVar = startBlock.getAttribute(IFlowData.sMAIL_START_INFO_PREFIX + IFlowData.MAILSTART_DOCS_PROP);
+    ret.textVar = startBlock.getAttribute(IFlowData.sMAIL_START_INFO_PREFIX + IFlowData.MAILSTART_TEXT_PROP);
     
     for (int i=0; true; i++) {
       String mailprop = startBlock.getAttribute(IFlowData.sMAIL_START_VARS_PREFIX + IFlowData.MAILSTART_MAIL_PROP + i); 
@@ -84,8 +86,17 @@ public class MailStartSettings {
       StringUtils.isNotEmpty(fromNameVar) ||
       StringUtils.isNotEmpty(subjectVar) ||
       StringUtils.isNotEmpty(sentDateVar) ||
+      StringUtils.isNotEmpty(textVar) ||
       StringUtils.isNotEmpty(filesVar) ||
       (customProps != null && !customProps.isEmpty());
   }
+
+public String getTextVar() {
+	return textVar;
+}
+
+public void setTextVar(String textVar) {
+	this.textVar = textVar;
+}
   
 }

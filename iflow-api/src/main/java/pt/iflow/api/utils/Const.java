@@ -95,6 +95,7 @@ public class Const {
   public static final String CLICK_TIMEOUT_NAME = "CLICK_TIMEOUT";
 
   public static String DOCS_BASE_URL = null;
+  public static String DOCS_DAO_CLASS = null;  
 
   public static final String MISSING_PROC_MID_ERROR_MSG = "Informa&ccedil;&atilde;o sobre estado actual do processo n&atilde;o foi encontrada.<br>Por favor tente novamente.";
   public static final String PROC_CHANGED_ERROR_MSG = "Processo alterado por outro utilizador. Os presentes dados foram actualizados (as altera&ccedil;&otilde;es efectuadas n&atilde;o foram guardadas).";
@@ -664,6 +665,7 @@ public class Const {
     	nEXCEL_LIBRARY = nEXCEL_LIBRARY_JXL;
 
     DOCS_BASE_URL = Setup.getProperty("DOCS_BASE_URL");
+    DOCS_DAO_CLASS = Setup.getProperty("DOCS_DAO_CLASS");
     
     try {
       sDELEGATION_NOTIFY_REQUEST_MODE = Setup.getProperty("DELEGATION_NOTIFY_REQUEST_MODE").toLowerCase();

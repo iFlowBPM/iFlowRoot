@@ -35,6 +35,7 @@ public interface IFlowData {
   public static String MAILSTART_SUBJECT_PROP = "MS_SUBJ"; //$NON-NLS-1$
   public static String MAILSTART_SENT_DATE_PROP = "MS_SD"; //$NON-NLS-1$
   public static String MAILSTART_DOCS_PROP = "MS_DOCS"; //$NON-NLS-1$
+  public static String MAILSTART_TEXT_PROP = "MS_TEXT";
   public static final String MAILSTART_MAIL_PROP = "MS_MP"; //$NON-NLS-1$
   public static final String MAILSTART_FLOW_VAR = "MS_VAR"; //$NON-NLS-1$
 

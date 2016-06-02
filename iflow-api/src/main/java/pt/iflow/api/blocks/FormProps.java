@@ -58,6 +58,7 @@ public class FormProps {
   public final static String HOUR_FORMAT = "hour_format";
   public final static String HOUR_FORMAT_ID = "hour_format_id";
   public final static String FORM_TEMPLATE = "form_template";
+  public final static String KEEP_SCROLL_ONLOAD = "keep_scroll_onload";
 
   
   // Some extra prop properties
@@ -120,6 +121,9 @@ public class FormProps {
   public final static String sBUTTON_ATTR_IGNORE_FORM_VALIDATION = "ignoreformvalidation"; //$NON-NLS-1$
   
   public final static String sBUTTON_CLICKED = "_button_clicked_id"; //$NON-NLS-1$
+  public static final String FLOWID = "flowid";//$NON-NLS-1$
+  public static final String PID = "pid";//$NON-NLS-1$
+  public static final String SUBPID = "subpid";//$NON-NLS-1$
   
   private FormProps() {}
 }

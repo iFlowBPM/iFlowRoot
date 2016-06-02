@@ -51,7 +51,7 @@ public abstract class AbstractPropertiesMessageParser extends AbstractMessagePar
       contentStream = part.getInputStream();
     }
     
-    props.load(contentStream);
+    props.load(contentStream);    
   }
   
   
