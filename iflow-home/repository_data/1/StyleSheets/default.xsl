@@ -51,6 +51,7 @@
         <link rel="stylesheet" type="text/css" href="{$url_prefix}/javascript/yahoo/container/assets/container-core.css" />
         <link rel="stylesheet" type="text/css" href="{$url_prefix}/Themes/generic/iflow_form.css" media="all" title="iflow_form" />
         <link rel="stylesheet" type="text/css" href="{$url_prefix}/javascript/calendar/calendar-iflow.css" media="all" />
+        <link rel="stylesheet" type="text/css" href="{$url_prefix}/javascript/jquery-ui/jquery-ui.css" />
 	    <style type="text/css">
 		html {
 	font-family: Verdana, Arial, sans-serif;
@@ -491,7 +492,7 @@ label.subheader {
 * html li.password { height: 20px; }
 
 		</style>
-  		<script type="text/javascript" src="{$url_prefix}/javascript/yahoo/yahoo-dom-event/yahoo-dom-event.js" />
+		<script type="text/javascript" src="{$url_prefix}/javascript/yahoo/yahoo-dom-event/yahoo-dom-event.js" />
   		<script type="text/javascript" src="{$url_prefix}/javascript/yahoo/dragdrop/dragdrop-min.js" />
   		<script type="text/javascript" src="{$url_prefix}/javascript/yahoo/container/container-min.js" />
         <script type="text/javascript" src="{$url_prefix}/javascript/ajax_processing.js" />
@@ -504,7 +505,7 @@ label.subheader {
   		<script type="text/javascript" src="{$url_prefix}/javascript/FormFunctions.js"></script>
   		<script type="text/javascript" src="{$url_prefix}/javascript/Stickman.MultiUpload.js"></script>
         <script type="text/javascript" src="{$url_prefix}/javascript/livevalidation_standalone.js"> </script>
-        <script type="text/javascript" src="{$url_prefix}/Themes/{$theme}/javascript/theme.js"> </script>
+        <script type="text/javascript" src="{$url_prefix}/Themes/{$theme}/javascript/theme.js"> </script>            	   
   		
 		<!-- Carrega codigo javacript de interaccao com a applet e prepara o ambiente -->
 		<script type="text/javascript" src="{$url_prefix}/javascript/applet_functions.js" > </script>
@@ -1436,9 +1437,14 @@ label.subheader {
 	                <xsl:if test="../show_edition='true'">
 	                  	<xsl:choose>
 							<xsl:when test="($use_scanner='true' and ../scanner_enabled='true') or (../signatureType!='' and ../signatureType!='NONE')">
-			                  	<img class="toolTipImg" border="0" width="16" height="16" src="{$url_prefix}/images/icon_resync.png" alt="Substituir" title="Substituir o documento original" >
-									<xsl:attribute name="onclick">replaceFile('<xsl:value-of select="../variable" />','<xsl:value-of select="id"/>','<xsl:value-of select="../signatureType"/>','<xsl:value-of select="../encryptType"/>')</xsl:attribute>
-			                  	</img>
+			                  	<img class="toolTipImg" border="0" width="16" height="16" src="{$url_prefix}/images/icon_resync.png" alt="Substituir" title="Substituir o documento original">
+				                  		<xsl:attribute name="onclick">
+				                  			window.parent.jQuery.get('/iFlow/AppletWebstart?action=replaceFile&amp;flowid=<xsl:value-of select="../flowid" />&amp;pid=<xsl:value-of select="../pid" />&amp;subpid=<xsl:value-of select="../subpid" />&amp;variable=<xsl:value-of select="../variable" />&amp;fileid=<xsl:value-of select="id"/>&amp;signatureType=<xsl:value-of select="../signatureType"/>&amp;encryptType=<xsl:value-of select="../encryptType"/>');
+				                  			window.parent.jQuery(this).fadeToggle('slow', function(){
+				                  				window.parent.jQuery(this).fadeToggle('slow');
+				                  				});
+				                  		</xsl:attribute>				                  	
+				                  	</img>			                  	
 							</xsl:when>
 							<xsl:otherwise>
 		                    	<input type="file" name="{../variable}_upd_[{id}]" size="20" />
@@ -1447,9 +1453,15 @@ label.subheader {
 	                </xsl:if>
 
 					<xsl:if test="../file_sign_existing='true'">
-	                  	<img class="toolTipImg" border="0" width="16" height="16" src="{$url_prefix}/images/sign.png" alt="Assinar" title="Assinar o documento original" >
-							<xsl:attribute name="onclick">modifyFile('<xsl:value-of select="../variable" />','<xsl:value-of select="id"/>','<xsl:value-of select="../signatureType"/>','<xsl:value-of select="../encryptType"/>')</xsl:attribute>
-	                  	</img>
+						<img class="toolTipImg" border="0" width="16" height="16" src="{$url_prefix}/images/sign.png" alt="Assinar" title="Assinar o documento original">
+							<xsl:attribute name="onclick">
+								window.parent.jQuery.get('/iFlow/AppletWebstart?action=modifyFile&amp;flowid=<xsl:value-of select="../flowid" />&amp;pid=<xsl:value-of select="../pid" />&amp;subpid=<xsl:value-of select="../subpid" />&amp;variable=<xsl:value-of select="../variable" />&amp;fileid=<xsl:value-of select="id"/>&amp;signatureType=<xsl:value-of select="../signatureType"/>&amp;encryptType=<xsl:value-of select="../encryptType"/>');
+								var key = this;
+								window.parent.jQuery(this).fadeToggle('slow', function(event){
+				                  	window.parent.jQuery(this).fadeToggle('slow');
+				                  	});
+	                  		</xsl:attribute>	
+						</img>								                  	
 					</xsl:if>
                   </td>
                 </xsl:if>
@@ -1488,13 +1500,15 @@ label.subheader {
 						<xsl:when test="($use_scanner='true' and scanner_enabled='true') or (signatureType!='' and signatureType!='NONE')">
 							<div class="multiupload">
 								<xsl:if test="$use_scanner='true' and scanner_enabled='true'">
-		                    	<input id="scanfile" name="scanfile" type="button" value="Digitalizar" class="button" >
-									<xsl:attribute name="onClick">scanFile('<xsl:value-of select="variable" />','<xsl:value-of select="signatureType"/>','<xsl:value-of select="encryptType"/>',<xsl:value-of select="upload_limit" />)</xsl:attribute>
-								</input>
-								</xsl:if>
-								<input id="loadfile" name="loadfile" type="button" value="Carregar" class="button" >
-									<xsl:attribute name="onclick">uploadFile('<xsl:value-of select="variable" />','<xsl:value-of select="signatureType"/>','<xsl:value-of select="encryptType"/>',<xsl:value-of select="upload_limit" />)</xsl:attribute>
-								</input>
+			                    	<a>
+										<xsl:attribute name="onclick">window.parent.jQuery.get('/iFlow/AppletWebstart?action=scanFile&amp;flowid=<xsl:value-of select="flowid" />&amp;pid=<xsl:value-of select="pid" />&amp;subpid=<xsl:value-of select="subpid" />&amp;variable=<xsl:value-of select="variable" />&amp;signatureType=<xsl:value-of select="signatureType"/>&amp;encryptType=<xsl:value-of select="encryptType"/>&amp;upload_limit=<xsl:value-of select="upload_limit"/>')</xsl:attribute>
+	                  					<input id="scanfile" name="scanfile" type="button" value="Digitalizar" class="button"/>		                  							
+	                 				</a>		                    	
+								</xsl:if>								
+									<a>
+										<xsl:attribute name="onclick">window.parent.jQuery.get('/iFlow/AppletWebstart?action=uploadFile&amp;flowid=<xsl:value-of select="flowid" />&amp;pid=<xsl:value-of select="pid" />&amp;subpid=<xsl:value-of select="subpid" />&amp;variable=<xsl:value-of select="variable" />&amp;signatureType=<xsl:value-of select="signatureType"/>&amp;encryptType=<xsl:value-of select="encryptType"/>&amp;upload_limit=<xsl:value-of select="upload_limit"/>')</xsl:attribute>		                  							
+	                  					<input id="loadfile" name="loadfile" type="button" value="Carregar" class="button"/>
+	                  				</a>																	
 								<div class="list">
 									<xsl:attribute name="id">list_<xsl:value-of select="variable" /></xsl:attribute>
 								</div>
@@ -1578,8 +1592,14 @@ label.subheader {
 
 
   <xsl:template match="error">
-    <div class="error_msg">
-      <xsl:value-of select="text" disable-output-escaping="yes" />
+    <div id="error_msg" class="error_msg">      
+      	<xsl:value-of select="text" disable-output-escaping="yes" />            
+    </div>
+    <div id="error_msg_hidden" class="error_msg" style="display:none">    
+    	<xsl:attribute name="title">
+           <xsl:value-of select="title" disable-output-escaping="yes" />
+        </xsl:attribute>  
+      	<p><xsl:value-of select="text" disable-output-escaping="yes" /></p>            
     </div>
   </xsl:template>
 

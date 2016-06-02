@@ -59,9 +59,15 @@
 	
 	<script type="text/javascript" src="javascript/tutorial.js"></script>
 	<script type="text/javascript" src="$response.encodeURL('javascript/applet.js')"></script>
-<script type="text/javascript" src="javascript/processAnnotations.js"></script>
-	<script type="text/javascript" src="javascript/applet_functions.js"></script>
-
+	<script type="text/javascript" src="javascript/processAnnotations.js"></script>
+	<script type="text/javascript" src="javascript/applet_functions.js"></script>	
+	
+   	<script type="text/javascript" src="javascript/jquery-1.10.2.js"> </script>
+	<script>var $jQuery = jQuery.noConflict();</script>		
+	<script type="text/javascript" src="javascript/jquery-ui/jquery-ui.js"> </script>
+	<script type="text/javascript" src="javascript/jscolor/jscolor.js"> </script>
+	<link rel="stylesheet" href="javascript/jquery-ui/jquery-ui.css">	
+  		
 	<script language="JavaScript">
 	function calcFrameHeight(frameName) {
 	  //find the height of the internal page
@@ -70,6 +76,10 @@
 	  //change the height of the iframe
 	  //document.getElementById(frameName).height = the_height;
 	  document.getElementById(frameName).style.height = the_height.toString() + 'px';
+	  
+	  //auto scroll if changed form
+	  if (document.getElementById('open_proc_frame').contentWindow.$('_changed_form').value=='_changed_form')
+			 scroll(0,0);
 	}
 	
 		<!--
@@ -156,11 +166,12 @@
 			#end
 
 			#* Inject applet inside element body (right here...) *#
+			//DEPRECATED since 20160517!!
 			//setApplet('div_applet');
 			//getAppletElem();
 			
 		}
-
+				
 	</script>  
 
 </head>
@@ -256,6 +267,7 @@
 				: <a class="menu_link" href="javascript:tutorialModeOn();"  title="$tooltip_tutorial">$link_tutorial</a>
 			#end	
 			: <a class="menu_link" href="javascript:tabber('help',helpNavJSP,'sel=8',helpJSP,'sel=8&ts=$ts');"  title="$tooltip_help">$link_help</a>
+			: <a class="menu_link" target="_blank" href="./AppletWebstart"  title="$tooltip_signature">$link_signature</a>
 			<!--
 			(<a class="menu_link" href="javascript:toggleHelpMode();" title="" id="helpModeSwitch">
 				  <span id="show_inline_help" class="$hiddenShowInlineHelp">$showInlineHelp</span>
@@ -378,6 +390,7 @@
           <iframe onload="calcFrameHeight('open_proc_frame');" id="open_proc_frame" name="open_proc_frame" frameborder="0" scrolling="auto" marginheight="0" marginwidth="0" width="100%" height="100%" src="" class="open_proc_frame_colapsed" style="display:block;">
            your browser does not support iframes or they are disabled at this time
           </iframe>
+          
         </div>
       </div>
     </div>

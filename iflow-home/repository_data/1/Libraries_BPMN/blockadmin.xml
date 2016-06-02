@@ -111,4 +111,51 @@
     <color r="0" g="0" b="255" a="127"/>
     <i18n>library.administration.block.undo_process.name</i18n>
   </XmlBlock>
+  <XmlBlock>
+    <class>BlockAdminMigrateDocument</class>
+    <XmlAttribute>
+        <name>docid</name>
+        <description>docid</description>
+        <value />
+    </XmlAttribute>
+      <XmlPort>
+      <name>portIn</name>
+      <description>portIn</description>
+      <in_out>in</in_out>
+      <position>
+        <x>-2</x>
+        <y>40</y>
+      </position>
+    </XmlPort>
+    <XmlPort>
+      <name>portSuccess</name>
+      <description>portSuccess</description>
+      <in_out>out</in_out>
+      <position>
+        <x>105</x>
+        <y>20</y>
+      </position>
+    </XmlPort>
+    <XmlPort>
+      <name>portEmpty</name>
+      <description>portEmpty</description>
+      <in_out>out</in_out>
+      <position>
+        <x>105</x>
+        <y>39</y>
+      </position>
+    </XmlPort>
+    <XmlPort>
+      <name>portError</name>
+      <description>portError</description>
+      <in_out>out</in_out>
+      <position>
+        <x>105</x>
+        <y>62</y>
+      </position>
+    </XmlPort>
+    <image>bpmn_task.png</image>
+    <description><i18n>library.administration.block.migrate_document</i18n></description>    
+    <i18n>library.administration.block.migrate_document</i18n>
+  </XmlBlock>
 </XmlLibrary>
