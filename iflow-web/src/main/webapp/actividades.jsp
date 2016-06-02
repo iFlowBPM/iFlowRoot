@@ -738,7 +738,7 @@ function editFolder(folderid, from){
 		document.activities_form.nextstartindex.value='<%=nNextStartIndex%>';
 		var editname = escape(document.getElementById('edit_'+folderid).value);
 		var cor = escape(document.getElementById('bt_pickColor_'+folderid).color);
-		alert(cor);
+		//alert(cor);
 		if(editname != "" && cor != "ffffff") 
 			tabber_right(2, '<%=response.encodeURL("actividades.jsp")%>?editfolder='+folderid+'&editname='+editname+'&color='+cor);
 	} else {

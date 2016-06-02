@@ -23,6 +23,8 @@ import pt.iflow.api.notification.NotificationManager;
 import pt.iflow.api.presentation.FlowApplications;
 import pt.iflow.api.presentation.OrganizationTheme;
 import pt.iflow.api.processannotation.ProcessAnnotationManager;
+import pt.iflow.api.utils.Const;
+import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.UserInfoFactory;
 import pt.iflow.delegations.DelegationInfoBean;
 import pt.iflow.errors.ErrorManager;
@@ -51,8 +53,17 @@ public class BeanFactoryImpl extends BeanFactory {
   }
 
   @Override
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   protected Documents doGetDocumentsBean() {
-    return DocumentsBean.getInstance();
+	  if(Const.DOCS_DAO_CLASS==null)
+		  return DocumentsBean.getInstance();
+	  else try {			
+			Class DocumentsDAO = Class.forName(Const.DOCS_DAO_CLASS);
+			return (Documents) DocumentsDAO.getMethod("getInstance").invoke(null);
+		} catch (Exception e) {
+			Logger.error("iFlow", this, "doGetDocumentsBean", "Error getting Documents DAO, Class=" + Const.DOCS_DAO_CLASS, e);
+			return null;
+		}
   }
 
   @Override

@@ -108,18 +108,13 @@ public class SubFlowDataExpander {
             subFlowData.getPrimaryBlock().getXmlPort()[1].setName(PORT_OUT_COPY);
             break;
           }
-
-          Logger.debug(userInfo.getUtilizador(), this, "expandSubFlow", "INI - validate Sub Flow");
+          Logger.debug(userInfo.getUtilizador(), this, "expandSubFlow", "starting on Sub Flow: " + subFlow.getName());          
           validateSubFlow(subFlow, userInfo);
-          Logger.debug(userInfo.getUtilizador(), this, "expandSubFlow", "FIM - validate Sub Flow");
-
-          Logger.debug(userInfo.getUtilizador(), this, "expandSubFlow", "INI - add Sub Flow catalog vars to Main flow");
           addSubCatalogVarsToMain(subFlow);
-          Logger.debug(userInfo.getUtilizador(), this, "expandSubFlow", "FIM - add Sub Flow catalog vars to Main flow");
 
-          Logger.debug(userInfo.getUtilizador(), this, "expandSubFlow", "INI - assign new block ids to sub flow blocks");
+          int tempMappings = blockMappings.size();
           blockMappings.addAll(assignNewBlockIds(subFlowData, findMaxblockId()));
-          Logger.debug(userInfo.getUtilizador(), this, "expandSubFlow", "FIM - assign new block ids to sub flow blocks");
+          Logger.debug(userInfo.getUtilizador(), this, "expandSubFlow", "added " + (blockMappings.size() - tempMappings)+ " from Sub Flow: " + subFlow.getName());
 
           Logger.debug(userInfo.getUtilizador(), this, "expandSubFlow", "INI - create copy blocks in sub flow");
           buildCopyBlocksInSubFlow(subFlowData, userInfo);

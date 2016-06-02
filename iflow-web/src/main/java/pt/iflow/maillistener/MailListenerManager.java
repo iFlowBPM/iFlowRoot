@@ -18,6 +18,8 @@ import java.util.Set;
 import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.Part;
 import javax.mail.internet.InternetAddress;
 
 import org.apache.commons.lang.StringUtils;
@@ -234,6 +236,7 @@ public class MailListenerManager extends Thread {
           String fromEmail = "";
           String fromName = "";
           String subject = "";
+          String text = "";
           Date sentDate = null;
 
           try {
@@ -261,6 +264,25 @@ public class MailListenerManager extends Thread {
           } catch (MessagingException e) {
             Logger.adminWarning("MailListenerManager", "parse", "error getting sent date", e);
           }
+          try {
+        	  if (message.isMimeType("multipart/*")) {
+	
+		        Multipart mp = (Multipart)message.getContent();
+		        for (int i = 0; i < mp.getCount(); i++) {
+		          Part bp = mp.getBodyPart(i);
+	
+		          String disposition = bp.getDisposition();
+		          if (!StringUtils.equalsIgnoreCase(disposition, Part.ATTACHMENT)) {
+		        	  text += getText(message);
+		          }
+		        }
+		      }
+		      else {
+		        text = getText(message);
+		      }        	      
+          } catch (Exception e) {
+            Logger.adminWarning("MailListenerManager", "parse", "error getting text", e);
+          }
 
           Properties props = parseProperties(message);
           List<File> files = parseFiles(message);
@@ -269,6 +291,7 @@ public class MailListenerManager extends Thread {
           setVar(procData, "fromName", mailsettings.getFromNameVar(), fromName);
           setVar(procData, "subject", mailsettings.getSubjectVar(), subject);
           setVar(procData, "sentDate", mailsettings.getSentDateVar(), sentDate.toString()); // TODO
+          setVar(procData, "text", mailsettings.getTextVar(), text); 
           if (mailsettings.getCustomProps() != null) {
             for (String mailprop : mailsettings.getCustomProps().asList()) {
               String var = mailsettings.getCustomPropVar(mailprop);

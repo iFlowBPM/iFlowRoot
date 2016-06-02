@@ -49,7 +49,7 @@ public class RubricServiceServlet extends HttpServlet {
 	  
   
   protected void doHead(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    HttpSession session = request.getSession();
+	  HttpSession session = DocumentServiceServlet.getSessionFixedForJNLP(request);
 
     // User must be authenticated
     UserInfoInterface userInfo = (UserInfoInterface) session.getAttribute(Const.USER_INFO);
@@ -62,7 +62,7 @@ public class RubricServiceServlet extends HttpServlet {
   }
   
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	    HttpSession session = request.getSession();
+	  HttpSession session = DocumentServiceServlet.getSessionFixedForJNLP(request);
 
 	    // User must be authenticated
 	    UserInfoInterface userInfo = (UserInfoInterface) session.getAttribute(Const.USER_INFO);
@@ -93,7 +93,7 @@ public class RubricServiceServlet extends HttpServlet {
   
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-    HttpSession session = request.getSession();
+	  HttpSession session = DocumentServiceServlet.getSessionFixedForJNLP(request);
     UserInfoInterface userInfo = (UserInfoInterface) session.getAttribute(Const.USER_INFO);
     if (null == userInfo) {
       Logger.error("<unknown>", this, "doPost", "Invalid user/user not authenticated.");

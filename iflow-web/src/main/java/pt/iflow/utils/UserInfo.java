@@ -765,7 +765,7 @@ public class UserInfo implements Serializable, UserInfoInterface {
     for(OrganizationViewInterface org: allOrg){
 	    Collection<UserData> allUserData = ap.getAllUsers(org.getOrganizationId());
 	    for(UserData userData: allUserData)
-	    	if(StringUtils.equalsIgnoreCase(userData.get("employeeid"), employeeid)){
+	    	if(StringUtils.equalsIgnoreCase(userData.get("employeeid"), employeeid) && StringUtils.equalsIgnoreCase(userData.get("activated"), "1")){
 	    		asLogin = userData.getUsername();
 	    		break;
 	    	}

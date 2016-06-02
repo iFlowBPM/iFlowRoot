@@ -68,45 +68,42 @@ import pt.iknow.utils.StringUtilities;
  */
 public class DocumentsBean implements Documents {
 
-  private static final int STREAM_SIZE = 8096;
-  private static DocumentsBean instance = null;
+  static final int STREAM_SIZE = 8096;
+  static DocumentsBean instance = null;
 
-  private static String docsBaseUrl = null;
-  private static boolean docDataInDB = true;
+  static String docsBaseUrl = null;
+  static boolean docDataInDB = true;
 
-  static {
-    //Verifica se existe URL absoluto
-    docsBaseUrl = Const.DOCS_BASE_URL;
-    if (StringUtilities.isNotEmpty(docsBaseUrl)) {
-      docDataInDB = false;
-      File f = new File(docsBaseUrl);
-      if (!f.isDirectory()) {
-        //Verifica se existe URL relativo
-        docsBaseUrl = FilenameUtils.concat(Const.IFLOW_HOME, Const.DOCS_BASE_URL);
-        f = new File(docsBaseUrl);
-        if (!f.isDirectory()) {
-          //tenta criar URL relativo
-          try {
-            FileUtils.forceMkdir(f);
-          } catch (Exception e) {
-            //tenta criar URL absoluto
-            try {
-              docsBaseUrl = Const.DOCS_BASE_URL;
-              f = new File(docsBaseUrl);
-              FileUtils.forceMkdir(f);
-            } catch (Exception ex) {
-              Logger.error("", "DocumentsBean", "static", "O URL : '" + Const.DOCS_BASE_URL + "' não corresponde a uma pasta.");
-              docDataInDB = true;
-              docsBaseUrl = null;
-            }
-          }
-        }
-      }
-    }
-  }
-
-  private DocumentsBean() {
-  }
+  DocumentsBean() {
+	    //Verifica se existe URL absoluto
+	    docsBaseUrl = Const.DOCS_BASE_URL;
+	    if (StringUtilities.isNotEmpty(docsBaseUrl)) {
+	      docDataInDB = false;
+	      File f = new File(docsBaseUrl);
+	      if (!f.isDirectory()) {
+	        //Verifica se existe URL relativo
+	        docsBaseUrl = FilenameUtils.concat(Const.IFLOW_HOME, Const.DOCS_BASE_URL);
+	        f = new File(docsBaseUrl);
+	        if (!f.isDirectory()) {
+	          //tenta criar URL relativo
+	          try {
+	            FileUtils.forceMkdir(f);
+	          } catch (Exception e) {
+	            //tenta criar URL absoluto
+	            try {
+	              docsBaseUrl = Const.DOCS_BASE_URL;
+	              f = new File(docsBaseUrl);
+	              FileUtils.forceMkdir(f);
+	            } catch (Exception ex) {
+	              Logger.error("", "DocumentsBean", "static", "O URL : '" + Const.DOCS_BASE_URL + "' n�o corresponde a uma pasta.");
+	              docDataInDB = true;
+	              docsBaseUrl = null;
+	            }
+	          }
+	        }
+	      }
+	    }
+	  }
 
   public static DocumentsBean getInstance() {
     if (null == instance)
@@ -268,7 +265,7 @@ public class DocumentsBean implements Documents {
     return doc;
   }
 
-  private Document addDocument(UserInfoInterface userInfo, ProcessData procData, Document adoc, Connection db) throws Exception {
+  Document addDocument(UserInfoInterface userInfo, ProcessData procData, Document adoc, Connection db) throws Exception {
 
     if (null == userInfo) {
       Logger.error(null, this, "addDocument", "Invalid user");
@@ -396,7 +393,7 @@ public class DocumentsBean implements Documents {
     return adoc;
   }
 
-  private Document updateDocument(UserInfoInterface userInfo, ProcessData procData, Document adoc, Connection db, boolean updateContents) throws Exception {
+  Document updateDocument(UserInfoInterface userInfo, ProcessData procData, Document adoc, Connection db, boolean updateContents) throws Exception {
     PreparedStatement pst = null;
     ResultSet rs = null;
     try {
@@ -456,7 +453,7 @@ public class DocumentsBean implements Documents {
   }
 
   // To preserve the current transaction...
-  private Document getDocumentFromDB(Connection db, int docid) throws SQLException {
+  protected Document getDocumentFromDB(Connection db, int docid) throws SQLException {
     PreparedStatement pst = null;
     DocumentData dbDoc = new DocumentData();
     ResultSet rs = null;
@@ -627,7 +624,7 @@ public class DocumentsBean implements Documents {
     	return retObj;
   }
 
-  private Document getDocumentData(UserInfoInterface userInfo, ProcessData procData, Document adoc, Connection db, boolean abFull) {
+  Document getDocumentData(UserInfoInterface userInfo, ProcessData procData, Document adoc, Connection db, boolean abFull) {
     DocumentData retObj = null;
     if (adoc instanceof DocumentData) {
       retObj = (DocumentData) adoc;
@@ -736,7 +733,7 @@ public class DocumentsBean implements Documents {
     return (doc instanceof DMSDocument) && StringUtils.isNotBlank(((DMSDocument) doc).getUuid());
   }
 
-  private boolean isLocked(UserInfoInterface userInfo, ProcessData procData, int docid) {
+  protected boolean isLocked(UserInfoInterface userInfo, ProcessData procData, int docid) {
     if (isDMSDocument(userInfo, procData, docid)) {
       try {
         return DMSUtils.getInstance().isLocked(DMSConnectorUtils.createCredential(userInfo, procData),
@@ -748,7 +745,7 @@ public class DocumentsBean implements Documents {
     return false;
   }
 
-  private boolean canCreate(UserInfoInterface userInfo, ProcessData procData, Document adoc) {
+  protected boolean canCreate(UserInfoInterface userInfo, ProcessData procData, Document adoc) {
     if (null == userInfo) {
       Logger.debug("<unknown>", this, "canCreate", "Invalid user");
       return false; // invalid user
@@ -774,7 +771,7 @@ public class DocumentsBean implements Documents {
     return true;
   }
 
-  private boolean canUpdate(UserInfoInterface userInfo, ProcessData procData, Document adoc) {
+  protected boolean canUpdate(UserInfoInterface userInfo, ProcessData procData, Document adoc) {
     if (null == userInfo) {
       Logger.warning("<unknown>", this, "canUpdate", "Invalid user");
       return false; // invalid user
@@ -802,7 +799,7 @@ public class DocumentsBean implements Documents {
     return true;
   }
 
-  private boolean canRead(UserInfoInterface userInfo, ProcessData procData, Document adoc) {
+  protected boolean canRead(UserInfoInterface userInfo, ProcessData procData, Document adoc) {
     if (null == userInfo) {
       Logger.debug("<unknown>", this, "canRead", "Invalid user");
       return false; // invalid user

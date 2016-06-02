@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<web-app id="web-app_1" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" version="2.4">
+<web-app id="web-app_1" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">		
+
  <!--
 Disabled. Use servlet container defaults
 <session-config>
@@ -15,7 +16,7 @@ Disabled. Use servlet container defaults
     include them in a file called filter-mappings.xml and put that in
     the same directory.
     -->
-
+	
    <filter>
       <filter-name>EncodingFilter</filter-name>
       <filter-class>pt.iflow.servlets.EncodingFilter</filter-class>
@@ -398,10 +399,21 @@ Disabled. Use servlet container defaults
 	  <load-on-startup>100</load-on-startup>
   </servlet>
   
-   <servlet>
+  <servlet>
 	  <display-name>Authentication AD for BIC Servlet</display-name>
 	  <servlet-name>AuthenticationBICServlet</servlet-name>
 	  <servlet-class>pt.iflow.servlets.AuthenticationBICServlet</servlet-class>	  
+  </servlet>
+  
+  <servlet>
+	  <display-name>iFlow Applet Webstart</display-name>
+	  <servlet-name>AppletWebstart</servlet-name>
+	  <servlet-class>pt.iflow.servlets.AppletWebstart</servlet-class>	  
+  </servlet>
+  <servlet>
+	  <display-name>Applet Request Checker</display-name>
+	  <servlet-name>CheckRequestForApplet</servlet-name>
+	  <servlet-class>pt.iflow.servlets.CheckRequestForApplet</servlet-class>
   </servlet>
 
    <!-- end of axis -->
@@ -708,6 +720,16 @@ Disabled. Use servlet container defaults
       <servlet-name>AuthenticationBICServlet</servlet-name>
       <url-pattern>/AuthenticationBICServlet</url-pattern>
    </servlet-mapping>
+   
+   <servlet-mapping>
+      <servlet-name>AppletWebstart</servlet-name>
+      <url-pattern>/AppletWebstart</url-pattern>
+   </servlet-mapping>
+   <servlet-mapping>
+      <servlet-name>CheckRequestForApplet</servlet-name>
+      <url-pattern>/CheckRequestForApplet</url-pattern>
+   </servlet-mapping>
+   
   <!-- servlet-mapping>
     <servlet-name>iFlow REST Service</servlet-name>
     <url-pattern>/iFlowRest/*</url-pattern>

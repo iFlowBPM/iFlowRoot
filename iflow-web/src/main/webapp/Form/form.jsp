@@ -57,6 +57,14 @@ String popupReturnBlockId = null;
         return;
     }
     
+    //Check if went from a form to another within the same flow       	   	
+   	if(StringUtils.equals("" + session.getAttribute("last_flowid"), "" + bBlockJSP.getFlowId()) && !StringUtils.equals("" + session.getAttribute("last_blockid"), "" + bBlockJSP.getId()))
+   		session.setAttribute("_changed_form", "_changed_form");
+   	else
+   		session.setAttribute("_changed_form", null);
+	session.setAttribute("last_flowid" , "" + bBlockJSP.getFlowId());
+    session.setAttribute("last_blockid", "" + bBlockJSP.getId());   			
+    
 
 	// OP: 0 - entering page/reload
     //     1 - unused
@@ -247,6 +255,9 @@ String popupReturnBlockId = null;
             session.removeAttribute(Const.sSWITCH_PROC_SESSION_ATTRIBUTE);
         }
         
+        //if chabged form scroll back to top
+        hmHidden.put("_changed_form", ""+session.getAttribute("_changed_form"));
+     	
         //button_clicked_id for auto scrolling the form
         hmHidden.put("_button_clicked_id", ""+session.getAttribute("_button_clicked_id"));
      	session.removeAttribute("_button_clicked_id");

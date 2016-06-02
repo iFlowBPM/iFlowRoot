@@ -159,12 +159,18 @@ function sum(var1, var2, vardest) {
 }
 
 function disableForm() {
+	disableForm(false);
+}
+
+function disableForm(keepScrollOnLoad) {
 	if (document.getElementById('_formLoadingDiv')) {
 		document.getElementById('_formLoadingDiv').style.display='';
 		if (document.forms && document.forms.length > 0 && document.forms[0])
 			document.forms[0].style.display='';
 	}
-	backToTop();
+	
+	if (!keepScrollOnLoad)
+		backToTop();
 }
 
 function enableForm() {

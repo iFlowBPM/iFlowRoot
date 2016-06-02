@@ -1303,7 +1303,7 @@ public class FlowHolderBean implements FlowHolder {
 
     try {
       db = Utils.getDataSource().getConnection();
-      pst = db.prepareStatement("SELECT created FROM iflow.subflow_block_mapping s where flowname=? group by created order by created desc");
+      pst = db.prepareStatement("SELECT created FROM subflow_block_mapping s where flowname=? group by created order by created desc");
       pst.setString(1, subFlowBlockMappings.get(0).getMainFlowName());
       ResultSet rst = pst.executeQuery();
       
@@ -1314,9 +1314,9 @@ public class FlowHolderBean implements FlowHolder {
       
       pst = db.
     		  prepareStatement("SELECT O.mapped_blockid as oid, N.mapped_blockid as nid FROM " +
-    				  			"(SELECT sub_flowname, original_blockid,mapped_blockid FROM iflow.subflow_block_mapping s where flowname=? and created=?) O " +
+    				  			"(SELECT sub_flowname, original_blockid,mapped_blockid FROM subflow_block_mapping s where flowname=? and created=?) O " +
     				  			"left join " +
-    				  			"(SELECT sub_flowname, original_blockid,mapped_blockid FROM iflow.subflow_block_mapping s where flowname=? and created=?) N " +    				  			
+    				  			"(SELECT sub_flowname, original_blockid,mapped_blockid FROM subflow_block_mapping s where flowname=? and created=?) N " +    				  			
     				  			"on (O.original_blockid=N.original_blockid and O.sub_flowname=N.sub_flowname) order by oid desc"); 
       pst.setString(1, subFlowBlockMappings.get(0).getMainFlowName());
       pst.setTimestamp(2, preiousMapping);
@@ -1344,16 +1344,18 @@ public class FlowHolderBean implements FlowHolder {
     PreparedStatement pst = null;
     try {
       db = Utils.getDataSource().getConnection();
+      db.setAutoCommit(true);
       pst = db.prepareStatement("UPDATE flow SET max_block_id = ? WHERE flowid=?");
       pst.setInt(1, maxblockId);
       pst.setInt(2, flowId);
       pst.execute();
+      pst.close();
 
       // check if mappings have changed before saving them
       
       pst = db
           .prepareStatement("select flowname, sub_flowname, original_blockid, mapped_blockid from subflow_block_mapping "
-              + "bm where bm.flowname=? and bm.created=(select max(created) from iflow.subflow_block_mapping where flowname=?) order by id");
+              + "bm where bm.flowname=? and bm.created=(select max(created) from subflow_block_mapping where flowname=?) order by id");
       pst.setString(1, subFlowBlockMappings.get(0).getMainFlowName());
       pst.setString(2, subFlowBlockMappings.get(0).getMainFlowName());
       ResultSet rs = pst.executeQuery();
@@ -1369,25 +1371,27 @@ public class FlowHolderBean implements FlowHolder {
           mappingsChanged = true;
       }
       if (rs.next())
-        mappingsChanged = true;
-
-      if (mappingsChanged) {
+        mappingsChanged = true;            
+      pst.close();
+      
+      if (mappingsChanged) {    	    	
         Timestamp d = new Timestamp(new Date().getTime());
+        Logger.debug(userInfo.getUtilizador(), this, "saveSubFlowExpansionResult", "saving for Flowid " + flowId  + " mappings" + subFlowBlockMappings.size());
         for (SubFlowMapping subFlowMapping : subFlowBlockMappings) {
-          pst = db
-              .prepareStatement("INSERT INTO subflow_block_mapping (created,flowname, sub_flowname, original_blockid, mapped_blockid) VALUES(?,?,?,?,?)");
+          String query = DBQueryManager.getQuery("FlowHolder.SAVE_SUBFLOW_EXPANSION");
+          pst = db.prepareStatement(query);
           pst.setTimestamp(1, d);
           pst.setString(2, subFlowMapping.getMainFlowName());
           pst.setString(3, subFlowMapping.getSubFlowName());
           pst.setInt(4, subFlowMapping.getOriginalBlockId());
           pst.setInt(5, subFlowMapping.getMappedBlockId());
           pst.execute();
+          pst.close();
         }
       }
       return mappingsChanged;
     } catch (Exception e) {
-      Logger.error(userInfo.getUtilizador(), this, "readFlow", "exception caught", e);
-      e.printStackTrace();
+      Logger.error(userInfo.getUtilizador(), this, "saveSubFlowExpansionResult", "exception caught", e);      
     } finally {
       DatabaseInterface.closeResources(db, pst);
     }

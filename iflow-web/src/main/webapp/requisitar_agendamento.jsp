@@ -28,6 +28,10 @@ if (StringUtils.isNotEmpty(fdFormData.getParameter(DUMMY))) {
 boolean cbRequest = StringUtils.equals("true",fdFormData.getParameter("cb_request"));
 String [] cbFlowids = fdFormData.getParameterValues("cb_flowid");
 if(null == cbFlowids) cbFlowids = new String[0];
+for(int i=0; i<cbFlowids.length; i++)
+	cbFlowids[i] = StringEscapeUtils.unescapeHtml(cbFlowids[i]);
+
+
 
 {
 ArrayList<String> alHelper = new ArrayList<String>();

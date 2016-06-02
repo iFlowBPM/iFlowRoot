@@ -115,6 +115,9 @@ ListIterator<Activity> it = null;
 if (sCancel.equals("false") && sbError.length() == 0 && flowid > 0 && fromPage) {
   it = pm.getProcessActivities(userInfo, flowid, pid, subpid);
 }
+
+if(fromPage && sHtml==null && (it==null || !it.hasNext()) )
+	sbError.append(messages.getString("user_procs.msg.noProcs"));
 %>
 
 
