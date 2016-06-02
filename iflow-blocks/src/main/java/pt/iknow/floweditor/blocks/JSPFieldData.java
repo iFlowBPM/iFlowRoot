@@ -227,6 +227,7 @@ public class JSPFieldData {
   public final static int nPROP_POPUP_CALLER_VARIABLE = 116;
   public final static int nPROP_POPUP_VARIABLES = 117;
   public final static int nPROP_FORM_TEMPLATE = 118;
+  public final static int nPROP_KEEP_SCROLL_ONLOAD = 119;
   // ...
 
 
@@ -616,7 +617,7 @@ public class JSPFieldData {
     _hmPropCodeNames.put(new Integer(JSPFieldData.nPROP_POPUP_CALLER_VARIABLE), MASTER_FLOW_VARIABLES);
     _hmPropCodeNames.put(new Integer(JSPFieldData.nPROP_POPUP_VARIABLES), POPUP_VARIABLES);
     _hmPropCodeNames.put(new Integer(JSPFieldData.nPROP_FORM_TEMPLATE), FormProps.FORM_TEMPLATE);
-
+    _hmPropCodeNames.put(new Integer(JSPFieldData.nPROP_KEEP_SCROLL_ONLOAD), FormProps.KEEP_SCROLL_ONLOAD);
 
     // PROP LABELS
     _hmPropLabels.put(new Integer(JSPFieldData.nPROP_NONE),adapter.getString("217")); //$NON-NLS-1$
@@ -856,7 +857,8 @@ public class JSPFieldData {
         adapter.getString("JSPFieldData.proplabel.popup.popup_flow_variables"));
     _hmPropLabels.put(new Integer(JSPFieldData.nPROP_FORM_TEMPLATE), adapter.getString("JSPFieldData.proplabel."
         + FormProps.FORM_TEMPLATE));
-
+    _hmPropLabels.put(new Integer(JSPFieldData.nPROP_KEEP_SCROLL_ONLOAD), adapter.getString("JSPFieldData.proplabel."
+		+ FormProps.KEEP_SCROLL_ONLOAD));
 
     // DATA TYPES
     _hmDataTypes.put(new Integer(JSPFieldData.nDATA_TYPE_NONE),
@@ -1390,6 +1392,7 @@ public class JSPFieldData {
     case JSPFieldData.nPROP_FILE_IS_IMAGE:
     case JSPFieldData.nPROP_BUTTON_IGNORE_FORM_PROCESSING:
     case JSPFieldData.nPROP_BUTTON_IGNORE_FORM_VALIDATION:
+    case JSPFieldData.nPROP_KEEP_SCROLL_ONLOAD:
     case JSPFieldData.nPROP_BUTTON_CONFIRM_ACTION:
       if (ec != null) {
         ((JCheckBox)ec).setSelected((new Boolean(asValue)).booleanValue());
@@ -2524,6 +2527,7 @@ public class JSPFieldData {
       case JSPFieldData.nPROP_FILE_IS_IMAGE:
       case JSPFieldData.nPROP_BUTTON_IGNORE_FORM_PROCESSING:
       case JSPFieldData.nPROP_BUTTON_IGNORE_FORM_VALIDATION:
+      case JSPFieldData.nPROP_KEEP_SCROLL_ONLOAD:
       case JSPFieldData.nPROP_BUTTON_CONFIRM_ACTION:
         if (jValue == null) {
           jValue = new JCheckBox();
@@ -2692,6 +2696,7 @@ public class JSPFieldData {
         case JSPFieldData.nPROP_FILE_IS_IMAGE:
         case JSPFieldData.nPROP_BUTTON_IGNORE_FORM_PROCESSING:
         case JSPFieldData.nPROP_BUTTON_IGNORE_FORM_VALIDATION:
+        case JSPFieldData.nPROP_KEEP_SCROLL_ONLOAD:
         case JSPFieldData.nPROP_BUTTON_CONFIRM_ACTION:
           // item listener: checkbox
           ((JCheckBox)jValue).addItemListener(new DependencyCheckListener(jValue, pd, altmp, altmp2));
@@ -2862,6 +2867,7 @@ public class JSPFieldData {
         case JSPFieldData.nPROP_FILE_IS_IMAGE:
         case JSPFieldData.nPROP_BUTTON_IGNORE_FORM_PROCESSING:
         case JSPFieldData.nPROP_BUTTON_IGNORE_FORM_VALIDATION:
+        case JSPFieldData.nPROP_KEEP_SCROLL_ONLOAD:
         case JSPFieldData.nPROP_BUTTON_CONFIRM_ACTION:
           if (jValue == null) {
             jValue = new JCheckBox();
@@ -3183,6 +3189,7 @@ public class JSPFieldData {
         case JSPFieldData.nPROP_FILE_IS_IMAGE:
         case JSPFieldData.nPROP_BUTTON_IGNORE_FORM_PROCESSING:
         case JSPFieldData.nPROP_BUTTON_IGNORE_FORM_VALIDATION:
+        case JSPFieldData.nPROP_KEEP_SCROLL_ONLOAD:
         case JSPFieldData.nPROP_BUTTON_CONFIRM_ACTION:
           stmp = String.valueOf(((JCheckBox)jValue).isSelected());
           break;
@@ -3273,6 +3280,7 @@ public class JSPFieldData {
           case JSPFieldData.nPROP_FILE_IS_IMAGE:
           case JSPFieldData.nPROP_BUTTON_IGNORE_FORM_PROCESSING:
           case JSPFieldData.nPROP_BUTTON_IGNORE_FORM_VALIDATION:
+          case JSPFieldData.nPROP_KEEP_SCROLL_ONLOAD:
           case JSPFieldData.nPROP_BUTTON_CONFIRM_ACTION:
             stmp = String.valueOf(((JCheckBox)jValue).isSelected());
             break;

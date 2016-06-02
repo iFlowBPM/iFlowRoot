@@ -8,14 +8,18 @@ import javax.mail.internet.InternetAddress;
 
 import pt.iflow.api.blocks.Block;
 import pt.iflow.api.blocks.Port;
+import pt.iflow.api.core.BeanFactory;
+import pt.iflow.api.documents.Documents;
 import pt.iflow.api.notification.Email;
 import pt.iflow.api.notification.EmailManager;
 import pt.iflow.api.notification.EmailTemplate;
 import pt.iflow.api.processdata.ProcessData;
+import pt.iflow.api.processdata.ProcessListVariable;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.UserInfoInterface;
 import pt.iflow.api.utils.Utils;
+import pt.iflow.connector.document.Document;
 
 /**
  * <p>Title: BlockEmail</p>
@@ -36,6 +40,8 @@ public class BlockEmail extends Block {
   public final static String sEMAIL_SUBJECT = "subject";
   public final static String sEMAIL_MESSAGE = "message";
   public final static String sEMAIL_TEMPLATE = "template";
+  public final static String sEMAIL_ATTACHMENT = "attachment"; //$NON-NLS-1$
+  public final static String sEMAIL_ATTACHMENT_COMPRESS = "compress"; //$NON-NLS-1$
 
   public BlockEmail(int anFlowId,int id, int subflowblockid, String filename) {
     super(anFlowId,id, subflowblockid, filename);
@@ -88,7 +94,7 @@ public class BlockEmail extends Block {
   public Port after(UserInfoInterface userInfo, ProcessData procData) {
     Port outPort = portSuccess;
     StringBuffer logMsg = new StringBuffer();
-    
+    Documents docBean = BeanFactory.getDocumentsBean();
     String user = userInfo.getUtilizador();
     
     if(!Const.bUSE_EMAIL) {
@@ -103,6 +109,8 @@ public class BlockEmail extends Block {
         String aSubject = getAttribute(sEMAIL_SUBJECT);
         String aMessage = getAttribute(sEMAIL_MESSAGE);
         String template = getAttribute(sEMAIL_TEMPLATE);
+        String sAttachment = getAttribute(sEMAIL_ATTACHMENT);
+        String sCompress = getParsedAttribute(userInfo, sEMAIL_ATTACHMENT_COMPRESS, procData); 
         if (Logger.isDebugEnabled()) {
           Logger.debug(user, this, "after", "ATTR To: "+aTo);
           Logger.debug(user, this, "after", "ATTR From: "+aFrom);
@@ -140,6 +148,30 @@ public class BlockEmail extends Block {
         } catch (Exception e) {
           Logger.warning(user, this, "after", 
               procData.getSignature() + "exception transforming message: " + aMessage);
+        }
+        Document[] attachment = null;
+        try {
+        	ProcessListVariable docsVar = procData.getList(sAttachment);
+        	attachment = new Document[docsVar.size()];
+            for (int i = 0; i < docsVar.size(); i++) {
+            	Document doc = null;
+            	if (docsVar.getItem(i).getValue() instanceof Integer) 
+            		doc = docBean.getDocument(userInfo, procData, ((Integer) docsVar.getItem(i).getValue()).intValue());            	
+            	else 
+            		doc = docBean.getDocument(userInfo, procData, ((Long) docsVar.getItem(i).getValue()).intValue());  
+            	
+            	attachment[i]=doc;
+            }
+        } catch (Exception e) {
+        	Logger.warning(user, this, "after", 
+            procData.getSignature() + "exception transforming attachment: " + sAttachment);
+        }	
+        Boolean compress = Boolean.FALSE;
+        try {
+        	compress = "1".equals(sCompress) || "true".equalsIgnoreCase(sCompress);
+        } catch (Exception e) {
+        	Logger.warning(user, this, "after", 
+            procData.getSignature() + "exception transforming compress: " + sCompress);
         }
 
         if (Logger.isDebugEnabled()) {        
@@ -228,6 +260,8 @@ public class BlockEmail extends Block {
                 email.resetTo();
                 email.setTo(mailto);
                 email.setCallingProcess(procData.getProcessHeader());
+                email.setAttachment(attachment);
+                email.setCompressAttachment(compress);
                 
                 if (email.sendMsg()) {
                   logMsg.append("Mail sent To: " + mailto + ";");

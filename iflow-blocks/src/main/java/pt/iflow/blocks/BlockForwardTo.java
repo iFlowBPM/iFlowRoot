@@ -1,6 +1,7 @@
 package pt.iflow.blocks;
 
 import java.text.MessageFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -12,10 +13,12 @@ import pt.iflow.api.blocks.Block;
 import pt.iflow.api.blocks.MessageBlock;
 import pt.iflow.api.blocks.Port;
 import pt.iflow.api.core.Activity;
+import pt.iflow.api.core.AuthProfile;
 import pt.iflow.api.core.BeanFactory;
 import pt.iflow.api.core.ProcessManager;
 import pt.iflow.api.core.UserManager;
 import pt.iflow.api.processdata.ProcessData;
+import pt.iflow.api.userdata.UserData;
 import pt.iflow.api.userdata.views.UserViewInterface;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.UserInfoInterface;
@@ -154,22 +157,27 @@ public class BlockForwardTo extends Block implements MessageBlock {
                     }
                 }
             } else if (sType.equals(BlockForwardTo.sFORWARD_TO_ORGANIC_UNIT)){
+            	AuthProfile ap = BeanFactory.getAuthProfileBean();
             	String destinationOrganicUnitName = procData.transform(userInfo, sOrganicUnit);
             	HashMap<String,String> ouIdName = new HashMap<String, String>();
-            	UserViewInterface[] allUsers = um.getAllUsers(userInfo);
-            	String ouId=null,destinationUser="";
+            	//UserViewInterface[] allUsers = um.getAllUsers(userInfo);
+            	Iterable<UserData> allUsers = ap.getAllUsers(userInfo.getOrganization());
             	
-            	for(UserViewInterface uvi: allUsers){
-            		String ouName = um.getOrganizationalUnit(userInfo, uvi.getUnitId()).getName();
-            		if(StringUtils.equals(ouName, destinationOrganicUnitName))
-            			ouId = uvi.getUnitId();
+            	String destinationUser="";
+            	
+            	for(UserData uvi: allUsers){
+            		if(StringUtils.equals(destinationOrganicUnitName,uvi.getUnit()))
+            				destinationUser+=uvi.getUsername() + ",";;
+//            		String ouName = um.getOrganizationalUnit(userInfo, uvi.getUnitId()).getName();
+//            		if(StringUtils.equals(ouName, destinationOrganicUnitName))
+//            			ouId = uvi.getUnitId();
             	}
             	
-            	for(UserViewInterface uvi: allUsers)
-            		if(StringUtils.equals(ouId, uvi.getUnitId()))
-            			destinationUser+=uvi.getUsername() + ",";
+//            	for(UserData uvi: allUsers)
+//            		if(StringUtils.equals(ouId, uvi.getUnitId()))
+//            			destinationUser+=uvi.getUsername() + ",";
             	
-            	if(ouId==null || destinationUser.isEmpty()){
+            	if(destinationUser.isEmpty()){
             		bOk = false;
             		throw new Exception("Invalid/Empty Organic Unit: " + destinationOrganicUnitName);
             	} else {            	            

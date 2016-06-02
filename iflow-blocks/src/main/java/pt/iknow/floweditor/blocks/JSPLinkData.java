@@ -38,6 +38,7 @@ public  class JSPLinkData extends JSPFieldData {
     this._alEditSingleProps.add(new Integer(JSPFieldData.nPROP_ALIGNMENT));
     this._alEditSingleProps.add(new Integer(JSPFieldData.nPROP_CONTROL_ON_COND));
     this._alEditSingleProps.add(new Integer(JSPFieldData.nPROP_PROC_LINK));
+    this._alEditSingleProps.add(new Integer(JSPFieldData.nPROP_KEEP_SCROLL_ONLOAD));
     this._alEditSingleProps.add(new Integer(JSPFieldData.nPROP_URL));
     this._alEditSingleProps.add(new Integer(JSPFieldData.nPROP_OPEN_NEW_WINDOW));
     this._alEditSingleProps.add(new Integer(JSPFieldData.nPROP_WINDOW_NAME));
@@ -73,6 +74,8 @@ public  class JSPLinkData extends JSPFieldData {
     // next dependency item should not be necessary, since nPROP_WINDOW_NAME depends 
     // on nPROP_OPEN_NEW_WINDOW: TODO
     pdi = new PropDependencyItem(JSPFieldData.nPROP_WINDOW_NAME, PropDependency.nDISABLE);
+    pd.addDependency(pdi);
+    pdi = new PropDependencyItem(JSPFieldData.nPROP_KEEP_SCROLL_ONLOAD, PropDependency.nENABLE);
     pd.addDependency(pdi);
     this._hmPropDependencies.put(new Integer(JSPFieldData.nPROP_PROC_LINK), pd);
 

@@ -86,12 +86,13 @@ public class AlteraAtributosStart extends AbstractAlteraAtributos implements Alt
 
   
   // Mail start
-  private static int MAILSTART_INFO_PROP_COUNT = 5;
+  private static int MAILSTART_INFO_PROP_COUNT = 6;
   private static String MAILSTART_FROM_EMAIL_PROP = "MS_FROMEMAIL"; //$NON-NLS-1$
   private static String MAILSTART_FROM_NAME_PROP = "MS_FROMNAME"; //$NON-NLS-1$
   private static String MAILSTART_SUBJECT_PROP = "MS_SUBJ"; //$NON-NLS-1$
   private static String MAILSTART_SENT_DATE_PROP = "MS_SD"; //$NON-NLS-1$
   private static String MAILSTART_DOCS_PROP = "MS_DOCS"; //$NON-NLS-1$
+  private static String MAILSTART_TEXT_PROP = "MS_TEXT"; //$NON-NLS-1$
   private static final String MAILSTART_MAIL_PROP = "MS_MP"; //$NON-NLS-1$
   private static final String MAILSTART_FLOW_VAR = "MS_VAR"; //$NON-NLS-1$
   
@@ -134,6 +135,7 @@ public class AlteraAtributosStart extends AbstractAlteraAtributos implements Alt
   private JTextField jtfMSSubject = new JTextField(20);
   private JTextField jtfMSSentDate = new JTextField(20);
   private JTextField jtfMSDocs = new JTextField(20);
+  private JTextField jtfMSText = new JTextField(20);
 //  private JScrollPane jScrollMSVars = new JScrollPane();
   private MyJTableX jTableMSVars = new MyJTableX();
   private JButton jButtonMSVarAdd = new JButton();
@@ -336,7 +338,11 @@ public class AlteraAtributosStart extends AbstractAlteraAtributos implements Alt
     beginIndex++;
     newAttributes[beginIndex][0] = sMAIL_START_INFO_PREFIX + MAILSTART_DOCS_PROP;
     newAttributes[beginIndex][1] = jtfMSDocs.getText();
-    newAttributes[beginIndex][2] = MAILSTART_DOCS_PROP;      
+    newAttributes[beginIndex][2] = MAILSTART_DOCS_PROP;
+    beginIndex++;
+    newAttributes[beginIndex][0] = sMAIL_START_INFO_PREFIX + MAILSTART_TEXT_PROP;
+    newAttributes[beginIndex][1] = jtfMSText.getText();
+    newAttributes[beginIndex][2] = MAILSTART_TEXT_PROP;
     
     newAttributes[newAttributes.length-3][0]=sDETAIL_FORM_BID;
     newAttributes[newAttributes.length-3][1]=detailFormBID;
@@ -435,6 +441,9 @@ public class AlteraAtributosStart extends AbstractAlteraAtributos implements Alt
         }
         else if (StringUtils.equals(name, sMAIL_START_INFO_PREFIX + MAILSTART_DOCS_PROP)) {
           jtfMSDocs.setText(value);
+        }
+        else if (StringUtils.equals(name, sMAIL_START_INFO_PREFIX + MAILSTART_TEXT_PROP)) {
+          jtfMSText.setText(value);
         }
       }
       else if (name.startsWith(sMAIL_START_VARS_PREFIX)) {
@@ -737,7 +746,19 @@ public class AlteraAtributosStart extends AbstractAlteraAtributos implements Alt
         jPanelMSInfo.add(jtfMSDocs, sC);
         sC.gridwidth = 1;
         
-        
+        // Text var
+        jLabel = new JLabel(adapter.getString("AlteraAtributosStart.mailstart.text"));
+        jLabel.setHorizontalAlignment(JLabel.LEFT);
+        jLabel.setLabelFor(jtfMSText);
+        jPanelMSInfo.add(jLabel, sC);
+        // separator
+        sizer = new JPanel();
+        sizer.setSize(5, 1);
+        jPanelMSInfo.add(sizer, sC);
+        sC.gridwidth = GridBagConstraints.REMAINDER;
+        jPanelMSInfo.add(jtfMSText, sC);
+        sC.gridwidth = 1;
+                
         // prop mapping
         BorderLayout jPanelMSVarsLayout = new BorderLayout();
         JPanel jPanelMSVars = new JPanel();
