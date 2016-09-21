@@ -1,3 +1,17 @@
+﻿CREATE PROCEDURE get_next_pid 
+  @retnodekey INT OUT
+AS
+BEGIN
+	DECLARE @tmp INT
+    set @retnodekey = 1
+    select @tmp = value from counter where name='nodekey'
+    update counter set value=(@tmp +1) where  name='nodekey'
+    select @retnodekey = value from counter where name='nodekey'    
+END
+GO
+
+
+
 CREATE TABLE system_users (
   userid INT NOT NULL IDENTITY(1,1),
   username VARCHAR(50) NOT NULL,
@@ -1989,30 +2003,20 @@ INSERT INTO label (name, description, icon) values ('Importante', 'Tarefas impor
 INSERT INTO label (name, description, icon) values ('Nota', 'Tarefas anotadas', 'label_normal.png');
 
 GO
-CREATE INDEX IDX_REPORTING ON dbo.reporting(flowid , pid ,subpid );
+CREATE INDEX IDX_REPORTING ON reporting(flowid , pid ,subpid );
 GO
 
 INSERT INTO counter VALUES ('nodekey',0,GETDATE());
 
-CREATE TABLE  dbo.active_node (
+CREATE TABLE  active_node (
   nodekey varchar(50) NOT NULL,
   expiration DATETIME NOT NULL,
   PRIMARY KEY (nodekey)
 );
 
-CREATE PROCEDURE get_next_pid 
-  @retnodekey INT OUT
-AS
-BEGIN
-	DECLARE @tmp INT
-    set @retnodekey = 1
-    select value into @tmp from counter where name='nodekey'
-    update counter set value=(@tmp +1) where  name='nodekey'
-    select value into @retnodekey from counter where name='nodekey'    
-END
 GO
 
-CREATE TABLE  dbo.sharedobjectrefresh (
+CREATE TABLE  sharedobjectrefresh (
   id int NOT NULL IDENTITY,
   flowid int NOT NULL,
   PRIMARY KEY (id)
