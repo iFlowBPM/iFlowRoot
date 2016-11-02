@@ -51,7 +51,7 @@ public class BlockDocumentGet extends Block {
   
   public BlockDocumentGet(int anFlowId, int id, int subflowblockid, String filename) {
     super(anFlowId, id, subflowblockid, filename);
-    saveFlowState = false;
+    saveFlowState = true;
   }
 
   /*

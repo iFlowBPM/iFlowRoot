@@ -23,7 +23,7 @@ public class BlockSaveToDB extends Block {
     super(anFlowId,id, subflowblockid, filename);
     hasInteraction = false;
     bProcInDBRequired = true;
-    saveFlowState = false;
+    saveFlowState = true;
   }
 
   public Port[] getInPorts (UserInfoInterface userInfo) {

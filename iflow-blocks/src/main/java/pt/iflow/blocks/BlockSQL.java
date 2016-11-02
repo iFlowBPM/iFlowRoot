@@ -73,7 +73,7 @@ public abstract class BlockSQL extends Block {
   public BlockSQL(int anFlowId,int id, int subflowblockid, String filename) {
     super(anFlowId,id, subflowblockid, filename);
     hasInteraction = false;
-    saveFlowState = false;
+    saveFlowState = true;
 
     java.util.Date dtOld = _dtLastBuild;
     java.util.Date dtNow = new java.util.Date();

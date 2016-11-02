@@ -23,6 +23,14 @@ String popupReturnBlockId = null;
     Block bBlockJSP = null;
     if(fdFormData.getParameter("_button_clicked_id")!=null)
     	session.setAttribute("_button_clicked_id", fdFormData.getParameter("_button_clicked_id"));
+	
+	Enumeration<String>paramNames = fdFormData.getParameterNames();
+	while(paramNames.hasMoreElements()){
+		String auxParamName = paramNames.nextElement(); 
+		if(auxParamName.startsWith("_tabholder_selected"))
+			session.setAttribute(auxParamName, fdFormData.getParameter(auxParamName));
+	}    	
+    	
     String currMid = String.valueOf(pm.getModificationId(userInfo, procData.getProcessHeader()));
 
     HashMap<String, String> hmHidden = new HashMap<String, String>();
@@ -261,6 +269,16 @@ String popupReturnBlockId = null;
         //button_clicked_id for auto scrolling the form
         hmHidden.put("_button_clicked_id", ""+session.getAttribute("_button_clicked_id"));
      	session.removeAttribute("_button_clicked_id");
+     	
+     	//to keep previously selected tabs visible
+     	Enumeration<String> attrNames =  session.getAttributeNames();
+     	while(attrNames.hasMoreElements()){
+     		String auxAttrName = attrNames.nextElement();
+     		if(auxAttrName.startsWith("_tabholder_selected")){
+     			hmHidden.put(auxAttrName, ""+session.getAttribute(auxAttrName));
+     			session.removeAttribute(auxAttrName);
+     		}
+     	} 
         
         oa = new Object[4];
         oa[0] = userInfo;

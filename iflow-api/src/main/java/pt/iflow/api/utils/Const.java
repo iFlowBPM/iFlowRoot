@@ -411,6 +411,9 @@ public class Const {
   public static Long BEAT_ACTIVE_CHECK_TIME;
   public static Long BEAT_INACTIVE_CHECK_TIME;
   
+  //how many days until FLOW_STATE_HISTORY and LOGS are purged from database
+  public static Long DAYS_UNTIL_PURGE;
+  
   private static List<String> ALLOWED_LOCALES = new ArrayList<String>();
 
   static {
@@ -757,7 +760,11 @@ public class Const {
     } catch (Exception e) { 
     	BEAT_INACTIVE_CHECK_TIME=new Long(15000); 
     }
-    
+	try { 
+		DAYS_UNTIL_PURGE=Long.parseLong(Setup.getProperty("DAYS_UNTIL_PURGE"));
+    } catch (Exception e) { 
+    	DAYS_UNTIL_PURGE=new Long(-1); 
+    }
   }
 
   public static void main(String[] args) {

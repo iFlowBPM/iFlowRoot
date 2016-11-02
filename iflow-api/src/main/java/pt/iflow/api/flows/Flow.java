@@ -434,4 +434,11 @@ public interface Flow {
      */
     public abstract boolean setFlowType(UserInfoInterface userInfo, int flowid, FlowType flowType);
 
+    /**
+     * Purges Logs and FLOW_STATE_HISTORY
+     * @param userInfo
+     * @param dAYS_UNTIL_PURGE
+     */
+	public abstract void purge(UserInfoInterface userInfo, Long dAYS_UNTIL_PURGE);
+
 }

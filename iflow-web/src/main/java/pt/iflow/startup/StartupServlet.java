@@ -195,6 +195,23 @@ public class StartupServlet extends HttpServlet {
     	  Timer timer = new Timer();
     	  timer.schedule(new ListenersAutoRefresh(), Const.BEAT_ACTIVE_TIME*1000, Const.BEAT_ACTIVE_TIME*1000);    	  
       }
+    
+    //schedule the purge to once a day...
+    if(Const.DAYS_UNTIL_PURGE>=0){
+    	Timer timer = new Timer();    	
+    	timer.schedule(new PurgeTimerTask(), 1000, 24*60*60*1000);
+    }
+  }
+  
+  class PurgeTimerTask extends TimerTask{
+	  public void run(){
+		  UserInfoInterface userInfo = BeanFactory.getUserInfoFactory().newClassManager(this.getClass().getName());
+		  try{
+			  BeanFactory.getFlowBean().purge(userInfo, Const.DAYS_UNTIL_PURGE);
+		  } catch (Exception e) {
+              Logger.adminError("PurgeTimerTask", "FlowBean", "purge", e);
+		  }  	  
+	  }
   }
   
   class ListenersAutoRefresh extends TimerTask{

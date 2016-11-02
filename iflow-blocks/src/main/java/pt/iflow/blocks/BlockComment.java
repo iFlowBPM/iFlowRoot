@@ -19,7 +19,7 @@ public class BlockComment extends Block {
 
   public BlockComment(int anFlowId,int id, int subflowblockid, String filename) {
     super(anFlowId,id, subflowblockid, filename);
-    saveFlowState = false;
+    saveFlowState = true;
   }
 
   public Port getEventPort() {

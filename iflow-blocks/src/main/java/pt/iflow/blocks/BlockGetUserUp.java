@@ -28,7 +28,7 @@ public class BlockGetUserUp extends Block {
   public BlockGetUserUp(int anFlowId,int id, int subflowblockid, String filename) {
     super(anFlowId,id, subflowblockid, filename);
     hasInteraction = false;
-    saveFlowState = false;
+    saveFlowState = true;
     canRunInPopupBlock = false;
   }
 

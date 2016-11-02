@@ -24,7 +24,7 @@ public class BlockIsInProfiles extends Block {
   public BlockIsInProfiles(int anFlowId,int id, int subflowblockid, String filename) {
     super(anFlowId,id, subflowblockid, filename);
     hasInteraction = false;
-    saveFlowState = false;
+    saveFlowState = true;
   }
 
   public Port[] getOutPorts (UserInfoInterface userInfo) {

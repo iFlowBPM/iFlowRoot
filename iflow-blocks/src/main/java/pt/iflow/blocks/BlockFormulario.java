@@ -77,6 +77,7 @@ import pt.iflow.blocks.form.FieldInterface;
 import pt.iflow.blocks.form.PopupFormField;
 import pt.iflow.blocks.form.SQLSelection;
 import pt.iflow.blocks.form.Selection;
+import pt.iflow.blocks.form.TabDivision;
 import pt.iflow.blocks.form.utils.FormButton;
 import pt.iflow.blocks.form.utils.FormButtonType;
 import pt.iflow.blocks.form.utils.FormCache;
@@ -450,8 +451,10 @@ public class BlockFormulario extends Block implements FormOperations {
         Iterator <String> hiddenIter = ahmHiddenFields.keySet().iterator();
         while (hiddenIter.hasNext()) {
           stmp = hiddenIter.next();
-          stmp2 = ahmHiddenFields.get(stmp);
-          hmHiddenFields.put(stmp,stmp2);
+          if(!stmp.startsWith("_tabholder_selected")){
+	          stmp2 = ahmHiddenFields.get(stmp);
+	          hmHiddenFields.put(stmp,stmp2);
+          }
         }
       }
 
@@ -1023,6 +1026,10 @@ public class BlockFormulario extends Block implements FormOperations {
         // set odd property (to enable alternate bgcolors)
         if (nFieldCounter % 2 == 0) props.setProperty("even_field", "true");  // FIXME isto devia ficar la em cima antes do init
         else props.setProperty("even_field", "false");
+        
+        // last selected tab
+        if (fi instanceof TabDivision && ahmHiddenFields.get("_tabholder_selected" + props.getProperty("fieldid"))!=null)
+        	props.setProperty("_tabholder_selected", ahmHiddenFields.get("_tabholder_selected" + props.getProperty("fieldid")));
 
         // now get xml from field object
         stmp = fi.getXML(props);

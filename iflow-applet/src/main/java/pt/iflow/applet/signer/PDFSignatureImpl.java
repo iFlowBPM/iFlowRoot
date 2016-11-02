@@ -26,16 +26,18 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import pt.iflow.applet.DynamicField;
+import pt.iflow.applet.DynamicField.Type;
 import pt.iflow.applet.DynamicForm;
 import pt.iflow.applet.ExtensionFileFilter;
 import pt.iflow.applet.IDEntry;
 import pt.iflow.applet.IVFile;
 import pt.iflow.applet.LoadImageAction;
 import pt.iflow.applet.Messages;
+import pt.iflow.applet.StringUtils;
 import pt.iflow.applet.TempVFile;
 import pt.iflow.applet.WebClient;
-import pt.iflow.applet.DynamicField.Type;
 
+import com.lowagie.text.Cell;
 import com.lowagie.text.Image;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.AcroFields;
@@ -176,6 +178,7 @@ public class PDFSignatureImpl implements FileSigner {
     SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm"); //$NON-NLS-1$
     StringBuilder sb = new StringBuilder();
     sb.append(Messages.getString("PDFSignatureImpl.5")).append(PdfPKCS7.getSubjectFields(cert).getField("CN")); //$NON-NLS-1$ //$NON-NLS-2$
+    sb.append(", ");
     sb.append(Messages.getString("PDFSignatureImpl.7")).append(df.format(timestamp.getTime())); //$NON-NLS-1$
     return sb.toString();
   }
@@ -276,7 +279,25 @@ public class PDFSignatureImpl implements FileSigner {
     	    	else
     	    		sap.setVisibleSignature(new Rectangle(coord[0], coord[1], coord[0]+150, coord[1]+40), LoadImageAction.getPagToSign(), null);
     		    
-    	    	sap.setLayer2Text(getSignatureText((X509Certificate) chain[0], sap.getSignDate()));
+    	    	if(!StringUtils.isBlank(getReason()) || !StringUtils.isBlank(getLocation()) || !StringUtils.isBlank(getContact())){
+    	    		String signText = "\n" + getSignatureText((X509Certificate) chain[0], sap.getSignDate());
+    	    		if(!StringUtils.isBlank(getContact()))
+    	    			signText = getContact() + "\n" + signText;    	    		
+    	    		if(!StringUtils.isBlank(getLocation()))
+    	    			signText = getLocation() + "\n" + signText;
+    	    		if(!StringUtils.isBlank(getReason()))
+    	    			signText = getReason() + "\n" + signText;
+    	    		
+    	    		Cell cell = new Cell(signText);
+    	    		sap.setVisibleSignature(new Rectangle(coord[0], coord[1], coord[0]+400, coord[1]+80), LoadImageAction.getPagToSign(), null);
+    	    		sap.setAcro6Layers(true);
+    	    		sap.setLayer2Text(signText);
+//    	    		BufferedImage img = new BufferedImage(256, 128,BufferedImage.TYPE_INT_ARGB);
+//    	    		File f = new File("blank.png");
+//    	    		ImageIO.write(img, "PNG", f);
+//    	    		sap.setImage(Image.getInstance("blank.png"));
+    	    	} else
+    	    		sap.setLayer2Text(getSignatureText((X509Certificate) chain[0], sap.getSignDate()));
         }
     }
 

@@ -1515,7 +1515,7 @@ public class ProcessManagerBean implements ProcessManager {
       st = db.createStatement();
       StringBuffer query = new StringBuffer();
       query.append("SELECT pid FROM process");
-      query.append(" WHERE and closed=0 and flowid=" + flowid);
+      query.append(" WHERE closed=0 and flowid=" + flowid);
       if(subpid > 0) {
         query.append(" AND subpid=" + subpid);
       }

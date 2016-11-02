@@ -31,7 +31,7 @@ public class BlockCopia extends Block {
     super(anFlowId,id, subflowblockid, filename);
     isCodeGenerator = true;
     hasInteraction = false;
-    saveFlowState = false;
+    saveFlowState = true;
   }
 
   public Port[] getInPorts (UserInfoInterface userInfo) {

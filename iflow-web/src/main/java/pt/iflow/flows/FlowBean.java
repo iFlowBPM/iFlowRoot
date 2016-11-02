@@ -2649,5 +2649,41 @@ public class FlowBean implements Flow {
 
     return retObj;
   }
+  
+  public void purge(UserInfoInterface userInfo, Long purgingAgeDays){
+	  Connection db = null;
+	  PreparedStatement pst = null;
+	  try{
+		  java.sql.Date old = new java.sql.Date( (new java.util.Date()).getTime() - purgingAgeDays*24*60*60*1000);
+		  db = DatabaseInterface.getConnection(userInfo);
+		  db.setAutoCommit(false);
+		  
+		  pst = db.prepareStatement(DBQueryManager.getQuery("Flow.delete_flow_state_history"));
+		  pst.setDate(1, old);
+		  pst.executeUpdate();
+		  pst.close();
+		  		  
+		  pst = db.prepareStatement(DBQueryManager.getQuery("Flow.delete_flow_state_log"));		  		  		 
+		  pst.setDate(1, old);
+		  pst.executeUpdate();
+		  pst.close();
+		  
+		  pst = db.prepareStatement(DBQueryManager.getQuery("Flow.delete_log"));		  		  		 
+		  pst.setDate(1, old);
+		  pst.executeUpdate();
+		  pst.close();
+		
+		  DatabaseInterface.commitConnection(db);		
+	      } catch (Exception e) {
+	        Logger.adminError("FlowBean", "purge", "caught exception: " + e.getMessage(), e);
+	        try {
+	          DatabaseInterface.rollbackConnection(db);
+	        } catch (Exception er) {
+	          Logger.adminError("FlowBean", "purge", "exception rolling back connection: " + er.getMessage(), er);
+	        }	        
+	      } finally {
+	        DatabaseInterface.closeResources(db, pst);
+	      }
+  }
 
 }
