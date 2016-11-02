@@ -1,8 +1,0 @@
--------------------------------------------------------------------------------
-                           iFlow Release Notes                                
--------------------------------------------------------------------------------
-
-New Features:
- 		 - 959 - Anotações, Comentários, Filtro e Ordenação de Tarefas e Processos
-Bug fixes:
-Known Issues:

@@ -1,9 +1,0 @@
-/* Standard browser specific CSS */
-
-  .table_inc {
-    /* see http://www.webmasterworld.com/css/3202328.htm */
-    display: table;
-    width:90%;
-    min-width:90%;
-  }
-  

@@ -1,1 +1,0 @@
-alter table process_history add procdatazip BLOB NULL;

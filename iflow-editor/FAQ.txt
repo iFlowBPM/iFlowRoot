@@ -1,7 +1,0 @@
-- Não é possivel arrancar o editor no eclipse:
-    - "Sintomas"
-        -excepção "Null pointer" lancada por 
-            "mimeMapping = new MimetypesFileTypeMap(MVCWebServer.class.getResourceAsStream("mime.types"));"
-    - Resolução:
-        -Será necessario actualizar as configurações de debug/run:
-            - Adicionar a pasta META-INF do projecto iflow-editor ao classpath
