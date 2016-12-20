@@ -247,6 +247,10 @@ public class LoadImageAction implements ActionListener {
 			return false;
 	}
 	
+	public static Boolean getUseImageForSignature(){   
+		return jcbUtil.isSelected();
+	}
+	
 	public static com.lowagie.text.Image getAssImagePDF(){   
 		return imagePDF;
 	}

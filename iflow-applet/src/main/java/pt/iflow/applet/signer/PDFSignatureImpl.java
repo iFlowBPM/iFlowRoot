@@ -228,6 +228,11 @@ public class PDFSignatureImpl implements FileSigner {
     return result;
   }
   
+  public String getSignatureText(){
+	  Certificate [] chain = entry.getCertificateChain();
+	  return getSignatureText((X509Certificate) chain[0], Calendar.getInstance());	  
+  }
+  
   public String hashSignExternalTimestamp(String read, String write) throws Exception {
     Provider prov = entry.getProvider();
     PrivateKey key = entry.getPrivateKey();

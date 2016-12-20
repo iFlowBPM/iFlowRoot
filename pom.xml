@@ -59,7 +59,7 @@
 			<dependency>
 				<groupId>pt.iknow</groupId>
 				<artifactId>iutils</artifactId>
-				<version>2.0.4</version>
+				<version>2.0.6</version>
 			</dependency>
 			<dependency>
 				<groupId>pt.iknow</groupId>
@@ -424,7 +424,7 @@
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>4.5</version>
+				<version>4.7</version>
 				<type>jar</type>
 				<scope>test</scope>
 			</dependency>

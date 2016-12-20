@@ -27,8 +27,7 @@
 		<dependency>
 			<groupId>pt.iknow</groupId>
 			<artifactId>iutils</artifactId>
-			<version>2.0.6</version>
-		</dependency>
+			</dependency>
 		<dependency>
 			<groupId>pt.iknow</groupId>
 			<artifactId>jniutils</artifactId>
@@ -95,7 +94,6 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.7</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -112,8 +110,7 @@
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
-			<version>1.4.1</version>
-		</dependency>
+			</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>

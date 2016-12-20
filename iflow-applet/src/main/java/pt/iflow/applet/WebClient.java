@@ -260,13 +260,13 @@ public class WebClient implements UtilityConstants {
           dos.writeBytes(lineEnd);
         }
       }
-
+      log.debug("send process identification");
       // Upload file
       dos.writeBytes(twoHyphens + boundary + lineEnd);
       dos.writeBytes("Content-Disposition: form-data; name=\""+FILE_PARAM+"\"; filename=\"" + URLEncoder.encode(f.getName(), "UTF-8") + "\"" + lineEnd); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
       dos.writeBytes("Content-Length: " + f.getLength() + lineEnd); //$NON-NLS-1$
       dos.writeBytes(lineEnd);
-
+      log.debug("upload file");
       // output file
 
       // TODO fazer magia com uma barra de progresso
@@ -278,7 +278,7 @@ public class WebClient implements UtilityConstants {
       // send multipart form data necesssary after file data...
       dos.writeBytes(lineEnd);
       dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
-
+      log.debug("send multipart form data necesssary after file data...");
       dos.flush();
       dos.close();
 

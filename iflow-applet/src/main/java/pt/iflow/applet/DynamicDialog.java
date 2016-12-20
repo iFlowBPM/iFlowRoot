@@ -1,10 +1,12 @@
 package pt.iflow.applet;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.FileDialog;
 import java.awt.Frame;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -17,6 +19,7 @@ import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.io.IOException;
 import java.security.Provider;
 import java.util.UUID;
 
@@ -38,10 +41,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdesktop.swingworker.SwingWorker.StateValue;
 
+import com.toedter.calendar.JDateChooser;
+
 import pt.iflow.applet.cipher.FileCipher;
 import pt.iflow.applet.signer.FileSigner;
-
-import com.toedter.calendar.JDateChooser;
+import pt.iflow.applet.signer.PDFSignatureImpl;
 
 public class DynamicDialog extends JFrame implements PropertyChangeListener, ActionListener, MouseListener {
   private static final long serialVersionUID = -1502926852420989215L;
@@ -72,6 +76,8 @@ public class DynamicDialog extends JFrame implements PropertyChangeListener, Act
   
   Container contGlobalPos = SwingUtils.newPanel();
   ImagePanel imagePDF = null;
+  static int imagePDFalturaPag = 420;
+  static int imagePDFlarguraPag = 297;
   String filePath = "";
   int pagActual = -1;
   int pagTotal = -1;
@@ -675,7 +681,7 @@ private void reloadPDFsampleByPath(){
 
 	  LoadImageAction.setPagToSign(pagActual);
 	  
-      imagePDF = new ImagePanel(j.getScaledInstance(-1, -1, Image.SCALE_SMOOTH));
+      imagePDF = new ImagePanel(j.getScaledInstance(imagePDFlarguraPag, imagePDFalturaPag, Image.SCALE_SMOOTH));
 	  imagePDF.addMouseListener(this);
 
 	  contGlobalPos.add(imagePDF,BorderLayout.NORTH,1);
@@ -694,7 +700,7 @@ private void reloadPDFsampleByFile(){
 
 	  LoadImageAction.setPagToSign(pagActual);
 	  
-      imagePDF = new ImagePanel(j.getScaledInstance(-1, -1, Image.SCALE_SMOOTH));
+      imagePDF = new ImagePanel(j.getScaledInstance(imagePDFlarguraPag, imagePDFalturaPag, Image.SCALE_SMOOTH));
 	  imagePDF.addMouseListener(this);
 
 	  contGlobalPos.add(imagePDF,BorderLayout.NORTH,1);
@@ -735,13 +741,33 @@ public void mouseClicked(MouseEvent e) {
 	int y = e.getY();
     //Label com imagem da assinatura
 	ImageIconRep imgPos = LoadImageAction.getImagePosicao();
+	//se 'Usar Imagem' n esta seleccionado mas queremos preview da assinatura em que em vez da imagem temos uma cruz
+	if(!LoadImageAction.getUseImageForSignature()){
+		int boxLength = 140; 
+		if(signer instanceof PDFSignatureImpl){
+			try{
+				int signLength = ((PDFSignatureImpl)signer).getSignatureText().length();
+				boxLength = (int) (signLength * 2.6) ;
+			} catch (Exception exc){
+				boxLength = 140;
+			}
+		}			
+		BufferedImage signTarget = new BufferedImage(boxLength, 40, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2d = signTarget.createGraphics();
+		g2d.setColor(Color.BLUE);
+		int[] xCord = {0,signTarget.getWidth()-5	,signTarget.getWidth()-5	,0					   ,0};
+		int[] yCord = {0,0						,signTarget.getHeight()-5	,signTarget.getHeight()-5,0};
+		g2d.drawPolyline(xCord, yCord, 5);		
+		g2d.dispose();					
+		imgPos = new ImageIconRep(signTarget);
+	}		
 	
     labelAss.setSize(imgPos.getIconWidth(), imgPos.getIconHeight());
     labelAss.setIcon(imgPos);
-	labelAss.setLocation(x-(imgPos.getIconWidth()/2), y-(imgPos.getIconHeight()/2));
+	labelAss.setLocation(x, y);
     //Adicionar label da assinatura
 	imagePDF.add(labelAss);
-	LoadImageAction.setAssPos(x-(imgPos.getIconWidth()/2), y-(imgPos.getIconHeight()/2));
+	LoadImageAction.setAssPos(x, y+15);
 }
 public void mouseEntered(MouseEvent e) {}
 public void mouseExited(MouseEvent e) {}

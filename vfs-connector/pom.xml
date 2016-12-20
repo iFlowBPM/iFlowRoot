@@ -5,7 +5,6 @@
     <groupId>pt.iknow.iflow</groupId>
     <version>4.2.2</version>
   </parent>
-  <groupId>pt.iknow.iflow</groupId>
   <artifactId>vfs-connector</artifactId>
   <version>4.2.0</version>
   <name>vfs-connector</name>

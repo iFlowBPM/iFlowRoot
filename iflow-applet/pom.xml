@@ -75,6 +75,11 @@
 			<groupId>org.psicover</groupId>
 			<artifactId>pdf-renderer-ext</artifactId>
 		</dependency>
+		<dependency>
+		  <groupId>org.apache.pdfbox</groupId>
+		  <artifactId>pdfbox</artifactId>
+		  <version>2.0.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
