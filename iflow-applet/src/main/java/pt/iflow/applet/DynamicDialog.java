@@ -747,6 +747,12 @@ public void mouseClicked(MouseEvent e) {
 		if(signer instanceof PDFSignatureImpl){
 			try{
 				int signLength = ((PDFSignatureImpl)signer).getSignatureText().length();
+				if(((PDFSignatureImpl)signer).getContact()!=null && signLength< ((PDFSignatureImpl)signer).getContact().length())
+					signLength= ((PDFSignatureImpl)signer).getContact().length();
+				if(((PDFSignatureImpl)signer).getLocation()!=null && signLength< ((PDFSignatureImpl)signer).getLocation().length())
+					signLength= ((PDFSignatureImpl)signer).getLocation().length();
+				if(((PDFSignatureImpl)signer).getReason()!=null && signLength< ((PDFSignatureImpl)signer).getReason().length())
+					signLength= ((PDFSignatureImpl)signer).getReason().length();
 				boxLength = (int) (signLength * 2.6) ;
 			} catch (Exception exc){
 				boxLength = 140;

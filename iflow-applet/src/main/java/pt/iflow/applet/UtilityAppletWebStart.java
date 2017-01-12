@@ -20,7 +20,7 @@ public class UtilityAppletWebStart {
 	
 	public static void main(String []args) throws JSONException, IOException, InterruptedException{
 //		String arg = "{\"CHECKREQUESTFORAPPLET\":\"http://localhost:8080/iFlow/CheckRequestForApplet\",\"DOCUMENTBASEURL\":\"http://localhost:8080/iFlow/DocumentService\"," +
-//				"\"JSESSIONID\":\"C90024FB7BE5CC6DCE694E06AD6700ED\"}";
+//				"\"JSESSIONID\":\"D2C30A942CB0690BFE09A3C223D97F82\"}";
 		String arg = args[0];;
 		System.out.println(arg);
 		JSONObject arguments = new JSONObject(arg);		

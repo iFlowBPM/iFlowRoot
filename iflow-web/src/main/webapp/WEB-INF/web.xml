@@ -78,6 +78,18 @@ Disabled. Use servlet container defaults
       </init-param>
       <init-param>
       	<param-name>pt.iflow.filter_exception1</param-name>
+      	<param-value>+</param-value>
+      </init-param>
+	<init-param>
+      	<param-name>pt.iflow.filter_exception2</param-name>
+      	<param-value>-</param-value>
+      </init-param>
+	<init-param>
+      	<param-name>pt.iflow.filter_exception3</param-name>
+      	<param-value>:</param-value>
+      </init-param>	  
+      <init-param>
+      	<param-name>pt.iflow.filter_exception1</param-name>
       	<param-value>/iFlow</param-value>
       </init-param>
       <init-param>

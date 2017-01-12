@@ -64,5 +64,9 @@ public class FormDataSanitizer {
 		
 		return result;
 	}
-
+	
+	public static void main(String[]args){
+		String a = ESAPI.encoder().encodeForHTML("GMT+01:00");
+		int i=0;
+	}
 }

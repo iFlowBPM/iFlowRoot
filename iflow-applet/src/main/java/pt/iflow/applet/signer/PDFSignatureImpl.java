@@ -294,7 +294,7 @@ public class PDFSignatureImpl implements FileSigner {
     	    			signText = getReason() + "\n" + signText;
     	    		
     	    		Cell cell = new Cell(signText);
-    	    		sap.setVisibleSignature(new Rectangle(coord[0], coord[1], coord[0]+400, coord[1]+80), LoadImageAction.getPagToSign(), null);
+    	    		sap.setVisibleSignature(new Rectangle(coord[0], coord[1], 590, coord[1]+80), LoadImageAction.getPagToSign(), null);
     	    		sap.setAcro6Layers(true);
     	    		sap.setLayer2Text(signText);
 //    	    		BufferedImage img = new BufferedImage(256, 128,BufferedImage.TYPE_INT_ARGB);
