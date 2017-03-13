@@ -298,6 +298,9 @@
 	  	  <% if (href != null) { %>
 	  	  <a href="<%=href%>" class="toolTipImg" title="<%=messages.getString("user_procs.tooltip.view_history")%>">
 	  	  <% } %>
+  	  	  <% if(BeanFactory.getFlowHolderBean().getFlow(userInfo, Integer.parseInt(flowid)).getFlowType().compareTo(FlowType.DOCUMENT)==0) {%>
+	    		<img class="toolTipImg" src="images/flow_type_D.png" border="0"/>
+	      <% } %>
 	  	    <%=flowName%>
 	  	  <% if (href != null) { %>
 	  	  </a>

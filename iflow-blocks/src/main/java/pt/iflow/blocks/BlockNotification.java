@@ -165,7 +165,7 @@ public class BlockNotification extends Block {
           application = "";
         String procId = "";
         if (Const.nSESSION_PID != procData.getPid())
-          procId = procData.getPid() + "," + procData.getSubPid();
+          procId = procData.getPNumber() + "," + procData.getSubPid();
         String from = "process[" + application + "/" + fd.getName() + ":" + procId + "]";
 
         String linkparams = "";

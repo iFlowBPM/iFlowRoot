@@ -492,7 +492,9 @@ function cleanFilter(){
         List<Folder> folders = fm.getUserFolders(userInfo);
         String colorBackgroundColor = fm.getFolderColor(a.getFolderid(), folders);
         String colorTitle = fm.getFolderName(a.getFolderid(), folders);
-
+        String flowType = fd.getFlowType().getCode();
+		
+        hm.put("flowType",flowType);
 		hm.put("appname", sAppName);
 		hm.put("flowname", sFlow);
 		hm.put("flowid", sFlowId);

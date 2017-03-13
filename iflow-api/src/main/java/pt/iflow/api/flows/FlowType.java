@@ -4,7 +4,8 @@ public enum FlowType {
   WORKFLOW("W"),
   SUPPORT("S"),
   SEARCH("E"),
-  REPORTS("R");
+  REPORTS("R"),
+  DOCUMENT("D");
 
   public static final String FLOW_TYPE = "FLOW_TYPE";
 

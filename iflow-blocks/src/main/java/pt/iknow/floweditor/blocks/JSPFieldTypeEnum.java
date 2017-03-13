@@ -48,6 +48,9 @@ public enum JSPFieldTypeEnum {
   FIELD_TYPE_FORM_TEMPLATE(
       37, "JSPFieldData.fieldtype.formtemplate", "JSPFieldData.tootltip.formtemplate", "JSPFormTemplate",
       "pt.iflow.blocks.form.FormTemplate"),
+  FIELD_TYPE_DOCUMENT_PREVIEW(
+	      38, "JSPFieldData.fieldtype.documentpreview", "JSPFieldData.tootltip.documentpreview", "JSPDocumentPreview",
+	      "pt.iflow.blocks.form.DocumentPreview"),
   ;
 
   private final int code;

@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -266,14 +267,18 @@ public class MailListenerManager extends Thread {
           }
           try {
         	  if (message.isMimeType("multipart/*")) {
-	
+        		ArrayList<String> auxAlreadyAdded = new ArrayList<String>();
 		        Multipart mp = (Multipart)message.getContent();
 		        for (int i = 0; i < mp.getCount(); i++) {
 		          Part bp = mp.getBodyPart(i);
 	
 		          String disposition = bp.getDisposition();
 		          if (!StringUtils.equalsIgnoreCase(disposition, Part.ATTACHMENT)) {
-		        	  text += getText(message);
+		        	  String tmpText = getText(message);		        	  
+		        	  if(!auxAlreadyAdded.contains(tmpText)){
+		        		  text += getText(message);
+		        		  auxAlreadyAdded.add(tmpText);
+		        	  }
 		          }
 		        }
 		      }

@@ -59,7 +59,7 @@ public class FormProps {
   public final static String HOUR_FORMAT_ID = "hour_format_id";
   public final static String FORM_TEMPLATE = "form_template";
   public final static String KEEP_SCROLL_ONLOAD = "keep_scroll_onload";
-
+  public final static String DOCUMENT_PREVIEW = "document_preview";
   
   // Some extra prop properties
   public final static String sEXTRA_PROP_DISABLE_CONDITION = "disable";

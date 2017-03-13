@@ -111,7 +111,7 @@ public class BlockCriarDocumento extends Block {
 	            tpl.setUseLegacyExpressions(true);
 	            PDFGenerator pdfGen = new PDFGenerator(tpl);
 	            pdfGen.addURIResolver(new RepositoryURIResolver(userInfo));
-	            String replacedTemplate = pdfGen.getRenderedFOP(FoEvaluatorFactory.wrapScriptEngine(bsh)).replace("&lt;", "<").replace("&gt;", ">");
+	            String replacedTemplate = pdfGen.getRenderedFOP(FoEvaluatorFactory.wrapScriptEngine(bsh)).replace("&lt;", "<").replace("&gt;", ">").replace("&#13;","&#x2028;");
 	            //start again this time with the new template
 	            tpl = FoTemplate.compile(replacedTemplate);                       
 	            tpl.setUseLegacyExpressions(true);

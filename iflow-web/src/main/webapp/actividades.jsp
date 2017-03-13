@@ -135,6 +135,7 @@
   String stmp = null;
   String stmp2 = null;
   String stmp3 = null;
+  String stmp4 = null;
 
   int ITEMS_PAGE = 500;
   int nStartIndex = 0;
@@ -300,10 +301,13 @@
       }
     }
 
-    fda = BeanFactory.getFlowHolderBean().listFlowsOnline(userInfo,FlowType.WORKFLOW);
+    
+    FlowType[] flowTypeExcluded = {FlowType.SUPPORT,FlowType.SEARCH,FlowType.REPORTS};
+    //fda = BeanFactory.getFlowHolderBean().listFlowsOnline(userInfo,FlowType.WORKFLOW);
+    fda = BeanFactory.getFlowHolderBean().listFlowsOnline(userInfo,null,flowTypeExcluded);
 
     // get online flows with app information
-    FlowMenu menu = BeanFactory.getFlowApplicationsBean().getAllApplicationOnlineFlows(userInfo,FlowType.WORKFLOW);
+    FlowMenu menu = BeanFactory.getFlowApplicationsBean().getAllApplicationOnlineFlows(userInfo,null,flowTypeExcluded);
 
     // now build map with key flowid and value flowdata
     Iterator<FlowAppMenu> itera = menu.getAppMenuList().iterator();
@@ -593,11 +597,15 @@
 	    List<String> actividade = new ArrayList<String>();
 	    actividade.add(a.flowid + "_" + a.pid + "_" + a.subpid);
 	    actividade.add(stmp + appName + stmp2);
+	    if(BeanFactory.getFlowHolderBean().getFlow(userInfo, a.getFlowid()).getFlowType().compareTo(FlowType.DOCUMENT)==0)
+	    	stmp4="<img class=\"toolTipImg\" src=\"images/flow_type_D.png\" border=\"0\"/>";
+	    else
+	    	stmp4="";
 	    if (a.delegated) {
 	      actividade.add("<a title=\"" + messages.getString("actividades.msg.taskdeleg")
-	          + "\"><img src=\"images/icon_delegations.png\" height=\"10\"/></a>" + stmp + flowName + stmp2);
+	          + "\"><img src=\"images/icon_delegations.png\" height=\"10\"/></a>" + stmp + flowName + stmp2 + stmp4);
 	    } else {
-	      actividade.add(stmp + flowName + stmp2);
+	      actividade.add(stmp4 + stmp + flowName + stmp2);
 	    }
 	
 	    // replaced by process number

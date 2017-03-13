@@ -49,9 +49,9 @@ import com.lowagie.text.pdf.PdfReader;
 			PDFRenderer pdfRenderer = new PDFRenderer(document);
 			
 			if (pag <0 || pag>(document.getNumberOfPages()-1)) // Caso n receba para tirar da ultima
-				bim = pdfRenderer.renderImageWithDPI(document.getNumberOfPages()-1, 150, ImageType.RGB);
+				bim = pdfRenderer.renderImageWithDPI(document.getNumberOfPages()-1, 50, ImageType.RGB);
 			else
-				bim = pdfRenderer.renderImageWithDPI(pag-1, 150, ImageType.RGB);
+				bim = pdfRenderer.renderImageWithDPI(pag-1, 50, ImageType.RGB);
 		} catch (Exception e) {
 			log.error("Erro a adquirir imagens do pdf", e);
 		}
@@ -66,9 +66,9 @@ import com.lowagie.text.pdf.PdfReader;
 			PDFRenderer pdfRenderer = new PDFRenderer(document);
 			
 			if (pag <0 || pag>(document.getNumberOfPages()-1)) // Caso n receba para tirar da ultima
-				bim = pdfRenderer.renderImageWithDPI(document.getNumberOfPages()-1, 150, ImageType.RGB);
+				bim = pdfRenderer.renderImageWithDPI(document.getNumberOfPages()-1, 50, ImageType.RGB);
 			else
-				bim = pdfRenderer.renderImageWithDPI(pag-1, 150, ImageType.RGB);
+				bim = pdfRenderer.renderImageWithDPI(pag-1, 50, ImageType.RGB);
 		} catch (Exception e) {
 			log.error("Erro a adquirir imagens do pdf", e);
 		}

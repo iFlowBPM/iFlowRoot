@@ -4496,7 +4496,8 @@ public class ProcessManagerBean implements ProcessManager {
 
     IFlowData[] arrFlowData = null;
     if (nShowFlowId < 0) {
-      arrFlowData = BeanFactory.getFlowHolderBean().listFlowsOnline(userInfo, FlowType.WORKFLOW);
+      FlowType[] flowTypeExcluded = {FlowType.SUPPORT,FlowType.SEARCH,FlowType.REPORTS};
+      arrFlowData = BeanFactory.getFlowHolderBean().listFlowsOnline(userInfo, null, flowTypeExcluded);
     } else {
       arrFlowData = new IFlowData[] { BeanFactory.getFlowHolderBean().getFlow(userInfo, nShowFlowId) };
     }

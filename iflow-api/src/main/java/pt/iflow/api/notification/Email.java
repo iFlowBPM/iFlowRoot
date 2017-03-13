@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -409,7 +411,7 @@ public class Email implements Cloneable {
         session.setDebug(debug);
 
         // create a message
-        MimeMessage msg = new MimeMessage(session);
+        final MimeMessage msg = new MimeMessage(session);
         msg.setFrom(iaFrom);
         msg.setRecipients(Message.RecipientType.TO, iaaTo);
 
@@ -464,7 +466,18 @@ public class Email implements Cloneable {
         
         msg.setContent(multipart);                             
 
-        Transport.send(msg);
+        //Transport.send(msg);
+        Thread th=new Thread(new Runnable() {
+        	public void run() {
+        		try {
+        			Transport.send(msg);
+        		} catch (MessagingException e) {
+        			Logger.error(null, this, "sendMsg", processSignature + "\n-- pt.iflow.api.notification.Email: Exception handling for mail: ", e);
+        		}
+        	}
+    	});
+        th.start();
+        
         Logger.info("", this, "sendMsg", processSignature + "Mail sent to " + sbTo.toString());
         retObj = true;
       }

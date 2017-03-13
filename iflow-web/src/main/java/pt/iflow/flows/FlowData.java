@@ -354,7 +354,8 @@ public class FlowData implements IFlowData,Serializable {
 
 //         continue;
 //       }
-
+       if (blockType.equals("BlockSubFlow"))
+    	   continue;
        Integer blockId = new Integer(block.getId() + offset);
 
        try {

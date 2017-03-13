@@ -19,7 +19,13 @@
 <%
     List<Map<Object,Object>> appFlows = new ArrayList<Map<Object,Object>>();
     FlowType type = (FlowType) request.getAttribute("flow_type");
-	FlowMenu flows = BeanFactory.getFlowApplicationsBean().getAllApplicationOnlineMenu(userInfo, FlowApplications.ORPHAN_GROUP_ID, type, new FlowType[0], FlowRolesTO.READ_PRIV);
+    
+    FlowMenu flows = null;
+    if (FlowType.WORKFLOW==type){
+    	FlowType[] flowTypeExcluded = {FlowType.SUPPORT,FlowType.SEARCH,FlowType.REPORTS};
+    	flows = BeanFactory.getFlowApplicationsBean().getAllApplicationOnlineMenu(userInfo, FlowApplications.ORPHAN_GROUP_ID, null, flowTypeExcluded, FlowRolesTO.READ_PRIV);
+    } else
+    	flows = BeanFactory.getFlowApplicationsBean().getAllApplicationOnlineMenu(userInfo, FlowApplications.ORPHAN_GROUP_ID, type, new FlowType[0], FlowRolesTO.READ_PRIV);
 
 	Collection<FlowAppMenu> appMenuList = flows.getAppMenuList();
 	Iterator<FlowAppMenu> iter = appMenuList.iterator();

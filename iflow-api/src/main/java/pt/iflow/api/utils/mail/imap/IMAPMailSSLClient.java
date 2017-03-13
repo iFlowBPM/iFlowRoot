@@ -1,8 +1,10 @@
 package pt.iflow.api.utils.mail.imap;
 
+import java.security.GeneralSecurityException;
 import java.security.Security;
 import java.util.Properties;
 
+import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
 import javax.mail.Session;
 import javax.mail.Store;
@@ -10,9 +12,12 @@ import javax.mail.URLName;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
+import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.mail.MailConfig;
 
 import com.sun.mail.imap.IMAPSSLStore;
+import com.sun.mail.imap.IMAPStore;
+import com.sun.mail.util.MailSSLSocketFactory;
 
 public class IMAPMailSSLClient extends IMAPMailClient {
   
@@ -42,18 +47,71 @@ public class IMAPMailSSLClient extends IMAPMailClient {
   }
   
   private void initSSLProps() {
-    Security.addProvider(new BouncyCastleProvider());
-    Security.setProperty("ssl.SocketFactory.provider","TrustedSSLSocketFactory");
-    
-    Properties props = System.getProperties();
-    
-    props.setProperty( "mail.imap.socketFactory.class", SSL_FACTORY);
-    props.setProperty( "mail.imap.socketFactory.fallback", "false");
-    props.setProperty( "mail.imap.socketFactory.port", String.valueOf(this._nPort));
-    props.setProperty("mail.store.protocol", "imaps");
-    
-    super.init(props);  
+//    Security.addProvider(new BouncyCastleProvider());
+//    Security.setProperty("ssl.SocketFactory.provider","TrustedSSLSocketFactory");
+//    
+//    Properties props = System.getProperties();
+//    
+//    props.setProperty( "mail.imap.socketFactory.class", SSL_FACTORY);
+//    props.setProperty( "mail.imap.socketFactory.fallback", "false");
+//    props.setProperty( "mail.imap.socketFactory.port", String.valueOf(this._nPort));
+//    props.setProperty("mail.store.protocol", "imaps");
+//    
+//    super.init(props);  
+		props = new Properties();  
+		props.put("mail.imap.com", _sHost);  
+		props.put("mail.imap.starttls.enable","true");
+		props.put("mail.imap.auth", "true");  
+
+		props.put("mail.imap.socketFactory.port", String.valueOf(_nPort));
+		props.put("mail.imap.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+		props.put("mail.imap.socketFactory.fallback", "false");
+        
+        MailSSLSocketFactory sf;
+		try {
+			sf = new MailSSLSocketFactory();
+			sf.setTrustAllHosts(true); 
+		} catch (GeneralSecurityException e) {
+			sf=null;
+			Logger.adminError("IMAPMailSSLClient", "init", "Exception caught: ", e);
+		}        
+        props.put("mail.imaps.ssl.trust", "*");
+        props.put("mail.imaps.ssl.socketFactory", sf);
+        props.put("mail.imaps.auth.plain.disable", "true");
   }
+  
+  public void connect() throws MessagingException {
+	  	//Session session = Session.getDefaultInstance(props , _authenticator);
+	  	initSSLProps(); 
+	  	Session session = Session.getInstance(props);
+	    session.setDebug(true);
+	    int attemptNbr = 1;
+	    MessagingException exCaught = null;
+	    while (true) {
+	      try {
+	        _store = getStore(session, attemptNbr);	        
+	        if (_store == null) {
+	          Logger.adminTrace("IMAPMailClient", "connect", getId() + " error connecting to mail client!");
+	          break;
+	        }
+	        _store.connect(
+	            _sHost,
+	            _authenticator.getPasswordAuthentication().getUserName(),
+	            _authenticator.getPasswordAuthentication().getPassword());
+	        break;
+	      } catch (Exception e) {
+	        Logger.adminError("IMAPMailClient", "connect", "Exception caught: ", e);
+	        if (e instanceof MessagingException) {
+	          exCaught = (MessagingException) e;
+	        }
+	      } finally {
+	        attemptNbr++;
+	      }
+	    }
+	    if (_store == null) {
+	      throw exCaught;
+	    }
+	  }
 
   private void clearSSLProps() {
     Security.removeProvider(new BouncyCastleProvider().getName());
@@ -71,7 +129,8 @@ public class IMAPMailSSLClient extends IMAPMailClient {
           new URLName("imap://" + _authenticator.getPasswordAuthentication().getUserName()));
     } else if (attemptNbr == 2) {
       initSSLProps();
-      retObj = session.getStore("imap");
+      //retObj = session.getStore("imap");
+      retObj = session.getStore("imaps");
       clearSSLProps();
     }
     return retObj;

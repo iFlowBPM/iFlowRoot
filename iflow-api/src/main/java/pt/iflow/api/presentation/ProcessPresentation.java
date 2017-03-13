@@ -10,17 +10,23 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import pt.iflow.api.blocks.FormUtils;
 import pt.iflow.api.core.BeanFactory;
 import pt.iflow.api.core.ProcessCatalogue;
+import pt.iflow.api.documents.DocumentIdentifier;
 import pt.iflow.api.flows.Flow;
+import pt.iflow.api.flows.FlowType;
 import pt.iflow.api.processdata.ProcessData;
 import pt.iflow.api.processdata.ProcessListItem;
 import pt.iflow.api.processdata.ProcessListVariable;
 import pt.iflow.api.processdata.ProcessSimpleVariable;
+import pt.iflow.api.processtype.DocumentDataType;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
+import pt.iflow.api.utils.ServletUtils;
 import pt.iflow.api.utils.UserInfoInterface;
 import pt.iflow.api.utils.Utils;
+import pt.iflow.connector.document.Document;
 
 public class ProcessPresentation {
 
@@ -166,7 +172,7 @@ public class ProcessPresentation {
    * @param subpid
    * @return
    */
-  public static Map<String,String> getProcessDetail(UserInfoInterface userInfo, ProcessData procData) {
+  public static Map<String,String> getProcessDetail(UserInfoInterface userInfo, ProcessData procData, ServletUtils response) {
     if(null == userInfo) {
       Logger.error(null, "ProcessPresentation", "getProcessDetail", "Invalid user");
       return null;
@@ -216,7 +222,15 @@ public class ProcessPresentation {
     			if (item != null)
     				value = item.format();
     			
-    			sb.append("[").append(i).append("] ").append(value).append("<br>");
+    			//for Document Flows document vars get a preview
+    			if(flow.getFlowType(userInfo, procData.getFlowId())==FlowType.DOCUMENT && var.getType() instanceof DocumentDataType){
+    				DocumentIdentifier did = DocumentIdentifier.getInstance(value);
+  	              	Document docData = BeanFactory.getDocumentsBean().getDocumentInfo(userInfo, procData, did);
+  	              	String sLinkUrl = FormUtils.generateDocumentURL(userInfo, response, procData, did);
+    				sb.append("<embed width=\"400\" height=\"600\" src=\""+sLinkUrl+"\"/><br>");
+    			}    				
+    			else
+    				sb.append("[").append(i).append("] ").append(value).append("<br>");
     		}
     		result.put(catalog.getPublicName(varname), sb.toString());
     		Logger.debug(userInfo.getUtilizador(), "ProcessPresentation", "getProcessDetail", "Added variable "+varname+"; Desciption: "+catalog.getPublicName(varname)+"; Value: "+ sb.toString());
