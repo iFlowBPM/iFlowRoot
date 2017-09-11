@@ -608,7 +608,7 @@ public class SubFlowDataExpander {
     for (XmlBlock block : getXmlFlow().getXmlBlock()){
       SubFlowDataSuportClass subFlowData = null;
       if (SUB_FLOW_TYPE.equals(block.getType())){
-        Logger.debug(operationUser, this, methodName, "INI - Processing block of SubFlow.");
+        Logger.debug(operationUser, this, methodName, "INI - Processing block of SubFlow." + block.getId() + ", " +  getXmlFlow().getName());
         subFlowData = getSubFlowDataFromSubFlowBlock(userInfo, block);
         if (subFlowData == null){
           subFlowData = new SubFlowDataSuportClass(SubFlowDataSuportClass.SUBFLOW_BLOCK, null, block, null, null, -1);

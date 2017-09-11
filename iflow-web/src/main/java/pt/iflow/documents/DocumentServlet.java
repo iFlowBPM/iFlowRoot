@@ -123,6 +123,7 @@ public class DocumentServlet extends HttpServlet {
     }
     byte [] ba = doc.getContent();
     response.setHeader("Content-Disposition","attachment;filename=\"" + doc.getFileName().replace(' ', '_')+"\";");
+    response.setContentType("application/pdf");
     response.setContentLength(ba.length);
     OutputStream out = response.getOutputStream();
     out.write(ba);
@@ -138,7 +139,7 @@ public class DocumentServlet extends HttpServlet {
     String user = userInfo.getUtilizador();
     
     try {
-      if(StringUtils.equals(request.getServletPath(), "/document")) {
+      if(StringUtils.startsWith(request.getServletPath(), "/document")) {
         String hdoc = request.getParameter("hdoc");
         if(StringUtils.isNotEmpty(hdoc)) {
           Logger.debug(user, this, "getDocument", "Hashed document: "+logVar+" - proceeding with file retrieval...");

@@ -1344,7 +1344,7 @@ public class FlowHolderBean implements FlowHolder {
     PreparedStatement pst = null;
     try {
       db = Utils.getDataSource().getConnection();
-      db.setAutoCommit(true);
+      db.setAutoCommit(false);
       pst = db.prepareStatement("UPDATE flow SET max_block_id = ? WHERE flowid=?");
       pst.setInt(1, maxblockId);
       pst.setInt(2, flowId);
@@ -1377,22 +1377,24 @@ public class FlowHolderBean implements FlowHolder {
       if (mappingsChanged) {    	    	
         Timestamp d = new Timestamp(new Date().getTime());
         Logger.debug(userInfo.getUtilizador(), this, "saveSubFlowExpansionResult", "saving for Flowid " + flowId  + " mappings" + subFlowBlockMappings.size());
-        for (SubFlowMapping subFlowMapping : subFlowBlockMappings) {
-          String query = DBQueryManager.getQuery("FlowHolder.SAVE_SUBFLOW_EXPANSION");
-          pst = db.prepareStatement(query);
+        String query = DBQueryManager.getQuery("FlowHolder.SAVE_SUBFLOW_EXPANSION");
+        pst = db.prepareStatement(query);        
+        for (SubFlowMapping subFlowMapping : subFlowBlockMappings) {          
           pst.setTimestamp(1, d);
           pst.setString(2, subFlowMapping.getMainFlowName());
           pst.setString(3, subFlowMapping.getSubFlowName());
           pst.setInt(4, subFlowMapping.getOriginalBlockId());
           pst.setInt(5, subFlowMapping.getMappedBlockId());
-          pst.execute();
-          pst.close();
+          pst.addBatch();
         }
+        pst.executeBatch();
+        db.commit();
+        pst.close();
       }
       return mappingsChanged;
     } catch (Exception e) {
       Logger.error(userInfo.getUtilizador(), this, "saveSubFlowExpansionResult", "exception caught", e);      
-    } finally {
+    } finally {    	
       DatabaseInterface.closeResources(db, pst);
     }
 	return mappingsChanged;

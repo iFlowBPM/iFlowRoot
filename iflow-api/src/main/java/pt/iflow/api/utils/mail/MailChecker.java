@@ -66,20 +66,18 @@ public class MailChecker implements Runnable{
   public void run() {
 
     Logger.adminInfo("MailChecker", "run", getId() + "starting mail checking");
-
-    try {
-      if (!client.isConnected()) {
-        client.connect();
-      }
-    } 
-    catch (MessagingException e) {
-      Logger.adminError("MailChecker", "run", getId() + "error connecting client", e);    
-    }
     
     while (!stop) {
       try {      
     	if(JobManager.getInstance().isMyBeatValid())  
-	        try {
+    	    try {
+		    	try {
+	    	        if (!client.isConnected()) {
+	    	          client.connect();
+	    	        }
+	    	    } catch (MessagingException e) {
+	    	        Logger.adminError("MailChecker", "run", getId() + "error connecting client", e);    
+	    	    }
 	          if (client.checkNewMail()) {
 	            Logger.adminInfo("MailChecker", "run", getId() + "found new mail");
 	            client.readUnreadMessages(messageParser);

@@ -234,10 +234,11 @@ public class DelegationManager extends Thread {
       rs = st.executeQuery("select hierarchyid,parentid,slave from activity_hierarchy where parentid=0");
 
       Set<Integer> okDelgations = new TreeSet<Integer>();
-
+      String multipleSlaves = " ,hierarchyid(s): ";
       while (rs.next()) {
         currParent = rs.getInt("hierarchyid");
         if(correctInconsistenceDelegationBranch(okDelgations, db, currParent)) {
+          multipleSlaves+= currParent + ",";
           branchWithMultipleSlaves = true;
         }
         okDelgations.add(currParent);
@@ -246,7 +247,7 @@ public class DelegationManager extends Thread {
       rs = null;
       
       if(branchWithMultipleSlaves) {
-        warnExistingInconsistence("Between the owner and the 'final' slave in a delegation, there were more than one 'slave'");
+        warnExistingInconsistence("Between the owner and the 'final' slave in a delegation, there were more than one 'slave'" + multipleSlaves);
       }
 
       StringBuffer okDelegationList = new StringBuffer();
@@ -320,7 +321,7 @@ public class DelegationManager extends Thread {
 
     String subject = "iFlow - delegation inconsistence in DB";
     String sFrom = pt.iflow.api.utils.Const.sAPP_EMAIL;
-    String sTo   = pt.iflow.api.utils.Const.sAPP_EMAIL;
+    String sTo   = pt.iflow.api.utils.Const.sAPP_EMAIL_ADMIN;
 
 
     Hashtable<String,String> htProps = new Hashtable<String, String>();

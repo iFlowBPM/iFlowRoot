@@ -8,6 +8,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -299,9 +304,8 @@ public class DocumentsBean implements Documents {
 
     try {
       Date dateNow = new Date();
-
-      String query = DBQueryManager.getQuery("Documents.ADD_DOCUMENT");
-
+      adoc.setFileName((new String(adoc.getFileName().getBytes(),"UTF-8")).replace("?", ""));
+      String query = DBQueryManager.getQuery("Documents.ADD_DOCUMENT");            
       // Obtencao de chaves geradas automaticamente. ver
       // http://java-x.blogspot.com/2006/09/oracle-jdbc-automatic-key-generation.html
       pst = db.prepareStatement(query, generatedKeyNames);
@@ -318,7 +322,22 @@ public class DocumentsBean implements Documents {
       pst.setInt(4, procData.getPid());
       pst.setInt(5, procData.getSubPid());
 
-      pst.executeUpdate();
+      try{
+    	  pst.executeUpdate();
+      } catch( Exception e){
+    	  //Extra try due to the possibility of ummappable characters 
+          String aux = new String(adoc.getFileName().getBytes(),"UTF-8");
+          aux = aux.replace("?", "");
+          adoc.setFileName(aux);
+          pst.setString(1, adoc.getFileName());
+          if (docDataInDB) {
+	          ByteArrayInputStream isBody = new ByteArrayInputStream(adoc.getContent());
+	          pst.setBinaryStream(2, isBody, adoc.getContent().length);
+	        } else {
+	          pst.setBinaryStream(2, null, 0);
+	        }	
+          pst.executeUpdate();
+      }
       rs = pst.getGeneratedKeys(); // obtem as chaves geradas automaticamente para o campo docid
       if (rs.next()) {
         ret = rs.getInt(1);
@@ -335,7 +354,8 @@ public class DocumentsBean implements Documents {
           pst.setString(1, filePath);
           pst.setInt(2, adoc.getDocId());
           pst.executeUpdate();
-          FileOutputStream fos = new FileOutputStream(filePath);
+          Logger.debug(userInfo.getUtilizador(), this, "addDocument", "new FileOutputStream:" + filePath);
+          OutputStream fos = Files.newOutputStream(Paths.get(filePath), StandardOpenOption.CREATE_NEW);// new FileOutputStream(filePath);
           fos.write(adoc.getContent());
           fos.close();
         } catch(FileNotFoundException ex) {
@@ -746,6 +766,8 @@ public class DocumentsBean implements Documents {
   }
 
   protected boolean canCreate(UserInfoInterface userInfo, ProcessData procData, Document adoc) {
+	if (Const.DISABLE_DOCS_PERMISSIONS)
+	  return true;
     if (null == userInfo) {
       Logger.debug("<unknown>", this, "canCreate", "Invalid user");
       return false; // invalid user
@@ -772,6 +794,8 @@ public class DocumentsBean implements Documents {
   }
 
   protected boolean canUpdate(UserInfoInterface userInfo, ProcessData procData, Document adoc) {
+	if (Const.DISABLE_DOCS_PERMISSIONS)
+		return true;
     if (null == userInfo) {
       Logger.warning("<unknown>", this, "canUpdate", "Invalid user");
       return false; // invalid user
@@ -800,6 +824,8 @@ public class DocumentsBean implements Documents {
   }
 
   protected boolean canRead(UserInfoInterface userInfo, ProcessData procData, Document adoc) {
+	if (Const.DISABLE_DOCS_PERMISSIONS)
+	  return true;
     if (null == userInfo) {
       Logger.debug("<unknown>", this, "canRead", "Invalid user");
       return false; // invalid user
@@ -1017,7 +1043,10 @@ public class DocumentsBean implements Documents {
       try {
         File f = new File(url);
         if (!f.isDirectory()) FileUtils.forceMkdir(f);
-        return FilenameUtils.concat(url,fileName);
+        Path dir = Paths.get(url);
+        Path path = dir.resolve(fileName);
+        return path.toAbsolutePath().toString();
+        //return FilenameUtils.concat(url,fileName);
       } catch (Exception e) {
       }
     }
@@ -1122,5 +1151,37 @@ public class DocumentsBean implements Documents {
      }
      Logger.debug(userInfo.getUtilizador(), this, "markDocsToSign", "Update to not sign "+queryUpdate0+" and to sign "+queryUpdate1);
      return true;
+  }
+  
+  public String migrateDatabaseToFilesystem(UserInfoInterface userInfo, ProcessData procData, Integer docid) throws Exception{
+	  Connection db = null;
+	  PreparedStatement pst = null;
+	  String result = null;
+	  try{
+		  db = DatabaseInterface.getConnection(userInfo);
+		  db.setAutoCommit(false);
+	      Document dbDoc = getDocumentFromDB(db, docid);
+	      if (!canUpdate(userInfo, procData, dbDoc)) {
+	    	  Logger.error(userInfo.getUtilizador(), this, "migrateDatabaseToFilesystem", procData.getSignature() + "User not authorized to update file.");
+	    	  throw new Exception("Permission denied");
+	      }
+	      
+	      dbDoc = getDocumentData(userInfo, procData, dbDoc, db , true);
+	      String filePath = getDocumentFilePath(dbDoc.getDocId(), dbDoc.getFileName());
+	      OutputStream fos = Files.newOutputStream(Paths.get(filePath));
+          fos.write(dbDoc.getContent());
+          fos.close();
+          
+          String query = DBQueryManager.getQuery("Documents.UPDATE_DOCUMENT_DOCURL");
+          pst = db.prepareStatement(query);
+          pst.setString(1, filePath);
+          pst.setInt(2, docid);
+          pst.executeUpdate();
+          
+          result = filePath;
+	  } finally {
+          DatabaseInterface.closeResources(db, pst);
+	  }
+	  return result;
   }
 }

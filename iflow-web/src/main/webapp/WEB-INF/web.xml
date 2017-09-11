@@ -577,6 +577,10 @@ Disabled. Use servlet container defaults
       <url-pattern>/document</url-pattern>
    </servlet-mapping>
    <servlet-mapping>
+      <servlet-name>documents</servlet-name>
+      <url-pattern>/document/preview.pdf</url-pattern>
+   </servlet-mapping>
+   <servlet-mapping>
       <servlet-name>PdfSampleServlet</servlet-name>
       <url-pattern>/pdfsample</url-pattern>
    </servlet-mapping>

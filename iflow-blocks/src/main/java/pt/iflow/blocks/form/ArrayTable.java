@@ -265,7 +265,27 @@ public class ArrayTable implements FieldInterface {
           
           //check if it's a <a> for a file and if it´s meant to be signed, if so we convert this to a file
           if(StringUtils.startsWith(stmp, "<a>") && StringUtils.equalsIgnoreCase(prop.getProperty(col + "_extra_props"),"file_sign_existing=true"))
-        	stmp = rewriteToSigningFile(col, row, prop);            
+        	stmp = rewriteToSigningFile(col, row, prop);     
+          
+          //check if it's a thumbnail and add extra props
+          if(StringUtils.startsWith(stmp, "<thumbnail>")){
+        	  String auxStyle = null;
+        	  String auxPopupStyle = null;
+        	  
+        	  String[] auxExtraProps = StringUtils.split(prop.getProperty(col + "_extra_props"), ",");
+        	  for(int i=0; i<auxExtraProps.length; i++){
+        		  if(StringUtils.startsWith(auxExtraProps[i], "style="))
+        			  auxStyle = StringUtils.remove(auxExtraProps[i], "style=");
+        		  else if(StringUtils.startsWith(auxExtraProps[i], "style_popup="))
+        			  auxPopupStyle = StringUtils.remove(auxExtraProps[i], "style_popup=");;
+        	  }        	          	  
+        	  if(StringUtils.isBlank(auxStyle))
+        		  auxStyle = "width:128px;height:128px;";        	          	  
+        	  if(StringUtils.isBlank(auxPopupStyle))
+        		  auxPopupStyle = "width:500px;height:500px;";
+        	  
+        	  stmp = StringUtils.replace(stmp,"</thumbnail>","<style>" +auxStyle+ "</style><style_popup>" +auxPopupStyle+ "</style_popup></thumbnail>");
+          }
 
           sVar = prop.getProperty(col + "_variable");
 

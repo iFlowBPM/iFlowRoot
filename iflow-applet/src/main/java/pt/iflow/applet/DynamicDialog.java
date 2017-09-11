@@ -640,10 +640,23 @@ public class DynamicDialog extends JFrame implements PropertyChangeListener, Act
 	    contBotoes.setLayout(new BorderLayout());
 	    JButton pagPosterior = new JButton(">>");
 	    JButton pagAnterior = new JButton("<<");
+	    JButton pagUltima = new JButton(">|");
+	    JButton pagPrimeira = new JButton("|<");
 	    pagPosterior.addActionListener(new NextPageAction());
 	    pagAnterior.addActionListener(new PrevPageAction());
-	    contBotoes.add(pagPosterior,BorderLayout.EAST);
-	    contBotoes.add(pagAnterior,BorderLayout.WEST);
+	    pagUltima.addActionListener(new LastPageAction());
+	    pagPrimeira.addActionListener(new FirstPageAction());
+	    
+	    
+	    
+	    contBotoes.add(pagPrimeira,BorderLayout.WEST);
+	    Container contBotoescentro = new Container();
+	    contBotoescentro.setLayout(new BorderLayout());
+	    contBotoescentro.add(pagAnterior,BorderLayout.WEST);
+	    contBotoescentro.add(pagPosterior,BorderLayout.EAST);
+	    contBotoes.add(contBotoescentro,BorderLayout.CENTER);
+	    contBotoes.add(pagUltima,BorderLayout.EAST);
+	    
 	    Container barraNav = new Container();
 	    barraNav.setLayout(new BorderLayout());
 	    barraNav.add(contBotoes,BorderLayout.WEST);
@@ -735,7 +748,26 @@ private class PrevPageAction implements ActionListener {
   	  reloadPDFsample();
     }
   }  
-
+private class FirstPageAction implements ActionListener {
+    
+    public FirstPageAction() {
+    }
+    
+    public void actionPerformed(ActionEvent e) {
+    	pagActual = 1;
+  	  	reloadPDFsample();
+    }
+  }  
+private class LastPageAction implements ActionListener {
+    
+    public LastPageAction() {
+    }
+    
+    public void actionPerformed(ActionEvent e) {
+    	pagActual = pagTotal;
+  	  	reloadPDFsample();
+    }
+  }
 public void mouseClicked(MouseEvent e) {
 	int x = e.getX();
 	int y = e.getY();

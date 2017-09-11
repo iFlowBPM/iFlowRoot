@@ -51,6 +51,7 @@ public enum JSPFieldTypeEnum {
   FIELD_TYPE_DOCUMENT_PREVIEW(
 	      38, "JSPFieldData.fieldtype.documentpreview", "JSPFieldData.tootltip.documentpreview", "JSPDocumentPreview",
 	      "pt.iflow.blocks.form.DocumentPreview"),
+  FIELD_TYPE_RADIOBUTTON(39, "JSPFieldData.fieldtype.radiobutton", "JSPFieldData.tootltip.radiobutton", "JSPRadioButton", "pt.iflow.blocks.form.RadioButton", true),
   ;
 
   private final int code;

@@ -20,7 +20,7 @@ public class UtilityAppletWebStart {
 	
 	public static void main(String []args) throws JSONException, IOException, InterruptedException{
 //		String arg = "{\"CHECKREQUESTFORAPPLET\":\"http://localhost:8080/iFlow/CheckRequestForApplet\",\"DOCUMENTBASEURL\":\"http://localhost:8080/iFlow/DocumentService\"," +
-//				"\"JSESSIONID\":\"564116725E0DDD98862F4BFC0C4C49B1\"}";
+//				"\"JSESSIONID\":\"6F331B8A04DC08089F3283675AEFF0CE\"}";
 		String arg = args[0];;
 		System.out.println(arg);
 		JSONObject arguments = new JSONObject(arg);		
@@ -51,7 +51,7 @@ public class UtilityAppletWebStart {
 				conn.connect();
 				if(conn.getResponseCode()==405){
 					System.out.println("No session - SHUTDOWN");
-					break;
+					return;
 				}
 				else if(conn.getResponseCode()==204){
 					continue;

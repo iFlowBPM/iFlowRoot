@@ -1,5 +1,6 @@
 package pt.iflow.blocks;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -37,6 +38,8 @@ public class BlockEmail extends Block {
   private static final String _sSELECT = "Escolha";
   public final static String sEMAIL_FROM = "from";
   public final static String sEMAIL_TO = "to";
+  public final static String sEMAIL_CC = "cc";
+  public final static String sEMAIL_BCC = "bcc";
   public final static String sEMAIL_SUBJECT = "subject";
   public final static String sEMAIL_MESSAGE = "message";
   public final static String sEMAIL_TEMPLATE = "template";
@@ -105,6 +108,8 @@ public class BlockEmail extends Block {
     } else {
       try {
         String aTo = getAttribute(sEMAIL_TO);
+        String aCC = getAttribute(sEMAIL_CC);
+        String aBCC = getAttribute(sEMAIL_BCC);
         String aFrom = getAttribute(sEMAIL_FROM);
         String aSubject = getAttribute(sEMAIL_SUBJECT);
         String aMessage = getAttribute(sEMAIL_MESSAGE);
@@ -113,6 +118,8 @@ public class BlockEmail extends Block {
         String sCompress = getParsedAttribute(userInfo, sEMAIL_ATTACHMENT_COMPRESS, procData); 
         if (Logger.isDebugEnabled()) {
           Logger.debug(user, this, "after", "ATTR To: "+aTo);
+          Logger.debug(user, this, "after", "ATTR CC: "+aCC);
+          Logger.debug(user, this, "after", "ATTR BCC: "+aBCC);
           Logger.debug(user, this, "after", "ATTR From: "+aFrom);
           Logger.debug(user, this, "after", "ATTR Subject: "+aSubject);
           Logger.debug(user, this, "after", "ATTR Message: "+aMessage);
@@ -128,6 +135,30 @@ public class BlockEmail extends Block {
           Logger.warning(user, this, "after", 
               procData.getSignature() + "exception transforming to: " + aTo);
         }
+        
+        List<String> ccs = null;
+        String cc = null;
+        try {
+          cc = procData.transform(userInfo, aCC);
+          ccs = Utils.tokenize(cc, EmailManager.sSEPARATOR);
+          if(ccs==null)
+        	  ccs = new ArrayList();
+        } catch (Exception e) {
+          Logger.warning(user, this, "after", 
+              procData.getSignature() + "exception transforming CC: " + aCC);
+        }
+        List<String> bccs = null;
+        String bcc = null;
+        try {
+          bcc = procData.transform(userInfo, aBCC);
+          bccs = Utils.tokenize(bcc, EmailManager.sSEPARATOR);
+          if(bccs==null)
+        	  bccs = new ArrayList();
+        } catch (Exception e) {
+          Logger.warning(user, this, "after", 
+              procData.getSignature() + "exception transforming BCC: " + aBCC);
+        }
+        
         String from = aFrom;
         try {
           from = procData.transform(userInfo, aFrom);
@@ -179,6 +210,12 @@ public class BlockEmail extends Block {
           for (String s : tos) {            
             Logger.debug(user, this, "after", "   TO: " + s);
           }
+          for (String s : ccs) {            
+              Logger.debug(user, this, "after", "   cc: " + s);
+            }
+          for (String s : bccs) {            
+              Logger.debug(user, this, "after", "   bcc: " + s);
+            }
           Logger.debug(user, this, "after", "FROM: " + from);
           Logger.debug(user, this, "after", "SUBJECT: " + subject);
           Logger.debug(user, this, "after", "MESSAGE: " + message);
@@ -201,6 +238,24 @@ public class BlockEmail extends Block {
               Logger.error(user,this,"after", procData.getSignature() + "Invalid to address: " + mailto);
             }
           }
+          for (String mailto : ccs) {
+              try {
+                new InternetAddress(mailto, true);
+              }
+              catch (AddressException ae) {
+                errorAddresses = true;
+                Logger.error(user,this,"after", procData.getSignature() + "Invalid to address: " + mailto);
+              }
+            }
+          for (String mailto : bccs) {
+              try {
+                new InternetAddress(mailto, true);
+              }
+              catch (AddressException ae) {
+                errorAddresses = true;
+                Logger.error(user,this,"after", procData.getSignature() + "Invalid to address: " + mailto);
+              }
+            }
           if (errorAddresses) {
             outPort = portError;
           }
@@ -256,20 +311,22 @@ public class BlockEmail extends Block {
             }
 
             if (email != null) {              
-              for (String mailto : tos) {           
+//              for (String mailto : tos) {           
                 email.resetTo();
-                email.setTo(mailto);
+                email.setTo(tos);
+                email.setCc(ccs);
+                email.setBcc(bccs);
                 email.setCallingProcess(procData.getProcessHeader());
                 email.setAttachment(attachment);
                 email.setCompressAttachment(compress);
                 
                 if (email.sendMsg()) {
-                  logMsg.append("Mail sent To: " + mailto + ";");
-                  Logger.info(user,this,"after",procData.getSignature() + "email sent to " + mailto);
+                  logMsg.append("Mail sent To: " + tos + ";");
+                  Logger.info(user,this,"after",procData.getSignature() + "email sent to " + tos);
                 } else {
-                  Logger.error(user,this,"after",procData.getSignature() + "email NOT sent to " + mailto);
+                  Logger.error(user,this,"after",procData.getSignature() + "email NOT sent to " + tos);
                 }
-              }
+//              }
               outPort = portSuccess;
             } else {
               Logger.error(user,this,"after",procData.getSignature() + "email is null");

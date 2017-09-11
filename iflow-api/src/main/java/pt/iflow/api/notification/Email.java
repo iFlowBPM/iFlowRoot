@@ -76,6 +76,7 @@ public class Email implements Cloneable {
 
   HashSet<String> hsTo = new HashSet<String>();
   HashSet<String> hsCc = new HashSet<String>();
+  HashSet<String> hsBcc = new HashSet<String>();
 
   long lCreatedTimestamp = 0;
 
@@ -210,6 +211,17 @@ public class Email implements Cloneable {
       }
     }
   }
+  
+  public void setBcc(List<String> albcc) {
+	    String stmp = null;
+	    for (int i = 0; albcc != null && i < albcc.size(); i++) {
+	      stmp = albcc.get(i);
+	      stmp = stmp.trim();
+	      if (!this.hsTo.contains(stmp)) {
+	        this.hsBcc.add(stmp);
+	      }
+	    }
+	  }
 
   /**
    * 
@@ -329,6 +341,7 @@ public class Email implements Cloneable {
         InternetAddress iaFrom = null;
         InternetAddress[] iaaTo = null;
         InternetAddress[] iaaCc = null;
+        InternetAddress[] iaaBcc = null;
 
         boolean emailValidationError = true;
         try {
@@ -344,6 +357,9 @@ public class Email implements Cloneable {
             if (!this.hsCc.isEmpty()) {
               iaaCc = new InternetAddress[]{testAddress};
             }
+            if (!this.hsBcc.isEmpty()) {
+                iaaBcc = new InternetAddress[]{testAddress};
+              }
             sbTo.append(testAddress);
           } else {
 
@@ -374,6 +390,19 @@ public class Email implements Cloneable {
                 counter++;
               }
             }
+            
+            if (this.hsBcc.size() > 0) {
+                iaaBcc = new InternetAddress[this.hsBcc.size()];
+                iter = this.hsBcc.iterator();
+                counter = 0;
+                while (iter.hasNext()) {
+                  iaaBcc[counter] = new InternetAddress( iter.next());
+
+                  Logger.debug("", this, "sendMsg", "BCC[" + counter + "]=" + iaaBcc[counter]);
+
+                  counter++;
+                }
+              }
           }
           emailValidationError = false;
         }
@@ -418,6 +447,9 @@ public class Email implements Cloneable {
         if (iaaCc != null) {
           msg.setRecipients(Message.RecipientType.CC, iaaCc);
         }
+        if (iaaBcc != null) {
+            msg.setRecipients(Message.RecipientType.BCC, iaaBcc);
+        }        
         msg.setSubject(subject, "UTF-8");
         msg.setSentDate(new java.util.Date());
 
@@ -604,4 +636,5 @@ public Boolean getCompressAttachment() {
 public void setCompressAttachment(Boolean compressAttachment) {
 	this.compressAttachment = compressAttachment;
 }
+
 }

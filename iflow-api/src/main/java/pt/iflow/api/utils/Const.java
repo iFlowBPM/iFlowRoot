@@ -70,6 +70,7 @@ public class Const {
   public static int iMAIL_MAXIMUM_RETRIES = 0;
   public static long lMAIL_RESCHEDULE_INTERVAL = 1L;
   public static String sAPP_EMAIL = null;
+  public static String sAPP_EMAIL_ADMIN = null;
   public static String sTEST_EMAIL = null;
   public static String sTEST_SMS = null;
   public static boolean bUSE_EMAIL = true;
@@ -414,6 +415,8 @@ public class Const {
   //how many days until FLOW_STATE_HISTORY and LOGS are purged from database
   public static Long DAYS_UNTIL_PURGE;
   
+  public static Boolean DISABLE_DOCS_PERMISSIONS = false;
+  
   private static List<String> ALLOWED_LOCALES = new ArrayList<String>();
 
   static {
@@ -491,6 +494,9 @@ public class Const {
     sMAIL_USERNAME = Setup.getProperty("MAIL_USERNAME");
     sMAIL_PASSWORD = Setup.getProperty("MAIL_PASSWORD");
     sAPP_EMAIL = Setup.getProperty("APP_EMAIL");
+    sAPP_EMAIL_ADMIN = Setup.getProperty("APP_EMAIL_ADMIN");
+    if(StringUtils.isBlank(sAPP_EMAIL_ADMIN))
+    	sAPP_EMAIL_ADMIN = sAPP_EMAIL;
     sTEST_EMAIL = Setup.getProperty("TEST_EMAIL");
     sTEST_SMS = Setup.getProperty("TEST_SMS");
     nEMAIL_MANAGER_TIMEOUT = Setup.getPropertyInt("EMAIL_MANAGER_TIMEOUT");
@@ -765,6 +771,9 @@ public class Const {
     } catch (Exception e) { 
     	DAYS_UNTIL_PURGE=new Long(-1); 
     }
+	try {
+		DISABLE_DOCS_PERMISSIONS = Boolean.parseBoolean(Setup.getProperty("DISABLE_DOCS_PERMISSIONS"));
+	} catch (Exception e) {}
   }
 
   public static void main(String[] args) {
