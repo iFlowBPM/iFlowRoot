@@ -222,8 +222,10 @@
     document.getElementById('div_menu').style.display='block';
     document.getElementById('div_proc_menu_expanded').style.display='none';
     document.getElementById('div_proc_menu_colapsed').style.display='block';
-    document.getElementById('link_process_help').style.display='none';
-    document.getElementById('link_process_help').style.display='block';
+    try{
+    	document.getElementById('link_process_help').style.display='none';
+    	document.getElementById('link_process_help').style.display='block';
+    } catch(err){} 
     document.getElementById('div_main').style.height='auto';
     document.getElementById('div_main').className='main';   
     document.getElementById('section3_header_div').style.height='35px';
@@ -1486,52 +1488,7 @@ function toggle_all_cb(cb,cba) {
   }
 
     function InicializeRichTextField(elementName, richTextComponentTitle, richTextComponentWidth, richTextComponentHeight){
-        var isReadOnly = document.getElementById(elementName).readOnly;
-        var collapseToolbar = true;
-
-        //Setup some private variables
-        var Dom = YAHOO.util.Dom;
-        var Event = YAHOO.util.Event;
-        var richTextEditorComponent = null;
-
-        var timer = null;
-
-        var update = function(ev) {
-            if (timer) {
-                clearTimeout(timer);
-            }
-            timer = setTimeout(function() {
-                Dom.get(elementName).innerHTML = richTextEditorComponent.cleanHTML();
-                richTextEditorComponent.saveHTML();
-            }, 100);
-        };
-
-        if (richTextComponentWidth == undefined){
-            richTextComponentWidth = '600px';
-        }
-        if (richTextComponentHeight == undefined){
-            richTextComponentHeight = '300px';
-        }
-        if (richTextComponentTitle == undefined || richTextComponentTitle == ''){
-            richTextComponentTitle = "Text Editing Tools";
-        }
-
-        //The SimpleEditor config
-        var richTextEditorComponentConfiguration = {
-                height: richTextComponentHeight,
-                width: richTextComponentWidth,
-                dompath: false, //Turns on the bar at the bottom
-                animate: true //Animates the opening, closing and moving of Editor windows
-        };
-
-        richTextEditorComponent = new YAHOO.widget.Editor(document.getElementById(elementName), richTextEditorComponentConfiguration);
-        richTextEditorComponent.on('afterNodeChange', update);
-        richTextEditorComponent.on('editorKeyDown', update);
-
-        richTextEditorComponent._defaultToolbar.titlebar = richTextComponentTitle;
-
-        
-        richTextEditorComponent.render();
+    	CKEDITOR.replace(elementName);
     }
 
     function blockPopupCallerForm(){

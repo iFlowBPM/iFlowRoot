@@ -1,5 +1,6 @@
 package pt.iflow.api.documents;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import pt.iflow.api.processdata.ProcessData;
@@ -138,4 +139,6 @@ public interface Documents {
   public boolean isToSign(UserInfoInterface userInfo, int docid);
   
   public boolean markDocsToSign(UserInfoInterface userInfo, ProcessListVariable docs, ProcessListVariable values);
+  
+  public String migrateDatabaseToFilesystem(UserInfoInterface userInfo, ProcessData procData, Integer docid) throws Exception;
 }

@@ -20,6 +20,7 @@ import pt.iflow.api.processdata.ProcessHeader;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.UserInfoInterface;
 import pt.iflow.api.utils.Utils;
+import pt.iflow.api.utils.WSDLUtilsV2;
 import pt.iknow.utils.wsdl.WSDLUtils;
 
 /**
@@ -568,7 +569,7 @@ public abstract class Block {
     protected WSDLUtils setWSDLUtils(InputStream aisWsdl, String asUrl)
             throws Exception {
         return new WSDLUtils(aisWsdl, asUrl);
-    }
+    }    
     
     protected Repository getRepBean() {
         return BeanFactory.getRepBean();

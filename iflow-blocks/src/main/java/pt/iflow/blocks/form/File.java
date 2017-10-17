@@ -49,6 +49,10 @@ public class File implements FieldInterface {
       sb.append("<field><type>file</type>");
       sb.append("<obligatory>").append(prop.getProperty(FormProps.sOBLIGATORY_PROP)).append("</obligatory>");
 
+      sb.append("<flowid>").append(prop.getProperty(FormProps.FLOWID)).append("</flowid>");
+      sb.append("<pid>").append(prop.getProperty(FormProps.PID)).append("</pid>");
+      sb.append("<subpid>").append(prop.getProperty(FormProps.SUBPID)).append("</subpid>");
+      
       String sFileLabel= prop.getProperty("file_label");
       if (sFileLabel == null) sFileLabel = "";
       sb.append("<file_label>").append(sFileLabel).append("</file_label>");

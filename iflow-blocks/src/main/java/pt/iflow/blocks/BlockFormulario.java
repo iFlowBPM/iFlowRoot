@@ -77,6 +77,7 @@ import pt.iflow.blocks.form.FieldInterface;
 import pt.iflow.blocks.form.PopupFormField;
 import pt.iflow.blocks.form.SQLSelection;
 import pt.iflow.blocks.form.Selection;
+import pt.iflow.blocks.form.TabDivision;
 import pt.iflow.blocks.form.utils.FormButton;
 import pt.iflow.blocks.form.utils.FormButtonType;
 import pt.iflow.blocks.form.utils.FormCache;
@@ -195,15 +196,18 @@ public class BlockFormulario extends Block implements FormOperations {
         procData.setAppData(DataSetVariables.PROCESS_NOT_IN_CREATOR, "true");
       } else {
         if (pm != null) {
-          ListIterator it = pm.getProcessActivities(userInfo, flowid, pid, subpid);
-          while (it != null && it.hasNext()) {
-            activity = (Activity) it.next();
-            if (!login.equals(activity.userid)) {
-              // Another user has activity scheduled
-              procData.setAppData(DataSetVariables.PROCESS_NOT_IN_CREATOR, "true");
-              break;
-            }
-          }
+          //if process is only in memory this validation makes no sense, so we skip it and optimize processing times
+          if(pid!=-10){
+			  ListIterator it = pm.getProcessActivities(userInfo, flowid, pid, subpid);
+		      while (it != null && it.hasNext()) {
+		        activity = (Activity) it.next();
+		        if (!login.equals(activity.userid)) {
+		          // Another user has activity scheduled
+		          procData.setAppData(DataSetVariables.PROCESS_NOT_IN_CREATOR, "true");
+		          break;
+		        }
+		      }  
+          }          
         }
       }
     }
@@ -447,8 +451,10 @@ public class BlockFormulario extends Block implements FormOperations {
         Iterator <String> hiddenIter = ahmHiddenFields.keySet().iterator();
         while (hiddenIter.hasNext()) {
           stmp = hiddenIter.next();
-          stmp2 = ahmHiddenFields.get(stmp);
-          hmHiddenFields.put(stmp,stmp2);
+          if(!stmp.startsWith("_tabholder_selected")){
+	          stmp2 = ahmHiddenFields.get(stmp);
+	          hmHiddenFields.put(stmp,stmp2);
+          }
         }
       }
 
@@ -458,7 +464,7 @@ public class BlockFormulario extends Block implements FormOperations {
           String error = procData.getError();
           if (StringUtils.isNotEmpty(error)) {
             stmp = Utils.replaceString(error,"<br/>","</text></error><error><text>");
-            sbXml.append("<error><text>");
+            sbXml.append("<error><title>" + userInfo.getMessages().getString("form.error_msg_title") + "</title><text>");
             sbXml.append(StringEscapeUtils.escapeXml(error));
             sbXml.append("</text></error>");
 
@@ -494,6 +500,9 @@ public class BlockFormulario extends Block implements FormOperations {
         
         props.setProperty(FormProps.JSP, sJSP);
         props.setProperty(FormProps.FORM_NAME, sFormName);
+        props.setProperty(FormProps.FLOWID,"" + procData.getFlowId());
+        props.setProperty(FormProps.PID,"" + procData.getPid());
+        props.setProperty(FormProps.SUBPID,"" + procData.getSubPid());
         
         // now build lists for list/query attributes and append them to props
         hmListValues = (HashMap) hmListAttrs.get(fieldNumber);
@@ -942,9 +951,11 @@ public class BlockFormulario extends Block implements FormOperations {
                 else {
                   stmp2 = procData.transform(userInfo, stmp2);
                   if (stmp2 == null) stmp2 = "";
-                }
-
-                stmp3 = "javascript:disableForm();document."
+                }                
+                String keepScrollOnLoad = props.getProperty(FormProps.KEEP_SCROLL_ONLOAD);
+                if(keepScrollOnLoad==null) keepScrollOnLoad="";
+                
+                stmp3 = "javascript:disableForm(" + keepScrollOnLoad + ");document."
                   + BlockFormulario.sFORM_NAME
                   + "." + stmp + ".value='" + stmp2 + "';document."
                   + BlockFormulario.sFORM_NAME
@@ -1015,6 +1026,10 @@ public class BlockFormulario extends Block implements FormOperations {
         // set odd property (to enable alternate bgcolors)
         if (nFieldCounter % 2 == 0) props.setProperty("even_field", "true");  // FIXME isto devia ficar la em cima antes do init
         else props.setProperty("even_field", "false");
+        
+        // last selected tab
+        if (fi instanceof TabDivision && ahmHiddenFields.get("_tabholder_selected" + props.getProperty("fieldid"))!=null)
+        	props.setProperty("_tabholder_selected", ahmHiddenFields.get("_tabholder_selected" + props.getProperty("fieldid")));
 
         // now get xml from field object
         stmp = fi.getXML(props);
@@ -1219,12 +1234,13 @@ public class BlockFormulario extends Block implements FormOperations {
             String image = formButton.getAttribute(FormButton.ATTR_IMAGE);
             if (StringUtils.isNotEmpty(image)) {
               if (image.indexOf("http://") == -1) {
-                if (Const.APP_PORT == -1) {
-                  image = Const.APP_PROTOCOL + "://" + Const.APP_HOST + stmp3;
-                }
-                else {
-                  image = Const.APP_PROTOCOL + "://" + Const.APP_HOST + ":" + Const.APP_PORT + stmp3;
-                }
+//                if (Const.APP_PORT == -1) {
+//                  image = Const.APP_PROTOCOL + "://" + Const.APP_HOST + stmp3;
+//                }
+//                else {
+//                  image = Const.APP_PROTOCOL + "://" + Const.APP_HOST + ":" + Const.APP_PORT + stmp3;
+//                }
+            	  image = "../" + image;
               }
               sbXml.append("<buttonimage><src>").append(image).append("</src>");
               sbXml.append("<alt>").append(tooltip).append("</alt>");
@@ -1802,8 +1818,8 @@ public class BlockFormulario extends Block implements FormOperations {
       transformer.setParameter("full_url_prefix", sUrl);
       transformer.setParameter("use_scanner", "" + useScanner + "");
       transformer.setParameter("response", response);
-      transformer.setParameter("theme", BeanFactory.getOrganizationThemeBean().getOrganizationTheme(userInfo).getThemeName());
-
+      transformer.setParameter("theme", BeanFactory.getOrganizationThemeBean().getOrganizationTheme(userInfo).getThemeName());      
+      
       long start = Runtime.getRuntime().freeMemory();
       Logger.debug(sLogin, "BlockFormulario", "transformForm", "MEMORIA: TO STRING=" + (start - Runtime.getRuntime().freeMemory()));
       start = Runtime.getRuntime().freeMemory();

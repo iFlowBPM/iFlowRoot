@@ -52,7 +52,7 @@ CREATE TABLE `flow` (
   `name_idx18` varchar(64),
   `name_idx19` varchar(64),
   `seriesid` int,
-  `max_block_id` INT;
+  `max_block_id` INT,
   type_code varchar(1) default 'W',
   PRIMARY KEY (`flowid`),
   INDEX `ind_flow` (`enabled`)
@@ -299,7 +299,7 @@ CREATE TABLE `activity` (
   `profilename` VARCHAR(256),
   `read_flag` INT(1) NULL DEFAULT 1,
   `mid` INT NULL DEFAULT 0,
-  `folderid` INT NULL;
+  `folderid` INT NULL,
   PRIMARY KEY (`flowid`, `pid`, `subpid`, `userid`),
   CONSTRAINT `activity_process_fk` FOREIGN KEY `activity_process_fk` (`flowid`, `pid`, `subpid`)
     REFERENCES `process` (`flowid`, `pid`, `subpid`)
@@ -1483,6 +1483,7 @@ insert into counter values ('docid',1,NOW());
 insert into counter values ('emailid',1,NOW());
 insert into counter values ('cid',1,NOW());
 insert into counter values ('flowid',0,NOW());
+insert into counter values ('nodekey',0,NOW());
 
 insert into organizations (organizationid,name,description) values (1,'SYS','SYS ORG');
 
@@ -1864,19 +1865,6 @@ CREATE TABLE `serial_code_templates` (
 )
 ENGINE = INNODB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS serial_code_templates;
-
-CREATE TABLE `serial_code_templates` (
-  `template` VARCHAR(50) NOT NULL,
-  `name` VARCHAR(50) NOT NULL,
-  `description` VARCHAR(500),
-  `callback` VARCHAR(50),
-  `flag` VARCHAR(50),
-  `organization` VARCHAR(50) NOT NULL,
-  PRIMARY KEY (`template`, `name`)
-)
-ENGINE = INNODB DEFAULT CHARSET=utf8;
-
 DROP TABLE IF EXISTS subflow_block_mapping;
 CREATE TABLE  subflow_block_mapping (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
@@ -1895,6 +1883,8 @@ create view process_intervenients (userid, pid) as
     select distinct userid, pid from activity_history;
 DELIMITER ;
 
+DROP TABLE IF EXISTS serial_code_templates;
+
 CREATE TABLE `serial_code_templates` (
   `template` VARCHAR(50) NOT NULL,
   `name` VARCHAR(50) NOT NULL,
@@ -1906,3 +1896,33 @@ CREATE TABLE `serial_code_templates` (
 );
 
 ALTER TABLE `iflow`.`reporting` ADD INDEX `IDX_REPORTING`(`flowid`, `pid`, `subpid`);
+
+-- insert into counter values ('nodekey',0,NOW());
+
+DROP TABLE IF EXISTS `iflow`.`active_node`;
+CREATE TABLE  `iflow`.`active_node` (
+  `nodekey` varchar(50) NOT NULL,
+  `expiration` datetime NOT NULL,
+  PRIMARY KEY (`nodekey`)
+);
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS `get_next_nodekey` $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_next_nodekey`(OUT retnodekey INTEGER)
+BEGIN
+    DECLARE tmp integer;
+    SELECT GET_LOCK('iflow.get_next_nodekey',-1);
+    set retnodekey = 1;
+    select value into tmp from counter where name='nodekey';
+    update counter set value=(tmp +1) where  name='nodekey';
+    select value into retnodekey from counter where name='nodekey';
+    SELECT RELEASE_LOCK('iflow.get_next_nodekey');
+END $$
+DELIMITER ;
+
+DROP TABLE IF EXISTS `iflow`.`sharedobjectrefresh`;
+CREATE TABLE  `iflow`.`sharedobjectrefresh` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `flowid` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;

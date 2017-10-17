@@ -254,7 +254,7 @@ public class BlockProcDetail extends BlockFormulario {
     // another thing must be done....
     Map<String,String> processDetail = null;
     if(processo != null && flow.hasDetail())
-      processDetail = ProcessPresentation.getProcessDetail(userInfo, processo);
+      processDetail = ProcessPresentation.getProcessDetail(userInfo, processo, response);
     if(null == processDetail) processDetail = new HashMap<String, String>();
     Hashtable<String,Object> htSubst = new Hashtable<String, Object>();
     htSubst.put("processDetail", processDetail);

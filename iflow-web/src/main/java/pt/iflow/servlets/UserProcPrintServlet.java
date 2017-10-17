@@ -26,6 +26,7 @@ import pt.iflow.api.processdata.ProcessHeader;
 import pt.iflow.api.repository.RepositoryURIResolver;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
+import pt.iflow.api.utils.ServletUtils;
 import pt.iflow.api.utils.UserInfoInterface;
 import pt.iknow.pdf.PDFGenerator;
 import pt.iknow.utils.html.FormData;
@@ -116,7 +117,7 @@ public class UserProcPrintServlet extends javax.servlet.http.HttpServlet impleme
       env.put("application", flow.getApplicationName());
       env.put("pnumber", procData==null?"":procData.getPNumber());
 
-      Map<String, String> processDetail = ProcessPresentation.getProcessDetail(userInfo, procData);
+      Map<String, String> processDetail = ProcessPresentation.getProcessDetail(userInfo, procData, new ServletUtils(response));
       String[] vars, vals;
       if (null == processDetail) {
         vars = new String[0];

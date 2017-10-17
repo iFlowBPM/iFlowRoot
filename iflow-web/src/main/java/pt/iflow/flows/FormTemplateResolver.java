@@ -96,7 +96,7 @@ public class FormTemplateResolver {
 
         }
         // this is from template so update and add all at once
-        else if (retrieveObjId(xmlAttribute.getName()) == objId && !doneTemplate) {
+        else if (retrieveObjId(xmlAttribute.getName()).equals(objId) && !doneTemplate) {
           for (XmlAttribute xmlTemplateAttribute : templateXmlAttribute) {
             if (xmlTemplateAttribute.getName().startsWith("OBJ_")) {
               xmlTemplateAttribute.setName("OBJ_" + (objIdCounter + retrieveObjId(xmlTemplateAttribute.getName()))

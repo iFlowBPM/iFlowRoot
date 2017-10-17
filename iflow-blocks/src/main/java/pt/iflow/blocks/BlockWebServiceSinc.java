@@ -15,6 +15,7 @@ import pt.iflow.api.processdata.ProcessListItem;
 import pt.iflow.api.processdata.ProcessListVariable;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.UserInfoInterface;
+import pt.iflow.api.utils.WSDLUtilsV2;
 import pt.iknow.utils.wsdl.WSDLUtils;
 
 public class BlockWebServiceSinc extends Block {
@@ -337,8 +338,9 @@ public class BlockWebServiceSinc extends Block {
       String sUrl = this.getWSDLURL(userInfo, this._sWsdl);
       Logger.debug("", this, "", "URL=" +  sUrl);
 
-      WSDLUtils wu = setWSDLUtils(in, sUrl);
-
+      //WSDLUtils wu = setWSDLUtils(in, sUrl);
+      WSDLUtils wu = new WSDLUtilsV2(rfWSDLFile, sUrl);
+      
       // input/output mappings
       HashMap<String, String> hmInput = new HashMap<String, String>();
       HashMap<String, String> hmOutput = new HashMap<String, String>();

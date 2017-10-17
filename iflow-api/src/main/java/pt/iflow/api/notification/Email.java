@@ -1,26 +1,38 @@
 package pt.iflow.api.notification;
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
 import javax.mail.Address;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.SendFailedException;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import javax.mail.util.ByteArrayDataSource;
 
 import org.apache.commons.lang.StringUtils;
 
 import pt.iflow.api.processdata.ProcessHeader;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
+import pt.iflow.connector.document.Document;
 
 /**
  * <p>
@@ -52,6 +64,8 @@ public class Email implements Cloneable {
   String from = "";
   String subject = "";
   String msgText = "";
+  Document[] attachment;
+  Boolean compressAttachment;
 
   String processSignature = "";
   
@@ -62,6 +76,7 @@ public class Email implements Cloneable {
 
   HashSet<String> hsTo = new HashSet<String>();
   HashSet<String> hsCc = new HashSet<String>();
+  HashSet<String> hsBcc = new HashSet<String>();
 
   long lCreatedTimestamp = 0;
 
@@ -196,6 +211,17 @@ public class Email implements Cloneable {
       }
     }
   }
+  
+  public void setBcc(List<String> albcc) {
+	    String stmp = null;
+	    for (int i = 0; albcc != null && i < albcc.size(); i++) {
+	      stmp = albcc.get(i);
+	      stmp = stmp.trim();
+	      if (!this.hsTo.contains(stmp)) {
+	        this.hsBcc.add(stmp);
+	      }
+	    }
+	  }
 
   /**
    * 
@@ -315,6 +341,7 @@ public class Email implements Cloneable {
         InternetAddress iaFrom = null;
         InternetAddress[] iaaTo = null;
         InternetAddress[] iaaCc = null;
+        InternetAddress[] iaaBcc = null;
 
         boolean emailValidationError = true;
         try {
@@ -330,6 +357,9 @@ public class Email implements Cloneable {
             if (!this.hsCc.isEmpty()) {
               iaaCc = new InternetAddress[]{testAddress};
             }
+            if (!this.hsBcc.isEmpty()) {
+                iaaBcc = new InternetAddress[]{testAddress};
+              }
             sbTo.append(testAddress);
           } else {
 
@@ -360,6 +390,19 @@ public class Email implements Cloneable {
                 counter++;
               }
             }
+            
+            if (this.hsBcc.size() > 0) {
+                iaaBcc = new InternetAddress[this.hsBcc.size()];
+                iter = this.hsBcc.iterator();
+                counter = 0;
+                while (iter.hasNext()) {
+                  iaaBcc[counter] = new InternetAddress( iter.next());
+
+                  Logger.debug("", this, "sendMsg", "BCC[" + counter + "]=" + iaaBcc[counter]);
+
+                  counter++;
+                }
+              }
           }
           emailValidationError = false;
         }
@@ -397,28 +440,76 @@ public class Email implements Cloneable {
         session.setDebug(debug);
 
         // create a message
-        MimeMessage msg = new MimeMessage(session);
+        final MimeMessage msg = new MimeMessage(session);
         msg.setFrom(iaFrom);
         msg.setRecipients(Message.RecipientType.TO, iaaTo);
 
         if (iaaCc != null) {
           msg.setRecipients(Message.RecipientType.CC, iaaCc);
         }
-
+        if (iaaBcc != null) {
+            msg.setRecipients(Message.RecipientType.BCC, iaaBcc);
+        }        
         msg.setSubject(subject, "UTF-8");
         msg.setSentDate(new java.util.Date());
 
+        //text part
+        MimeBodyPart messageBodyPart = new MimeBodyPart();        
         if (this.bHtml) {
-          msg.setContent(msgText, "text/html; charset=UTF-8");
+        	messageBodyPart.setContent(msgText, "text/html; charset=UTF-8");
+          }
+          else {
+            // If the desired charset is known, you can use
+            // setText(text, charset)
+            // msg.setText(msgText, "UTF-8");
+        	  messageBodyPart.setContent(msgText, "text/plain; charset=UTF-8");
+          } 
+        
+        Multipart multipart = new MimeMultipart();
+        multipart.addBodyPart(messageBodyPart);
+        
+        //attachment
+        if(attachment!=null && attachment.length>0){
+        	if(!compressAttachment)
+        		for(int i=0; i<attachment.length; i++){
+        			messageBodyPart = new MimeBodyPart();
+                	DataSource source = new ByteArrayDataSource(attachment[i].getContent(),"application/octet-stream");
+                	messageBodyPart.setDataHandler(new DataHandler(source));
+                	messageBodyPart.setFileName(attachment[i].getFileName());
+                	multipart.addBodyPart(messageBodyPart);
+        		}        	
+        	else {
+        		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        		ZipOutputStream zos = new ZipOutputStream(baos);
+        		for(int i=0; i<attachment.length; i++){
+	        		ZipEntry entry = new ZipEntry(attachment[i].getFileName());
+	        		entry.setSize(attachment[i].getContent().length);
+	        		zos.putNextEntry(entry);
+	        		zos.write(attachment[i].getContent());
+	        		zos.closeEntry();	        		
+        		}
+        		zos.close();
+        		DataSource source = new ByteArrayDataSource(baos.toByteArray(),"application/zip");
+            	messageBodyPart.setDataHandler(new DataHandler(source));
+            	messageBodyPart.setFileName("email.zip");
+            	multipart.addBodyPart(messageBodyPart);
+        	}
         }
-        else {
-          // If the desired charset is known, you can use
-          // setText(text, charset)
-          // msg.setText(msgText, "UTF-8");
-          msg.setContent(msgText, "text/plain; charset=UTF-8");
-        }
+        
+        msg.setContent(multipart);                             
 
-        Transport.send(msg);
+        //Transport.send(msg);
+        Thread th=new Thread(new Runnable() {
+        	public void run() {
+        		try {
+        			Transport.send(msg);
+        		} catch (MessagingException e) {
+        			Logger.error(null, this, "sendMsg", processSignature + "\n-- pt.iflow.api.notification.Email: Exception handling for mail: ", e);
+        		}
+        	}
+    	});
+        th.start();
+        
         Logger.info("", this, "sendMsg", processSignature + "Mail sent to " + sbTo.toString());
         retObj = true;
       }
@@ -529,4 +620,21 @@ public class Email implements Cloneable {
   public String getCallingProcessSignature() {
     return this.processSignature;
   }
+
+public Document[] getAttachment() {
+	return attachment;
+}
+
+public void setAttachment(Document[] attachment) {
+	this.attachment = attachment;
+}
+
+public Boolean getCompressAttachment() {
+	return compressAttachment;
+}
+
+public void setCompressAttachment(Boolean compressAttachment) {
+	this.compressAttachment = compressAttachment;
+}
+
 }

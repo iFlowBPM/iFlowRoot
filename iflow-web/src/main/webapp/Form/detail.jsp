@@ -96,7 +96,7 @@ catch (Exception e) {
   
   Map<String,String> processDetail = null;
   if(flow != null && flow.hasDetail())
-    processDetail = ProcessPresentation.getProcessDetail(userInfo, procData);
+    processDetail = ProcessPresentation.getProcessDetail(userInfo, procData, new ServletUtils(response));
   if(null == processDetail) processDetail = new HashMap<String,String>();
   Hashtable<String,Object> htSubst = new Hashtable<String, Object>();
   htSubst.put("processDetail", processDetail);

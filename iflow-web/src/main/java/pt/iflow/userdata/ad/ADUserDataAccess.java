@@ -294,12 +294,14 @@ public class ADUserDataAccess implements UserDataAccess {
   }
   public Collection<String> getAllProfiles(String organization) {
     Collection<Map<String,String>> profiles = LDAPInterface.searchDeep(this._LIST_PROFILES);
-
+    Logger.debug("Admin", this, "getAllProfiles", "profiles list " + profiles);
+    
     ArrayList<String> retObj = new ArrayList<String>(profiles!=null?profiles.size():0);
 
     if(null != profiles) {
       for(Map<String,String> profMap : profiles) {
         String profile = profMap.get("distinguishedName");
+        Logger.debug("Admin", this, "getAllProfiles", "profile in list = " + profile);
         retObj.add(parseGroupID(profile));
       }
     }

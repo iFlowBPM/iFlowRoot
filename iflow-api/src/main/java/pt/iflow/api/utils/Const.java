@@ -70,6 +70,7 @@ public class Const {
   public static int iMAIL_MAXIMUM_RETRIES = 0;
   public static long lMAIL_RESCHEDULE_INTERVAL = 1L;
   public static String sAPP_EMAIL = null;
+  public static String sAPP_EMAIL_ADMIN = null;
   public static String sTEST_EMAIL = null;
   public static String sTEST_SMS = null;
   public static boolean bUSE_EMAIL = true;
@@ -95,6 +96,7 @@ public class Const {
   public static final String CLICK_TIMEOUT_NAME = "CLICK_TIMEOUT";
 
   public static String DOCS_BASE_URL = null;
+  public static String DOCS_DAO_CLASS = null;  
 
   public static final String MISSING_PROC_MID_ERROR_MSG = "Informa&ccedil;&atilde;o sobre estado actual do processo n&atilde;o foi encontrada.<br>Por favor tente novamente.";
   public static final String PROC_CHANGED_ERROR_MSG = "Processo alterado por outro utilizador. Os presentes dados foram actualizados (as altera&ccedil;&otilde;es efectuadas n&atilde;o foram guardadas).";
@@ -399,6 +401,22 @@ public class Const {
   public static final String sDEFAULT_LOCALE_EN_US = "en-US";
   public static final String sDEFAULT_LOCALE_ES_ES = "es-ES";
   
+  public static String MAX_LOGIN_ATTEMPTS = "MAX_LOGIN_ATTEMPTS";
+  public static String MAX_LOGIN_ATTEMPTS_WAIT = "MAX_LOGIN_ATTEMPTS_WAIT";
+  
+  //Cluester support enabled
+  public static Boolean CLUSTER_ENABLED;
+  
+  //Job Manager times in seconds for Cluster support
+  public static Long BEAT_ACTIVE_TIME;
+  public static Long BEAT_ACTIVE_CHECK_TIME;
+  public static Long BEAT_INACTIVE_CHECK_TIME;
+  
+  //how many days until FLOW_STATE_HISTORY and LOGS are purged from database
+  public static Long DAYS_UNTIL_PURGE;
+  
+  public static Boolean DISABLE_DOCS_PERMISSIONS = false;
+  
   private static List<String> ALLOWED_LOCALES = new ArrayList<String>();
 
   static {
@@ -476,6 +494,9 @@ public class Const {
     sMAIL_USERNAME = Setup.getProperty("MAIL_USERNAME");
     sMAIL_PASSWORD = Setup.getProperty("MAIL_PASSWORD");
     sAPP_EMAIL = Setup.getProperty("APP_EMAIL");
+    sAPP_EMAIL_ADMIN = Setup.getProperty("APP_EMAIL_ADMIN");
+    if(StringUtils.isBlank(sAPP_EMAIL_ADMIN))
+    	sAPP_EMAIL_ADMIN = sAPP_EMAIL;
     sTEST_EMAIL = Setup.getProperty("TEST_EMAIL");
     sTEST_SMS = Setup.getProperty("TEST_SMS");
     nEMAIL_MANAGER_TIMEOUT = Setup.getPropertyInt("EMAIL_MANAGER_TIMEOUT");
@@ -653,6 +674,7 @@ public class Const {
     	nEXCEL_LIBRARY = nEXCEL_LIBRARY_JXL;
 
     DOCS_BASE_URL = Setup.getProperty("DOCS_BASE_URL");
+    DOCS_DAO_CLASS = Setup.getProperty("DOCS_DAO_CLASS");
     
     try {
       sDELEGATION_NOTIFY_REQUEST_MODE = Setup.getProperty("DELEGATION_NOTIFY_REQUEST_MODE").toLowerCase();
@@ -724,7 +746,34 @@ public class Const {
     } catch (Exception e) { 
     	sRUBRIC_UPLOAD=sNO; 
     }
-    
+	try { 
+		CLUSTER_ENABLED = Boolean.parseBoolean(Setup.getProperty("CLUSTER_ENABLED"));
+    } catch (Exception e) { 
+    	CLUSTER_ENABLED=Boolean.FALSE;
+    }
+	try { 
+		BEAT_ACTIVE_TIME=Long.parseLong(Setup.getProperty("BEAT_ACTIVE_TIME"));
+    } catch (Exception e) { 
+    	BEAT_ACTIVE_TIME=new Long(10000); 
+    }
+	try { 
+		BEAT_ACTIVE_CHECK_TIME=Long.parseLong(Setup.getProperty("BEAT_ACTIVE_CHECK_TIME"));
+    } catch (Exception e) { 
+    	BEAT_ACTIVE_CHECK_TIME=new Long(5000); 
+    }
+	try { 
+		BEAT_INACTIVE_CHECK_TIME=Long.parseLong(Setup.getProperty("BEAT_INACTIVE_CHECK_TIME"));
+    } catch (Exception e) { 
+    	BEAT_INACTIVE_CHECK_TIME=new Long(15000); 
+    }
+	try { 
+		DAYS_UNTIL_PURGE=Long.parseLong(Setup.getProperty("DAYS_UNTIL_PURGE"));
+    } catch (Exception e) { 
+    	DAYS_UNTIL_PURGE=new Long(-1); 
+    }
+	try {
+		DISABLE_DOCS_PERMISSIONS = Boolean.parseBoolean(Setup.getProperty("DISABLE_DOCS_PERMISSIONS"));
+	} catch (Exception e) {}
   }
 
   public static void main(String[] args) {

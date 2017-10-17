@@ -1,0 +1,93 @@
+/* registration styling */
+/*    div#registerform {
+	    margin: auto;
+	    border: 5px solid #5D7891;
+	    align: center;
+	    padding: 15px;
+	    margin-top:50px;
+	    background-color: #E9F1FA;
+    }
+  */  
+  	.rp_body {
+		margin: 0px;
+		background: #AECDFF url('../../../images/bg.png') 0 0 repeat-x;
+		text-align:center;
+		padding: 50px 20px 0 20px;
+	}
+	
+	.rp_title {
+		font: normal bold 16px verdana;
+		color: white;
+		text-align:left;
+		background-color: #9FC244;
+		background-image: url(../../../images/registo_header_bg.png);
+		padding: 7px;
+		height:18px;
+	}
+	
+	.rp_left_img {
+		width:8px;
+		height:32px;
+		background-image: url('../../../images/registo_header_bg_esq.gif');
+		float:left;
+	}
+	
+	.rp_right_img {
+		width:8px;
+		height:32px;
+		background-image: url('../../../images/registo_header_bg_dir.gif');
+		float:left;
+	}
+
+	.rp_margin_left {
+		margin-left: 10px;
+	}
+	
+	.rp_margin_right {
+		margin-right: 10px;
+	}
+	
+    .rp_left {
+		float: left;
+	}
+	
+	.rp_right {
+		float: right;
+	}
+	
+	.rp_disabled {
+		opacity: 0.5;
+		filter: alpha(opacity=50);
+	}
+	
+	.rp_fixed_width {
+		width: 640px;
+		margin: auto;
+		height: 50px;
+	}
+	
+	.rp_background {
+		background-color: #E9F1FA;
+		margin-left: 10px;
+	}
+			
+	.rc_header {
+		background: transparent url(../../../images/rcbox640x.gif) no-repeat top;
+		height: 20px;
+		width: 100%;
+		padding-top: 20px;		
+	}
+
+	.rc_content {
+		background: transparent url(../../../images/rcbox640x.gif) no-repeat bottom;
+		width: 100%;
+		height: auto !important;
+		padding-bottom: 20px;
+	}
+
+	.rc_box {
+		width: 640px;
+		clear: both;
+		margin: auto;
+	}	
+  

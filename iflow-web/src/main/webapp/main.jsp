@@ -7,7 +7,7 @@
 <%
     if (userInfo.isGuest() || session.getAttribute("login_error") != null) {
         session.invalidate();
-        ServletUtils.sendEncodeRedirect(response, "login.jsp");
+        ServletUtils.sendEncodeRedirect(response, "loginBanco.jsp");
         return;
     }
     String sPage = "main";
@@ -91,6 +91,10 @@
     hsSubst.put("link_logout", messages.getString("main.link.logout"));
     hsSubst.put("link_account", messages.getString("main.link.account"));
     hsSubst.put("link_inbox", messages.getString("main.link.inbox"));
+    
+    hsSubst.put("link_signature", messages.getString("main.link.signature"));
+    hsSubst.put("tooltip_signature", messages.getString("main.tooltip.signature"));
+    
     hsSubst.put("tooltip_help", messages.getString("main.tooltip.help"));
     hsSubst.put("tooltip_tutorial", messages.getString("main.tooltip.tutorial"));
     hsSubst.put("tooltip_logout", messages.getString("main.tooltip.logout"));

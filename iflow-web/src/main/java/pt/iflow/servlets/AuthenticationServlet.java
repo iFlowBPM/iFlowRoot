@@ -3,6 +3,8 @@ package pt.iflow.servlets;
 import java.io.IOException;
 import java.util.Hashtable;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -48,7 +50,7 @@ public class AuthenticationServlet extends javax.servlet.http.HttpServlet implem
   static AuthenticationResult authenticate(final HttpServletRequest request, final HttpServletResponse response, final String username, final String password, final String nextUrl)
   throws ServletException, IOException {
     AuthenticationResult result = new AuthenticationResult();
-    result.nextUrl = nextUrl;
+    result.nextUrl = nextUrl;    
 
     HttpSession session = request.getSession();
 
@@ -149,6 +151,9 @@ public class AuthenticationServlet extends javax.servlet.http.HttpServlet implem
     String password = request.getParameter("password");
     String sDoRedirect = request.getParameter("do_redirect");
     String nextUrl = request.getParameter("url"); 
+    //Fix for stupid ESAPI non causal bug
+    if(StringUtils.contains(nextUrl, "main.jsp") && !StringUtils.equals(nextUrl, "main.jsp"))
+    	nextUrl="main.jsp";
     String source = request.getParameter("source");
     String keepSession = request.getParameter("keep_session");
 
@@ -161,7 +166,16 @@ public class AuthenticationServlet extends javax.servlet.http.HttpServlet implem
         nextUrl="main.jsp";
       }
     }
-
+    
+    //if Kaptcha is activated and invalid nullify credentials
+    Boolean isOverFailureLimit = LoginAttemptCounterController.isOverFailureLimit(getServletContext() , request);
+    String kaptcha = (String) request.getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);    
+    String challenge = request.getParameter("challenge");
+    if(isOverFailureLimit && (kaptcha == null || !kaptcha.equals(challenge))) {
+    	login=null;
+    	password=null;
+    }
+            
     AuthenticationResult result = authenticate(request, response, login, password, nextUrl);
 
     // keep session in cookie
@@ -174,9 +188,14 @@ public class AuthenticationServlet extends javax.servlet.http.HttpServlet implem
       sessionUsername = ServletUtils.newCookie(Const.SESSION_COOKIE_USERNAME, login);
       sessionPassword = ServletUtils.newCookie(Const.SESSION_COOKIE_PASSWORD, Utils.encrypt(password));
       response.addCookie(sessionUsername);
-      response.addCookie(sessionPassword);
-    }
+      response.addCookie(sessionPassword);      
+    }    	
 
+    if (result.isAuth)
+    	SynchronizerTokenController.register(getServletContext(), login);
+    else
+    	LoginAttemptCounterController.markFailedAttempt(getServletContext(), request);
+    
     // used in ibox login
     if(StringUtils.equals(source, "assync") && result.isAuth) {
       ServletUtils.forward(request, response, "/javascript/encodedURLS.jsp");

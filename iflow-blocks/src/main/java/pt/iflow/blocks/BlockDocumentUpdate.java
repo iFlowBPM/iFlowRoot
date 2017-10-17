@@ -42,7 +42,7 @@ public class BlockDocumentUpdate extends Block {
   
   public BlockDocumentUpdate(int anFlowId, int id, int subflowblockid, String filename) {
     super(anFlowId, id, subflowblockid, filename);
-    saveFlowState = false;
+    saveFlowState = true;
   }
 
   /*

@@ -48,7 +48,7 @@ public class BlockSQLSelect extends BlockSQL {
   public BlockSQLSelect(int anFlowId,int id, int subflowblockid, String filename) {
     super(anFlowId,id, subflowblockid, filename);
     hasInteraction = false;
-    saveFlowState = false;
+    saveFlowState = true;
   }
 
   /**

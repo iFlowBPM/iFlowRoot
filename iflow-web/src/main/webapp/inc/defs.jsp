@@ -35,9 +35,13 @@
 %><%@ page import="pt.iflow.api.processdata.ProcessListItem"
 %><%@ page import="pt.iflow.api.transition.*"
 %><%@ page import="com.infosistema.crypto.Base64"
+%><%@ page import="pt.iflow.utils.FormDataSanitizer"
+%><%@ page import="org.apache.commons122.fileupload.servlet.ServletFileUpload"
 %><%
     // TODO move sizing constants to properties (in iflow property file)
 FormData fdFormData = FormUtils.parseRequest(request, Const.nUPLOAD_THRESHOLD_SIZE, Const.nUPLOAD_MAX_SIZE,Const.fUPLOAD_TEMP_DIR);
+//if(ServletFileUpload.isMultipartContent(request))
+//	FormDataSanitizer.FormDataParameterSanitize(fdFormData, application);
 %><%@ include file = "checkSession.jspf" 
 %><%////////////////////////// Application Data //////////////////////////
     // Date urldate = new Date();
@@ -72,8 +76,8 @@ FormData fdFormData = FormUtils.parseRequest(request, Const.nUPLOAD_THRESHOLD_SI
     String unit = userInfo.getOrgUnit();
     String bank = userInfo.getCompanyName();
     
-    String css = themeData.getCssURL();
-    String logo = themeData.getLogoURL();
+    String css = themeData==null?"":themeData.getCssURL();
+    String logo = themeData==null?"":themeData.getLogoURL();
     
     int userflowid = -1;
     String userflowname = null;

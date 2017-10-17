@@ -26,6 +26,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
@@ -1300,5 +1301,27 @@ public class Utils {
     retObj.append(" onclick=\"javascript:document.getElementById('" + asFieldID + "').value='';\"/>");
 
     return retObj.toString();
+  }
+  
+  public static String makeSycnhronizerToken(){
+	  return "stk=" + encrypt("" + ((new Date()).getTime()));
+  }
+  
+  public static Boolean validateSynchronizerToken(ServletRequest request, Boolean allowNull){
+	  String stk = StringEscapeUtils.unescapeHtml( request.getParameter("stk"));
+	  if(stk==null && allowNull)
+		  return true;
+	  
+	  Long stki = null;
+	  try{
+		  stki = Long.parseLong(Utils.decrypt(stk));
+	  }catch(Exception e){
+		  stki= null;
+	  }
+	  
+	  if (stki!=null && ((new Date()).getTime() - stki)<300000 )
+		  return true;
+	  else
+		  return false;
   }
 }

@@ -30,8 +30,10 @@
     return sErrorMsg;
   }
 %><%
+
 	boolean bEdit = false;
   boolean bEditUsername = false;
+  boolean bEditAdminStuff = userInfo.isOrgAdmin() && userInfo.isOrgAdminFlows() && userInfo.isOrgAdminOrg() && userInfo.isOrgAdminProcesses() && userInfo.isOrgAdminResources() && userInfo.isOrgAdminUsers() ;
   IErrorHandler errorHandler = null;
   String sOper = fdFormData.getParameter("operation");
   boolean success = false;
@@ -280,18 +282,18 @@
   <% } %>
   </if:formSelect>
   
-  <if:formInput name="orgadm" onchange="if ($('orgadm').checked==true) $('orgadmSubPanel').style.display=''; else $('orgadmSubPanel').style.display='none';" labelkey="userform.field.orgadm" type="checkbox" value='<%=orgadm%>' edit="<%=bEdit%>" required="false" />
+  <if:formInput name="orgadm" onchange="if ($('orgadm').checked==true) $('orgadmSubPanel').style.display=''; else $('orgadmSubPanel').style.display='none';" labelkey="userform.field.orgadm" type="checkbox" value='<%=orgadm%>' edit="<%=bEdit && bEditAdminStuff%>" required="false" />
   
     <div id="orgadmSubPanel" style="<%= "true".equals(orgadm)?"":"display : none" %>" >
-      <if:formInput name="orgadmUsers" labelkey="userform.field.orgadmusers" type="checkbox" value='<%=orgadmUsers%>' edit="<%=bEdit%>" required="false" />
+      <if:formInput name="orgadmUsers" labelkey="userform.field.orgadmusers" type="checkbox" value='<%=orgadmUsers%>' edit="<%=bEdit && bEditAdminStuff%>" required="false" />
       
-      <if:formInput name="orgadmFlows" labelkey="userform.field.orgadmflows" type="checkbox" value='<%=orgadmFlows%>' edit="<%=bEdit%>" required="false" />
+      <if:formInput name="orgadmFlows" labelkey="userform.field.orgadmflows" type="checkbox" value='<%=orgadmFlows%>' edit="<%=bEdit && bEditAdminStuff%>" required="false" />
       
-      <if:formInput name="orgadmProcesses" labelkey="userform.field.orgadmprocesses" type="checkbox" value='<%=orgadmProcesses%>' edit="<%=bEdit%>" required="false" />
+      <if:formInput name="orgadmProcesses" labelkey="userform.field.orgadmprocesses" type="checkbox" value='<%=orgadmProcesses%>' edit="<%=bEdit && bEditAdminStuff%>" required="false" />
       
-      <if:formInput name="orgadmResources" labelkey="userform.field.orgadmresources" type="checkbox" value='<%=orgadmResources%>' edit="<%=bEdit%>" required="false" />
+      <if:formInput name="orgadmResources" labelkey="userform.field.orgadmresources" type="checkbox" value='<%=orgadmResources%>' edit="<%=bEdit && bEditAdminStuff%>" required="false" />
       
-      <if:formInput name="orgadmOrg" labelkey="userform.field.orgadmorg" type="checkbox" value='<%=orgadmOrg%>' edit="<%=bEdit%>" required="false" />
+      <if:formInput name="orgadmOrg" labelkey="userform.field.orgadmorg" type="checkbox" value='<%=orgadmOrg%>' edit="<%=bEdit && bEditAdminStuff%>" required="false" />
   </div>
   
   <if:formInput name="emailAddress" labelkey="userform.field.emailaddress" type="text" value='<%=emailAddress%>' edit="<%=bEdit%>" required="<%= Const.bUSE_EMAIL %>" maxlength="100" />

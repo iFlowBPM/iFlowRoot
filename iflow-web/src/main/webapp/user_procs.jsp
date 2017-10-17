@@ -134,11 +134,14 @@
     String[] idx = new String[Const.INDEX_COLUMN_COUNT];
     String proc_search = fdFormData.getParameter("proc_search");
     if (StringUtils.equals("true", proc_search)) {
-      for (int i = 0; i < Const.INDEX_COLUMN_COUNT; i++)
+      for (int i = 0; i < Const.INDEX_COLUMN_COUNT; i++){
         idx[i] = fdFormData.getParameter("idx" + i);
+        if("null".equals(idx[i]))
+        	idx[i]="";
+      }
     } else {
       for (int i = 0; i < Const.INDEX_COLUMN_COUNT; i++)
-        idx[i] = null;
+        idx[i] = "";
     }
 
     if (hmConfig != null) {
@@ -295,6 +298,9 @@
 	  	  <% if (href != null) { %>
 	  	  <a href="<%=href%>" class="toolTipImg" title="<%=messages.getString("user_procs.tooltip.view_history")%>">
 	  	  <% } %>
+  	  	  <% if(BeanFactory.getFlowHolderBean().getFlow(userInfo, Integer.parseInt(flowid)).getFlowType().compareTo(FlowType.DOCUMENT)==0) {%>
+	    		<img class="toolTipImg" src="images/flow_type_D.png" border="0"/>
+	      <% } %>
 	  	    <%=flowName%>
 	  	  <% if (href != null) { %>
 	  	  </a>

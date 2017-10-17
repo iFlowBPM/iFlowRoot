@@ -34,8 +34,8 @@
 	</modules>
 
 	<properties>
-		<iflow.baseversion>4.2.5</iflow.baseversion>
-		<iflow.buildnumber>20140714</iflow.buildnumber>
+		<iflow.baseversion>4.2.6</iflow.baseversion>
+		<iflow.buildnumber>20151214</iflow.buildnumber>
 		<iflow.version>${iflow.baseversion}-R${iflow.buildnumber}</iflow.version>
 		<dms-connector.version>0.0.7-R20100908</dms-connector.version>
 		<alfresco-connector.version>0.0.7-R20100908</alfresco-connector.version>
@@ -59,7 +59,7 @@
 			<dependency>
 				<groupId>pt.iknow</groupId>
 				<artifactId>iutils</artifactId>
-				<version>2.0.4</version>
+				<version>2.0.6</version>
 			</dependency>
 			<dependency>
 				<groupId>pt.iknow</groupId>
@@ -317,8 +317,23 @@
 			<dependency>
 				<groupId>org.apache.poi</groupId>
 				<artifactId>poi</artifactId>
-				<version>3.0.2-FINAL</version>
+				<version>3.11</version>
 			</dependency>
+			<dependency>
+				<groupId>org.apache.poi</groupId>
+				<artifactId>poi-ooxml</artifactId>
+				<version>3.11</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.poi</groupId>
+				<artifactId>poi-ooxml-schemas</artifactId>
+				<version>3.11</version>
+			</dependency>	
+			<dependency>
+				<groupId>org.apache.xmlbeans</groupId>
+				<artifactId>xmlbeans</artifactId>
+				<version>2.4.0</version>
+			</dependency>										
 			<dependency>
 				<groupId>hivemind</groupId>
 				<artifactId>hivemind</artifactId>
@@ -382,7 +397,7 @@
 			<dependency>
 				<groupId>javax.mail</groupId>
 				<artifactId>mail</artifactId>
-				<version>1.4.1</version> <!--  replicated in iflow-applet -->
+				<version>1.5.5</version> <!--  replicated in iflow-applet -->
 			</dependency>
 			<dependency>
 				<groupId>javax.activation</groupId>
@@ -409,7 +424,7 @@
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>4.5</version>
+				<version>4.7</version>
 				<type>jar</type>
 				<scope>test</scope>
 			</dependency>

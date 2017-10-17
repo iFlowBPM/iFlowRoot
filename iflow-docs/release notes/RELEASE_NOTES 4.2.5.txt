@@ -1,0 +1,15 @@
+-------------------------------------------------------------------------------
+                           iFlow Release Notes                                
+-------------------------------------------------------------------------------
+4.2.5-
+
+New Features:
+		 [IFLOW4-46] Ordenação de sub-fluxos no Editor
+		 [IFLOW4-58] optimizaçao de query de actividades em painel de entrada
+		 [P15031-20] Envio para unidades orgânicas
+Bug fixes:
+		 [P12057A-22] Bloco Importar XLS, não lê células em branco
+		 [IFLOW4-56] processo acessivel para utilizadores n autenticados em fluxos nao ligados
+		 [IFLOW4-57] update de users AD falha não escapa SQL
+Known Issues:
+         [P12057A-22] Bloco Importar XLS, não lê células em branco - ocorre em ambientes com versão de JVM menor que 7

@@ -1,6 +1,7 @@
 package pt.iflow.usersync;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -11,11 +12,13 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 import pt.iflow.api.authentication.Authentication;
+import pt.iflow.api.cluster.JobManager;
 import pt.iflow.api.db.DBQueryManager;
 import pt.iflow.api.db.DatabaseInterface;
 import pt.iflow.api.userdata.UserData;
-import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.Utils;
 import pt.iflow.core.AccessControlManager;
@@ -77,14 +80,15 @@ public class UsersSyncManager extends Thread {
 
     while (keepRunning) {
       try {
-        try {
-          get().syncUsers();
-          if (Logger.isDebugEnabled()) {
-            Logger.adminDebug("UsersSyncManager", "run", "NextSleepTime= " + sleepTime + " msec");
-          }
-        } catch (Exception e) {
-          Logger.adminWarning("UsersSyncManager", "run", "Failed to check users: ", e);
-        }
+    	if(JobManager.getInstance().isMyBeatValid())
+	        try {
+	          get().syncUsers();
+	          if (Logger.isDebugEnabled()) {
+	            Logger.adminDebug("UsersSyncManager", "run", "NextSleepTime= " + sleepTime + " msec");
+	          }
+	        } catch (Exception e) {
+	          Logger.adminWarning("UsersSyncManager", "run", "Failed to check users: ", e);
+	        }
         sleep(sleepTime);
       } catch (InterruptedException e) {
         if (keepRunning) {
@@ -149,11 +153,14 @@ public class UsersSyncManager extends Thread {
     Connection db = null;
     Statement st = null;
     ResultSet rs = null;
+    PreparedStatement pst = null;
     try {
       ds = Utils.getDataSource();
       db = ds.getConnection();
       db.setAutoCommit(true);
       st = db.createStatement();
+      //for(int i=0; i<user.size(); i++)
+    	//  user.set(i, StringEscapeUtils.escapeSql(user.get(i).toString()));      
       String query = DBQueryManager.processQuery((forUpdate ? UsersSyncManager.UPDATE_USER : UsersSyncManager.INSERT_USER), 
                                                   user.toArray());
       Logger.debug("", this, "saveUser", "query: " + query);

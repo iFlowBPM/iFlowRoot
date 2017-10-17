@@ -2489,7 +2489,7 @@ public class FlowBean implements Flow {
       Block block = null;
       if (fd == null || fd.hasError()) {
         sbError.append("Flow inv&aacute;lido.<br>");
-      } else if (fd.isOnline()) {
+      } else if (fd.isOnline() && !force) {
         sbError.append("O flow est&aacute; online, pelo que n&atilde;o pode ser re-sincronizado.<br>");
       } else {
         block = getBlockById(fd, anOldBlockId);
@@ -2497,11 +2497,11 @@ public class FlowBean implements Flow {
           sbError.append("O estado antigo escolhido corresponde a um estado ainda v&aacute;lido no flow.<br>");
         } else {
           block = this.getBlockById(fd, anNewBlockId);
-          if (block == null) {
+          if (block == null && !force) {
             sbError.append("O novo estado escolhido n&atilde;o &eacute; v&aacute;lido no flow.<br>");
           } else {
             boolean isDeployed = BeanFactory.getFlowHolderBean().isOnline(userInfo, anFlowId);
-            if (isDeployed) {
+            if (isDeployed && !force) {
               sbError.append("O flow encontra-se activo.<br>");
             } else {
 
@@ -2648,6 +2648,42 @@ public class FlowBean implements Flow {
     }
 
     return retObj;
+  }
+  
+  public void purge(UserInfoInterface userInfo, Long purgingAgeDays){
+	  Connection db = null;
+	  PreparedStatement pst = null;
+	  try{
+		  java.sql.Date old = new java.sql.Date( (new java.util.Date()).getTime() - purgingAgeDays*24*60*60*1000);
+		  db = DatabaseInterface.getConnection(userInfo);
+		  db.setAutoCommit(false);
+		  
+		  pst = db.prepareStatement(DBQueryManager.getQuery("Flow.delete_flow_state_history"));
+		  pst.setDate(1, old);
+		  pst.executeUpdate();
+		  pst.close();
+		  		  
+		  pst = db.prepareStatement(DBQueryManager.getQuery("Flow.delete_flow_state_log"));		  		  		 
+		  pst.setDate(1, old);
+		  pst.executeUpdate();
+		  pst.close();
+		  
+		  pst = db.prepareStatement(DBQueryManager.getQuery("Flow.delete_log"));		  		  		 
+		  pst.setDate(1, old);
+		  pst.executeUpdate();
+		  pst.close();
+		
+		  DatabaseInterface.commitConnection(db);		
+	      } catch (Exception e) {
+	        Logger.adminError("FlowBean", "purge", "caught exception: " + e.getMessage(), e);
+	        try {
+	          DatabaseInterface.rollbackConnection(db);
+	        } catch (Exception er) {
+	          Logger.adminError("FlowBean", "purge", "exception rolling back connection: " + er.getMessage(), er);
+	        }	        
+	      } finally {
+	        DatabaseInterface.closeResources(db, pst);
+	      }
   }
 
 }

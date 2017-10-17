@@ -26,7 +26,9 @@ public class TabDivision implements FieldInterface {
   }
 
   public String getXML(Properties prop) {
-    return previous+"<tabdivision><id>"+id+"</id>";
+	StringBuffer result = new StringBuffer(previous+"<tabdivision><id>"+id+"</id>");
+    result.append("<selected>").append(prop.get("_tabholder_selected")).append("</selected>");
+	return  result.toString();
   }
 
   public boolean isOutputField() {

@@ -21,6 +21,7 @@ import javax.sql.DataSource;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 
+import pt.iflow.api.cluster.JobManager;
 import pt.iflow.api.core.AuthProfile;
 import pt.iflow.api.core.BeanFactory;
 import pt.iflow.api.db.DBQueryManager;
@@ -84,7 +85,8 @@ public class DelegationManager extends Thread {
 
   public void run() {
     while (keepRunning) {
-      try {
+      
+    	try {
         sleepTime = Const.DELEGATION_THREAD_CICLE;
         if (sleepTime == -1) {
           // default sleep time is 5 minutes
@@ -93,10 +95,11 @@ public class DelegationManager extends Thread {
         // in minutes -> sleepTime x (60000 milisec)
         sleepTime = sleepTime * 60000; 
 
-        DelegationManager delegationManager = get();
-        delegationManager.checkTimeOutDelegationsDB();
-        delegationManager.checkInconsistencesDB();
-
+        if(JobManager.getInstance().isMyBeatValid()){
+	        DelegationManager delegationManager = get();
+	        delegationManager.checkTimeOutDelegationsDB();
+	        delegationManager.checkInconsistencesDB();
+        }
         Logger.adminInfo("DelegationManager", "run", "NextSleepTime= " + sleepTime + " msec");
         
         sleep(sleepTime);
@@ -231,10 +234,11 @@ public class DelegationManager extends Thread {
       rs = st.executeQuery("select hierarchyid,parentid,slave from activity_hierarchy where parentid=0");
 
       Set<Integer> okDelgations = new TreeSet<Integer>();
-
+      String multipleSlaves = " ,hierarchyid(s): ";
       while (rs.next()) {
         currParent = rs.getInt("hierarchyid");
         if(correctInconsistenceDelegationBranch(okDelgations, db, currParent)) {
+          multipleSlaves+= currParent + ",";
           branchWithMultipleSlaves = true;
         }
         okDelgations.add(currParent);
@@ -243,7 +247,7 @@ public class DelegationManager extends Thread {
       rs = null;
       
       if(branchWithMultipleSlaves) {
-        warnExistingInconsistence("Between the owner and the 'final' slave in a delegation, there were more than one 'slave'");
+        warnExistingInconsistence("Between the owner and the 'final' slave in a delegation, there were more than one 'slave'" + multipleSlaves);
       }
 
       StringBuffer okDelegationList = new StringBuffer();
@@ -317,7 +321,7 @@ public class DelegationManager extends Thread {
 
     String subject = "iFlow - delegation inconsistence in DB";
     String sFrom = pt.iflow.api.utils.Const.sAPP_EMAIL;
-    String sTo   = pt.iflow.api.utils.Const.sAPP_EMAIL;
+    String sTo   = pt.iflow.api.utils.Const.sAPP_EMAIL_ADMIN;
 
 
     Hashtable<String,String> htProps = new Hashtable<String, String>();

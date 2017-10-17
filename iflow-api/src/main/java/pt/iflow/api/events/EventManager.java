@@ -11,6 +11,7 @@ import java.util.Iterator;
 
 import javax.sql.DataSource;
 
+import pt.iflow.api.cluster.JobManager;
 import pt.iflow.api.db.DBQueryManager;
 import pt.iflow.api.db.DatabaseInterface;
 import pt.iflow.api.utils.Const;

@@ -16,6 +16,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 
+import pt.iflow.api.cluster.JobManager;
 import pt.iflow.api.core.BeanFactory;
 import pt.iflow.api.db.DBConnectionWrapper;
 import pt.iflow.api.db.DatabaseInterface;
@@ -100,7 +101,8 @@ public class FlowFolderChecker implements Runnable {
     while (!stop) {
       try {      
             try {
-              processFolders(hfconfig.getSubsFolders());
+            	if(JobManager.getInstance().isMyBeatValid())
+            		processFolders(hfconfig.getSubsFolders());
             } 
             catch (Exception e) {
               Logger.adminError(signature, "run", getId() + "caught exception", e);

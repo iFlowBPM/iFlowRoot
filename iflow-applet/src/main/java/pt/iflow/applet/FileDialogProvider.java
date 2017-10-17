@@ -16,11 +16,16 @@ public class FileDialogProvider implements IVFileProvider {
     this.file = null;
   }
 
+  public FileDialogProvider(String variable, boolean replace, IVFile file) {
+    this.variable = variable;
+    this.replace = replace;
+    this.file = file;
+  }
+
   public IVFile getFile(Component parent) {
-    if(null == file) { 
+    if (null == file) { 
       return file = chooseFile(parent);
     }
-    
     return file;
   }
 
@@ -39,24 +44,6 @@ public class FileDialogProvider implements IVFileProvider {
   public boolean replaceFile() {
     return replace;
   }
-  
-//  public DynamicField getFormComponent() {
-//    final JPanel panel = new JPanel();
-//    JButton button = new JButton("...");
-//    button.setToolTipText("Procurar ficheiro");
-//    button.addActionListener(new ActionListener() {
-//      public void actionPerformed(ActionEvent e) {
-//        // reset file
-//        IVFile oldf = file;
-//        file = null;
-//        IVFile f = getFile(panel);
-//        if(null == f) file = oldf;
-//        else file = f;
-//      }
-//    });
-//    // TODO add read only text area and button
-//    return panel;
-//  }
   
   public DynamicField getDynamicField() {
     return new DynamicField(Type.FILE, Messages.getString("FileDialogProvider.3")) { //$NON-NLS-1$

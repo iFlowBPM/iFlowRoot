@@ -373,7 +373,16 @@ public class UserManagerBean implements UserManager {
     if(parentid == null || "".equals(parentid)) {
       parentid="-1";
     }
-
+    
+    try {
+    	OrganizationalUnitViewInterface[] orgUnits = getAllOrganizationalUnits(userInfo);
+    	for(OrganizationalUnitViewInterface ou: orgUnits)
+    		if(StringUtils.endsWithIgnoreCase(ou.getName(), name)){
+    			Logger.debug(userInfo.getUtilizador(), this, "createOrganizationalUnit", "Cannot create, duplicated organizational unit name : " + name);
+    			return false;
+    		}    				
+	} catch (IllegalAccessException e1) {}
+    
     Logger.debug(userInfo.getUtilizador(), this, "createOrganizationalUnit", "Creating organizational unit " + name);
 
     if (!userInfo.isOrgAdmin()) {
@@ -933,6 +942,15 @@ public class UserManagerBean implements UserManager {
       return false;
     }
 
+    try {
+    	OrganizationalUnitViewInterface[] orgUnits = getAllOrganizationalUnits(userInfo);
+    	for(OrganizationalUnitViewInterface ou: orgUnits)
+    		if(StringUtils.endsWithIgnoreCase(ou.getName(), name)){
+    			Logger.debug(userInfo.getUtilizador(), this, "createOrganizationalUnit", "Cannot create, duplicated organizational unit name : " + name);
+    			return false;
+    		}    				
+	} catch (IllegalAccessException e1) {}
+    
     try {
       ds = Utils.getDataSource();
       db = ds.getConnection();

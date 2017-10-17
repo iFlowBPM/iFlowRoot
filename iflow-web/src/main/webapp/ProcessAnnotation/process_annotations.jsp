@@ -107,12 +107,12 @@
 			if(labels.get(i).getCheck()){%>
 				<li>
 				<input type="checkbox" onclick="managerLabels(<%=labels.get(i).getId()%>,true)" checked id="checkLabel_<%=labels.get(i).getId()%>" />
-				<img src="AnnotationIconsServlet?label_name='<%=labels.get(i).getName()%>'&ts='+<%=System.currentTimeMillis() %>+'" width="16px" height="16px"/>
+				<img src="AnnotationIconsServlet?label_name=<%=labels.get(i).getName()%>&ts='+<%=System.currentTimeMillis() %>+'" width="16px" height="16px"/>
 				<%=labels.get(i).getName()%></li>
 			<%}else{ %>
 			    <li>
 				<input type="checkbox" onclick="managerLabels(<%=labels.get(i).getId()%>,false)" id="checkLabel_<%=labels.get(i).getId()%>" />
-				<img src="AnnotationIconsServlet?label_name='<%=labels.get(i).getName()%>'&ts='+<%=System.currentTimeMillis() %>+'" width="16px" height="16px"/>
+				<img src="AnnotationIconsServlet?label_name=<%=labels.get(i).getName()%>&ts='+<%=System.currentTimeMillis() %>+'" width="16px" height="16px"/>
 				<%=labels.get(i).getName()%></li>
 			<%}
 			} %>

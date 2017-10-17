@@ -75,6 +75,11 @@
 			<groupId>org.psicover</groupId>
 			<artifactId>pdf-renderer-ext</artifactId>
 		</dependency>
+		<dependency>
+		  <groupId>org.apache.pdfbox</groupId>
+		  <artifactId>pdfbox</artifactId>
+		  <version>2.0.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -95,11 +100,17 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
 					<archive>
-						<addMavenDescriptor>true</addMavenDescriptor>
-						<manifest>
-							<addClasspath>true</addClasspath>
-							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-						</manifest>
+					<addMavenDescriptor>true</addMavenDescriptor>
+					<manifest>
+						<addClasspath>true</addClasspath>
+						<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+					</manifest>
+					<manifestEntries>
+						<Trusted-Only>true</Trusted-Only>
+						<Application-Name>infosistema.com</Application-Name>
+						<Permissions>all-permissions</Permissions>
+						<Caller-Allowable-Codebase>*</Caller-Allowable-Codebase>
+					</manifestEntries>
 					</archive>
 				</configuration>
 			</plugin>
@@ -123,7 +134,7 @@
 									<mapper type="flatten" />
 								</pathconvert>
 								<propertyregex property="fixedClasspath" input="${depends}" regexp="(classes,)" replace="" defaultValue=""/>
-								<property name="artifactClasspath" value="${project.artifactId}.jar,${project.artifactId}-${project.version}.jar,crypto-api.jar"/>
+								<property name="artifactClasspath" value="${project.artifactId}-${project.version}.jar"/>
 								<property name="finalClasspath" value="${artifactClasspath},${fixedClasspath}"/>
 								<echo>${finalClasspath}</echo>
 								

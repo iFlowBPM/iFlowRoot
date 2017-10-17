@@ -2,10 +2,11 @@ package pt.iflow.api.utils.mail;
 
 import javax.mail.MessagingException;
 
+import pt.iflow.api.cluster.JobManager;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.mail.parsers.MessageParser;
 
-public class MailChecker implements Runnable {
+public class MailChecker implements Runnable{
 
   private int flowid;
   private long checkInterval;
@@ -65,31 +66,30 @@ public class MailChecker implements Runnable {
   public void run() {
 
     Logger.adminInfo("MailChecker", "run", getId() + "starting mail checking");
-
-    try {
-      if (!client.isConnected()) {
-        client.connect();
-      }
-    } 
-    catch (MessagingException e) {
-      Logger.adminError("MailChecker", "run", getId() + "error connecting client", e);    
-    }
     
     while (!stop) {
       try {      
-        try {
-          if (client.checkNewMail()) {
-            Logger.adminInfo("MailChecker", "run", getId() + "found new mail");
-            client.readUnreadMessages(messageParser);
-            Logger.adminInfo("MailChecker", "run", getId() + "new mail processed");
-          }
-          else {
-            Logger.adminDebug("MailChecker", "run", getId() + "no new mail");
-          }
-        } catch (MessagingException e) {
-          // TODO
-          Logger.adminError("MailChecker", "run", getId() + "caught messaging exception", e);
-        }
+    	if(JobManager.getInstance().isMyBeatValid())  
+    	    try {
+		    	try {
+	    	        if (!client.isConnected()) {
+	    	          client.connect();
+	    	        }
+	    	    } catch (MessagingException e) {
+	    	        Logger.adminError("MailChecker", "run", getId() + "error connecting client", e);    
+	    	    }
+	          if (client.checkNewMail()) {
+	            Logger.adminInfo("MailChecker", "run", getId() + "found new mail");
+	            client.readUnreadMessages(messageParser);
+	            Logger.adminInfo("MailChecker", "run", getId() + "new mail processed");
+	          }
+	          else {
+	            Logger.adminDebug("MailChecker", "run", getId() + "no new mail");
+	          }
+	        } catch (MessagingException e) {
+	          // TODO
+	          Logger.adminError("MailChecker", "run", getId() + "caught messaging exception", e);
+	        }
 
         try {
           Thread.sleep(checkInterval);

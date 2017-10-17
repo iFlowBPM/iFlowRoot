@@ -8,6 +8,7 @@ request.setAttribute("inFrame", "true");
 <%@ include file="../inc/initProcInfo.jspf"%>
 <%@ include file="../inc/checkProcAccess.jspf"%><%
 
+
 //TODO
 String popupReturnBlockId = null;
 
@@ -20,7 +21,16 @@ String popupReturnBlockId = null;
     int op = Integer.parseInt(sOp);
     
     Block bBlockJSP = null;
-    
+    if(fdFormData.getParameter("_button_clicked_id")!=null)
+    	session.setAttribute("_button_clicked_id", fdFormData.getParameter("_button_clicked_id"));
+	
+	Enumeration<String>paramNames = fdFormData.getParameterNames();
+	while(paramNames.hasMoreElements()){
+		String auxParamName = paramNames.nextElement(); 
+		if(auxParamName.startsWith("_tabholder_selected"))
+			session.setAttribute(auxParamName, fdFormData.getParameter(auxParamName));
+	}    	
+    	
     String currMid = String.valueOf(pm.getModificationId(userInfo, procData.getProcessHeader()));
 
     HashMap<String, String> hmHidden = new HashMap<String, String>();
@@ -54,6 +64,14 @@ String popupReturnBlockId = null;
         ServletUtils.sendEncodeRedirect(response, "../flow_error.jsp");
         return;
     }
+    
+    //Check if went from a form to another within the same flow       	   	
+   	if(StringUtils.equals("" + session.getAttribute("last_flowid"), "" + bBlockJSP.getFlowId()) && !StringUtils.equals("" + session.getAttribute("last_blockid"), "" + bBlockJSP.getId()))
+   		session.setAttribute("_changed_form", "_changed_form");
+   	else
+   		session.setAttribute("_changed_form", null);
+	session.setAttribute("last_flowid" , "" + bBlockJSP.getFlowId());
+    session.setAttribute("last_blockid", "" + bBlockJSP.getId());   			
     
 
 	// OP: 0 - entering page/reload
@@ -244,6 +262,23 @@ String popupReturnBlockId = null;
             procData.setTempData(Const.sSWITCH_PROC_RETURN_PARENT, null);
             session.removeAttribute(Const.sSWITCH_PROC_SESSION_ATTRIBUTE);
         }
+        
+        //if chabged form scroll back to top
+        hmHidden.put("_changed_form", ""+session.getAttribute("_changed_form"));
+     	
+        //button_clicked_id for auto scrolling the form
+        hmHidden.put("_button_clicked_id", ""+session.getAttribute("_button_clicked_id"));
+     	session.removeAttribute("_button_clicked_id");
+     	
+     	//to keep previously selected tabs visible
+     	Enumeration<String> attrNames =  session.getAttributeNames();
+     	while(attrNames.hasMoreElements()){
+     		String auxAttrName = attrNames.nextElement();
+     		if(auxAttrName.startsWith("_tabholder_selected")){
+     			hmHidden.put(auxAttrName, ""+session.getAttribute(auxAttrName));
+     			session.removeAttribute(auxAttrName);
+     		}
+     	} 
         
         oa = new Object[4];
         oa[0] = userInfo;

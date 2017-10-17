@@ -10,6 +10,7 @@
 </if:checkUserAdmin>
 <%
 
+String isSubflow = fdFormData.getParameter("is_subflow");
 String createVersion = fdFormData.getParameter("create_version");
 String versionNote = fdFormData.getParameter("version_note");
 FormFile file = fdFormData.getFileParameter("file");
@@ -31,6 +32,10 @@ Logger.debugJsp(userInfo.getUtilizador(), "doupload_flow.jsp", "flowDesc: " + fl
 
 // write flow to DB
 FlowHolder holder = BeanFactory.getFlowHolderBean();
-int result = holder.writeFlowData(userInfo, flowName, flowDesc, data, versionNote);
+int result;
+if("yes".equals(isSubflow))
+	result = holder.writeSubFlowData(userInfo, flowName, flowDesc, data);
+else
+	result = holder.writeFlowData(userInfo, flowName, flowDesc, data, versionNote);
 
 %><if:message string="upload.complete"/>

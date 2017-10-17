@@ -27,6 +27,8 @@ public class Manifest {
       "pt.iflow.api.datatypes.FormTableDocument",  // ID=13 //$NON-NLS-1$
       "pt.iflow.api.datatypes.NIF",  // ID=14 //$NON-NLS-1$
       "pt.iflow.api.datatypes.FormTableDialogBox",  // ID=15 //$NON-NLS-1$
+      "pt.iflow.api.datatypes.FormTableThumbnail",  // ID=16 //$NON-NLS-1$
+      "pt.iflow.api.datatypes.FormTableDate",  // ID=17 //$NON-NLS-1$
     };
     return classes;
   }

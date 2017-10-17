@@ -262,6 +262,30 @@ public class ArrayTable implements FieldInterface {
           if (hsIgnoreColumns.contains(String.valueOf(col))) continue;
 
           stmp = prop.getProperty(col + "_" + row + "_value");
+          
+          //check if it's a <a> for a file and if it´s meant to be signed, if so we convert this to a file
+          if(StringUtils.startsWith(stmp, "<a>") && StringUtils.equalsIgnoreCase(prop.getProperty(col + "_extra_props"),"file_sign_existing=true"))
+        	stmp = rewriteToSigningFile(col, row, prop);     
+          
+          //check if it's a thumbnail and add extra props
+          if(StringUtils.startsWith(stmp, "<thumbnail>")){
+        	  String auxStyle = null;
+        	  String auxPopupStyle = null;
+        	  
+        	  String[] auxExtraProps = StringUtils.split(prop.getProperty(col + "_extra_props"), ",");
+        	  for(int i=0; i<auxExtraProps.length; i++){
+        		  if(StringUtils.startsWith(auxExtraProps[i], "style="))
+        			  auxStyle = StringUtils.remove(auxExtraProps[i], "style=");
+        		  else if(StringUtils.startsWith(auxExtraProps[i], "style_popup="))
+        			  auxPopupStyle = StringUtils.remove(auxExtraProps[i], "style_popup=");;
+        	  }        	          	  
+        	  if(StringUtils.isBlank(auxStyle))
+        		  auxStyle = "width:128px;height:128px;";        	          	  
+        	  if(StringUtils.isBlank(auxPopupStyle))
+        		  auxPopupStyle = "width:500px;height:500px;";
+        	  
+        	  stmp = StringUtils.replace(stmp,"</thumbnail>","<style>" +auxStyle+ "</style><style_popup>" +auxPopupStyle+ "</style_popup></thumbnail>");
+          }
 
           sVar = prop.getProperty(col + "_variable");
 
@@ -380,7 +404,40 @@ public class ArrayTable implements FieldInterface {
     return null;
   }
 
-  public boolean isOutputField() {
+  private String rewriteToSigningFile(int col, int row, Properties prop) {
+	StringBuffer sb = new StringBuffer();
+	
+	sb.append("<field><type>file</type><obligatory>false</obligatory>");
+	sb.append("<flowid>").append(prop.get("flowid")).append("</flowid>");
+	sb.append("<pid>").append(prop.get("pid")).append("</pid>");
+	sb.append("<subpid>").append(prop.get("subpid")).append("</subpid>");
+	sb.append("<file_label></file_label><text></text>");
+	sb.append("<variable>").append(prop.get(col + "_variable")).append("</variable>");
+	sb.append("<signatureType>PDF</signatureType><encryptType>false</encryptType><show_edition>false</show_edition><file_sign_new>false</file_sign_new><file_sign_method>false</file_sign_method><file_sign_existing>true</file_sign_existing><show_remove>false</show_remove><show_link>true</show_link><link_label></link_label><edition_label></edition_label><remove_label></remove_label><has_label_row>false</has_label_row><scanner_enabled>true</scanner_enabled><upload_enabled>false</upload_enabled><upload_label></upload_label><upload_limit>1</upload_limit><file_valid_extensions></file_valid_extensions><onclick>javascript:if (this.checked) { return confirm('Deseja marcar o ficheiro para remoção?'); }</onclick><accept></accept><file_is_image>false</file_is_image><file_is_image_size_width></file_is_image_size_width><file_is_image_size_height></file_is_image_size_height><file>");	
+	
+	String linkAux = "" + prop.get(col + "_" + row + "_value");
+	int startAux = linkAux.indexOf("docid") + 6;
+	int endAux = linkAux.indexOf("&amp;", startAux);
+	String idAux = linkAux.subSequence(startAux, endAux).toString();
+	sb.append("<id>").append(idAux).append("</id>");	
+	
+	startAux = linkAux.indexOf("<text>") + 6;
+	endAux = linkAux.indexOf("</text>", startAux);
+	String nameAux = linkAux.subSequence(startAux, endAux).toString();
+	sb.append("<name>").append(nameAux).append("</name>");
+	sb.append("<asSignatures>true</asSignatures><tosign>true</tosign><text></text><link_label></link_label>");
+	sb.append("<link_text>").append(nameAux).append("</link_text>");
+	
+	startAux = linkAux.indexOf("<href>") + 6;
+	endAux = linkAux.indexOf("</href>", startAux);
+	String urlAux = linkAux.subSequence(startAux, endAux).toString();
+	sb.append("<link_url>").append(urlAux).append("</link_url>");
+	sb.append("</file></field>");
+	
+	return sb.toString();
+}
+
+public boolean isOutputField() {
     return true;
   }
 

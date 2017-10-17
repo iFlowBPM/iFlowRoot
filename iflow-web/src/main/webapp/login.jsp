@@ -19,6 +19,7 @@
 <%@ page import = "pt.iflow.api.presentation.PresentationManager"%>
 <%@ page import = "java.util.ArrayList"%>
 <%@ page import = "java.util.List"%>
+<%@ page import = "pt.iflow.servlets.LoginAttemptCounterController"%>
 <%
 	// first of all, check license status.
 if(!LicenseServiceFactory.getLicenseService().isLicenseOK()) {
@@ -133,5 +134,6 @@ for (int i = 0, lim = Settings.localeKeys.length; i < lim; i++) {
   localeKeys.add(localeKey);
 }
 hsSubst.put("localeKeys", localeKeys);
+hsSubst.put("isOverFailureLimit", LoginAttemptCounterController.isOverFailureLimit(config.getServletContext() , request));
 %>
 <%=PresentationManager.buildLoginPage(response, userInfo, hsSubst) %>

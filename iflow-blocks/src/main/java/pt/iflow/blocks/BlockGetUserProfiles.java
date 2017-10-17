@@ -32,7 +32,7 @@ public class BlockGetUserProfiles extends Block {
   public BlockGetUserProfiles(int anFlowId, int id, int subflowblockid, String filename) {
     super(anFlowId, id, subflowblockid, filename);
     hasInteraction = false;
-    saveFlowState = false;
+    saveFlowState = true;
   }
 
   public Port getEventPort() {

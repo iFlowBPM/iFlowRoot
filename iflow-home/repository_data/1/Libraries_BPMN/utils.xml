@@ -715,7 +715,7 @@
             <description>Path to file(s) folder</description>
             <value />
         </XmlAttribute>
-        <image></image>
+        <image>bpmn_task.png</image>
         <description>Delete File(s) to disk</description>
         <i18n>library.dms.block.delete_file_in_disk</i18n>
     </XmlBlock>
@@ -785,5 +785,96 @@
         <image>bpmn_parse_txt_file.png</image>
         <description>Parse a TXT file either in CSV or space delimited</description>
         <i18n>library.dms.block.parse_txt_file</i18n>
+    </XmlBlock>
+    <XmlBlock>
+        <class>BlockAddToArray</class>
+        <XmlPort>
+            <name>portIn</name>
+            <description>Entrada</description>
+            <in_out>in</in_out>
+            <position>
+                <x>-5</x>
+                <y>25</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portSuccess</name>
+            <description>Sucesso</description>
+            <in_out>out</in_out>
+            <position>
+                <x>102</x>
+                <y>15</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portError</name>
+            <description>Erro</description>
+            <in_out>out</in_out>
+            <position>
+                <x>102</x>
+                <y>45</y>
+            </position>
+        </XmlPort>
+        <XmlAttribute>
+            <name>Arrays</name>
+            <description>Arrays</description>
+            <value />
+        </XmlAttribute>
+        <XmlAttribute>
+            <name>Elements</name>
+            <description>Elements</description>
+            <value />
+        </XmlAttribute>
+        <XmlAttribute>
+            <name>NoDuplicates</name>
+            <description>Disallow duplicate elements?</description>
+            <value />
+        </XmlAttribute>
+     	<image>bpmn_task.png</image>
+        <description>Add element to array</description>
+        <i18n>library.dms.block.add_to_array</i18n>
+    </XmlBlock>
+    <XmlBlock>
+        <class>BlockRemoveFromArray</class>
+        <XmlPort>
+            <name>portIn</name>
+            <description>Entrada</description>
+            <in_out>in</in_out>
+            <position>
+                <x>-5</x>
+                <y>25</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portSuccess</name>
+            <description>Sucesso</description>
+            <in_out>out</in_out>
+            <position>
+                <x>102</x>
+                <y>15</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portError</name>
+            <description>Erro</description>
+            <in_out>out</in_out>
+            <position>
+                <x>102</x>
+                <y>45</y>
+            </position>
+        </XmlPort>
+        <XmlAttribute>
+            <name>Arrays</name>
+            <description>Arrays</description>
+            <value />
+        </XmlAttribute>
+        <XmlAttribute>
+            <name>Index</name>
+            <description>Index</description>
+            <value />
+        </XmlAttribute>
+     	<image>bpmn_task.png</image>
+        <description>Remove element from array</description>
+        <i18n>library.dms.block.remove_from_array</i18n>
     </XmlBlock>
 </XmlLibrary>

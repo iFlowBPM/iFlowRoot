@@ -29,7 +29,7 @@ public class BlockCriarXls extends Block {
   public BlockCriarXls(int anFlowId, int id, int subflowblockid, String filename) {
     super(anFlowId, id, subflowblockid, filename);
     hasInteraction = false;
-    saveFlowState = false;
+    saveFlowState = true;
   }
 
   @Override

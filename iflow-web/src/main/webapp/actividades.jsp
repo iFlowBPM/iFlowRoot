@@ -135,6 +135,7 @@
   String stmp = null;
   String stmp2 = null;
   String stmp3 = null;
+  String stmp4 = null;
 
   int ITEMS_PAGE = 500;
   int nStartIndex = 0;
@@ -300,10 +301,13 @@
       }
     }
 
-    fda = BeanFactory.getFlowHolderBean().listFlowsOnline(userInfo,FlowType.WORKFLOW);
+    
+    FlowType[] flowTypeExcluded = {FlowType.SUPPORT,FlowType.SEARCH,FlowType.REPORTS};
+    //fda = BeanFactory.getFlowHolderBean().listFlowsOnline(userInfo,FlowType.WORKFLOW);
+    fda = BeanFactory.getFlowHolderBean().listFlowsOnline(userInfo,null,flowTypeExcluded);
 
     // get online flows with app information
-    FlowMenu menu = BeanFactory.getFlowApplicationsBean().getAllApplicationOnlineFlows(userInfo,FlowType.WORKFLOW);
+    FlowMenu menu = BeanFactory.getFlowApplicationsBean().getAllApplicationOnlineFlows(userInfo,null,flowTypeExcluded);
 
     // now build map with key flowid and value flowdata
     Iterator<FlowAppMenu> itera = menu.getAppMenuList().iterator();
@@ -593,11 +597,15 @@
 	    List<String> actividade = new ArrayList<String>();
 	    actividade.add(a.flowid + "_" + a.pid + "_" + a.subpid);
 	    actividade.add(stmp + appName + stmp2);
+	    if(BeanFactory.getFlowHolderBean().getFlow(userInfo, a.getFlowid()).getFlowType().compareTo(FlowType.DOCUMENT)==0)
+	    	stmp4="<img class=\"toolTipImg\" src=\"images/flow_type_D.png\" border=\"0\"/>";
+	    else
+	    	stmp4="";
 	    if (a.delegated) {
 	      actividade.add("<a title=\"" + messages.getString("actividades.msg.taskdeleg")
-	          + "\"><img src=\"images/icon_delegations.png\" height=\"10\"/></a>" + stmp + flowName + stmp2);
+	          + "\"><img src=\"images/icon_delegations.png\" height=\"10\"/></a>" + stmp + flowName + stmp2 + stmp4);
 	    } else {
-	      actividade.add(stmp + flowName + stmp2);
+	      actividade.add(stmp4 + stmp + flowName + stmp2);
 	    }
 	
 	    // replaced by process number
@@ -738,7 +746,7 @@ function editFolder(folderid, from){
 		document.activities_form.nextstartindex.value='<%=nNextStartIndex%>';
 		var editname = escape(document.getElementById('edit_'+folderid).value);
 		var cor = escape(document.getElementById('bt_pickColor_'+folderid).color);
-		alert(cor);
+		//alert(cor);
 		if(editname != "" && cor != "ffffff") 
 			tabber_right(2, '<%=response.encodeURL("actividades.jsp")%>?editfolder='+folderid+'&editname='+editname+'&color='+cor);
 	} else {
@@ -933,7 +941,7 @@ jscolor.bind();
         String accao = "<td></td>";
         if(folders.size() > 0){
           
-          String imgParam = "AnnotationIconsServlet?icon_name='action.png'&ts='"+System.currentTimeMillis()+"'";
+          String imgParam = "AnnotationIconsServlet?icon_name=action.png&ts='"+System.currentTimeMillis()+"'";
           imgParam = "<img class=\"toolTipImg\" src=\""+imgParam+"\" border=\"0\">";  
           
             accao = "<td onclick=\"javascript:menuonoff('atribui"+row+"')\" title=\""+messages.getString("actividades.folder.move")+"\">";
@@ -988,7 +996,7 @@ jscolor.bind();
         if (iconName != null && !"".equals(iconName)) {
           annotationIcon.append("<a href=\"javascript:parent.viewAnnotations('").append(nflowid).append("','").append(npid).append("','").append(nsubpid).append("');\">");
           String imgParam = "";
-          imgParam = "AnnotationIconsServlet?icon_name='"+iconName+"'&ts='"+System.currentTimeMillis()+"'";
+          imgParam = "AnnotationIconsServlet?icon_name="+iconName+"&ts='"+System.currentTimeMillis()+"'";
           annotationIcon.append("<img width=\"16\" height=\"16\" class=\"toolTipImg\" src=\"").append(imgParam).append("\" border=\"0\" title=\"").append(messages.getString("actividades.msg.dica.annotation")).append("\">");
           annotationIcon.append("</a>");
         }

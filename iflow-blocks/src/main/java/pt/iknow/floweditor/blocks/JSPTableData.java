@@ -56,7 +56,7 @@ public  class JSPTableData extends JSPFieldData {
 
 
     // add required properties
-    this._alRequiredProps.add(new Integer(JSPFieldData.nPROP_TITLE));
+    //this._alRequiredProps.add(new Integer(JSPFieldData.nPROP_TITLE));
     this._alRequiredProps.add(new Integer(JSPFieldData.nPROP_VAR_NAME));
     this._alRequiredProps.add(new Integer(JSPFieldData.nPROP_DATA_TYPE));
     this._alRequiredProps.add(new Integer(JSPFieldData.nPROP_ALIGNMENT));

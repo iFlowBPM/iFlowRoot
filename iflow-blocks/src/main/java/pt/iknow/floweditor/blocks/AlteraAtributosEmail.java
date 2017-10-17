@@ -34,9 +34,13 @@ public class AlteraAtributosEmail extends AbstractAlteraAtributos implements Alt
   // check if math with ones in Uniflow's pt.iflow.blocks.BlockEmail
   public final static String sEMAIL_FROM = "from"; //$NON-NLS-1$
   public final static String sEMAIL_TO = "to"; //$NON-NLS-1$
+  public final static String sEMAIL_CC = "cc"; //$NON-NLS-1$
+  public final static String sEMAIL_BCC = "bcc"; //$NON-NLS-1$
   public final static String sEMAIL_SUBJECT = "subject"; //$NON-NLS-1$
   public final static String sEMAIL_MESSAGE = "message"; //$NON-NLS-1$
   public final static String sEMAIL_TEMPLATE = "template"; //$NON-NLS-1$
+  public final static String sEMAIL_ATTACHMENT = "attachment"; //$NON-NLS-1$
+  public final static String sEMAIL_ATTACHMENT_COMPRESS = "compress"; //$NON-NLS-1$
 
   JPanel panel1 = new JPanel();
   BorderLayout borderLayout1 = new BorderLayout();
@@ -50,9 +54,13 @@ public class AlteraAtributosEmail extends AbstractAlteraAtributos implements Alt
 
   JTextField _jtfFrom = null;
   JTextField _jtfTo = null;
+  JTextField _jtfCC = null;
+  JTextField _jtfBCC = null;
   JTextField _jtfSubject = null;
   JTextField _jtfMessage = null;
   JComboBox _jcbTemplate = null;
+  JTextField _jtfAttachment = null;
+  JTextField _jtfAttachmentCompress = null;
 
   String[] saTemplates = null;
 
@@ -61,9 +69,13 @@ public class AlteraAtributosEmail extends AbstractAlteraAtributos implements Alt
 
   public final String sDESC_EMAIL_FROM;
   public final String sDESC_EMAIL_TO;
+  public final String sDESC_EMAIL_CC;
+  public final String sDESC_EMAIL_BCC;
   public final String sDESC_EMAIL_SUBJECT;
   public final String sDESC_EMAIL_MESSAGE;
   public final String sDESC_EMAIL_TEMPLATE;
+  public final String sDESC_EMAIL_ATTACHMENT;
+  public final String sDESC_EMAIL_ATTACHMENT_COMPRESS;
 
   private int exitStatus = EXIT_STATUS_CANCEL;
   private String[][] data;
@@ -80,10 +92,13 @@ public class AlteraAtributosEmail extends AbstractAlteraAtributos implements Alt
 
     sDESC_EMAIL_FROM = adapter.getString("AlteraAtributosEmail.from"); //$NON-NLS-1$
     sDESC_EMAIL_TO = adapter.getString("AlteraAtributosEmail.to"); //$NON-NLS-1$
+    sDESC_EMAIL_CC = "CC";
+    sDESC_EMAIL_BCC = "BCC";
     sDESC_EMAIL_SUBJECT = adapter.getString("AlteraAtributosEmail.subject"); //$NON-NLS-1$
     sDESC_EMAIL_MESSAGE = adapter.getString("AlteraAtributosEmail.message"); //$NON-NLS-1$
     sDESC_EMAIL_TEMPLATE = adapter.getString("AlteraAtributosEmail.template"); //$NON-NLS-1$
-
+    sDESC_EMAIL_ATTACHMENT = adapter.getString("AlteraAtributosEmail.attachment"); //$NON-NLS-1$
+    sDESC_EMAIL_ATTACHMENT_COMPRESS = adapter.getString("AlteraAtributosEmail.attachment_compress"); //$NON-NLS-1$
   }
 
 
@@ -99,7 +114,11 @@ public class AlteraAtributosEmail extends AbstractAlteraAtributos implements Alt
     data[2][0] = AlteraAtributosEmail.sEMAIL_SUBJECT;
     data[3][0] = AlteraAtributosEmail.sEMAIL_MESSAGE;
     data[4][0] = AlteraAtributosEmail.sEMAIL_TEMPLATE;
-
+    data[5][0] = AlteraAtributosEmail.sEMAIL_ATTACHMENT;
+    data[6][0] = AlteraAtributosEmail.sEMAIL_ATTACHMENT_COMPRESS;
+    data[7][0] = AlteraAtributosEmail.sEMAIL_CC;
+    data[8][0] = AlteraAtributosEmail.sEMAIL_BCC;
+    
     return data;
   }
 
@@ -115,8 +134,8 @@ public class AlteraAtributosEmail extends AbstractAlteraAtributos implements Alt
     }
 
     int size = atributos.size();
-    if (size < 5) {
-      size = 5;
+    if (size < 9) {
+      size = 9;
     }
     data = new String[size][2];
 
@@ -191,6 +210,54 @@ public class AlteraAtributosEmail extends AbstractAlteraAtributos implements Alt
     } catch (Exception ei) {
       adapter.log("error", ei);
     }
+    
+    // ATTACHMENT
+    data[5][0] = sDESC_EMAIL_ATTACHMENT;
+    if (atributos != null && atributos.size() > 5 && atributos.get(5) != null)
+      stmp = new String(((Atributo) atributos.get(5)).getValor());
+    else
+      stmp = null;
+    if (stmp == null || stmp.equals("")) //$NON-NLS-1$
+      stmp = ""; //$NON-NLS-1$
+    data[5][1] = stmp;
+    this._jtfAttachment = new JTextField();
+    this._jtfAttachment.setText((String) data[5][1]);
+    
+    // ATTACHMENT COMPRESS
+    data[6][0] = sDESC_EMAIL_ATTACHMENT_COMPRESS;
+    if (atributos != null && atributos.size() > 6 && atributos.get(6) != null)
+      stmp = new String(((Atributo) atributos.get(6)).getValor());
+    else
+      stmp = null;
+    if (stmp == null || stmp.equals("")) //$NON-NLS-1$
+      stmp = ""; //$NON-NLS-1$
+    data[6][1] = stmp;
+    this._jtfAttachmentCompress = new JTextField();
+    this._jtfAttachmentCompress.setText((String) data[6][1]);
+    
+    // CC
+    data[7][0] = sDESC_EMAIL_CC;
+    if (atributos != null && atributos.size() > 7 && atributos.get(7) != null)
+      stmp = new String(((Atributo) atributos.get(7)).getValor());
+    else
+      stmp = null;
+    if (stmp == null || stmp.equals("")) //$NON-NLS-1$
+      stmp = ""; //$NON-NLS-1$
+    data[7][1] = stmp;
+    this._jtfCC = new JTextField();
+    this._jtfCC.setText((String) data[7][1]);
+    
+    // BCC
+    data[8][0] = sDESC_EMAIL_BCC;
+    if (atributos != null && atributos.size() > 8 && atributos.get(8) != null)
+      stmp = new String(((Atributo) atributos.get(8)).getValor());
+    else
+      stmp = null;
+    if (stmp == null || stmp.equals("")) //$NON-NLS-1$
+      stmp = ""; //$NON-NLS-1$
+    data[8][1] = stmp;
+    this._jtfBCC = new JTextField();
+    this._jtfBCC.setText((String) data[8][1]);
 
     jTable1 = new MyJTableX(data, AlteraAtributosColumnNames);
 
@@ -217,6 +284,14 @@ public class AlteraAtributosEmail extends AbstractAlteraAtributos implements Alt
     cm.addEditorForCell(3, 1, ed);
     ed = new DefaultCellEditor(this._jcbTemplate);
     cm.addEditorForCell(4, 1, ed);
+    ed = new DefaultCellEditor(this._jtfAttachment);
+    cm.addEditorForCell(5, 1, ed);
+    ed = new DefaultCellEditor(this._jtfAttachmentCompress);
+    cm.addEditorForCell(6, 1, ed);
+    ed = new DefaultCellEditor(this._jtfCC);
+    cm.addEditorForCell(7, 1, ed);
+    ed = new DefaultCellEditor(this._jtfBCC);
+    cm.addEditorForCell(8, 1, ed);
 
     /* criar botoes e arranjar dialogo */
     try {
@@ -307,6 +382,18 @@ public class AlteraAtributosEmail extends AbstractAlteraAtributos implements Alt
 
     // template
     data[4][1] = jTable1.getStringAt(4, 1);
+    
+    // template
+    data[5][1] = jTable1.getStringAt(5, 1);
+    
+    // template
+    data[6][1] = jTable1.getStringAt(6, 1);
+    
+    // cc
+    data[7][1] = jTable1.getStringAt(7, 1);
+    
+    // bcc
+    data[8][1] = jTable1.getStringAt(8, 1);
 
     exitStatus = EXIT_STATUS_OK;
     dispose();

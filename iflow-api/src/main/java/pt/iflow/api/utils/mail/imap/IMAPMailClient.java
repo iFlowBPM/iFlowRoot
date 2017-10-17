@@ -46,7 +46,7 @@ public abstract class IMAPMailClient implements MailClient {
   protected SimpleAuthenticator _authenticator;
   protected Store _store;
   protected CheckMode _mode = CheckMode.SIMPLE;
-  private Properties props;
+  protected Properties props;
   
   protected IMAPMailClient(String asHost, int anPort, String user, byte[] password) throws Exception {
     _sHost = asHost;

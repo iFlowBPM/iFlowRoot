@@ -14,8 +14,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.infosistema.crypto.Base64;
-
 import pt.iflow.api.core.BeanFactory;
 import pt.iflow.api.feed.FeedGenerator;
 import pt.iflow.api.presentation.FlowApplications;
@@ -23,7 +21,10 @@ import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.ServletUtils;
 import pt.iflow.api.utils.UserInfoInterface;
+import pt.iflow.api.utils.Utils;
 import pt.iflow.info.DefaultInfoGenerator;
+
+import com.infosistema.crypto.Base64;
 
 /**
  * 
@@ -122,7 +123,7 @@ public class FlowsFeedServlet extends HttpServlet {
         
         String auth = (String) request.getParameter("auth");
         if(auth==null)return;
-        String decodedCredentials = new String(Base64.decode(auth));
+        String decodedCredentials = new String(Utils.decrypt(auth));        
         String[] cred = decodedCredentials.split(":");
         ui.login(cred[0],cred[1]);
         

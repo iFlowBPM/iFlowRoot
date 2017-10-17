@@ -170,7 +170,7 @@
   #div_menu_link {
     vertical-align: top;
     float: right;
-    height: 20;
+    height: 26;
 
     margin: 0;
     text-align:right;
@@ -432,6 +432,8 @@
 	
 	clear: right;
 	float: right;
+height:auto!important;
+overflow:hidden;
   }
 
   .main_div {
@@ -442,7 +444,7 @@
 	background:white url("../../../rounded?c=white&bc=e9f1f5&w=2000&h=4000&shadow=true&ah=10&aw=10&sw=2&o=.3") right bottom no-repeat;
 	
 	height: inherit;
-	margin: 2.5% 1.5% 2.5% 2.5%;
+	/*rgin: 2.5% 1.5% 2.5% 2.5%;*/
 	
 	border-top: 1px solid #e0e0e0;
 	border-left: 1px solid #e0e0e0;
@@ -456,7 +458,7 @@
 	clear: left;
 	float: left;
   	min-height: 200px;
-	width: 72%;
+	width: 77%;
   	
 	/*margin:0;
 	margin-left:2.5%;
@@ -1001,7 +1003,7 @@
   	background-color: #f9f9f1;
   }
   
-  /* para usar nos ficheiros de mensagens para realÃ§ar um nome*/
+  /* para usar nos ficheiros de mensagens para realçar um nome*/
   .em_name {
   	font-variant: small-caps;
   }
@@ -1054,7 +1056,7 @@
 	/*position: relative;*/
 	float: left;
 	clear: both;
-	width: 100%;
+	/*width: 100%;*/
 	margin: 0 0 -1em 0;
 	padding: 0 0 1em 2em;
 	width: 90%;
@@ -1667,7 +1669,7 @@ p.maintenance {
 	.item_title_show {
 	   float:right;
 	   position:relative;
-	   bottom:14px;
+	   bottom:-4px;
 	   right:6px;
 	  width: 10px;
 	  height: 10px;
@@ -1675,7 +1677,7 @@ p.maintenance {
 	.item_title_hide {
 	   float:right;
 	   position:relative;
-	   bottom:14px;
+	   bottom:-4px;
 	   right:6px;
 	  width: 10px;
 	  height: 10px;
@@ -1857,3 +1859,352 @@ p.maintenance {
   #process_annotations_span_expanded {
   	float:right;
   }
+  
+  
+/*  EDITED BY LUIS ALMEIDA 30-06-2004*/
+
+body,html{
+	height: 95%;
+	box-sizing: border-box;
+	margin: 0px 10px 10px 10px;
+	}
+	
+#div_body{
+	height: 85%;
+	background: none;
+	}
+	
+.main{
+	height:90%;
+	box-sizing: border-box;
+	background: none;
+	padding:0px;
+	}
+	
+.main_div {
+    height: 100%;
+}
+
+.tab_body {
+    height: 100%;
+}	
+	
+#div_header {
+
+    padding: 0;
+}	
+
+#footerwrapper, #footer{
+	background: none;}
+	
+	.tab_body {
+    background-color: transparent;
+}
+
+.nav_div {
+    padding: 20px 20px 10px 20px;
+	height: 100%;
+	background: #f1f1f1;
+	border-radius: 4px;
+	
+ 
+}
+
+#helpdialog_c:after{
+	content: "";
+  display: block;
+  position: fixed; /* could also be absolute */
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+  background-color: rgba(0,0,0,0.4);
+	}
+
+.content_div, .content_div_3c {
+    background: none;
+    border: none;
+}
+
+#div_tabs {
+    display: block;
+	width: 100%;
+	box-sizing: border-box;
+/*	background: #990300;*/
+background: #aaa;
+	height: 35px;
+}
+
+#div_tabs input{
+	padding: 8px 6px;
+	}	
+
+
+.tab_button_first {
+    background: none;
+}
+
+.tab_button_span {
+    background: none;
+}
+
+.tab_button_span input:hover {
+    color: #fff;
+}
+
+
+.tab_button_span input{
+	cursor: pointer;
+}
+
+.tab_button_pressed_first {
+    background: none;
+}
+
+.tab_button_span_pressed {
+/*    background: #ff0300;*/
+    background: #4080E0;
+	color: #fff;
+}
+
+.tab_button_pressed, .tab_button_pressed_first {
+    color: #fff;
+	height: 35px;
+}
+
+table tr td{
+    padding: 6px;
+}
+
+#section3_content_div {
+    background: none;
+}
+
+#main {
+    border: none !important;
+}
+
+#top_logout_link{
+	color:#241CEC;}
+	
+	#div_header{
+		
+		
+		padding: 10px 0px;
+		width: 100%;
+		box-sizing:border-box;}	
+		
+		
+		
+		
+		h1{
+			font-size: 16px;}	
+			
+			
+			.tab_title {
+				color: #757575;}
+				
+				
+			#div_menu_link {
+    width: 100%;
+	background: #e5e5e5;
+	box-sizing: border-box;
+	right: 0px;
+	padding: 6px 6px;
+	border-radius: 4px 4px 0px 0px;
+}
+
+.menu_date {
+    color: #757575;
+    float: right;
+    font: bold 12px verdana;
+    margin: 0;
+    padding: 0 0 0 10px;
+    position: absolute;
+    right: 20px;
+    text-align: right;
+    top: 20px;
+    vertical-align: top;
+    width: 200px;
+}
+
+#div_company_info, .company_info {
+    color: #000;
+    font-family: sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    position: relative;
+    text-align: right;
+    top: 30px;
+	right: 0px;
+}
+
+.tab_header{
+	background-image:none;
+	background: #2477AA;
+	color: #fff;}
+	
+	.li_selected {
+    background: none;
+color: #241C4C;
+    text-decoration: underline;
+}
+
+.content_div, .content_div_3c {
+    margin: 55px 0px 0px 0px;
+}
+
+h2, .list_title {
+    background-image: none;
+	background: #95979A;
+    background-repeat: repeat-x;
+    color: #ffffff;
+    font-family: Verdana,Arial,sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    height: 20px;
+    margin: 0 5px 0 0px;
+    padding-left:px;
+    padding-top: 4px;
+    text-align: left;
+    white-space: nowrap;
+    margin-top   : 1px;
+}
+
+ul, .itembox {
+    border: medium none;
+    color: white;
+    margin: 5px 5px 0px 0px;
+    padding: 5px 0 5px 0px;
+}
+
+	
+	.info_msg a {
+    color: #241C4C;
+    text-decoration: underline;
+}
+
+#main{
+	border: none !important;}
+	
+	input, select {
+    font-size: 14px;
+}
+
+#div_user_info{
+	top: 32px;}
+	
+#div_menu {
+   
+    padding: 0;
+}
+
+.header_div {
+    float: none;
+    height: 35px;
+    position: absolute;
+    right: 25px;
+    top: 100px;
+    width: 50px;
+    z-index: 99;
+}
+
+/*.help_box_open {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    padding-right: 10px;
+    position: absolute;
+    right: -67px;
+    text-align: right;
+    top: -56px;
+    z-index: 3;
+}
+*/
+	
+/*LOGIN*/
+
+
+.lp_body {
+    background: #f1f1f1;
+	padding-top: 10%;   
+}
+
+.lp_login_box {
+    background: #fff url("../../../images/login_bg.gif") no-repeat center 20px ;
+   
+    height: 250px;
+    margin: auto;
+	padding-top: 20px;
+    padding: 20px;
+    width: 320px;
+	border-radius: 4px;
+	border: solid 1px #ccc;
+	box-shadow: 0px 1px 0px rgba(255,255,255,0.8);
+	
+	
+}
+
+.lp_error_msg {
+    height: 40px;
+    margin-top: 100px;
+    padding-left: 0;
+	color: #d90400;
+}
+
+.user_info {
+    color: #363636;
+    font-family: sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: right;
+	height: 25px;
+	position:relative;
+	top: 6px;
+}
+
+.lp_field_input {
+    float: left;
+    height: 25px;
+    margin: 0 5px 5px 0;
+    padding: 0 0 0 5px;
+    text-align: left;
+    width: 140px;
+}
+
+.lp_field_input input{
+    font-size: 15px;
+	padding: 2px 4px;
+	width: 154px;
+	border-radius: 2px;
+}
+
+.lp_top_nav_text  {
+    color: #757575;
+    
+	height: 20px;
+	position:relative;
+	display:block;
+	text-align:center;
+}
+
+.lp_field_label {
+    width: 110px;
+	float: left;
+}
+
+#languages_div{
+    padding: 10px 0;
+	display:block;
+	text-align:center;
+  
+}
+
+a.lp_top_nav_link {
+      padding: 10px 0 0 0;
+	  display:block;
+	  text-align:center;
+}
+
+.lp_footer_nav {
+    margin: 20px 0 0 0px;
+}	

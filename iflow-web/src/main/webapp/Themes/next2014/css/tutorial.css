@@ -1,0 +1,179 @@
+	div#tutorialdialog {
+
+		float:left;
+		position: fixed;
+		right: 20px;
+		bottom: 10px;
+			
+		font: bold 14px verdana, arial, sans-serif;
+		/*background: transparent url(../images/tutorial_background.png) repeat-x top;*/
+		/*border: 1px solid #6E8EA1;*/
+		border-bottom: none;
+		border-right: none;	
+		width: 400px;
+		height: 200px;	
+		background: transparent url(../../../rounded?c=f7f7f7&bc=e9f1f5&w=396&h=195&shadow=true&ah=10&aw=10&sw=2&o=.3) no-repeat right bottom;
+		z-index: 10;
+	}
+	
+	div#tutorialdialog:hover {
+		cursor: pointer;
+	}
+	
+	#tutorial_header {
+		font-size:14px;
+		font-weight: bold;
+		float:left;
+		margin-right: 20px;
+		/*color: white;
+		background-color: #E9F1F5;*/
+		
+		float: none;
+		padding: 5px;
+	}
+	
+	.tutorialdialogbody {
+		float: left;
+	}
+	
+	.tutorialoptions {
+		position: relative;
+		padding-right: 50px;
+		float: left;
+	}
+	
+	button#open_tutorial {
+		float:left;
+		background:none;
+		background: transparent url(javascript/yahoo/assets/skins/sam/sprite.png) no-repeat scroll 0pt -600px;
+		height:20px; 
+		width: 40px;
+		padding:0;
+		margin:0;
+		border:none;
+		margin-left: 3px;
+		
+		
+	}
+	
+	div#tutorialdialog ul {
+		color: #444;
+		font-size: 12px;
+		font-weight: bold;
+		float:left;
+		margin: 0;
+		margin-left: 3px;
+		
+
+		/*
+		position:relative;
+		border: 1px solid #ccc;
+		background-color: #FFFF80;
+		top: 35px;
+		*/
+	}
+	
+	div#tutorialdialog li {
+		margin-right:10px;
+	}
+	
+	div#tutorialdialog li {
+		font-size: 12px;
+		font-weight: bold;
+		padding: 1px;
+		margin-top: 2px;
+	}
+	
+	div#tutorialdialog a {
+		font-size: 12px;
+		font-weight: bold;
+		padding: 1px;
+		color: #444;
+	}
+	
+	div#tutorialdialog img {
+		border:medium none;
+		padding:0pt;
+		position:relative;
+		top:2px;
+		padding-right: 8px;
+	}
+	
+	div#tutorialdialog li.active {
+		background-color: #B7D8EC;
+		/*border: 1px solid #ccc;*/
+	}
+	
+	div#tutorialdialog li.done {
+	    color: #cccccc;
+		padding: 1px;
+	}
+	
+	div#tutorialdialog a.next {
+		color: #003F65;
+		position:absolute;
+		right:0;
+		text-align:center;
+		width:80px;
+		text-decoration: underline;
+		font-weight: normal;
+	}
+	
+	div#tutorialdialog a.next:hover {
+		font-weight: bold;
+	}
+	
+	div#tutorialdialog li.default {
+		color: #444;
+		font-weight: normal;
+	}
+	
+  .tutorialbox {
+  	font-family: Verdana, Arial, sans-serif; 
+  	font-size: 12px; 
+  	color: #1E5B78;
+  }
+  
+  .tutorialbox {
+  	border:none; 
+  	color: black; 
+  	width:206px; 
+  	height: 109px; 
+  	position: absolute; 
+  	top: 40px;
+  	right: 400px; 
+  	background-color: none; 
+  	z-index: 1000;
+  	background-image:url(../../../images/tutbalao.png);
+  	background-repeat: no-repeat;
+
+  	position: absolute; 
+  	top: 68px;
+  	right: 209px; 
+  }
+    
+.tutorialbox div {
+  	font-size: 15px;	
+	/*background-color:white;
+	border:1px dashed #A6BF43;*/
+	color:white;
+	font-size:12px;
+	height:70px;
+	margin:17px 34px 5px 20px;
+	vertical-align:middle;
+	padding: 15px;
+  }
+  
+  #tutorialdialogbuttonbox {
+  	float: right;
+  	position: relative;
+  	bottom: 20px;
+  }
+  
+  #tutorialdialogbuttonbox a {
+	margin-left: 0px; 
+	color:white; 
+	text-decoration:underline;
+	font-weight: bold;
+	margin: 0px;
+  }

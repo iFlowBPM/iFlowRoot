@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.ValidationException;
 
@@ -31,6 +32,7 @@ public class SubFlowDataExpander {
   private static final String BLOCK_END_TYPE = "BlockEnd";
   private static final String BLOCK_COPY_TYPE = "BlockCopia";
   private static final String PORT_OUT_COPY = "portOut";
+  private static final String SUBFLOW_PREFIX = "SUBFLOW_PREFIX";
   final static int FLOW = 0;
   final static int SUBFLOW = 1;
   final static int TYPE = 2;
@@ -77,8 +79,16 @@ public class SubFlowDataExpander {
     for (XmlAttribute xmlAttribute : subFlowBlock.getXmlAttribute())
       if (SUB_FLOW_NAME_ATTRIBUTE_START.equals("" + xmlAttribute.getName().charAt(0))) {
         byte[] sXml = BeanFactory.getFlowHolderBean().readSubFlowData(userInfo, xmlAttribute.getValue());
-        XmlFlow xmlSubFlow = FlowMarshaller.unmarshal(sXml);
-
+        XmlFlow xmlSubFlow = null;
+        if(sXml!=null)
+        	xmlSubFlow = FlowMarshaller.unmarshal(sXml);
+        
+        String prefix = getSubFlowPrefix(subFlowBlock);
+        if(StringUtils.isBlank(prefix))
+        	prefix = "" + subFlowBlock.getId();
+        for(XmlBlock block:xmlSubFlow.getXmlBlock())
+        	setSubFlowPrefix(block, prefix+"_"+ block.getId());
+        
         subFlowData = new SubFlowDataSuportClass();
         subFlowData.setPrimaryBlock(subFlowBlock);
         subFlowData.setSubFlowName(xmlAttribute.getValue());
@@ -87,9 +97,42 @@ public class SubFlowDataExpander {
       }
     return subFlowData;
   }
-
+  
+  private String getSubFlowPrefix(XmlBlock block){
+	  XmlAttribute result = new XmlAttribute();
+	  result.setName(SUBFLOW_PREFIX);
+	  result.setValue("");
+	  
+	  for (XmlAttribute xmlAttribute : block.getXmlAttribute())
+		  if(StringUtils.equals(xmlAttribute.getName(),SUBFLOW_PREFIX)){
+			  result = xmlAttribute;
+			  break;
+		  }
+	  
+	  return result.getValue();
+  }
+  
+  private void setSubFlowPrefix(XmlBlock block, String value){
+	  XmlAttribute result = new XmlAttribute();
+	  result.setName(SUBFLOW_PREFIX);
+	  result.setValue(value);
+	  
+	  XmlAttribute[] allAttributes = block.getXmlAttribute();
+	  for (int i=0; i< allAttributes.length; i++)
+		  if(StringUtils.equals(allAttributes[i].getName(),SUBFLOW_PREFIX)){
+			  allAttributes[i] = result;
+			  block.setXmlAttribute(allAttributes);
+			  return;
+		  }
+	  	  
+	  block.addXmlAttribute(result);
+  }
+    
   public List<SubFlowMapping> expandSubFlow(UserInfoInterface userInfo) throws Exception {
     List<SubFlowMapping> blockMappings = new ArrayList<SubFlowMapping>();
+    
+    if(userInfo.getUtilizador().startsWith("Manager-"))
+    	return blockMappings;
 
     while (this.containsSubFlow()) {
       List<SubFlowDataSuportClass> subFlowElements = getAllSubFlowsReferencesFromFlow(userInfo);
@@ -103,18 +146,13 @@ public class SubFlowDataExpander {
             subFlowData.getPrimaryBlock().getXmlPort()[1].setName(PORT_OUT_COPY);
             break;
           }
-
-          Logger.debug(userInfo.getUtilizador(), this, "expandSubFlow", "INI - validate Sub Flow");
+          Logger.debug(userInfo.getUtilizador(), this, "expandSubFlow", "starting on Sub Flow: " + subFlow.getName());          
           validateSubFlow(subFlow, userInfo);
-          Logger.debug(userInfo.getUtilizador(), this, "expandSubFlow", "FIM - validate Sub Flow");
-
-          Logger.debug(userInfo.getUtilizador(), this, "expandSubFlow", "INI - add Sub Flow catalog vars to Main flow");
           addSubCatalogVarsToMain(subFlow);
-          Logger.debug(userInfo.getUtilizador(), this, "expandSubFlow", "FIM - add Sub Flow catalog vars to Main flow");
 
-          Logger.debug(userInfo.getUtilizador(), this, "expandSubFlow", "INI - assign new block ids to sub flow blocks");
+          int tempMappings = blockMappings.size();
           blockMappings.addAll(assignNewBlockIds(subFlowData, findMaxblockId()));
-          Logger.debug(userInfo.getUtilizador(), this, "expandSubFlow", "FIM - assign new block ids to sub flow blocks");
+          Logger.debug(userInfo.getUtilizador(), this, "expandSubFlow", "added " + (blockMappings.size() - tempMappings)+ " from Sub Flow: " + subFlow.getName());
 
           Logger.debug(userInfo.getUtilizador(), this, "expandSubFlow", "INI - create copy blocks in sub flow");
           buildCopyBlocksInSubFlow(subFlowData, userInfo);
@@ -138,6 +176,55 @@ public class SubFlowDataExpander {
 
     return blockMappings;
   }
+  
+  public List<SubFlowMapping> expandSubFlow2(UserInfoInterface userInfo) throws Exception {
+	    List<SubFlowMapping> blockMappings = new ArrayList<SubFlowMapping>();
+	    
+	    if(userInfo.getUtilizador().startsWith("Manager-"))
+	    	return blockMappings;
+
+	    while (this.containsSubFlow()) {
+	      List<SubFlowDataSuportClass> subFlowElements = getAllSubFlowsReferencesFromFlow(userInfo);
+	      if (subFlowElements != null && subFlowElements.size() > 0) {
+	        for (SubFlowDataSuportClass subFlowData : subFlowElements) {
+	          XmlFlow subFlow = subFlowData.getSubFlowXML();
+
+	          // if subflow has no content bypass it by converting to copy block
+	          if (subFlow == null && subFlowData.getSubFlowName() == null) {
+	            subFlowData.getPrimaryBlock().setType(BLOCK_COPY_TYPE);
+	            subFlowData.getPrimaryBlock().getXmlPort()[1].setName(PORT_OUT_COPY);
+	            break;
+	          }
+	          Logger.debug(userInfo.getUtilizador(), this, "expandSubFlow", "starting on Sub Flow: " + subFlow.getName());          
+	          validateSubFlow(subFlow, userInfo);
+	          addSubCatalogVarsToMain(subFlow);
+
+	          int tempMappings = blockMappings.size();
+	          blockMappings.addAll(assignNewBlockIds(subFlowData, findMaxblockId()));
+	          Logger.debug(userInfo.getUtilizador(), this, "expandSubFlow", "added " + (blockMappings.size() - tempMappings)+ " from Sub Flow: " + subFlow.getName());
+
+	          Logger.debug(userInfo.getUtilizador(), this, "expandSubFlow", "INI - create copy blocks in sub flow");
+	          buildCopyBlocksInSubFlow(subFlowData, userInfo);
+	          Logger.debug(userInfo.getUtilizador(), this, "expandSubFlow", "FIM - create copy blocks in sub flow");
+
+	          Logger.debug(userInfo.getUtilizador(), this, "expandSubFlow",
+	              "INI - insert PopupReturnBlock property in form with popup property");
+	          // Colocar atributo "PopupReturnBlock" em todos os blocos de subFluxo
+	          if (SubFlowDataSuportClass.POPUP_FORM_BLOCK == subFlowData.getTypeOfSubFlowImplementation()) {
+	            insertPopupReturnBlockInInSubFlowBocksProperties(subFlowData, userInfo);
+	          }
+	          Logger.debug(userInfo.getUtilizador(), this, "expandSubFlow",
+	              "FIM - insert PopupReturnBlock property in form with popup property");
+
+	          Logger.debug(userInfo.getUtilizador(), this, "expandSubFlow", "INI - Link main flow with sub flow");
+	          insertSubInMainFlow(subFlowData, userInfo);
+	          Logger.debug(userInfo.getUtilizador(), this, "expandSubFlow", "INI - Link main flow with sub flow");
+	        }
+	      }
+	    }
+
+	    return blockMappings;
+	  }
 
   private void validateSubFlow(XmlFlow xmlSubFlow, UserInfoInterface userInfo) throws Exception {
     Boolean hasBlockEnd = Boolean.FALSE;
@@ -216,8 +303,9 @@ public class SubFlowDataExpander {
     // get the var mapping of subflow
 
     XmlBlockType subFlowBlock = subFlowData.getPrimaryBlock();
-    int size = (subFlowBlock .getXmlAttributeCount() - 1) / 4 - 1; // raio de conta
-
+    int size = 1;
+    if(subFlowBlock .getXmlAttributeCount()>8)
+    	size = (subFlowBlock .getXmlAttributeCount() - 1) / 4 - 1; // raio de conta
     if (size < 0){
       size = 0; // FIXME correcção temporaria de subfluxo sem variaveis, 
     }
@@ -339,11 +427,11 @@ public class SubFlowDataExpander {
     if (SubFlowDataSuportClass.SUBFLOW_BLOCK == subFlowData.getTypeOfSubFlowImplementation()){
       // 1.Connect beginning of subflow
       for (XmlBlock block : xmlFlow.getXmlBlock()){
-        if(block.getId()==subFlowBlock.getXmlPort(0).getConnectedBlockId()){ // é bloco que liga ao subFluxo
+        //if(block.getId()==subFlowBlock.getXmlPort(0).getConnectedBlockId()){ // é bloco que liga ao subFluxo
           for (XmlPort port : block.getXmlPort())
             if (port.getConnectedBlockId() == subFlowBlock.getId())
               port.setConnectedBlockId(rawSubFlow[0].getId());
-        }
+        //}
       }
     }
 
@@ -520,7 +608,7 @@ public class SubFlowDataExpander {
     for (XmlBlock block : getXmlFlow().getXmlBlock()){
       SubFlowDataSuportClass subFlowData = null;
       if (SUB_FLOW_TYPE.equals(block.getType())){
-        Logger.debug(operationUser, this, methodName, "INI - Processing block of SubFlow.");
+        Logger.debug(operationUser, this, methodName, "INI - Processing block of SubFlow." + block.getId() + ", " +  getXmlFlow().getName());
         subFlowData = getSubFlowDataFromSubFlowBlock(userInfo, block);
         if (subFlowData == null){
           subFlowData = new SubFlowDataSuportClass(SubFlowDataSuportClass.SUBFLOW_BLOCK, null, block, null, null, -1);
@@ -668,7 +756,7 @@ public class SubFlowDataExpander {
     List<SubFlowMapping> mappings = new ArrayList<SubFlowMapping>();
 
     for (XmlBlock block : subflow.getSubFlowXML().getXmlBlock()) {
-      mappings.add(new SubFlowMapping(xmlFlow.getName(), subflow.getSubFlowName() + "_" + subflow.getPrimaryBlock().getId(), block
+      mappings.add(new SubFlowMapping(xmlFlow.getName(), getSubFlowPrefix(block), block
           .getId(), block.getId() + mainFlowMaxBlockId));
       block.setId(block.getId() + mainFlowMaxBlockId);
       for (XmlPort xmlPort : block.getXmlPort())
@@ -818,4 +906,17 @@ class SubFlowDataSuportClass {
     }
     return builder.toString();
   }
+}
+
+class XmlBlockSubFlow extends XmlBlock{
+	private String subflowPath;
+
+	public String getSubflowPath() {
+		return subflowPath;
+	}
+
+	public void setSubflowPath(String subflowPath) {
+		this.subflowPath = subflowPath;
+	}
+	
 }

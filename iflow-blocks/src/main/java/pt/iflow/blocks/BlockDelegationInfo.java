@@ -28,7 +28,7 @@ public abstract class BlockDelegationInfo extends Block {
   public BlockDelegationInfo(int anFlowId, int id, int subflowblockid, String filename) {
     super(anFlowId, id, subflowblockid, filename);
     this.hasInteraction = false;
-    saveFlowState = false;
+    saveFlowState = true;
   }
 
   /**

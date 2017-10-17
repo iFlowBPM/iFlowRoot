@@ -15,7 +15,7 @@ public class BlockGetOrganicalUnitParent extends BlockGetAuthInfo {
 
   public BlockGetOrganicalUnitParent(int anFlowId,int id, int subflowblockid, String filename) {
     super(anFlowId,id, subflowblockid, filename);
-    saveFlowState = false;
+    saveFlowState = true;
     this._nOp = nOP_GET_ORG_UNIT_PARENT;
     this._sDefaultKey = sDEFAULT_KEY_ORGANICAL_UNIT;
   }

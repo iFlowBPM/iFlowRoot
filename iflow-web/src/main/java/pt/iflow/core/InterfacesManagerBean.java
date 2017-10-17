@@ -85,6 +85,9 @@ InterfaceInfo  umaInterface = new InterfaceInfo(2,"Tarefas","Lista de tarefas qu
     
     umaInterface = new InterfaceInfo(12,"Notificações","Interface que apresenta informação relevante ao utilizador");
     listaInterfaces.add(umaInterface);
+    
+    umaInterface = new InterfaceInfo(11,"Documentos","Permite acesso a processos do tipo Documento");
+    listaInterfaces.add(umaInterface);
 
     interfaces =listaInterfaces.toArray(new InterfaceInfo[listaInterfaces.size()]);
   }

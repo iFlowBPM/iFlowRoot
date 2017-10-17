@@ -26,7 +26,7 @@ public class BlockDocumentDelete extends Block {
   
   public BlockDocumentDelete(int anFlowId, int id, int subflowblockid, String filename) {
     super(anFlowId, id, subflowblockid, filename);
-    saveFlowState = false;
+    saveFlowState = true;
   }
 
   @Override

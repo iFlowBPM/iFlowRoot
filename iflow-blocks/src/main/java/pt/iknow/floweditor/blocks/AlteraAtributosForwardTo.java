@@ -53,6 +53,7 @@ public class AlteraAtributosForwardTo extends AbstractAlteraAtributos implements
   private JComboBox _jcbTypes = null;
   private JTextField _jtfUser = null;
   private JTextField _jtfProfile = null;
+  private JTextField _jtfOrganicUnit = null;
   private JTextField _jtfUserMessage = null;
   private JTextField jtfDescription = null;
   private JTextField jtfResult = null;
@@ -80,12 +81,14 @@ public class AlteraAtributosForwardTo extends AbstractAlteraAtributos implements
   private final String sFORWARD_TO_USER;
   private final String sFORWARD_TO_PROFILE_TEXT;
   private final String sFORWARD_TO_USER_MESSAGE;
+  private final String sFORWARD_TO_ORGANIC_UNIT;
 
   // DO NOT CHANGE! MUST MATCH BlockForwardTo
   private final static String sTYPE_CHOOSE = "Escolha"; //$NON-NLS-1$
   private final static String sTYPE_PROFILE = "Perfil"; //$NON-NLS-1$
   private final static String sTYPE_USER = "Utilizador"; //$NON-NLS-1$
   private final static String sTYPE_PROFILE_TEXT = "PerfilTexto"; //$NON-NLS-1$
+  private final static String sTYPE_ORGANIC_UNIT = "UnidadeOrganica" ;
   private final static String sTYPE_USER_MESSAGE = MessageBlock.MESSAGE_USER;
   private static final String sPROFILE_DELIM = ","; //$NON-NLS-1$
 
@@ -93,6 +96,7 @@ public class AlteraAtributosForwardTo extends AbstractAlteraAtributos implements
   private final static String sATTR_FORWARD_TO_PROFILE = "Perfil"; //$NON-NLS-1$
   private final static String sATTR_FORWARD_TO_USER = "Utilizador"; //$NON-NLS-1$
   private final static String sATTR_FORWARD_TO_PROFILE_TEXT = "PerfilTexto"; //$NON-NLS-1$
+  private final static String sATTR_FORWARD_TO_ORGANIC_UNIT_TEXT = "UnidadeOrganica";
   private final static String sATTR_FORWARD_TO_USER_MESSAGE = MessageBlock.MESSAGE_USER;
 
   private static final String sATTR_FORWARD_TO_TASK_ANNOTATION_UPDATE_LABEL_CONDITION = "task_annotation_update_label_condition";
@@ -104,6 +108,7 @@ public class AlteraAtributosForwardTo extends AbstractAlteraAtributos implements
   private final String sDESC_FORWARD_TO_TYPE;
   private final String sDESC_FORWARD_TO_USER;
   private final String sDESC_FORWARD_TO_PROFILE_TEXT;
+  private final String sDESC_FORWARD_TO_ORGANIC_UNIT_TEXT;
 
   private final String sDESC_FORWARD_TO_USER_MESSAGE;
 
@@ -138,12 +143,14 @@ public class AlteraAtributosForwardTo extends AbstractAlteraAtributos implements
     sFORWARD_TO_USER = adapter.getString("AlteraAtributosForwardTo.user"); //$NON-NLS-1$
     sFORWARD_TO_PROFILE_TEXT = adapter.getString("AlteraAtributosForwardTo.textProfile"); //$NON-NLS-1$
     sFORWARD_TO_USER_MESSAGE = adapter.getString("AlteraAtributosForwardTo.userMessage"); //$NON-NLS-1$
+    sFORWARD_TO_ORGANIC_UNIT = adapter.getString("AlteraAtributosForwardTo.organicUnit");
 
     sDESC_FORWARD_TO_TYPE = adapter.getString("AlteraAtributosForwardTo.kindDesc"); //$NON-NLS-1$
     // sDESC_FORWARD_TO_PROFILE = adapter.getString("AlteraAtributosForwardTo.profileDesc");//$NON-NLS-1$
     sDESC_FORWARD_TO_USER = adapter.getString("AlteraAtributosForwardTo.userDesc"); //$NON-NLS-1$
     sDESC_FORWARD_TO_PROFILE_TEXT = adapter.getString("AlteraAtributosForwardTo.textProfileDesc"); //$NON-NLS-1$
-
+    sDESC_FORWARD_TO_ORGANIC_UNIT_TEXT = adapter.getString("AlteraAtributosForwardTo.organicUnitDesc"); //$NON-NLS-1$
+    
     sDESC_FORWARD_TO_USER_MESSAGE = adapter.getString("AlteraAtributosForwardTo.userMessageDesc");
 
     
@@ -188,12 +195,14 @@ public class AlteraAtributosForwardTo extends AbstractAlteraAtributos implements
     propToTypeMapping.put(sFORWARD_TO_USER, sTYPE_USER);
     propToTypeMapping.put(sFORWARD_TO_PROFILE_TEXT, sTYPE_PROFILE_TEXT);
     propToTypeMapping.put(sFORWARD_TO_USER_MESSAGE, sTYPE_USER_MESSAGE);
+    propToTypeMapping.put(sFORWARD_TO_ORGANIC_UNIT, sTYPE_ORGANIC_UNIT);
 
     typeToPropMapping.put(sTYPE_CHOOSE,sFORWARD_TO_NONE);
     typeToPropMapping.put(sTYPE_PROFILE,sFORWARD_TO_PROFILE);
     typeToPropMapping.put(sTYPE_USER,sFORWARD_TO_USER);
     typeToPropMapping.put(sTYPE_PROFILE_TEXT,sFORWARD_TO_PROFILE_TEXT);
     typeToPropMapping.put(sTYPE_USER_MESSAGE, sFORWARD_TO_USER_MESSAGE);
+    typeToPropMapping.put(sTYPE_ORGANIC_UNIT, sFORWARD_TO_ORGANIC_UNIT);
   }
   
   public int getExitStatus() {
@@ -202,7 +211,7 @@ public class AlteraAtributosForwardTo extends AbstractAlteraAtributos implements
 
   public String[][] getNewAttributes() {
     String selectedProfiles = ""; //$NON-NLS-1$
-    String[][] newData = new String[11][2];
+    String[][] newData = new String[12][2];
 
     // get selected values to a csv string
     Object[] soSelected = _jlProfiles.getSelectedValues();
@@ -225,27 +234,30 @@ public class AlteraAtributosForwardTo extends AbstractAlteraAtributos implements
 
     newData[3][0] = sATTR_FORWARD_TO_PROFILE_TEXT; // Profile Text
     newData[3][1] = (String)data[2][1];
-
-    newData[4][0] = sATTR_FORWARD_TO_USER_MESSAGE; // User Msg
+    
+    newData[4][0] = sATTR_FORWARD_TO_ORGANIC_UNIT_TEXT;
     newData[4][1] = (String)data[3][1];
-
-    newData[5][0] = sATTR_FORWARD_TO_TASK_ANNOTATION_UPDATE_LABEL_CONDITION; // task annnotation update label cond
+    
+    newData[5][0] = sATTR_FORWARD_TO_USER_MESSAGE; // User Msg
     newData[5][1] = (String)data[4][1];
 
-    newData[6][0] = sATTR_FORWARD_TO_TASK_ANNOTATION_UPDATE_LABEL; // task annnotation update label
+    newData[6][0] = sATTR_FORWARD_TO_TASK_ANNOTATION_UPDATE_LABEL_CONDITION; // task annnotation update label cond
     newData[6][1] = (String)data[5][1];
 
-    newData[7][0] = sATTR_FORWARD_TO_TASK_FOLDER_UPDATE_CONDITION; // task folder update condition
+    newData[7][0] = sATTR_FORWARD_TO_TASK_ANNOTATION_UPDATE_LABEL; // task annnotation update label
     newData[7][1] = (String)data[6][1];
-    
-    newData[8][0] = sATTR_FORWARD_TO_TASK_FOLDER_UPDATE; // task folder update
+
+    newData[8][0] = sATTR_FORWARD_TO_TASK_FOLDER_UPDATE_CONDITION; // task folder update condition
     newData[8][1] = (String)data[7][1];
     
+    newData[9][0] = sATTR_FORWARD_TO_TASK_FOLDER_UPDATE; // task folder update
+    newData[9][1] = (String)data[8][1];
+    
     // this is common to all blocks, right?
-    newData[9][0] = AlteraAtributos.sDESCRIPTION;
-    newData[9][1] = description;// this.jtfDescription.getText();
-    newData[10][0] = AlteraAtributos.sRESULT;
-    newData[10][1] = result;// this.jtfResult.getText();
+    newData[10][0] = AlteraAtributos.sDESCRIPTION;
+    newData[10][1] = description;// this.jtfDescription.getText();
+    newData[11][0] = AlteraAtributos.sRESULT;
+    newData[11][1] = result;// this.jtfResult.getText();
 
     return newData;
   }
@@ -253,7 +265,7 @@ public class AlteraAtributosForwardTo extends AbstractAlteraAtributos implements
   public void setDataIn(String title, List<Atributo> atributos) {
     setTitle(title);
 
-    data = new String[8][2];
+    data = new String[9][2];
 
     Map<String,String> attr = new HashMap<String, String>();
     for(Atributo a : atributos)
@@ -285,46 +297,54 @@ public class AlteraAtributosForwardTo extends AbstractAlteraAtributos implements
       stmp = ""; //$NON-NLS-1$
     }
     data[2][1] = stmp;
-
-    // USER MESSAGE
-    data[3][0] = sDESC_FORWARD_TO_USER_MESSAGE;
-    stmp = attr.get(sATTR_FORWARD_TO_USER_MESSAGE);
+    
+    //OU Message    
+    data[3][0] = sDESC_FORWARD_TO_ORGANIC_UNIT_TEXT;
+    stmp = attr.get(sATTR_FORWARD_TO_ORGANIC_UNIT_TEXT);
     if (StringUtilities.isEmpty(stmp)) {
-      stmp = "";
+      stmp = ""; //$NON-NLS-1$
     }
     data[3][1] = stmp;
-
-    // TASK ANNOTATION LABEL UPDATE CONDITION
-    data[4][0] = sDESC_FORWARD_TO_UPDATE_LABEL_COND;
-    stmp = attr.get(sATTR_FORWARD_TO_TASK_ANNOTATION_UPDATE_LABEL_CONDITION);
+    
+    // USER MESSAGE
+    data[4][0] = sDESC_FORWARD_TO_USER_MESSAGE;
+    stmp = attr.get(sATTR_FORWARD_TO_USER_MESSAGE);
     if (StringUtilities.isEmpty(stmp)) {
       stmp = "";
     }
     data[4][1] = stmp;
 
-    // TASK ANNOTATION LABEL
-    data[5][0] = sDESC_FORWARD_TO_UPDATE_LABEL;
-    stmp = attr.get(sATTR_FORWARD_TO_TASK_ANNOTATION_UPDATE_LABEL);
+    // TASK ANNOTATION LABEL UPDATE CONDITION
+    data[5][0] = sDESC_FORWARD_TO_UPDATE_LABEL_COND;
+    stmp = attr.get(sATTR_FORWARD_TO_TASK_ANNOTATION_UPDATE_LABEL_CONDITION);
     if (StringUtilities.isEmpty(stmp)) {
       stmp = "";
     }
     data[5][1] = stmp;
 
-    // TASK FOLDER CONDITION
-    data[6][0] = sDESC_FORWARD_TO_UPDATE_FOLDER_CONDITION;
-    stmp = attr.get(sATTR_FORWARD_TO_TASK_FOLDER_UPDATE_CONDITION);
+    // TASK ANNOTATION LABEL
+    data[6][0] = sDESC_FORWARD_TO_UPDATE_LABEL;
+    stmp = attr.get(sATTR_FORWARD_TO_TASK_ANNOTATION_UPDATE_LABEL);
     if (StringUtilities.isEmpty(stmp)) {
       stmp = "";
     }
     data[6][1] = stmp;
-    
-    // TASK FOLDER
-    data[7][0] = sDESC_FORWARD_TO_UPDATE_FOLDER;
-    stmp = attr.get(sATTR_FORWARD_TO_TASK_FOLDER_UPDATE);
+
+    // TASK FOLDER CONDITION
+    data[7][0] = sDESC_FORWARD_TO_UPDATE_FOLDER_CONDITION;
+    stmp = attr.get(sATTR_FORWARD_TO_TASK_FOLDER_UPDATE_CONDITION);
     if (StringUtilities.isEmpty(stmp)) {
       stmp = "";
     }
     data[7][1] = stmp;
+    
+    // TASK FOLDER
+    data[8][0] = sDESC_FORWARD_TO_UPDATE_FOLDER;
+    stmp = attr.get(sATTR_FORWARD_TO_TASK_FOLDER_UPDATE);
+    if (StringUtilities.isEmpty(stmp)) {
+      stmp = "";
+    }
+    data[8][1] = stmp;
     
     this.description = attr.get(AlteraAtributos.sDESCRIPTION);
     if (null == this.description)
@@ -347,11 +367,12 @@ public class AlteraAtributosForwardTo extends AbstractAlteraAtributos implements
     jTable1.setMyColumnEditorModel(rm);
 
     /* Combo box types */
-    String[] satmp = new String[4];
+    String[] satmp = new String[5];
     satmp[0] = sFORWARD_TO_NONE;
     satmp[1] = sFORWARD_TO_USER;
     satmp[2] = sFORWARD_TO_PROFILE_TEXT;
     satmp[3] = sFORWARD_TO_PROFILE;
+    satmp[4] = sFORWARD_TO_ORGANIC_UNIT;
     this._jcbTypes = new JComboBox(satmp);
     this._jcbTypes.setSelectedItem(data[0][1]);
 
@@ -384,22 +405,27 @@ public class AlteraAtributosForwardTo extends AbstractAlteraAtributos implements
     if (StringUtilities.isNotEmpty((String) data[2][1])) { //$NON-NLS-1$
       this._jtfProfile.setText((String) data[2][1]);
     }
-
+    
+    /* OU Text box */
+    this._jtfOrganicUnit = new JTextField();
+    if (StringUtilities.isNotEmpty((String) data[3][1])) { //$NON-NLS-1$
+      this._jtfOrganicUnit.setText((String) data[3][1]);
+    }
     /* User Message Text box */
     this._jtfUserMessage = new JTextField();
-    if (StringUtilities.isNotEmpty((String) data[3][1])) {
-      this._jtfUserMessage.setText((String) data[3][1]);
+    if (StringUtilities.isNotEmpty((String) data[4][1])) {
+      this._jtfUserMessage.setText((String) data[4][1]);
     }
 
     /* task Annotations Label condition */
     this._jtfUpdateTaskAnnotationsLabel = new JTextField();
-    if (StringUtilities.isNotEmpty((String) data[4][1])) {
-      this._jtfUpdateTaskAnnotationsLabel.setText((String) data[4][1]);
+    if (StringUtilities.isNotEmpty((String) data[5][1])) {
+      this._jtfUpdateTaskAnnotationsLabel.setText((String) data[5][1]);
     }
 
     this._jcbTaskAnnotationsLabel = new JComboBox(taskAnnotationsLabelArray);
     
-    String annotationsLabelSelectedItem = data[5][1];
+    String annotationsLabelSelectedItem = data[6][1];
     if (annotationsLabelSelectedItem == null || "".equals(annotationsLabelSelectedItem)){
       annotationsLabelSelectedItem = this.sFORWARD_TO_UPDATE_LABEL_NONE;
     }
@@ -407,14 +433,14 @@ public class AlteraAtributosForwardTo extends AbstractAlteraAtributos implements
 
     /* task folder Condition*/
     this._jtfUpdateTaskFolderCondition = new JTextField();
-    if (StringUtilities.isNotEmpty((String) data[6][1])) {
+    if (StringUtilities.isNotEmpty((String) data[7][1])) {
       this._jtfUpdateTaskFolderCondition.setText((String) data[6][1]);
     }    
     
     /* task folder */
     this._jtfUpdateTaskFolder = new JTextField();
-    if (StringUtilities.isNotEmpty((String) data[7][1])) {
-      this._jtfUpdateTaskFolder.setText((String) data[7][1]);
+    if (StringUtilities.isNotEmpty((String) data[8][1])) {
+      this._jtfUpdateTaskFolder.setText((String) data[8][1]);
     }
     
     /* Enable/Disable stuff */
@@ -423,17 +449,19 @@ public class AlteraAtributosForwardTo extends AbstractAlteraAtributos implements
     ed = new DefaultCellEditor(this._jtfUser);
     rm.addEditorForCell(1, 1, ed);
     ed = new DefaultCellEditor(this._jtfProfile);
-    rm.addEditorForCell(2, 1, ed);
+    rm.addEditorForCell(2, 1, ed);    
+    ed = new DefaultCellEditor(this._jtfOrganicUnit);
+    rm.addEditorForCell(3, 1, ed);    
     ed = new DefaultCellEditor(this._jtfUserMessage);
-    rm.addEditorForCell(3, 1, ed);
-    ed = new DefaultCellEditor(this._jtfUpdateTaskAnnotationsLabel);
     rm.addEditorForCell(4, 1, ed);
-    ed = new DefaultCellEditor(this._jcbTaskAnnotationsLabel);
+    ed = new DefaultCellEditor(this._jtfUpdateTaskAnnotationsLabel);
     rm.addEditorForCell(5, 1, ed);
-    ed = new DefaultCellEditor(this._jtfUpdateTaskFolderCondition);
+    ed = new DefaultCellEditor(this._jcbTaskAnnotationsLabel);
     rm.addEditorForCell(6, 1, ed);
-    ed = new DefaultCellEditor(this._jtfUpdateTaskFolder);
+    ed = new DefaultCellEditor(this._jtfUpdateTaskFolderCondition);
     rm.addEditorForCell(7, 1, ed);
+    ed = new DefaultCellEditor(this._jtfUpdateTaskFolder);
+    rm.addEditorForCell(8, 1, ed);
     
     this._jcbTypes.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
@@ -441,7 +469,7 @@ public class AlteraAtributosForwardTo extends AbstractAlteraAtributos implements
       }
     });
 
-    /* criar botões e arranjar dialogo */
+    /* criar botï¿½es e arranjar dialogo */
     jbInit();
 
     toggleEnabledFields();
@@ -454,14 +482,14 @@ public class AlteraAtributosForwardTo extends AbstractAlteraAtributos implements
   }
 
   /**
-   * Iniciar caixa de diálogo
+   * Iniciar caixa de diï¿½logo
    * 
    */
   void jbInit() {
     // configurar
     panel1.setLayout(borderLayout1);
 
-    /* botão OK */
+    /* botï¿½o OK */
     jButton1.setText(adapter.getString("Button.OK")); //$NON-NLS-1$
 
     jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -470,7 +498,7 @@ public class AlteraAtributosForwardTo extends AbstractAlteraAtributos implements
       }
     });
 
-    /* botão cancelar */
+    /* botï¿½o cancelar */
     jButton2.setText(adapter.getString("Button.CANCEL")); //$NON-NLS-1$
     jButton2.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
@@ -548,18 +576,27 @@ public class AlteraAtributosForwardTo extends AbstractAlteraAtributos implements
       _jlProfiles.setEnabled(true);
       editCell(_jtfUser, 1, 1, false, Color.gray);
       editCell(_jtfProfile, 2, 1, false, Color.gray);
+      editCell(_jtfOrganicUnit, 3, 1, false, Color.gray);
     } else if (selectedType.equals(sFORWARD_TO_USER)) {
       _jlProfiles.setEnabled(false);
       editCell(_jtfUser, 1, 1, true, Color.white);
       editCell(_jtfProfile, 2, 1, false, Color.gray);
+      editCell(_jtfOrganicUnit, 3, 1, false, Color.gray);
     } else if (selectedType.equals(sFORWARD_TO_PROFILE_TEXT)) {
       _jlProfiles.setEnabled(false);
       editCell(_jtfUser, 1, 1, false, Color.gray);
       editCell(_jtfProfile, 2, 1, true, Color.white);
+      editCell(_jtfOrganicUnit, 3, 1, false, Color.gray);
+    } else if (selectedType.equals(sFORWARD_TO_ORGANIC_UNIT)) {
+      _jlProfiles.setEnabled(false);	
+      editCell(_jtfUser, 1, 1, false, Color.gray);
+      editCell(_jtfProfile, 2, 1, false, Color.gray);
+      editCell(_jtfOrganicUnit, 3, 1, true, Color.white);
     } else {
       _jlProfiles.setEnabled(false);
       editCell(_jtfUser, 1, 1, false, Color.gray);
       editCell(_jtfProfile, 2, 1, false, Color.gray);
+      editCell(_jtfOrganicUnit, 3, 1, false, Color.gray);
     }
     dceTF.stopCellEditing();
     dceTF2.stopCellEditing();    

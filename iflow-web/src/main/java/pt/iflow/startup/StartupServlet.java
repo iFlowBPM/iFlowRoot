@@ -7,17 +7,24 @@
 package pt.iflow.startup;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import pt.iflow.api.cluster.JobManager;
+import pt.iflow.api.cluster.SharedObjectRefreshManager;
+import pt.iflow.api.core.BeanFactory;
 import pt.iflow.api.events.EventManager;
 import pt.iflow.api.licensing.LicenseServiceFactory;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
+import pt.iflow.api.utils.UserInfoInterface;
 import pt.iflow.core.NotificationManagerBean;
 import pt.iflow.datasources.DSLoader;
 import pt.iflow.delegations.DelegationManager;
@@ -104,7 +111,10 @@ public class StartupServlet extends HttpServlet {
     Logger.warning("", this, "", "StartupServlet: Stopping UsersSync");
     UsersSyncManager.stopManager();
     Logger.warning("", this, "", "StartupServlet: UsersSync stopped");
-
+    
+    Logger.warning("", this, "", "StartupServlet: Stopping SharedObjectRefreshManager");
+    SharedObjectRefreshManager.getInstance().stopManager();
+    Logger.warning("", this, "", "StartupServlet: SharedObjectRefreshManager stopped");
   }
 
 
@@ -176,7 +186,52 @@ public class StartupServlet extends HttpServlet {
     Logger.warning("", this, "", "StartupServlet: Starting UsersSync");
     UsersSyncManager.startManager();
     Logger.warning("", this, "", "StartupServlet: UsersSync started");
+    
+    Logger.warning("", this, "", "StartupServlet: Starting JobManager");
+    JobManager.startManager();
+    Logger.warning("", this, "", "StartupServlet: JobManager started");
 
+    if(Const.CLUSTER_ENABLED){
+    	  Timer timer = new Timer();
+    	  timer.schedule(new ListenersAutoRefresh(), Const.BEAT_ACTIVE_TIME*1000, Const.BEAT_ACTIVE_TIME*1000);    	  
+      }
+    
+    //schedule the purge to once a day...
+    if(Const.DAYS_UNTIL_PURGE>=0){
+    	Timer timer = new Timer();    	
+    	timer.schedule(new PurgeTimerTask(), 1000, 24*60*60*1000);
+    }
   }
+  
+  class PurgeTimerTask extends TimerTask{
+	  public void run(){
+		  UserInfoInterface userInfo = BeanFactory.getUserInfoFactory().newClassManager(this.getClass().getName());
+		  try{
+			  BeanFactory.getFlowBean().purge(userInfo, Const.DAYS_UNTIL_PURGE);
+		  } catch (Exception e) {
+              Logger.adminError("PurgeTimerTask", "FlowBean", "purge", e);
+		  }  	  
+	  }
+  }
+  
+  class ListenersAutoRefresh extends TimerTask{
+		@Override
+		public void run() {
+			UserInfoInterface userInfo = BeanFactory.getUserInfoFactory().newClassManager(this.getClass().getName());
+			Collection<Integer> flowids = BeanFactory.getFlowHolderBean().listFlowIds( userInfo);
+
+	        for (int flowid : flowids) {
+	            try {
+					userInfo = BeanFactory.getUserInfoFactory().newOrganizationGuestUserInfo(BeanFactory.getFlowHolderBean().getFlowOrganizationid(flowid));
+	            	BeanFactory.getFlowSettingsBean().refreshFlowSettings(userInfo, flowid);
+	              Logger.adminInfo("ListenersAutoRefresh", "clustered refreshAll", "Flow " + flowid + " refresheded.");
+	            } 
+	            catch (Exception e) {
+	              Logger.adminError("ListenersAutoRefresh", "clustered refreshAll", "Error refreshing flow " + flowid, e);
+	            }
+	        }
+			 		
+		}	  
+	  }
 
 }

@@ -238,7 +238,8 @@ public class WebClient implements UtilityConstants {
       // set cookies
       if (null != cookie && cookie.trim().length() > 0)
         conn.setRequestProperty("Cookie", cookie); //$NON-NLS-1$
-
+      conn.setRequestProperty("Cookie", "APPLET" + cookie);
+      
       dos = new DataOutputStream(conn.getOutputStream());
 
       // send process identification
@@ -259,13 +260,13 @@ public class WebClient implements UtilityConstants {
           dos.writeBytes(lineEnd);
         }
       }
-
+      log.debug("send process identification");
       // Upload file
       dos.writeBytes(twoHyphens + boundary + lineEnd);
       dos.writeBytes("Content-Disposition: form-data; name=\""+FILE_PARAM+"\"; filename=\"" + URLEncoder.encode(f.getName(), "UTF-8") + "\"" + lineEnd); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
       dos.writeBytes("Content-Length: " + f.getLength() + lineEnd); //$NON-NLS-1$
       dos.writeBytes(lineEnd);
-
+      log.debug("upload file");
       // output file
 
       // TODO fazer magia com uma barra de progresso
@@ -277,7 +278,7 @@ public class WebClient implements UtilityConstants {
       // send multipart form data necesssary after file data...
       dos.writeBytes(lineEnd);
       dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
-
+      log.debug("send multipart form data necesssary after file data...");
       dos.flush();
       dos.close();
 
@@ -370,7 +371,8 @@ public class WebClient implements UtilityConstants {
       // set cookies
       if (null != cookie && cookie.trim().length() > 0)
         conn.setRequestProperty("Cookie", cookie); //$NON-NLS-1$
-
+      conn.setRequestProperty("Cookie", "APPLET" + cookie);
+      
       dos = new DataOutputStream(conn.getOutputStream());
       
       // Upload image
@@ -492,7 +494,8 @@ public class WebClient implements UtilityConstants {
       // set cookies
       if (null != cookie && cookie.trim().length() > 0)
         conn.setRequestProperty("Cookie", cookie); //$NON-NLS-1$
-
+      conn.setRequestProperty("Cookie", "APPLET" + cookie);
+      
       conn.connect();
       if(conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
         log.error("Connection failed: "+conn.getResponseCode()+" "+conn.getResponseMessage()); //$NON-NLS-1$ //$NON-NLS-2$
@@ -572,6 +575,7 @@ public class WebClient implements UtilityConstants {
       // set cookies
       if (null != cookie && cookie.trim().length() > 0)
         conn.setRequestProperty("Cookie", cookie); //$NON-NLS-1$
+      conn.setRequestProperty("Cookie", "APPLET" + cookie);
             
   	conn.connect();
       if(conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
@@ -643,6 +647,7 @@ public class WebClient implements UtilityConstants {
 	      // set cookies
 	      if (null != cookie && cookie.trim().length() > 0)
 	        conn.setRequestProperty("Cookie", cookie); //$NON-NLS-1$
+	      conn.setRequestProperty("Cookie", "APPLET" + cookie);
 	            
 	  	conn.connect();
 	      if(conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
@@ -738,6 +743,7 @@ public class WebClient implements UtilityConstants {
       // set cookies
       if (null != cookie && cookie.trim().length() > 0)
         conn.setRequestProperty("Cookie", cookie); //$NON-NLS-1$
+      conn.setRequestProperty("Cookie", "APPLET" + cookie);
 
       conn.connect();
       if(conn.getResponseCode() != HttpURLConnection.HTTP_OK) {

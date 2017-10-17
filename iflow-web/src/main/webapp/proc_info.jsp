@@ -128,27 +128,17 @@
         labelName = "";
       }
     %>
-  <span id ="end_process_process_annotations_span"></span>
+  <span id =""></span>
   <script language="JavaScript" type="text/javascript">
 	if (parent.showProcessFowardAnnotations)
 	  parent.showProcessFowardAnnotations(<%=flowid%>,<%=pid%>,<%=subpid%>,'<%=sFrom%>', '<%=labelId%>', '<%=labelName%>');
   </script>
 <% } %>
+<div class="info_msg" style="font-family: Verdana,Arial,sans-serif;"><%="A tarefa foi executada. Pode fechar a janela do browser se assim o desejar"%></div>
 
-<div class="button_box">
-  <form action="#" onsubmit="return false;">
-    <input class="regular_button_01" <%if (userInfo.isGuest()) {%> type="hidden" <%} else {%> type="button" <%}%> name="close" value="<if:message string="button.close"/>" onclick="if(parent.saveForwardToProcessAnnotations)parent.saveForwardToProcessAnnotations('true');if(parent && parent.close_process) parent.close_process(3); return false;" />
-    <% if (pid > 0 && "forward".equals(sFrom)){ %>
-    <input id="annotationButton" class="regular_button_02" <%if (userInfo.isGuest()) {%> type="hidden" <%} else {%> type="button" <%}%> name="close" value="<if:message string="button.send.anottation"/>" onclick="parent.saveForwardToProcessAnnotations('true');if(parent && parent.close_process) parent.close_process(3); return false;" />
   <script language="JavaScript" type="text/javascript">
-	if (!parent.showProcessFowardAnnotations) //not brilliant... Check if the function is the to know if annotations are to be used
-      document.getElementById('annotationButton').style.display = 'none';     
+  parent.document.getElementById('section3_content_div').style.height='800px';
   </script>
-
-    <% } %>
-  </form>
-</div>
-
 
 <% out.println(ProcessEndDisplay.processTasks(userInfo, response)); %>
 

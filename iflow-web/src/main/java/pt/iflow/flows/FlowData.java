@@ -1,5 +1,6 @@
 package pt.iflow.flows;
 
+import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.sql.Connection;
@@ -71,7 +72,7 @@ import com.twolattes.json.Marshaller;
  * 
  */
 
-public class FlowData implements IFlowData {
+public class FlowData implements IFlowData,Serializable {
 
   private static final String BLOCK_PACKAGE = "pt.iflow.blocks."; //$NON-NLS-1$
 
@@ -353,7 +354,8 @@ public class FlowData implements IFlowData {
 
 //         continue;
 //       }
-
+       if (blockType.equals("BlockSubFlow"))
+    	   continue;
        Integer blockId = new Integer(block.getId() + offset);
 
        try {
@@ -1255,7 +1257,8 @@ public class FlowData implements IFlowData {
      List<Block> result = new ArrayList<Block>();
      Port[] ports = block.getOutPorts(null);
      for (Port port : ports) {
-       result.add(getBlock(port.getConnectedBlockId()));
+    	 if(port!=null)
+    		 result.add(getBlock(port.getConnectedBlockId()));
      }
      return result;
    }

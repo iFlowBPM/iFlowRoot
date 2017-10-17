@@ -26,16 +26,18 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import pt.iflow.applet.DynamicField;
+import pt.iflow.applet.DynamicField.Type;
 import pt.iflow.applet.DynamicForm;
 import pt.iflow.applet.ExtensionFileFilter;
 import pt.iflow.applet.IDEntry;
 import pt.iflow.applet.IVFile;
 import pt.iflow.applet.LoadImageAction;
 import pt.iflow.applet.Messages;
+import pt.iflow.applet.StringUtils;
 import pt.iflow.applet.TempVFile;
 import pt.iflow.applet.WebClient;
-import pt.iflow.applet.DynamicField.Type;
 
+import com.lowagie.text.Cell;
 import com.lowagie.text.Image;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.AcroFields;
@@ -176,6 +178,7 @@ public class PDFSignatureImpl implements FileSigner {
     SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm"); //$NON-NLS-1$
     StringBuilder sb = new StringBuilder();
     sb.append(Messages.getString("PDFSignatureImpl.5")).append(PdfPKCS7.getSubjectFields(cert).getField("CN")); //$NON-NLS-1$ //$NON-NLS-2$
+    sb.append(", ");
     sb.append(Messages.getString("PDFSignatureImpl.7")).append(df.format(timestamp.getTime())); //$NON-NLS-1$
     return sb.toString();
   }
@@ -225,6 +228,11 @@ public class PDFSignatureImpl implements FileSigner {
     return result;
   }
   
+  public String getSignatureText(){
+	  Certificate [] chain = entry.getCertificateChain();
+	  return getSignatureText((X509Certificate) chain[0], Calendar.getInstance());	  
+  }
+  
   public String hashSignExternalTimestamp(String read, String write) throws Exception {
     Provider prov = entry.getProvider();
     PrivateKey key = entry.getPrivateKey();
@@ -256,24 +264,46 @@ public class PDFSignatureImpl implements FileSigner {
      
 
     //Adicionar imagem ao PDF se for para utilizar
-    if(LoadImageAction.getFlagPDF()){
-	    	sap.setAcro6Layers(true);
-	    	Image img = LoadImageAction.getAssImagePDF();
-	    	
-	    	if(LoadImageAction.getPagToSign() == -1)
-	    	    sap.setVisibleSignature(new Rectangle(coord[0], coord[1], coord[0]+img.getWidth(), coord[1]+img.getHeight()), pageCount, null);
-	    	else
-	    		sap.setVisibleSignature(new Rectangle(coord[0], coord[1], coord[0]+img.getWidth(), coord[1]+img.getHeight()), LoadImageAction.getPagToSign(), null);	
-	    	
-	    	sap.setLayer2Text("\n\n(Doc. assinado digitalmente)");
-		    sap.setImage(img);
+    if(!isSignatureVisible()){
+        sap.setLayer2Text("");      
     }else{
-	    	if(LoadImageAction.getPagToSign() == -1)
-		        sap.setVisibleSignature(new Rectangle(coord[0], coord[1], coord[0]+150, coord[1]+40), pageCount, null);
-	    	else
-	    		sap.setVisibleSignature(new Rectangle(coord[0], coord[1], coord[0]+150, coord[1]+40), LoadImageAction.getPagToSign(), null);
-		    
-	    	sap.setLayer2Text(getSignatureText((X509Certificate) chain[0], sap.getSignDate()));
+        if(LoadImageAction.getFlagPDF()){
+    	    	sap.setAcro6Layers(true);
+    	    	Image img = LoadImageAction.getAssImagePDF();
+    	    	
+    	    	if(LoadImageAction.getPagToSign() == -1)
+    	    	    sap.setVisibleSignature(new Rectangle(coord[0], coord[1], coord[0]+img.getWidth(), coord[1]+img.getHeight()), pageCount, null);
+    	    	else
+    	    		sap.setVisibleSignature(new Rectangle(coord[0], coord[1], coord[0]+img.getWidth(), coord[1]+img.getHeight()), LoadImageAction.getPagToSign(), null);	
+    	    	
+    	    	sap.setLayer2Text("\n\n(Doc. assinado digitalmente)");
+    		    sap.setImage(img);
+        }else{
+    	    	if(LoadImageAction.getPagToSign() == -1)
+    		        sap.setVisibleSignature(new Rectangle(coord[0], coord[1], coord[0]+150, coord[1]+40), pageCount, null);
+    	    	else
+    	    		sap.setVisibleSignature(new Rectangle(coord[0], coord[1], coord[0]+150, coord[1]+40), LoadImageAction.getPagToSign(), null);
+    		    
+    	    	if(!StringUtils.isBlank(getReason()) || !StringUtils.isBlank(getLocation()) || !StringUtils.isBlank(getContact())){
+    	    		String signText = "\n" + getSignatureText((X509Certificate) chain[0], sap.getSignDate());
+    	    		if(!StringUtils.isBlank(getContact()))
+    	    			signText = getContact() + "\n" + signText;    	    		
+    	    		if(!StringUtils.isBlank(getLocation()))
+    	    			signText = getLocation() + "\n" + signText;
+    	    		if(!StringUtils.isBlank(getReason()))
+    	    			signText = getReason() + "\n" + signText;
+    	    		
+    	    		Cell cell = new Cell(signText);
+    	    		sap.setVisibleSignature(new Rectangle(coord[0], coord[1], 590, coord[1]+80), LoadImageAction.getPagToSign(), null);
+    	    		sap.setAcro6Layers(true);
+    	    		sap.setLayer2Text(signText);
+//    	    		BufferedImage img = new BufferedImage(256, 128,BufferedImage.TYPE_INT_ARGB);
+//    	    		File f = new File("blank.png");
+//    	    		ImageIO.write(img, "PNG", f);
+//    	    		sap.setImage(Image.getInstance("blank.png"));
+    	    	} else
+    	    		sap.setLayer2Text(getSignatureText((X509Certificate) chain[0], sap.getSignDate()));
+        }
     }
 
     PdfSignature dic = new PdfSignature(PdfName.ADOBE_PPKLITE, new PdfName("adbe.pkcs7.detached")); //$NON-NLS-1$
@@ -309,7 +339,7 @@ public class PDFSignatureImpl implements FileSigner {
     if(isUseTSA() && tsaLocation != null)
       tsc = new TSAClientBouncyCastle(tsaLocation);
 
-    //o PIN/PASS dos certificados é pedido aqui
+    //o PIN/PASS dos certificados ï¿½ pedido aqui
     byte[] encodedSig = sgn.getEncodedPKCS7(hash, cal, tsc, ocsp);
     
     if (contentEstimated + 2 < encodedSig.length)
@@ -354,9 +384,9 @@ public class PDFSignatureImpl implements FileSigner {
       outFile = new TempVFile(pdf.getName(), pdf.getVarName());
       fout = outFile.getOutputStream();
    
-      //Verificar se é para rubricar todas as paginas
+      //Verificar se ï¿½ para rubricar todas as paginas
       if(LoadImageAction.getFlagRub()){
-    	  //Verificar se é para utilizar a mesma imagem na rubrica e na assinatura
+    	  //Verificar se ï¿½ para utilizar a mesma imagem na rubrica e na assinatura
     	  if(LoadImageAction.rubimgSameass){  	    
 		      String n = rubricarTodas(pdf);
 		      InputStream input = new FileInputStream(n);
@@ -409,7 +439,7 @@ public class PDFSignatureImpl implements FileSigner {
     return this.active;
   }
 
-  // TODO concluir e validar a verificação de PDFs
+  // TODO concluir e validar a verificaï¿½ï¿½o de PDFs
   public String verify(final IVFile pdf) {
     // Certificados adicionados localmente
     KeyStore kall = PdfPKCS7.loadCacertsKeyStore();
@@ -553,7 +583,7 @@ public String rubricarTodas(IVFile pdffile){
       
 	try {
 
-		//Verificar qual é a imagem para utilizar na rubrica
+		//Verificar qual ï¿½ a imagem para utilizar na rubrica
 		Image img = null;
 		if(LoadImageAction.rubimgSameass)
 			img = LoadImageAction.getAssImagePDF();
@@ -586,7 +616,7 @@ public String rubricarTodas(IVFile pdffile){
         sig.setFieldName("Assinaturas");
         sig.setPage(1);
 
-        //Se a imagem da rubrica n for a mesma da assinatura não mete na ultima pag
+        //Se a imagem da rubrica n for a mesma da assinatura nï¿½o mete na ultima pag
         if(!LoadImageAction.rubimgSameass) 
         	pageCount = pageCount-1;
         

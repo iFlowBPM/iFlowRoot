@@ -11,34 +11,32 @@
       		$most_recent
       	</div>
       	<p>$tasksMostRecentMsg</p>
-
 		<p>$label_label
-	    <select name="labelpainel" id="labelpainel" onchange="filterActivity(document.getElementById('labelpainel').value, 1);" >
-	    #if($selectedLabel == 0)
-	    	<option value="0" selected="selected">$label_default</option>
-	    #else
-			<option value="0">$label_default</option>
-		#end 
-	      #foreach($label in $labels)
-	         #if($selectedLabel == $label.getId())
-	         	<option value="$label.getId()" selected="selected">$label.getName()</option>
-	         #else
-		     	<option value="$label.getId()">$label.getName()</option>
-		     #end 
+
+	     #foreach($label in $labels)
+	         <a href="#" onclick="filterActivity($label.getId(), 1);" title="$label.getName()" >
+	         	#if($label.getId() == 1)
+	         		($label1CountUnread/$label1Count)
+	         	#end
+	         	#if($label.getId() == 2)
+	         		($label2CountUnread/$label2Count)
+	         	#end
+	         	#if($label.getId() == 3)
+	         		($label3CountUnread/$label3Count)
+	         	#end
+	         	<img width="16px" height="16px" src="AnnotationIconsServlet?label_name=$label.getName()">	         	
+	         </a>		     
 		  #end
-	     </select>
+		  
+		<a href="#" onclick="filterActivity(6, 2);">
+			($label4CountUnread/$label4Count)
+			<img width="16px" height="16px" src="AnnotationIconsServlet?icon_name=label_clock.png">	         	
+	    </a>
 	    
-	   	$days_label
-	    <select name="dayspainel" id="dayspainel" onchange="filterActivity(document.getElementById('dayspainel').value, 2);" >
-	      #foreach($day in $days)
-		      #if($selectedDays == $count)
-		         <option value="$count" selected="selected">$day</option> 
-		      #else
-		      	 <option value="$count">$day</option> 
-		      #end
-	         #set($count=$count+1)
-		  #end
-	     </select>
+	    <a href="#" onclick="filterActivity(1, 4);">
+			($label5CountUnread/$label5Count)
+			<img width="16px" height="16px" src="AnnotationIconsServlet?icon_name=label_comment_blue.png">	         	
+	    </a>	    
 
 		#if($hasFolder > 0)
 			$folder_label
@@ -95,7 +93,7 @@
              
 	       #if($hasFolder > 0)         
 	        <td onclick="javascript:menuonoff('atribuir$row')" title="$action_move">
-	        <img class="toolTipImg" src="AnnotationIconsServlet?icon_name='action.png'&ts='$iconTime' border="0">
+	        <img class="toolTipImg" src="AnnotationIconsServlet?icon_name=action.png&ts='$iconTime' border="0">
 		   	<div id="atribuir$row" style="display:none;position:absolute;z-index:1;background:none repeat scroll 0 0 #FFFFFF;border-color:#888888;border-style:solid;border-width:1px 1px 2px;text-align:left;padding:2px 5px"><table>
 		    	#foreach($folder in $folders)
 		    	  <tr><td style="background:$folder.getColor();width:4px;"></td>
@@ -114,7 +112,11 @@
             #if($has_appname)
 			 <td align="center"><a $style_read href="javascript:open_process(2, $act.get("flowid"), '$response.encodeURL($url_prefix,$act.get("uri"))','flowid=$act.get("flowid")&pid=$act.get("pid")&subpid=$act.get("subpid")&ts=$ts', $act.get("runMax"));">$act.get("appname")</a></td>
 			#end
-			 <td align="center"><a $style_read href="javascript:open_process(2, $act.get("flowid"), '$response.encodeURL($url_prefix,$act.get("uri"))','flowid=$act.get("flowid")&pid=$act.get("pid")&subpid=$act.get("subpid")&ts=$ts', $act.get("runMax"));">
+			 <td align="center">
+			 	#if($act.get("flowType").equals("D"))
+				 <img class="toolTipImg" src="images/flow_type_D.png" border="0"/qu>
+				#end			 				 
+			 	<a $style_read href="javascript:open_process(2, $act.get("flowid"), '$response.encodeURL($url_prefix,$act.get("uri"))','flowid=$act.get("flowid")&pid=$act.get("pid")&subpid=$act.get("subpid")&ts=$ts', $act.get("runMax"));">
 			 #if($act.get("delegated") == "1")
 			   <img src="$response.encodeURL($url_prefix,'images/icon_delegations.png')" alt="$act.get("delegated_alt")" style="border:none; float:left;" />
 			 #end

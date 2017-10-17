@@ -1,10 +1,12 @@
 package pt.iflow.applet;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.FileDialog;
 import java.awt.Frame;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -17,6 +19,7 @@ import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.io.IOException;
 import java.security.Provider;
 import java.util.UUID;
 
@@ -38,10 +41,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdesktop.swingworker.SwingWorker.StateValue;
 
+import com.toedter.calendar.JDateChooser;
+
 import pt.iflow.applet.cipher.FileCipher;
 import pt.iflow.applet.signer.FileSigner;
-
-import com.toedter.calendar.JDateChooser;
+import pt.iflow.applet.signer.PDFSignatureImpl;
 
 public class DynamicDialog extends JFrame implements PropertyChangeListener, ActionListener, MouseListener {
   private static final long serialVersionUID = -1502926852420989215L;
@@ -72,6 +76,8 @@ public class DynamicDialog extends JFrame implements PropertyChangeListener, Act
   
   Container contGlobalPos = SwingUtils.newPanel();
   ImagePanel imagePDF = null;
+  static int imagePDFalturaPag = 420;
+  static int imagePDFlarguraPag = 297;
   String filePath = "";
   int pagActual = -1;
   int pagTotal = -1;
@@ -127,7 +133,7 @@ public class DynamicDialog extends JFrame implements PropertyChangeListener, Act
   private Container createFormPanel() {
     GridBagConstraints gbc = null;
     
-    // Instanciar botões
+    // Instanciar botï¿½es
     okButton = SwingUtils.newButton(Messages.getString("DynamicDialog.3"), ACTION_OK, this); //$NON-NLS-1$
     cancelButton = SwingUtils.newButton(Messages.getString("DynamicDialog.4"), ACTION_CANCEL, this); //$NON-NLS-1$
     progressBar = new JProgressBar();
@@ -173,7 +179,7 @@ public class DynamicDialog extends JFrame implements PropertyChangeListener, Act
     }
     
     
-    // Adicionar botões
+    // Adicionar botï¿½es
     Container buttonPannel = SwingUtils.newPanel();
     buttonPannel.add(okButton);
     buttonPannel.add(cancelButton);
@@ -207,7 +213,7 @@ public class DynamicDialog extends JFrame implements PropertyChangeListener, Act
     if (null == component) return null;
     Container panel = SwingUtils.newPanel();
     panel.setLayout(new GridBagLayout());
-    // ainda não tenho nada alinhavado para isto....
+    // ainda nï¿½o tenho nada alinhavado para isto....
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.gridx = 0;
     gbc.gridy = 0;
@@ -240,7 +246,7 @@ public class DynamicDialog extends JFrame implements PropertyChangeListener, Act
 
     int pos = 0;
     for(DynamicField field : form.getFields()) {
-      // ainda não tenho nada alinhavado para isto....
+      // ainda nï¿½o tenho nada alinhavado para isto....
       GridBagConstraints gbc = new GridBagConstraints();
       gbc.gridx = 0;
       gbc.gridy = pos;
@@ -472,16 +478,6 @@ public class DynamicDialog extends JFrame implements PropertyChangeListener, Act
 
       setVisible(true);
 
-      //    
-      //    // simulate modality
-      //    while(dialog.isVisible()) {
-      //      try {
-      //        Thread.sleep(100);
-      //      } catch (InterruptedException e) {
-      //      }
-      //    }
-      //    
-      //    
     } else {
       actionPerformed(new ActionEvent(okButton, 0, ACTION_OK));
     }
@@ -490,9 +486,6 @@ public class DynamicDialog extends JFrame implements PropertyChangeListener, Act
 
   
   public void actionPerformed(ActionEvent e) {
-	  
-	  //if(!haveCert)      
-		  //JOptionPane.showMessageDialog(this,Messages.getString("FileApplet.44"), Messages.getString("FileApplet.45"), JOptionPane.INFORMATION_MESSAGE);
 	  
     System.out.println(task.getState());
     if(ACTION_OK.equals(e.getActionCommand())) {
@@ -555,7 +548,7 @@ public class DynamicDialog extends JFrame implements PropertyChangeListener, Act
     
     // trigger a timeout script
     applet.removeTask(status);
-    applet.executeScript("setTimeout('updateForm(\\'"+status.getJSON()+"\\')', 100);"); //$NON-NLS-1$ //$NON-NLS-2$
+    applet.executeScript("setTimeout('updateForm(\\'"+status.getJSON().replace("'", "&apos;")+"\\')', 100);"); //$NON-NLS-1$ //$NON-NLS-2$
   }
   
   private void updateOkButtonState() {
@@ -647,10 +640,23 @@ public class DynamicDialog extends JFrame implements PropertyChangeListener, Act
 	    contBotoes.setLayout(new BorderLayout());
 	    JButton pagPosterior = new JButton(">>");
 	    JButton pagAnterior = new JButton("<<");
+	    JButton pagUltima = new JButton(">|");
+	    JButton pagPrimeira = new JButton("|<");
 	    pagPosterior.addActionListener(new NextPageAction());
 	    pagAnterior.addActionListener(new PrevPageAction());
-	    contBotoes.add(pagPosterior,BorderLayout.EAST);
-	    contBotoes.add(pagAnterior,BorderLayout.WEST);
+	    pagUltima.addActionListener(new LastPageAction());
+	    pagPrimeira.addActionListener(new FirstPageAction());
+	    
+	    
+	    
+	    contBotoes.add(pagPrimeira,BorderLayout.WEST);
+	    Container contBotoescentro = new Container();
+	    contBotoescentro.setLayout(new BorderLayout());
+	    contBotoescentro.add(pagAnterior,BorderLayout.WEST);
+	    contBotoescentro.add(pagPosterior,BorderLayout.EAST);
+	    contBotoes.add(contBotoescentro,BorderLayout.CENTER);
+	    contBotoes.add(pagUltima,BorderLayout.EAST);
+	    
 	    Container barraNav = new Container();
 	    barraNav.setLayout(new BorderLayout());
 	    barraNav.add(contBotoes,BorderLayout.WEST);
@@ -688,7 +694,7 @@ private void reloadPDFsampleByPath(){
 
 	  LoadImageAction.setPagToSign(pagActual);
 	  
-      imagePDF = new ImagePanel(j.getScaledInstance(-1, -1, Image.SCALE_SMOOTH));
+      imagePDF = new ImagePanel(j.getScaledInstance(imagePDFlarguraPag, imagePDFalturaPag, Image.SCALE_SMOOTH));
 	  imagePDF.addMouseListener(this);
 
 	  contGlobalPos.add(imagePDF,BorderLayout.NORTH,1);
@@ -707,7 +713,7 @@ private void reloadPDFsampleByFile(){
 
 	  LoadImageAction.setPagToSign(pagActual);
 	  
-      imagePDF = new ImagePanel(j.getScaledInstance(-1, -1, Image.SCALE_SMOOTH));
+      imagePDF = new ImagePanel(j.getScaledInstance(imagePDFlarguraPag, imagePDFalturaPag, Image.SCALE_SMOOTH));
 	  imagePDF.addMouseListener(this);
 
 	  contGlobalPos.add(imagePDF,BorderLayout.NORTH,1);
@@ -742,19 +748,64 @@ private class PrevPageAction implements ActionListener {
   	  reloadPDFsample();
     }
   }  
-
+private class FirstPageAction implements ActionListener {
+    
+    public FirstPageAction() {
+    }
+    
+    public void actionPerformed(ActionEvent e) {
+    	pagActual = 1;
+  	  	reloadPDFsample();
+    }
+  }  
+private class LastPageAction implements ActionListener {
+    
+    public LastPageAction() {
+    }
+    
+    public void actionPerformed(ActionEvent e) {
+    	pagActual = pagTotal;
+  	  	reloadPDFsample();
+    }
+  }
 public void mouseClicked(MouseEvent e) {
 	int x = e.getX();
 	int y = e.getY();
     //Label com imagem da assinatura
 	ImageIconRep imgPos = LoadImageAction.getImagePosicao();
+	//se 'Usar Imagem' n esta seleccionado mas queremos preview da assinatura em que em vez da imagem temos uma cruz
+	if(!LoadImageAction.getUseImageForSignature()){
+		int boxLength = 140; 
+		if(signer instanceof PDFSignatureImpl){
+			try{
+				int signLength = ((PDFSignatureImpl)signer).getSignatureText().length();
+				if(((PDFSignatureImpl)signer).getContact()!=null && signLength< ((PDFSignatureImpl)signer).getContact().length())
+					signLength= ((PDFSignatureImpl)signer).getContact().length();
+				if(((PDFSignatureImpl)signer).getLocation()!=null && signLength< ((PDFSignatureImpl)signer).getLocation().length())
+					signLength= ((PDFSignatureImpl)signer).getLocation().length();
+				if(((PDFSignatureImpl)signer).getReason()!=null && signLength< ((PDFSignatureImpl)signer).getReason().length())
+					signLength= ((PDFSignatureImpl)signer).getReason().length();
+				boxLength = (int) (signLength * 2.6) ;
+			} catch (Exception exc){
+				boxLength = 140;
+			}
+		}			
+		BufferedImage signTarget = new BufferedImage(boxLength, 40, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2d = signTarget.createGraphics();
+		g2d.setColor(Color.BLUE);
+		int[] xCord = {0,signTarget.getWidth()-5	,signTarget.getWidth()-5	,0					   ,0};
+		int[] yCord = {0,0						,signTarget.getHeight()-5	,signTarget.getHeight()-5,0};
+		g2d.drawPolyline(xCord, yCord, 5);		
+		g2d.dispose();					
+		imgPos = new ImageIconRep(signTarget);
+	}		
 	
     labelAss.setSize(imgPos.getIconWidth(), imgPos.getIconHeight());
     labelAss.setIcon(imgPos);
-	labelAss.setLocation(x-(imgPos.getIconWidth()/2), y-(imgPos.getIconHeight()/2));
+	labelAss.setLocation(x, y);
     //Adicionar label da assinatura
 	imagePDF.add(labelAss);
-	LoadImageAction.setAssPos(x-(imgPos.getIconWidth()/2), y-(imgPos.getIconHeight()/2));
+	LoadImageAction.setAssPos(x, y+15);
 }
 public void mouseEntered(MouseEvent e) {}
 public void mouseExited(MouseEvent e) {}

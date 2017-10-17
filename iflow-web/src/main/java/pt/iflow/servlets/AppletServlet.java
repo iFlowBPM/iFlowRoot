@@ -48,6 +48,7 @@ import pt.iflow.api.core.Repository;
 import pt.iflow.api.core.RepositoryFile;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
+import pt.iflow.api.utils.Setup;
 import pt.iflow.api.utils.UserInfoInterface;
 import pt.iflow.applet.AbstractAppletServletHelper;
 import pt.iknow.utils.VelocityUtils;
@@ -109,10 +110,11 @@ public class AppletServlet extends HttpServlet {
           InputStream cpStoreIn = null;
           PrivateKey privateKey;
           Certificate [] certChain;
-          final String alias = "iKnowCert";
+          final String alias = "infosistema.com";
           final char [] password = "iknow256".toCharArray();
           try {
-            cpStoreIn = AppletServlet.class.getResourceAsStream("store");
+            //cpStoreIn = AppletServlet.class.getResourceAsStream("store");
+        	cpStoreIn = Setup.getResource("store");
             KeyStore store = KeyStore.getInstance("JKS");
             store.load(cpStoreIn, password);
             certChain = store.getCertificateChain(alias);

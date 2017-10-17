@@ -1,18 +1,25 @@
 package pt.iflow.blocks;
 
 import java.text.MessageFormat;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 
 import pt.iflow.api.blocks.Block;
 import pt.iflow.api.blocks.MessageBlock;
 import pt.iflow.api.blocks.Port;
 import pt.iflow.api.core.Activity;
+import pt.iflow.api.core.AuthProfile;
 import pt.iflow.api.core.BeanFactory;
 import pt.iflow.api.core.ProcessManager;
+import pt.iflow.api.core.UserManager;
 import pt.iflow.api.processdata.ProcessData;
+import pt.iflow.api.userdata.UserData;
+import pt.iflow.api.userdata.views.UserViewInterface;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.UserInfoInterface;
 import pt.iflow.blocks.msg.Messages;
@@ -42,6 +49,7 @@ public class BlockForwardTo extends Block implements MessageBlock {
     public final static String sFORWARD_TO_PROFILE = "Perfil";
     public final static String sFORWARD_TO_USER = "Utilizador";
     public final static String sFORWARD_TO_PROFILE_TEXT = "PerfilTexto";
+    public final static String sFORWARD_TO_ORGANIC_UNIT = "UnidadeOrganica";
     public final static String sPROFILE_DELIM = ",";
     public final static String sJSP = "Forward/forward.jsp";
     public final static String sFORWARD_ERROR = "FORWARD_ERROR";
@@ -87,6 +95,7 @@ public class BlockForwardTo extends Block implements MessageBlock {
      */
     public String before(UserInfoInterface userInfo, ProcessData procData) {
         final ProcessManager pm = BeanFactory.getProcessManagerBean();
+        UserManager um = BeanFactory.getUserManagerBean();
 
         StringBuffer logMsg = new StringBuffer();
         final int flowid = procData.getFlowId();
@@ -94,6 +103,7 @@ public class BlockForwardTo extends Block implements MessageBlock {
         String sType = getAttribute(BlockForwardTo.sFORWARD_TO_TYPE);
         String sProfile = getAttribute(BlockForwardTo.sFORWARD_TO_PROFILE);
         String sProfileText = getAttribute(BlockForwardTo.sFORWARD_TO_PROFILE_TEXT);
+        String sOrganicUnit = getAttribute(BlockForwardTo.sFORWARD_TO_ORGANIC_UNIT);
         String sUserMessage = getAttribute(MESSAGE_USER);
         String sUser = getAttribute(BlockForwardTo.sFORWARD_TO_USER);
 
@@ -124,8 +134,8 @@ public class BlockForwardTo extends Block implements MessageBlock {
                 String destinationProfile = null;
                 
                 if (sType.equals(BlockForwardTo.sFORWARD_TO_PROFILE_TEXT)) {
-                    try {
-                        destinationProfile = procData.transform(userInfo, sProfileText);
+                    try {                    	
+                        destinationProfile = StringEscapeUtils.unescapeHtml(procData.transform(userInfo, sProfileText));
                     } catch (Exception e) {
                       // not able to transform.. assume original text
                       Logger.warning(login, this, "after", 
@@ -146,6 +156,35 @@ public class BlockForwardTo extends Block implements MessageBlock {
                       logMsg.append("Process forwarded to profile(s): " + destinationProfile + ";");
                     }
                 }
+            } else if (sType.equals(BlockForwardTo.sFORWARD_TO_ORGANIC_UNIT)){
+            	AuthProfile ap = BeanFactory.getAuthProfileBean();
+            	String destinationOrganicUnitName = procData.transform(userInfo, sOrganicUnit);
+            	HashMap<String,String> ouIdName = new HashMap<String, String>();
+            	//UserViewInterface[] allUsers = um.getAllUsers(userInfo);
+            	Iterable<UserData> allUsers = ap.getAllUsers(userInfo.getOrganization());
+            	
+            	String destinationUser="";
+            	
+            	for(UserData uvi: allUsers){
+            		if(StringUtils.equals(destinationOrganicUnitName,uvi.getUnit()))
+            				destinationUser+=uvi.getUsername() + ",";;
+//            		String ouName = um.getOrganizationalUnit(userInfo, uvi.getUnitId()).getName();
+//            		if(StringUtils.equals(ouName, destinationOrganicUnitName))
+//            			ouId = uvi.getUnitId();
+            	}
+            	
+//            	for(UserData uvi: allUsers)
+//            		if(StringUtils.equals(ouId, uvi.getUnitId()))
+//            			destinationUser+=uvi.getUsername() + ",";
+            	
+            	if(destinationUser.isEmpty()){
+            		bOk = false;
+            		throw new Exception("Invalid/Empty Organic Unit: " + destinationOrganicUnitName);
+            	} else {            	            
+	            	bOk = pm.forwardToUser(userInfo, procData, destinationUser, this.getDescription(userInfo, procData));
+	                if (bOk) 
+	                  logMsg.append("Process forwarded to Organic Unit: " + destinationOrganicUnitName + ";");	                
+            	}
             } else if (sType.equals(BlockForwardTo.sFORWARD_TO_USER)) {
                 String destinationUser = null;
                 try {

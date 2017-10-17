@@ -22,7 +22,7 @@ public class BlockToSignDocs extends Block {
     super(anFlowId,id, subflowblockid, filename);
     isCodeGenerator = true;
     hasInteraction = false;
-    saveFlowState = false;
+    saveFlowState = true;
   }
 
   public Port[] getOutPorts (UserInfoInterface userInfo) {

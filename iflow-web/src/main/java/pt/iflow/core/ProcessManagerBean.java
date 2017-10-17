@@ -1515,7 +1515,7 @@ public class ProcessManagerBean implements ProcessManager {
       st = db.createStatement();
       StringBuffer query = new StringBuffer();
       query.append("SELECT pid FROM process");
-      query.append(" WHERE and closed=0 and flowid=" + flowid);
+      query.append(" WHERE closed=0 and flowid=" + flowid);
       if(subpid > 0) {
         query.append(" AND subpid=" + subpid);
       }
@@ -3585,14 +3585,20 @@ public class ProcessManagerBean implements ProcessManager {
 
         // Get list of users in the profile
         hsProfiles = new HashSet<String>();
-        hsProfiles.add(asProfile);
-        Iterator<String> userIdIterator = (ap.getUsersInProfile(userInfo, asProfile)).iterator();
-        if (userIdIterator != null && userIdIterator.hasNext()) {
-          // Create the activity for each user in the profile
-          while (userIdIterator.hasNext()) {
-            alUsers.add(userIdIterator.next());
-            alProfiles.add(hsProfiles);
-          }
+        String[] asProfileList = asProfile.split(",");
+        for(String asProfileAux: asProfileList){
+	        hsProfiles.add(asProfileAux);
+	        Iterator<String> userIdIterator = (ap.getUsersInProfile(userInfo, asProfileAux)).iterator();
+	        if (userIdIterator != null && userIdIterator.hasNext()) {
+	          // Create the activity for each user in the profile
+	          while (userIdIterator.hasNext()) {
+	        	String nextUser = userIdIterator.next();
+	        	if(!alUsers.contains(nextUser)){
+	        		alUsers.add(nextUser);
+	        		alProfiles.add(hsProfiles);
+	        	}
+	          }
+	        }
         }
       }
 
@@ -4490,7 +4496,8 @@ public class ProcessManagerBean implements ProcessManager {
 
     IFlowData[] arrFlowData = null;
     if (nShowFlowId < 0) {
-      arrFlowData = BeanFactory.getFlowHolderBean().listFlowsOnline(userInfo, FlowType.WORKFLOW);
+      FlowType[] flowTypeExcluded = {FlowType.SUPPORT,FlowType.SEARCH,FlowType.REPORTS};
+      arrFlowData = BeanFactory.getFlowHolderBean().listFlowsOnline(userInfo, null, flowTypeExcluded);
     } else {
       arrFlowData = new IFlowData[] { BeanFactory.getFlowHolderBean().getFlow(userInfo, nShowFlowId) };
     }
@@ -5793,14 +5800,16 @@ public class ProcessManagerBean implements ProcessManager {
 	      }
 	      // 5: pnumber
 	      if (StringUtils.isNotEmpty(filter.getPnumber())) {
-	        sQuery.append(" and upper(p.pnumber) like upper('%").append(escapeSQL(filter.getPnumber())).append("%')");
-	        sQueryDelegated.append(" and upper(p.pnumber) like upper('%").append(escapeSQL(filter.getPnumber())).append("%')");
+	        sQuery.append(" and upper(pnumber) like upper('%").append(escapeSQL(filter.getPnumber())).append("%')");
+	        sQueryDelegated.append(" and upper(pnumber) like upper('%").append(escapeSQL(filter.getPnumber())).append("%')");
 	      }
 
 	      if(filter.getOrderType() != null && filter.getOrderType().equals("desc")){
-	          sQueryDelegated.append(" order by iconid asc, created desc"); 
+	          sQueryDelegated.append(" order by iconid asc, created desc");
+	    	  //sQueryDelegated.append(" order by created desc");
 	      }else{
 	          sQueryDelegated.append(" order by iconid asc, created asc");
+	    	  //sQueryDelegated.append(" order by created asc");
 	      }
 	      
 	      
@@ -5848,6 +5857,9 @@ public class ProcessManagerBean implements ProcessManager {
 	          int flowid = rs.getInt("flowid");
 	          if(filter.ignoreFlow(flowid)) {
 	            continue;
+	          }
+	          if(filter.isComment() && StringUtils.isBlank(BeanFactory.getProcessAnnotationManagerBean().getProcessComment(userInfo, rs.getInt("flowid"), rs.getInt("pid"), rs.getInt("subpid")).getComment())){
+	        	  continue;
 	          }
 	          if(filter.hasSizeLimit()) {
 	            counter++;

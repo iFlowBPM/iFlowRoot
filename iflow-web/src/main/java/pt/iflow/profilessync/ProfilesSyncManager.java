@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import javax.sql.DataSource;
 
+import pt.iflow.api.cluster.JobManager;
 import pt.iflow.api.db.DBQueryManager;
 import pt.iflow.api.db.DatabaseInterface;
 import pt.iflow.api.userdata.UserDataAccess;
@@ -71,14 +72,15 @@ public class ProfilesSyncManager extends Thread {
 
     while (keepRunning) {
       try {
-        try {
-          get().syncProfiles();
-          if (Logger.isDebugEnabled()) {
-            Logger.adminDebug("ProfilesSyncManager", "run", "NextSleepTime= " + sleepTime + " msec");
-          }
-        } catch (Exception e) {
-          Logger.adminWarning("ProfilesSyncManager", "run", "Failed to check profiles: ", e);
-        }
+    	if(JobManager.getInstance().isMyBeatValid())  
+	        try {
+	          get().syncProfiles();
+	          if (Logger.isDebugEnabled()) {
+	            Logger.adminDebug("ProfilesSyncManager V3", "run", "NextSleepTime= " + sleepTime + " msec");
+	          }
+	        } catch (Exception e) {
+	          Logger.adminWarning("ProfilesSyncManager", "run", "Failed to check profiles: ", e);
+	        }
         sleep(sleepTime);
       } catch (InterruptedException e) {
         if (keepRunning) {
@@ -143,6 +145,7 @@ public class ProfilesSyncManager extends Thread {
       db.setAutoCommit(true);
       st = db.createStatement();
       String query = DBQueryManager.processQuery(ProfilesSyncManager.INSERT_PROFILE, new Object[]{profile, profile, orgId});
+      Logger.debug("", this, "addProfile", "query: " + query);
       st.executeUpdate(query);
     } catch (SQLException sqle) {
       Logger.adminError("ProfilesSyncManager", "addProfile", "Error Inserting Profile from Database", sqle);

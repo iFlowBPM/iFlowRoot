@@ -19,4 +19,8 @@ public interface Document {
   public void setSerials(String serials);
 
   public String getSerials();
+  
+  public String getDocurl();
+
+  public void setDocurl(String docurl);
 }

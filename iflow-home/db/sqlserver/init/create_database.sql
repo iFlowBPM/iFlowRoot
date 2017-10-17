@@ -421,6 +421,7 @@ CREATE TABLE documents (
   flowid int not null default 0,
   pid int not null default 0,
   subpid int not null default 0,
+  numass int NOT NULL DEFAULT 0,
   tosign int NOT NULL DEFAULT 1,
   PRIMARY KEY (docid))
 GO
@@ -796,7 +797,7 @@ CREATE TABLE notifications (
   created DATETIME,
   sender varchar(192),
   message varchar(500),
-  flowid INT NULL DEFAULT 0,
+  link VARCHAR(45) DEFAULT 'false' NOT NULL,
   constraint notifications_pk primary key (id))
 GO
 
@@ -1620,6 +1621,7 @@ INSERT INTO counter VALUES ('docid',1,GETDATE())
 INSERT INTO counter VALUES ('emailid',1,GETDATE())
 INSERT INTO counter VALUES ('cid',1,GETDATE())
 INSERT INTO counter VALUES ('flowid',0,GETDATE())
+INSERT INTO counter VALUES ('nodekey',0,GETDATE())
 GO
 
 SET IDENTITY_INSERT organizations ON
@@ -1790,6 +1792,18 @@ INSERT INTO QRTZ_LOCKS values('MISFIRE_ACCESS')
 -- -------------------
 --     END  QRTZ    --
 -- -------------------
+
+CREATE TABLE hotfolder_files (
+	entryid INT NOT NULL IDENTITY,
+	path VARCHAR(1000) NOT NULL,
+	flowid int not null,
+	in_user varchar(100) not null,
+  	entry_date timestamp not null,
+  	processed_path varchar(1000),
+  	created_pid int,
+  	CONSTRAINT PK_HOTF PRIMARY KEY (entryid)
+);
+GO
 
 CREATE NONCLUSTERED INDEX idx_fsh_pid ON flow_state_history(pid)
 GO
@@ -1977,3 +1991,29 @@ INSERT INTO label (name, description, icon) values ('Nota', 'Tarefas anotadas', 
 GO
 CREATE INDEX IDX_REPORTING ON dbo.reporting(flowid , pid ,subpid );
 GO
+
+INSERT INTO counter VALUES ('nodekey',0,GETDATE());
+
+CREATE TABLE  dbo.active_node (
+  nodekey varchar(50) NOT NULL,
+  expiration DATETIME NOT NULL,
+  PRIMARY KEY (nodekey)
+);
+
+CREATE PROCEDURE get_next_pid 
+  @retnodekey INT OUT
+AS
+BEGIN
+	DECLARE @tmp INT
+    set @retnodekey = 1
+    select value into @tmp from counter where name='nodekey'
+    update counter set value=(@tmp +1) where  name='nodekey'
+    select value into @retnodekey from counter where name='nodekey'    
+END
+GO
+
+CREATE TABLE  dbo.sharedobjectrefresh (
+  id int NOT NULL IDENTITY,
+  flowid int NOT NULL,
+  PRIMARY KEY (id)
+);

@@ -19,7 +19,7 @@ String auth = new String(Base64.encode( (ui.getUtilizador()+":"+ui.getPasswordSt
 				<li><a href="FeedServlet?feed=categories"><%=messages.getString("rss.link.categories")%></a></li>
 				<li><a href="FeedServlet?feed=flows"><%=messages.getString("rss.link.flows")%></a></li>
 				<li><a href="FeedServlet?feed=tasks"><%=messages.getString("rss.link.tasks")%></a></li>
-				<li><a href="FeedServlet?feed=tasksAtom&auth=<%=auth%>"><%=messages.getString("rss.link.tasksAtom")%></a></li>
+				<li><a href="FeedServlet?feed=tasksAtom"><%=messages.getString("rss.link.tasksAtom")%></a></li>
 				<li><a href="FeedServlet?feed=notifications"><%=messages.getString("rss.link.notifications")%></a></li>
 		</ul>
 	</div>

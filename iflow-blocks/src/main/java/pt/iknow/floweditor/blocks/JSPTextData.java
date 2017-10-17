@@ -68,7 +68,7 @@ public  class JSPTextData extends JSPFieldData {
     this._alEditSingleProps.add(new Integer(JSPFieldData.nPROP_TEXT_SUBMIT_ON_BLUR));
 
     // add required properties
-    this._alRequiredProps.add(new Integer(JSPFieldData.nPROP_TEXT));
+    //this._alRequiredProps.add(new Integer(JSPFieldData.nPROP_TEXT));
     this._alRequiredProps.add(new Integer(JSPFieldData.nPROP_DATA_TYPE));
     this._alRequiredProps.add(new Integer(JSPFieldData.nPROP_VAR_NAME));
     this._alRequiredProps.add(new Integer(JSPFieldData.nPROP_SIZE));

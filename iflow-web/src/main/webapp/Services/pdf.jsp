@@ -1,7 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
 %><%@ taglib uri="http://jakarta.apache.org/taglibs/core" prefix="c" 
 %><%@ taglib uri="http://www.iknow.pt/jsp/jstl/iflow" prefix="if" 
-%><%@ include file = "../inc/defs.jsp" %><%
+%><%@ include file = "../inc/defs.jsp" %>
+<%@ page import="pt.iknow.xslfo.FoEvaluatorFactory" %>
+<%@ page import="pt.iknow.xslfo.FoTemplate" %>
+<%@ page import="pt.iknow.pdf.PDFGenerator"%><%
 int subpid = -1;
     int pid = -1;
     int flowid = -1;
@@ -78,10 +81,10 @@ int subpid = -1;
 
   InputStream src = null;
   pt.iknow.pdf.PDFGenerator pdfGen = null;
+  bsh.Interpreter bsh = process.getInterpreter(userInfo);
   try {
     Repository rep = BeanFactory.getRepBean();
-    String sTemplate = fdFormData.getParameter("template");
-
+    String sTemplate = fdFormData.getParameter("template");	
     src = rep.getPrintTemplate(userInfo, sTemplate).getResourceAsStream();
 
     pt.iknow.xslfo.FoTemplate tpl = pt.iknow.xslfo.FoTemplate.compile(src);
@@ -89,6 +92,14 @@ int subpid = -1;
 
     pdfGen = new pt.iknow.pdf.PDFGenerator(tpl);
     pdfGen.addURIResolver(new RepositoryURIResolver(userInfo));
+    
+    String replacedTemplate = pdfGen.getRenderedFOP(FoEvaluatorFactory.wrapScriptEngine(bsh)).replace("&lt;", "<").replace("&gt;", ">");
+    //start again this time with the new template
+    tpl = FoTemplate.compile(replacedTemplate);                       
+    tpl.setUseLegacyExpressions(true);
+    pdfGen = new PDFGenerator(tpl);
+    pdfGen.addURIResolver(new RepositoryURIResolver(userInfo));    
+    
     rep = null;
   } catch (Exception ei) {
     pdfGen = null;
@@ -103,7 +114,7 @@ int subpid = -1;
   }
 
   if (pdfGen != null) {
-    bsh.Interpreter bsh = process.getInterpreter(userInfo);
+    
     InputStream in = null;
     try {
       File tmpPdf = File.createTempFile("print_", ".pdf");

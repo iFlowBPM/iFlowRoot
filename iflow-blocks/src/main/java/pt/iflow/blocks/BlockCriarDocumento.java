@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Hashtable;
 import java.util.Map;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 
 import pt.iflow.api.blocks.Block;
@@ -20,6 +21,7 @@ import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.UserInfoInterface;
 import pt.iflow.connector.document.Document;
 import pt.iknow.pdf.PDFGenerator;
+import pt.iknow.xslfo.FoEvaluatorFactory;
 import pt.iknow.xslfo.FoTemplate;
 
 public class BlockCriarDocumento extends Block {
@@ -33,7 +35,7 @@ public class BlockCriarDocumento extends Block {
   public BlockCriarDocumento(int anFlowId, int id, int subflowblockid, String filename) {
     super(anFlowId, id, subflowblockid, filename);
     hasInteraction = false;
-    saveFlowState = false;
+    saveFlowState = true;
   }
 
   public Port[] getInPorts(UserInfoInterface userInfo) {
@@ -70,72 +72,81 @@ public class BlockCriarDocumento extends Block {
    * @return the port to go to the next block
    */
   public Port after(UserInfoInterface userInfo, ProcessData procData) {
-    Port outPort = this.portOutError;
-    String login = userInfo.getUtilizador();
-    StringBuffer logMsg = new StringBuffer();
+	    Port outPort = this.portOutError;
+	    String login = userInfo.getUtilizador();
+	    StringBuffer logMsg = new StringBuffer();
 
-    RepositoryFile template = null;
-    ProcessListVariable variable = null;
+	    RepositoryFile template = null;
+	    ProcessListVariable variable = null;
 
-    String tmpl = getAttribute(TEMPLATE);
-    String var = getAttribute(VARIABLE);
-    String filename = getAttribute(FILENAME);
-    String overwrite = getAttribute(OVERWRITE);
+	    String tmpl = getAttribute(TEMPLATE);
+	    String var = getAttribute(VARIABLE);
+	    String filename = getAttribute(FILENAME);
+	    String overwrite = getAttribute(OVERWRITE);
 
-    if (StringUtils.isBlank(tmpl) || StringUtils.isBlank(var) || StringUtils.isBlank(filename)) {
-      Logger.error(login, this, "after", "Unable to process data into file: must set variables (found: template=" + tmpl
-          + "; variable=" + var + "; filename=" + filename + ")");
-    } else {
-      variable = procData.getList(var);
-      if (variable == null) {
-        Logger.error(login, this, "after", "Unable to process data into file: unknown variable (found: variable=" + var + ")");
-      } else {
-        template = BeanFactory.getRepBean().getPrintTemplate(userInfo, tmpl);
-        // check that template exists or is a variable instead
-        if (!template.exists() && procData.getVariableDataType(tmpl) instanceof TextDataType) {
-          try {
-            template = BeanFactory.getRepBean().getPrintTemplate(userInfo, "" + procData.eval(userInfo, tmpl));
-          } catch (EvalException e) {
-            template = null;
-          }
-        }
-        if (template == null) {
-          Logger.error(login, this, "after", "Unable to process data into file: unknown template (found: template=" + tmpl + ")");
-        } else {
-          try {
-            FoTemplate tpl = FoTemplate.compile(template.getResourceAsStream());
-            tpl.setUseLegacyExpressions(true);
-            PDFGenerator pdfGen = new PDFGenerator(tpl);
-            pdfGen.addURIResolver(new RepositoryURIResolver(userInfo));
-            DocumentData newDocument = new DocumentData();
-            newDocument.setFileName(procData.transform(userInfo, filename));
-//            newDocument.setContent(pdfGen.getContents(getProcessSimpleVariables(procData)));
-            bsh.Interpreter bsh = procData.getInterpreter(userInfo);
-            newDocument.setContent(pdfGen.getContents(bsh));
-            newDocument.setUpdated(Calendar.getInstance().getTime());
-            Document savedDocument = BeanFactory.getDocumentsBean().addDocument(userInfo, procData, newDocument);
-            try {
-              if (StringUtils.equalsIgnoreCase("true", procData.transform(userInfo, overwrite)))
-                variable.clear();
+	    if (StringUtils.isBlank(tmpl) || StringUtils.isBlank(var) || StringUtils.isBlank(filename)) {
+	      Logger.error(login, this, "after", "Unable to process data into file: must set variables (found: template=" + tmpl
+	          + "; variable=" + var + "; filename=" + filename + ")");
+	    } else {
+	      variable = procData.getList(var);
+	      if (variable == null) {
+	        Logger.error(login, this, "after", "Unable to process data into file: unknown variable (found: variable=" + var + ")");
+	      } else {
+	        template = BeanFactory.getRepBean().getPrintTemplate(userInfo, tmpl);
+	        // check that template exists or is a variable instead
+	        if (!template.exists() && procData.getVariableDataType(tmpl) instanceof TextDataType) {
+	          try {
+	            template = BeanFactory.getRepBean().getPrintTemplate(userInfo, "" + procData.eval(userInfo, tmpl));
+	          } catch (EvalException e) {
+	            template = null;
+	          }
+	        }
+	        if (template == null) {
+	          Logger.error(login, this, "after", "Unable to process data into file: unknown template (found: template=" + tmpl + ")");
+	        } else {
+	          try {
+	        	bsh.Interpreter bsh = procData.getInterpreter(userInfo);
+	        	//1st pass get a prerendered fop because of html tags and all
+	        	FoTemplate tpl = FoTemplate.compile(template.getResourceAsStream());                       
+	            tpl.setUseLegacyExpressions(true);
+	            PDFGenerator pdfGen = new PDFGenerator(tpl);
+	            pdfGen.addURIResolver(new RepositoryURIResolver(userInfo));
+	            String replacedTemplate = pdfGen.getRenderedFOP(FoEvaluatorFactory.wrapScriptEngine(bsh)).replace("&lt;", "<").replace("&gt;", ">").replace("&#13;","&#x2028;");
+	            //start again this time with the new template
+	            tpl = FoTemplate.compile(replacedTemplate);                       
+	            tpl.setUseLegacyExpressions(true);
+	            pdfGen = new PDFGenerator(tpl);
+	            pdfGen.addURIResolver(new RepositoryURIResolver(userInfo));
+	            byte[] docContent = pdfGen.getContents(bsh);
+	            
+	            DocumentData newDocument = new DocumentData();
+	            newDocument.setFileName(procData.transform(userInfo, filename));
+//	            newDocument.setContent(pdfGen.getContents(getProcessSimpleVariables(procData)));            
+	            newDocument.setContent(pdfGen.getContents(bsh));
+	            newDocument.setUpdated(Calendar.getInstance().getTime());
+	            Document savedDocument = BeanFactory.getDocumentsBean().addDocument(userInfo, procData, newDocument);
+	            try {
+	              if (StringUtils.equalsIgnoreCase("true", procData.transform(userInfo, overwrite)))
+	                variable.clear();
 
-              variable.parseAndAddNewItem(String.valueOf(savedDocument.getDocId()));
-              outPort = this.portOutOk;
-              logMsg.append("Added '" + savedDocument.getDocId() + "' to '" + var + "';");
-            } catch (Exception e) {
-              Logger.error(userInfo.getUtilizador(), this, "after", "error parsing document " + savedDocument.getDocId(), e);
-            }
-          } catch (Exception e) {
-            Logger.error(login, this, "after", "Unable to process data into file: error processing file (found: template=" + tmpl
-                + "; variable=" + var + "; filename=" + filename + ")", e);
-          }
-        }
-      }
-    }
-    
-    logMsg.append("Using '" + outPort.getName() + "';");
-    Logger.logFlowState(userInfo, procData, this, logMsg.toString());
-    return outPort;
-  }
+	              variable.parseAndAddNewItem(String.valueOf(savedDocument.getDocId()));
+	              outPort = this.portOutOk;
+	              logMsg.append("Added '" + savedDocument.getDocId() + "' to '" + var + "';");
+	            } catch (Exception e) {
+	              Logger.error(userInfo.getUtilizador(), this, "after", "error parsing document " + savedDocument.getDocId(), e);
+	            }
+	          } catch (Exception e) {
+	            Logger.error(login, this, "after", "Unable to process data into file: error processing file (found: template=" + tmpl
+	                + "; variable=" + var + "; filename=" + filename + ")", e);
+	          }
+	        }
+	      }
+	    }
+	    
+	    logMsg.append("Using '" + outPort.getName() + "';");
+	    Logger.logFlowState(userInfo, procData, this, logMsg.toString());
+	    return outPort;
+	  }
 
   
   private Map<String, String> getProcessSimpleVariables(ProcessData procData) {
@@ -152,6 +163,11 @@ public class BlockCriarDocumento extends Block {
       }
     }
     return htProps;
+  }
+  
+  public static void main(String arhs[]){
+	  String a=StringEscapeUtils.unescapeHtml("&lt;p&gt;&amp;aacute&#x3b;&amp;agrave&#x3b; &amp;amp&#x3b;asda&lt;/p&gt;&#xd;&#xa;");
+	  int i=0;
   }
   
   /**
