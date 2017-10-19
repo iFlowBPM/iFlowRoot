@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<emailtemplate>
+  <emailsubject>Loja Online: Encomenda a Caminho</emailsubject>
+  <emailhtml>true</emailhtml>
+  <emailbody><![CDATA[
+<html>
+<head>
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="expires" content="0">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+
+<body>
+<p>A sua encomenda está a caminho. Dentro de 2 dias úteis será entregue pelos serviços dos CTT.</p>
+<p></p>
+<p>O total a pagar são $ammount euros.</p>
+</body>
+</html>
+  ]]></emailbody>
+</emailtemplate>

@@ -1,0 +1,25 @@
+	<table class="item_list">
+		<tr class="tab_header">
+			#if( $showUser )
+			<td>$messages.getString("flowInfo.user")</td>
+			#end
+			<td>$messages.getString("flowInfo.date")</td>
+			<td>$messages.getString("flowInfo.action")</td>
+		</tr>
+		
+		#set( $tab_row = "odd" )
+        #foreach( $item in $history )
+		  <tr class="tab_row_${tab_row}">
+			#if( $showUser )
+			<td>$item.getModificationUser()</td>
+			#end
+			<td>$item.getMDate()</td>
+			<td>$item.getResult()</td>
+		  </tr>
+		  #if( $tab_row == "odd" )
+		    #set( $tab_row = "even" )
+		  #else
+		    #set( $tab_row = "odd" )
+		  #end
+        #end
+	</table>

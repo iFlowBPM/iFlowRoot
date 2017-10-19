@@ -58,7 +58,7 @@ public class BlockP15032ServicePasso13 extends BlockP15032OER {
 	    	  asset.setId(Long.parseLong(sIdVar));
 	    	  asset.setAprovadorPassagemProducao(sAprovadorPassagemAProducaoVar);
 	    	  asset.setDataPassagemProducao(Long.parseLong(sDataPassagemAProducaoVar));
-	    	  asset.setProviderExterno(sProviderExternoVar);
+	    	  //asset.setProviderExterno(sProviderExternoVar);
 	    	  
 	    	  IflowServicoMain tester = new IflowServicoMain();
 	    	  OERResponseData result = tester.runPasso(Config.getOERUsername(), Config.getOERPassword(), asset, 13);

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://webservice.pt" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://webservice.pt" xmlns:intf="http://webservice.pt" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+
+   <wsdl:message name="testResponse">
+
+      <wsdl:part name="testReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="testRequest">
+
+      <wsdl:part name="s1" type="xsd:string"/>
+
+      <wsdl:part name="s2" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:portType name="WS">
+
+      <wsdl:operation name="test" parameterOrder="s1 s2">
+
+         <wsdl:input message="impl:testRequest" name="testRequest"/>
+
+         <wsdl:output message="impl:testResponse" name="testResponse"/>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="WSSoapBinding" type="impl:WS">
+
+      <wsdlsoap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="test">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="testRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://webservice.pt" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="testResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://webservice.pt" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="WSService">
+
+      <wsdl:port binding="impl:WSSoapBinding" name="WS">
+
+         <wsdlsoap:address location="http://localhost:8081/WP/services/WS"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

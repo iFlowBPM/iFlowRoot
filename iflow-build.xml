@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="iFlowRoot" basedir="." default="build-iflow-root">
+	
+	<property  name="maven-path" value="C:\Program Files\Apache\Maven\apache-maven-2.0.11\bin"></property >
+	
+	<target name="build-iflow-root" description="Build iFlowRoot project">
+	    <exec dir="${basedir}" executable="cmd">
+	        <arg value="/C"/>
+	        <arg value="${maven-path}\mvn"/>
+	        <arg line="clean install generate-sources" />
+		</exec>
+	</target>
+	
+	<target name="build-iflow-root-fast" description="Fast build iFlowRoot project">
+	    <exec dir="${basedir}" executable="cmd">
+	        <arg value="/C"/>
+	        <arg value="${maven-path}\mvn"/>
+	        <arg line="install generate-sources" />
+		</exec>
+	</target>
+	
+	
+	<property name="iflow-blocks-path" value="iflow-blocks"></property >
+	<target name="build-iflow-blocks" description="Build iFlow-Blocks project">
+	    <exec dir="${basedir}/${iflow-blocks-path}" executable="cmd">
+	        <arg value="/C"/>
+	        <arg value="${maven-path}\mvn"/>
+	        <arg line="-U clean install generate-sources" />
+		</exec>
+	</target>
+	
+	<property name="iflow-connectors-path" value="iflow-connectors"></property >
+	<target name="build-iflow-connectors" description="Build iFlow-Connectors project">
+	    <exec dir="${basedir}/${iflow-connectors-path}" executable="cmd">
+	        <arg value="/C"/>
+	        <arg value="${maven-path}\mvn"/>
+	        <arg line="-U clean install generate-sources" />
+		</exec>
+	</target>
+	
+	<property name="iflow-editor-path" value="iflow-editor"></property >
+	<target name="build-iflow-editor" description="Build iFlow-Editor project">
+	    <exec dir="${basedir}/${iflow-editor-path}" executable="cmd">
+	        <arg value="/C"/>
+	        <arg value="${maven-path}\mvn"/>
+	        <arg line="clean install generate-sources" />
+		</exec>
+	</target>
+	
+	<property name="iflow-api-path" value="iflow-api"></property >
+	<target name="build-iflow-api" description="Build iFlow-API project">
+	    <exec dir="${basedir}/${iflow-api-path}" executable="cmd">
+	        <arg value="/C"/>
+	        <arg value="${maven-path}\mvn"/>
+	        <arg line="-U clean install generate-sources" />
+		</exec>
+	</target>
+	
+		<property name="iflow-web-path" value="iflow-web"></property >
+	<target name="build-iflow-web" description="Build iFlow-WEB project">
+	    <exec dir="${basedir}/${iflow-web-path}" executable="cmd">
+	        <arg value="/C"/>
+	        <arg value="${maven-path}\mvn"/>
+	        <arg line="-e clean install generate-sources" />
+		</exec>
+	</target>
+	
+</project>

@@ -28,20 +28,19 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolTip;
+import javax.xml.bind.JAXBException;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.exolab.castor.xml.MarshalException;
-import org.exolab.castor.xml.ValidationException;
 
 import pt.iflow.api.blocks.FormProps;
 import pt.iflow.api.datatypes.DataTypeInterface;
 import pt.iflow.api.utils.NameValuePair;
 import pt.iflow.api.xml.ConnectorMarshaller;
 import pt.iflow.api.xml.FlowMarshaller;
-import pt.iflow.api.xml.codegen.flow.XmlAttribute;
-import pt.iflow.api.xml.codegen.flow.XmlCatalogVarAttribute;
-import pt.iflow.api.xml.codegen.flow.XmlCatalogVars;
+import pt.iflow.api.xml.codegen.flow.XmlAttributeType;
+import pt.iflow.api.xml.codegen.flow.XmlCatalogVarAttributeType;
+import pt.iflow.api.xml.codegen.flow.XmlCatalogVarsType;
 import pt.iflow.api.xml.codegen.flow.XmlFlow;
 import pt.iknow.floweditor.Atributo;
 import pt.iknow.floweditor.FlowEditorAdapter;
@@ -3769,25 +3768,23 @@ public class JSPFieldData {
     XmlFlow _xmlflow = null;
     try {
       _xmlflow = FlowMarshaller.unmarshal(bXml);
-    } catch (MarshalException e) {
-      e.printStackTrace();
-    } catch (ValidationException e) {
+    } catch (JAXBException e) {
       e.printStackTrace();
     }
 
-    XmlCatalogVars xmlcv = _xmlflow.getXmlCatalogVars();
+    XmlCatalogVarsType xmlcv = _xmlflow.getXmlCatalogVars();
     String[][] inputFields;
-    if(xmlcv.getXmlAttributeCount() > 0 && xmlcv.getXmlCatalogVarAttributeCount() == 0) {
-      inputFields = new String[xmlcv.getXmlAttributeCount()][fieldsColumnNames.length];
-      for (int i = 0; i < xmlcv.getXmlAttributeCount(); i++) {
-        XmlAttribute attr = xmlcv.getXmlAttribute(i);
+    if(xmlcv.getXmlAttribute().size() > 0 && xmlcv.getXmlCatalogVarAttribute().size() == 0) {
+      inputFields = new String[xmlcv.getXmlAttribute().size()][fieldsColumnNames.length];
+      for (int i = 0; i < xmlcv.getXmlAttribute().size(); i++) {
+        XmlAttributeType attr = xmlcv.getXmlAttribute().get(i);
         inputFields[i][0] = attr.getName();
         inputFields[i][1] = attr.getDescription();
       }
     } else {
-      inputFields = new String[xmlcv.getXmlCatalogVarAttributeCount()][fieldsColumnNames.length];
-      for (int i = 0; i < xmlcv.getXmlCatalogVarAttributeCount(); i++) {
-        XmlCatalogVarAttribute attr = xmlcv.getXmlCatalogVarAttribute(i);
+      inputFields = new String[xmlcv.getXmlCatalogVarAttribute().size()][fieldsColumnNames.length];
+      for (int i = 0; i < xmlcv.getXmlCatalogVarAttribute().size(); i++) {
+        XmlCatalogVarAttributeType attr = xmlcv.getXmlCatalogVarAttribute().get(i);
         inputFields[i][0] = attr.getName();
         inputFields[i][1] = attr.getDataType();
       }

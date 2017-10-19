@@ -1,0 +1,36 @@
+	<h2>$messages.getString("admin_nav.title") $navSep $messages.getString("admin_nav.section.organization.title") $navSep $messages.getString("admin_nav.section.organization.link.properties")</h2>
+	
+	<p>$messages.getString("help.box_organization.concept.p1")</p>
+	
+	<table class="item_list">
+		<tr class="tab_header">
+			<td>$messages.getString("help.box_organization.table.header.field")</td>
+			<td>$messages.getString("help.box_organization.table.header.description")</td>
+		</tr>
+		<tr class="tab_row_odd">
+			<td><b>$messages.getString("organization.propertiesform.field.orgid")</b></td>
+			<td>$messages.getString("help.box_organization.table.body.orgid")</td>
+		</tr>
+		<tr class="tab_row_even">
+			<td><b>$messages.getString("organization.propertiesform.field.style")</b></td>
+			<td>$messages.getString("help.box_organization.table.body.style")</td>
+		</tr>
+		<tr class="tab_row_odd">
+			<td><b>$messages.getString("organization.propertiesform.field.lang")</b></td>
+			<td>$messages.getString("help.box_organization.table.body.lang")</td>
+		</tr>
+		<tr class="tab_row_even">
+			<td><b>$messages.getString("organization.propertiesform.field.timezone")</b></td>
+			<td>$messages.getString("help.box_organization.table.body.timezone")</td>
+		</tr>
+		<tr class="tab_row_odd">
+			<td><b>$messages.getString("organization.propertiesform.field.currentlogo")</b></td>
+			<td>$messages.getString("help.box_organization.table.body.currentlogo")</td>
+		</tr>
+	</table>
+	
+	<p>$messages.getString("help.box_organization.concept.p2", $messages.getString("button.modify"))</p>
+	<input class="regular_button_01" type="button" value="$messages.getString("button.modify")" disabled="disabled" />
+	
+	<p>$messages.getString("help.box_organization.concept.p3", $messages.getString("admin-flows.button.reloadCache"))</p>
+	<input class="regular_button_02" type="button" value="$messages.getString("admin-flows.button.reloadCache")" disabled="disabled" />

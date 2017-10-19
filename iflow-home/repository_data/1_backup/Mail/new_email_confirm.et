@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<emailtemplate>
+  <emailsubject>iFlow - Email Address Confirmation</emailsubject>
+  <emailhtml>true</emailhtml>
+  <emailbody><![CDATA[
+<html>
+<head>
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="expires" content="0">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<style>
+
+body {
+	background: white;
+	padding: 10px;
+	font: 1em verdana;
+}
+
+img {
+	vertical-align: text-bottom;
+	border:none;
+}
+
+p {
+	font: 0.8em verdana;
+}
+
+p.title {
+	font: bold 1.0em verdana;
+}
+
+em {
+	font-weight: bold;
+	font-style: italic;
+}
+
+</style>
+</head>
+
+<body>
+	<p class="title">iFlow - New Email Address Confirmation</p>
+	<p>Please confirm your new email address by following the URL below.</p>
+	<p/>
+	<p><a href="$url">$url</a></p>
+	<p/>
+	<p>The previous email address will be used until you confirm the new one.</p>
+	<p/>
+	<p>Thank you.</p>
+	<p/>
+</body>
+</html>
+
+ ]]></emailbody>
+</emailtemplate>

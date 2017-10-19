@@ -1,0 +1,30 @@
+	<h2>$messages.getString("admin_nav.title") $navSep $messages.getString("admin_nav.section.processes.title") $navSep $messages.getString("admin_nav.section.processes.link.hist")</h2>
+	
+	<p>$messages.getString("help.box_proc_hist.concept")</p>
+	
+	<input class="regular_button_01" type="button" value="$messages.getString("button.show")" disabled="disabled"/>
+	<p>$messages.getString("help.box_proc_hist.table")</p>
+	<table class="item_list">
+		<tr class="tab_header">
+			<td>$messages.getString("help.box_proc_hist.table.header.field")</td>
+			<td>$messages.getString("help.box_proc_hist.table.header.description")</td>
+			<td>$messages.getString("help.box_proc_hist.table.header.mandatory")</td>
+		</tr>
+		<tr class="tab_row_odd">
+			<td>"$messages.getString("proc_hist.field.flow")"</td>
+			<td>$messages.getString("help.box_proc_hist.table.body.flow")</td>
+			<td>$messages.getString("const.yes")</td>
+		</tr>
+		<tr class="tab_row_even">
+			<td>"$messages.getString("proc_hist.field.pid")"</td>
+			<td>$messages.getString("help.box_proc_hist.table.body.pid")</td>
+			<td>$messages.getString("help.box_proc_hist.table.body.no")</td>
+		</tr>
+		<tr class="tab_row_odd">
+			<td>"$messages.getString("proc_hist.field.subpid")"</td>
+			<td>$messages.getString("help.box_proc_hist.table.body.subpid")</td>
+			<td>$messages.getString("help.box_proc_hist.table.body.no")</td>
+		</tr>
+	</table>
+	
+	<p>$messages.getString("help.box_proc_hist.footer", $messages.getString("proc_hist.field.pid"), $messages.getString("proc_hist.field.subpid"))</p>

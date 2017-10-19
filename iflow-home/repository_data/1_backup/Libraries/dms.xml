@@ -1,0 +1,616 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XmlLibrary xmlns="http://www.iknow.pt/XmlLibrary" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.iknow.pt/XmlLibrary ../schemas/xmllibrary.xsd"
+>
+    <name>FlowDocs</name>
+    <version>1.0</version>
+    <author>iKnow</author>
+    <description>FlowDocs</description>
+    <i18nName>library.dms.name</i18nName>
+    <i18nDescription>library.dms.description</i18nDescription>
+    <XmlBlock>
+        <class>BlockDocumentGet</class>
+        <XmlPort>
+            <name>portIn</name>
+            <description>Input</description>
+            <in_out>in</in_out>
+            <position>
+                <x>-5</x>
+                <y>25</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portSuccess</name>
+            <description>Success</description>
+            <in_out>out</in_out>
+            <position>
+                <x>55</x>
+                <y>10</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portError</name>
+            <description>Error</description>
+            <in_out>out</in_out>
+            <position>
+                <x>55</x>
+                <y>40</y>
+            </position>
+        </XmlPort>
+        <className>pt.iknow.floweditor.blocks.AlteraAtributosDocumentGet</className>
+        <image>flowdocs_get.png</image>
+        <description>Get Document</description>
+        <i18n>library.dms.block.doc_get</i18n>
+    </XmlBlock>
+    <XmlBlock>
+        <class>BlockDocumentUpdate</class>
+        <XmlPort>
+            <name>portIn</name>
+            <description>Input</description>
+            <in_out>in</in_out>
+            <position>
+                <x>-5</x>
+                <y>25</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portSuccess</name>
+            <description>Success</description>
+            <in_out>out</in_out>
+            <position>
+                <x>55</x>
+                <y>10</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portError</name>
+            <description>Error</description>
+            <in_out>out</in_out>
+            <position>
+                <x>55</x>
+                <y>40</y>
+            </position>
+        </XmlPort>
+        <className>pt.iknow.floweditor.blocks.AlteraAtributosDocumentUpdate</className>
+        <image>flowdocs_insert.png</image>
+        <description>Insert Document</description>
+        <i18n>library.dms.block.doc_insert</i18n>
+    </XmlBlock>
+    <XmlBlock>
+        <class>BlockDocumentList</class>
+        <XmlPort>
+            <name>portIn</name>
+            <description>Input</description>
+            <in_out>in</in_out>
+            <position>
+                <x>-5</x>
+                <y>25</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portSuccess</name>
+            <description>Success</description>
+            <in_out>out</in_out>
+            <position>
+                <x>55</x>
+                <y>10</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portError</name>
+            <description>Error</description>
+            <in_out>out</in_out>
+            <position>
+                <x>55</x>
+                <y>40</y>
+            </position>
+        </XmlPort>
+        <className>pt.iknow.floweditor.blocks.AlteraAtributosDocumentList</className>
+        <image>flowdocs_list.png</image>
+        <description>List Documents</description>
+        <i18n>library.dms.block.list_docs</i18n>
+    </XmlBlock>
+    <XmlBlock>
+        <class>BlockDocumentFolders</class>
+        <XmlPort>
+            <name>portIn</name>
+            <description>Input</description>
+            <in_out>in</in_out>
+            <position>
+                <x>-5</x>
+                <y>25</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portSuccess</name>
+            <description>Success</description>
+            <in_out>out</in_out>
+            <position>
+                <x>55</x>
+                <y>10</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portError</name>
+            <description>Error</description>
+            <in_out>out</in_out>
+            <position>
+                <x>55</x>
+                <y>40</y>
+            </position>
+        </XmlPort>
+        <className>pt.iknow.floweditor.blocks.AlteraAtributosDocumentFolders</className>
+        <image>flowdocs_folders.png</image>
+        <description>List Folders</description>
+        <i18n>library.dms.block.list_folders</i18n>
+    </XmlBlock>
+    <XmlBlock>
+        <class>BlockDocumentDelete</class>
+        <XmlPort>
+            <name>portIn</name>
+            <description>Input</description>
+            <in_out>in</in_out>
+            <position>
+                <x>-5</x>
+                <y>25</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portSuccess</name>
+            <description>Success</description>
+            <in_out>out</in_out>
+            <position>
+                <x>55</x>
+                <y>10</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portError</name>
+            <description>Error</description>
+            <in_out>out</in_out>
+            <position>
+                <x>55</x>
+                <y>40</y>
+            </position>
+        </XmlPort>
+        <className>pt.iknow.floweditor.blocks.AlteraAtributosDocumentDelete</className>
+        <image>flowdocs_delete.png</image>
+        <description>Delete Document</description>
+        <i18n>library.dms.block.doc_delete</i18n>
+    </XmlBlock>
+    <XmlBlock>
+        <class>BlockDocumentInfo</class>
+        <XmlPort>
+            <name>portIn</name>
+            <description>Input</description>
+            <in_out>in</in_out>
+            <position>
+                <x>-5</x>
+                <y>25</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portSuccess</name>
+            <description>Success</description>
+            <in_out>out</in_out>
+            <position>
+                <x>55</x>
+                <y>10</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portError</name>
+            <description>Error</description>
+            <in_out>out</in_out>
+            <position>
+                <x>55</x>
+                <y>40</y>
+            </position>
+        </XmlPort>
+        <XmlAttribute>
+            <name>JNDIName</name>
+            <description>JNDIName (input)</description>
+            <value />
+        </XmlAttribute>
+        <XmlAttribute>
+            <name>docid</name>
+            <description>Document ID (input)</description>
+            <value />
+        </XmlAttribute>
+        <XmlAttribute>
+            <name>user</name>
+            <description>Users (input)</description>
+            <value />
+        </XmlAttribute>
+        <XmlAttribute>
+            <name>filename</name>
+            <description>File Name (output)</description>
+            <value />
+        </XmlAttribute>
+        <XmlAttribute>
+            <name>updated</name>
+            <description>Last Updated (output)</description>
+            <value />
+        </XmlAttribute>
+        <XmlAttribute>
+            <name>url</name>
+            <description>URL (output)</description>
+            <value />
+        </XmlAttribute>
+        <image>docInfo.png</image>
+        <description>Doc Info</description>
+        <i18n>library.dms.block.doc_info</i18n>
+    </XmlBlock>
+
+    <XmlBlock>
+        <class>BlockVFSMarkAsTag</class>
+        <XmlPort>
+            <name>portIn</name>
+            <description>Input</description>
+            <in_out>in</in_out>
+            <position>
+                <x>-5</x>
+                <y>25</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portTrue</name>
+            <description>portTrue</description>
+            <in_out>out</in_out>
+            <position>
+                <x>55</x>
+                <y>10</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portFalse</name>
+            <description>portFalse</description>
+            <in_out>out</in_out>
+            <position>
+                <x>55</x>
+                <y>40</y>
+            </position>
+        </XmlPort>
+        <className>pt.iknow.floweditor.blocks.AlteraAtributosVFSMarkAsTag</className>
+        <image>series.png</image>
+        <description>VFS Mark as tag</description>
+        <i18n>library.dms.block.vfs_mark_as_tag</i18n>
+    </XmlBlock>
+
+    <XmlBlock>
+        <class>BlockVFSIdentifyCodes</class>
+        <XmlPort>
+            <name>portIn</name>
+            <description>Input</description>
+            <in_out>in</in_out>
+            <position>
+                <x>-5</x>
+                <y>25</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portTrue</name>
+            <description>portTrue</description>
+            <in_out>out</in_out>
+            <position>
+                <x>55</x>
+                <y>10</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portFalse</name>
+            <description>portFalse</description>
+            <in_out>out</in_out>
+            <position>
+                <x>55</x>
+                <y>40</y>
+            </position>
+        </XmlPort>
+        <className>pt.iknow.floweditor.blocks.AlteraAtributosVFSIdentifyCodes</className>
+        <image>series.png</image>
+        <description>VFS Identify codes</description>
+        <i18n>library.dms.block.vfs_identify_codes</i18n>
+    </XmlBlock>
+
+    <XmlBlock>
+        <class>BlockVFSCheckMetaTags</class>
+        <XmlPort>
+            <name>portIn</name>
+            <description>Input</description>
+            <in_out>in</in_out>
+            <position>
+                <x>-5</x>
+                <y>25</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portTrue</name>
+            <description>portTrue</description>
+            <in_out>out</in_out>
+            <position>
+                <x>55</x>
+                <y>10</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portFalse</name>
+            <description>portFalse</description>
+            <in_out>out</in_out>
+            <position>
+                <x>55</x>
+                <y>40</y>
+            </position>
+        </XmlPort>
+        <XmlAttribute>
+            <name>Mark</name>
+            <description>Mark?</description>
+            <value />
+        </XmlAttribute>
+        <image>series.png</image>
+        <description>VFS Check Metatags</description>
+        <i18n>library.dms.block.vfs_check_meta_tags</i18n>
+    </XmlBlock>
+
+    <XmlBlock>
+        <class>BlockVFSRunFile</class>
+        <XmlPort>
+            <name>portIn</name>
+            <description>Input</description>
+            <in_out>in</in_out>
+            <position>
+                <x>-5</x>
+                <y>25</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portTrue</name>
+            <description>portTrue</description>
+            <in_out>out</in_out>
+            <position>
+                <x>55</x>
+                <y>10</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portFalse</name>
+            <description>portFalse</description>
+            <in_out>out</in_out>
+            <position>
+                <x>55</x>
+                <y>40</y>
+            </position>
+        </XmlPort>
+        <XmlAttribute>
+            <name>File</name>
+            <description>File</description>
+            <value />
+        </XmlAttribute>
+        <image>series.png</image>
+        <description>VFS Run file</description>
+        <i18n>library.dms.block.vfs_run_file</i18n>
+    </XmlBlock>
+
+    <XmlBlock>
+        <class>BlockVFSGenerateSerialCode</class>
+        <XmlPort>
+            <name>portIn</name>
+            <description>Input</description>
+            <in_out>in</in_out>
+            <position>
+                <x>-5</x>
+                <y>25</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portTrue</name>
+            <description>portTrue</description>
+            <in_out>out</in_out>
+            <position>
+                <x>55</x>
+                <y>10</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portFalse</name>
+            <description>portFalse</description>
+            <in_out>out</in_out>
+            <position>
+                <x>55</x>
+                <y>40</y>
+            </position>
+        </XmlPort>
+        <className>pt.iknow.floweditor.blocks.AlteraAtributosVFSGenerateSerialCode</className>
+        <image>series.png</image>
+        <description>Generate Serial Code</description>
+        <i18n>library.dms.block.vfs_generate_serial_code</i18n>
+    </XmlBlock>
+
+    <XmlBlock>
+        <class>BlockVFSCreateNewSerialCode</class>
+        <XmlPort>
+            <name>portIn</name>
+            <description>Input</description>
+            <in_out>in</in_out>
+            <position>
+                <x>-5</x>
+                <y>25</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portTrue</name>
+            <description>portTrue</description>
+            <in_out>out</in_out>
+            <position>
+                <x>55</x>
+                <y>10</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portFalse</name>
+            <description>portFalse</description>
+            <in_out>out</in_out>
+            <position>
+                <x>55</x>
+                <y>40</y>
+            </position>
+        </XmlPort>
+        <className>pt.iknow.floweditor.blocks.AlteraAtributosVFSCreateNewSerialCode</className>
+        <image>series.png</image>
+        <description>Create New Serial Code</description>
+        <i18n>library.dms.block.vfs_create_new_serial_code</i18n>
+    </XmlBlock>
+
+    <XmlBlock>
+        <class>BlockAddCodeTemplate</class>
+        <XmlPort>
+            <name>portIn</name>
+            <description>Entrada</description>
+            <in_out>in</in_out>
+            <position>
+                <x>-5</x>
+                <y>25</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portSuccess</name>
+            <description>Sucesso</description>
+            <in_out>out</in_out>
+            <position>
+                <x>55</x>
+                <y>10</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portError</name>
+            <description>Erro</description>
+            <in_out>out</in_out>
+            <position>
+                <x>55</x>
+                <y>40</y>
+            </position>
+        </XmlPort>
+        <XmlAttribute>
+            <name>Template</name>
+            <description>Template (Input)</description>
+            <value />
+        </XmlAttribute>
+        <XmlAttribute>
+            <name>Name</name>
+            <description>Nome (Input)</description>
+            <value />
+        </XmlAttribute>
+        <XmlAttribute>
+            <name>Description</name>
+            <description>Descrição (Input)</description>
+            <value />
+        </XmlAttribute>
+        <XmlAttribute>
+            <name>Callback</name>
+            <description>Callback (Input)</description>
+            <value />
+        </XmlAttribute>
+        <XmlAttribute>
+            <name>Added</name>
+            <description>Added true/false (Output)</description>
+            <value />
+        </XmlAttribute>
+        <image>series.png</image><description>Add Code Template</description>
+        
+        <i18n>library.dms.block.vfs_add_code_template</i18n></XmlBlock>
+    <XmlBlock>
+        <class>BlockRemoveCodeTemplate</class>
+        <XmlPort>
+            <name>portIn</name>
+            <description>Entrada</description>
+            <in_out>in</in_out>
+            <position>
+                <x>-5</x>
+                <y>25</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portSuccess</name>
+            <description>Sucesso</description>
+            <in_out>out</in_out>
+            <position>
+                <x>55</x>
+                <y>10</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portError</name>
+            <description>Erro</description>
+            <in_out>out</in_out>
+            <position>
+                <x>55</x>
+                <y>40</y>
+            </position>
+        </XmlPort>
+        <XmlAttribute>
+            <name>Name</name>
+            <description>Nome</description>
+            <value />
+        </XmlAttribute>
+        <image>series.png</image>
+        <description>Remover Code Template</description>
+        <i18n>library.dms.block.vfs_remove_code_template</i18n>
+    </XmlBlock>
+    <XmlBlock>
+        <class>BlockListCodeTemplate</class>
+        <XmlPort>
+            <name>portIn</name>
+            <description>Entrada</description>
+            <in_out>in</in_out>
+            <position>
+                <x>-5</x>
+                <y>25</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portSuccess</name>
+            <description>Sucesso</description>
+            <in_out>out</in_out>
+            <position>
+                <x>55</x>
+                <y>10</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portError</name>
+            <description>Erro</description>
+            <in_out>out</in_out>
+            <position>
+                <x>55</x>
+                <y>40</y>
+            </position>
+        </XmlPort>
+        <XmlAttribute>
+            <name>Template</name>
+            <description>Template List (Output)</description>
+            <value />
+        </XmlAttribute>
+        <XmlAttribute>
+            <name>Name</name>
+            <description>Nome List (Output)</description>
+            <value />
+        </XmlAttribute>
+        <XmlAttribute>
+            <name>Description</name>
+            <description>Descrição List (Output)</description>
+            <value />
+        </XmlAttribute>
+        <XmlAttribute>
+            <name>Callback</name>
+            <description>Callback List (Output)</description>
+            <value />
+        </XmlAttribute>
+        <XmlAttribute>
+            <name>Metatag</name>
+            <description>Metatag List (Output)</description>
+            <value />
+        </XmlAttribute>
+        <image>series.png</image>
+        <description>Listar Code Templates</description>
+        <i18n>library.dms.block.vfs_list_code_template</i18n>
+    </XmlBlock>
+</XmlLibrary>

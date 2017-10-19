@@ -1,0 +1,14 @@
+	<h2>$messages.getString("admin_nav.title") $navSep $messages.getString("admin_nav.section.resources.title")</h2>
+	
+	<h3>$messages.getString("admin_nav.section.resources.link.stylesheets")</h3>
+	<p>$messages.getString("help.box_dolist.p1")</p>
+	
+	<h3>$messages.getString("admin_nav.section.resources.link.print")</h3>
+	<p>$messages.getString("help.box_dolist.p2")</p>
+	
+	<h3>$messages.getString("admin_nav.section.resources.link.email")</h3>
+	<p>$messages.getString("help.box_dolist.p3", $messages.getString("admin_nav.section.resources.link.print"))</p>
+	
+	<h3>$messages.getString("admin_nav.section.resources.link.public")</h3>
+	<p>$messages.getString("help.box_dolist.p4")</p>
+	

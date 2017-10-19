@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<title>iFlow Login</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<meta http-equiv="Pragma" content="no-cache"/>
+		
+		<link rel="stylesheet" href="Themes/${orgTheme}/css/iflow_main.css" type="text/css">
+	    <link rel="shortcut icon" href="images/favicon.ico" />
+	
+	  <script type="text/javascript" src="javascript/messages.js"> </script><!-- default messages -->
+	  <script type="text/javascript" src="javascript/messages_${lang}.js"> </script><!-- default messages -->
+	  <script type="text/javascript" src="javascript/mootools.js"></script>
+	  <script type="text/javascript" src="javascript/ajax_processing.js"></script>
+	  <script type="text/javascript" src="javascript/iflow_main.js"></script>
+	  <script type="text/javascript" src="javascript/login.js"></script>
+	</head>
+	
+	<body class="lp_body ${maintenance}" >
+	
+		<form name="dados" method="post" action="${dados.action}">
+			<input type="hidden" name="url" value="${dados.url}"/>
+			<input type="hidden" name="${dados.ufidName}" value="${dados.ufidValue}"/>
+			<input type="hidden" name="source" value="internet"/>
+			<input type="hidden" name="is_system" value="false"/>
+			<input type="hidden" name="do_redirect" value="true"/>
+			<input type="hidden" name="url" value="main.jsp"/>
+
+			#if (!$isInstallLocal)
+				<div class="lp_top_nav_pos">
+					<div class="lp_top_nav_text" style="float:left;">
+						<a class="lp_top_nav_link" href="http://www.iflowbpm.com/">iflowbpm.pt</a> 
+						: <a class="lp_top_nav_link" href="register">$msg.get('login.link.register')</a>
+						#if ($useEmail)
+							: <a class="lp_top_nav_link" href="resetPassword">$msg.get('login.link.passwordRecover')</a>
+						#end
+						#if ($isInstallDemo)
+							: <a class="lp_top_nav_link" href="Admin/login.jsp">$msg.get('login.link.admin')</a>
+						#end
+					</div>
+				</div>
+			#end
+			
+			#if ($isInMaintenance)
+				<div>
+					<span class="maintenance_login_message">$msg.get('maintenance.loginMessage')</span>
+				</div>
+			#end
+
+			<div class="lp_login_box_keep_session">
+			    <div class="error_msg lp_error_msg">
+			        #if ($hasError)
+			        	${loginError}
+			        #end
+			    </div>	
+				<div class="user_info lp_field_label">
+					$msg.get('login.field.user')
+				</div>
+				<div class="item lp_field_input">
+					<input type="text" name="login" id="login" value="${login}" size="15" maxlength="100"/>
+				</div>    
+				<div class="user_info lp_field_label">
+					<span id="capsWarn" class="error_msg" style="display:none">Caps&nbsp;ON&nbsp;</span>$msg.get('login.field.password')
+				</div>
+				<div class="item lp_field_input">
+					<input type="password" name="password" id="password" size="15" maxlength="40"/>
+				</div>
+				<div class="user_info lp_field_label">
+    				$msg.get('login.field.keepSession')
+                </div>
+				<div class="item lp_field_input">
+					<input type="checkbox" name="keep_session" id="keep_logged"/>
+                </div>
+				<div class="lp_login_button">
+					<input id="link_search_span" class="regular_button_01" type="button" name="filter" value="Login" onClick="document.dados.submit();" />
+				</div>
+			</div>
+			<div class="lp_footer_nav">
+				<a class="lp_top_nav_link" style="color:#5D7891;" href="http://infosistema.pt">$msg.get('iflow.copyright')</a>
+				<br><span class="lp_top_nav_text ${maintenance}">iFlow Version ${version}</span>
+			</div>
+		</form>
+		<script type="text/javascript">
+			register(document.dados, document.dados.login, document.dados.password);
+		</script>
+		<div id="languages_div">
+			#foreach ($localeKey in $localeKeys)
+				<a href="login.jsp" onclick="setCookie('${localeKey.langCookie}', '${localeKey.loc}');" title="${localeKey.language}" ${localeKey.selected}>
+					${localeKey.language}
+				</a>${localeKey.append}
+			#end
+		</div>
+	</body>
+</html>

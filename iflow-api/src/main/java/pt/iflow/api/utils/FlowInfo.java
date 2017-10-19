@@ -2,11 +2,17 @@ package pt.iflow.api.utils;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Simple bean to share flow data between iFlow and Editor
  * @author oscar
  *
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement
 public class FlowInfo implements Serializable {
   private static final long serialVersionUID = 104L;
   

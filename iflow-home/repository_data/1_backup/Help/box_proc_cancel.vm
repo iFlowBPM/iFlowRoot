@@ -1,0 +1,32 @@
+	<h2>$messages.getString("admin_nav.title") $navSep $messages.getString("admin_nav.section.processes.title") $navSep $messages.getString("admin_nav.section.processes.link.cancel")</h2>
+	
+	<p>$messages.getString("help.box_proc_cancel.concept")</p>
+		
+	<input class="regular_button_01" type="button" value="$messages.getString("button.show")" disabled="disabled"/>	
+	<p>$messages.getString("help.box_proc_cancel.table")</p>
+	<table class="item_list">
+		<tr class="tab_header">
+			<td>$messages.getString("help.box_proc_cancel.header.field")</td>
+			<td>$messages.getString("help.box_proc_cancel.header.description")</td>
+			<td>$messages.getString("help.box_proc_cancel.header.mandatory")</td>
+		</tr>
+		<tr class="tab_row_odd">
+			<td>"$messages.getString("proc_cancel.field.flow")"</td>
+			<td>$messages.getString("help.box_proc_cancel.table.body.flow")</td>
+			<td>$messages.getString("const.yes")</td>
+		</tr>
+		<tr class="tab_row_even">
+			<td>"$messages.getString("proc_cancel.field.pid")"</td>
+			<td>$messages.getString("help.box_proc_cancel.table.body.pid")</td>
+			<td>$messages.getString("const.no")</td>
+		</tr>
+		<tr class="tab_row_odd">
+			<td>"$messages.getString("proc_cancel.field.subpid")"</td>
+			<td>$messages.getString("help.box_proc_cancel.table.body.subpid")</td>
+			<td>$messages.getString("const.no")</td>
+		</tr>
+	</table>
+	
+	<h3>$messages.getString("const.delete")</h3>
+	<img src="images/icon_delete.png" border="0" title="$messages.getString("const.delete")" alt="$messages.getString("const.delete")" />
+	<p>$messages.getString("help.box_proc_cancel.delete")</p>

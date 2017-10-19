@@ -1,0 +1,131 @@
+#if(${procMenuVisible} == "visible")
+
+  <script type="text/javascript">
+    var action;
+    var infoVar;
+  	#if ($showButInfo)
+  	  action = showButInfo();
+	  infoVar = function() {
+		${infoContent}
+	  }
+  	#else
+  	  action = hideButInfo();
+	  infoVar = function() {
+		${infoContent}
+	  }
+  	#end
+  	#if ($tabnr == "3")
+	  window.onload = action();
+	#end
+  	function info() {
+  	  infoVar();
+  	}
+  </script>
+  #if ($tabnr != "10")
+	<h1 id="title_processes">$title</h1>
+	<p>$processesMsg</p>
+  #end
+    
+  #if(${menuStyle} == "tree")
+    <div id="treeDiv$tabnr" class="treeMain"></div>
+      <script>
+        var tree = new YAHOO.widget.TreeView("treeDiv$tabnr");
+
+
+        var rootNode = new YAHOO.widget.TextNode("$rootNodeName", tree.getRoot(), true);
+
+
+        #foreach( $appflow in $appflows )
+           var catname = '$appflow.get("appname")';
+           if (!catname || catname == '')
+             catname = 'Outros';
+           #if ($appflow.selected)
+             var innerNode = new YAHOO.widget.TextNode(catname, rootNode, true);
+           #else
+             var innerNode = new YAHOO.widget.TextNode(catname, rootNode, false);
+           #end
+           #foreach($flow in $appflow.get("flows"))
+             #if ($tabnr == "8")
+                #if ("${flowid}" == "${flow.id}")
+                   var inner2Node = new YAHOO.widget.TextNode('<a href="javascript:open_process_search(8, ${flow.id}, \'$response.encodeURL($url_prefix,'inicio_flow.jsp')\', \'flowid=${flow.id}&flowExecType=SEARCH\',$flow.runMaximized())"><b>${flow.name}</b></a>', innerNode, true);
+                #else
+                   var inner2Node = new YAHOO.widget.TextNode('<a href="javascript:open_process_search(8, ${flow.id}, \'$response.encodeURL($url_prefix,'inicio_flow.jsp')\', \'flowid=${flow.id}&flowExecType=SEARCH\',$flow.runMaximized())">${flow.name}</a>', innerNode, false);
+                #end
+             #else
+	             #if ($tabnr == "10")
+	                #if ("${flowid}" == "${flow.id}")
+	                   var inner2Node = new YAHOO.widget.TextNode('<a href="javascript:open_process_report(10, ${flow.id}, \'$response.encodeURL($url_prefix,'inicio_flow.jsp')\', \'flowid=${flow.id}&flowExecType=REPORT\',$flow.runMaximized())"><b>${flow.name}</b></a>', innerNode, true);
+	                #else
+	                   var inner2Node = new YAHOO.widget.TextNode('<a href="javascript:open_process_report(10, ${flow.id}, \'$response.encodeURL($url_prefix,'inicio_flow.jsp')\', \'flowid=${flow.id}&flowExecType=REPORT\',$flow.runMaximized())">${flow.name}</a>', innerNode, false);
+	                #end
+	             #else
+	                #if ("${flowid}" == "${flow.id}")
+	                   var inner2Node = new YAHOO.widget.TextNode('<a href="javascript:open_process(3, ${flow.id}, \'$response.encodeURL($url_prefix,'inicio_flow.jsp')\', \'flowid=${flow.id}\',$flow.runMaximized())"><b>${flow.name}</b></a>', innerNode, true);
+	                #else
+	                   var inner2Node = new YAHOO.widget.TextNode('<a href="javascript:open_process(3, ${flow.id}, \'$response.encodeURL($url_prefix,'inicio_flow.jsp')\', \'flowid=${flow.id}\',$flow.runMaximized())">${flow.name}</a>', innerNode, false);
+	                #end
+	             #end
+             #end
+           #end
+       #end
+
+       tree.draw();
+     </script>
+  #else
+	#if ($tabnr == "10")
+		<ul>
+		#foreach( $appflow in $appflows )
+			#foreach($flow in $appflow.get("flows"))
+				<li>
+				#if ("${flowid}" == "${flow.id}")
+        			<a id="li_a_${tabnm}_${flow.id}" title="$appflow.get("tooltip_flow")" class="toolTipItemLink li_selected" href="javascript: #if(${tabnm} != "dashboard")selectedItem('${tabnm}', ${flow.id});#end open_process_report(10, ${flow.id}, '$response.encodeURL($url_prefix,'inicio_flow.jsp')', 'flowid=${flow.id}&sel=${flow.id}&flowExecType=REPORT',$flow.runMaximized())">${flow.name}</a>        		
+				#else
+        			<a id="li_a_${tabnm}_${flow.id}" title="$appflow.get("tooltip_flow")" class="toolTipItemLink li_link" href="javascript: #if(${tabnm} != "dashboard")selectedItem('${tabnm}', ${flow.id});#end open_process_report(10, ${flow.id}, '$response.encodeURL($url_prefix,'inicio_flow.jsp')', 'flowid=${flow.id}&flowExecType=REPORT',$flow.runMaximized())">${flow.name}</a>
+	        	#end 
+				</li>
+			#end
+			#foreach($link in $appflow.get("links"))
+				<li>
+					<a title="$appflow.get("tooltip_link")" class="toolTipItemLink li_link" target="_blank" href="$response.encodeURL(${link.url})">${link.text}</a>
+				</li>
+			#end
+		#end
+		</ul>
+	#end
+	#if ($tabnr != "10")
+		#foreach( $appflow in $appflows )
+    	  <h2 onclick="javascript:toggleItemBox('$tabnm', document.getElementById('flow_cat_${tabnm}_${appflow.get("appname")}'))">
+    		${appflow.get("appname")}
+	    	<img id="flow_cat_${tabnm}_${appflow.get("appname")}" class="item_title_show" src="images/minus.png" #if($orgTheme == "classic") style="display: none;" #end/>
+    	  </h2>
+	      <ul id="flow_cat_${tabnm}_${appflow.get("appname")}_body">
+			#foreach($flow in $appflow.get("flows"))
+        		<li>
+	        	    #if ($tabnr == "8")
+	        			#if ("${flowid}" == "${flow.id}")
+        				<a id="li_a_${tabnm}_${flow.id}" title="$appflow.get("tooltip_flow")" class="toolTipItemLink li_selected" href="javascript: #if(${tabnm} != "dashboard")selectedItem('${tabnm}', ${flow.id});#end open_process_search(8, ${flow.id}, '$response.encodeURL($url_prefix,'inicio_flow.jsp')', 'flowid=${flow.id}&sel=${flow.id}&flowExecType=SEARCH',$flow.runMaximized())">${flow.name}</a>        		
+						#else
+    	    			<a id="li_a_${tabnm}_${flow.id}" title="$appflow.get("tooltip_flow")" class="toolTipItemLink li_link" href="javascript: #if(${tabnm} != "dashboard")selectedItem('${tabnm}', ${flow.id});#end open_process_search(8, ${flow.id}, '$response.encodeURL($url_prefix,'inicio_flow.jsp')', 'flowid=${flow.id}&flowExecType=SEARCH',$flow.runMaximized())">${flow.name}</a>
+	    	    		#end 
+					#else
+        				#if ("${flowid}" == "${flow.id}")
+        					<a id="li_a_${tabnm}_${flow.id}" title="$appflow.get("tooltip_flow")" class="toolTipItemLink li_selected" href="javascript: #if(${tabnm} != "dashboard")selectedItem('${tabnm}', ${flow.id});#end open_process(3, ${flow.id}, '$response.encodeURL($url_prefix,'inicio_flow.jsp')', 'flowid=${flow.id}&sel=${flow.id}',$flow.runMaximized())">${flow.name}</a>        		
+						#else
+    		    			<a id="li_a_${tabnm}_${flow.id}" title="$appflow.get("tooltip_flow")" class="toolTipItemLink li_link" href="javascript: #if(${tabnm} != "dashboard")selectedItem('${tabnm}', ${flow.id});#end open_process(3, ${flow.id}, '$response.encodeURL($url_prefix,'inicio_flow.jsp')', 'flowid=${flow.id}',$flow.runMaximized())">${flow.name}</a>
+        				#end 
+        			#end 
+	        	</li>
+			#end
+			#foreach($link in $appflow.get("links"))
+        		<li>
+        			<a title="$appflow.get("tooltip_link")" class="toolTipItemLink li_link" target="_blank" href="$response.encodeURL(${link.url})">${link.text}</a>
+	        	</li>
+			#end
+		  </ul>      
+		#end
+	#end
+  #end
+
+#end
+  
+  

@@ -1,0 +1,9 @@
+    <h2>$messages.getString("help.concepts_flow.title")</h2>
+    <p>$messages.getString("help.concepts_flow.concept.p1")</p>
+    <p>$messages.getString("help.concepts_flow.concept.p2")</p>
+    <p>$messages.getString("help.concepts_flow.concept.p3")</p>
+    <p>$messages.getString("help.concepts_flow.concept.p4")</p>
+    <p>$messages.getString("help.concepts_flow.concept.p5")</p>
+    <p>$messages.getString("help.concepts_flow.concept.p6")</p>
+    <p>$messages.getString("help.concepts_flow.concept.p7")</p>
+    

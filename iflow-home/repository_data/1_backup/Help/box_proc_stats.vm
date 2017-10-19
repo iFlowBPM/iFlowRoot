@@ -1,0 +1,16 @@
+	
+	<div class="help_item_img">
+		<h2><img class="icon" src="images/report.png"/> $messages.getString("reports_nav.title") $navSep $messages.getString("reports_nav.section.statistics.title") $navSep $messages.getString("reports_nav.section.statistics.link")</h2>
+	</div>
+	<p />
+	<p>$messages.getString("help.box_proc_stats.concept.p1", [$messages.getString("proc_stats.process.open"), $messages.getString("proc_stats.process.closed"), $messages.getString("proc_stats.process.treated")])</p>
+	<p>$messages.getString("help.box_proc_stats.concept.p2", [$messages.getString("proc_stats.field.time"), $messages.getString("AuditChartServlet.44"), $messages.getString("AuditChartServlet.45"), $messages.getString("AuditChartServlet.46"), $messages.getString("AuditChartServlet.47"), $messages.getString("const.choose")])</p>
+
+	<h3>$messages.getString("proc_stats.process.open")</h3>
+	<p>$messages.getString("help.box_proc_stats.open", $messages.getString("proc_stats.process.open"))</p>
+	
+	<h3>$messages.getString("proc_stats.process.closed")</h3>
+	<p>$messages.getString("help.box_proc_stats.closed", $messages.getString("proc_stats.process.closed"))</p>
+	
+	<h3>$messages.getString("proc_stats.process.treated")</h3>
+	<p>$messages.getString("help.box_proc_stats.treated", $messages.getString("proc_stats.process.treated"))</p>

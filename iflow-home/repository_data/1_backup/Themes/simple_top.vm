@@ -1,0 +1,30 @@
+<html>
+<head>
+  <title>iFlow - $title</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Pragma" content="no-cache"/>
+  <link rel="stylesheet" href="$css" type="text/css"/>    
+</head>
+<body leftmargin="0" bgcolor="#e3e3e3" text="#000000" topmargin="0" marginwidth="0" marginheight="0">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" height="100%">
+  <tr>
+    <td width="100%" height="40">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" height="40" bgcolor="#006597">
+        <tr>
+          <td>
+          <table width="100%" border="0" cellspacing="0" cellpadding="0" >
+            <tr>
+				<td bgcolor="#cccccc" valign="middle" height="20" class="v10AZU">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$title</td>
+              	<td bgcolor="#cccccc" valign="middle" align="right" height="20" class="v10bAZUdec">
+                <a href="javascript:window.close();">Fechar</a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              </td>
+            </tr>
+          </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+    <tr>
+    <td width="100%" height="100%" bgcolor="#e3e3e3">

@@ -1,0 +1,203 @@
+#macro( item $item) 
+	<td class="v10AZU" align="center">$item
+	</td>
+#end
+#macro( header_item $item) 
+	<td class="v10bBRAdec" align="center">$item
+	</td>
+#end
+#macro (item_more $item)
+	<tr>
+		<td class="v10AZU" align="right">
+			<a href="$item">mais...
+			</a>
+		</td>
+	</tr>
+#end
+<table border="0"  align="center">
+<tr>
+		<!-- TABELA DE PROCESSOS -->
+		<td valign="top">			
+			<table border="1" width="100%">
+				<tr bgcolor="#4b6e98">
+					<td class="v13bBRAN" valign="bottom">
+						<a href="$response.encodeURL($url_prefix,'flows.jsp')?ts=$ts">&nbsp;Fluxos
+						</a>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<table border="0" cellspacing="0" cellpadding="4" align="center" bordercolor="#ffffff" bordercolorlight="#ffffff" bordercolordark="#e3e3e3" width="100%">
+							#if($flowsSize > 0)
+								#foreach( $flow in $flows ) 
+									<tr>
+										#if($flow.isOnline())
+											#item("<a href='$response.encodeURL($url_prefix,'inicio_flow.jsp')?flowid=$flow.getId()&ts=$ts'>$flow.getName()</a>")
+											#else
+												#item("$flow.getName()&nbsp;(offline)")
+										#end
+									</tr>
+								#end
+								#if($hasMoreFlows)
+									#item_more("$response.encodeURL($url_prefix,'flows.jsp')?ts=$ts")
+								#end
+								#else
+									<tr>
+										<td class="txtVERM">&nbsp;&nbsp;&nbsp;&nbsp;N&atilde;o existem fluxos
+										</td>
+									</tr>
+							#end
+						</table>
+					</td>
+				</tr>
+			</table>
+		</td>
+		<!-- FIM TABELA DE PROCESSOS -->
+</tr>
+	<tr>
+		<!-- TABELA DE TAREFAS -->
+		<td valign="top">
+			<table border="1">
+				<tr bgcolor="#4b6e98">
+					<td class="v13bBRAN">
+						<a href="$response.encodeURL($url_prefix,'actividades.jsp')?ts=$ts">&nbsp;Tarefas Pendentes
+						</a>
+					</td>
+				</tr>
+				#if($activitiesSize > 0)
+					<tr>
+						<td>
+							<table border="0">
+								#foreach( $flow in $flows ) 
+								<tr>
+										<td class="v12bAZU">$flow.getName()
+										</td>
+								</tr>
+								<tr>
+									<td >
+										<table border="1">
+											<tr bgcolor="#4b6e98">
+												#header_item("Processo")
+												#header_item("SubProcesso")
+												#header_item("Assunto")
+												#header_item("Chegada")
+											</tr>
+											#set($flow_acts = $activities.get($flow.getId()))
+												#foreach( $act in  $flow_acts)
+													<tr>
+														#item("<a href='$response.encodeURL($url_prefix,'actividades.jsp')?activity=$flow.getId()_$act.getPid()_$act.getSubpid()&ts=$ts'>$act.getPid()</a>")
+														#item("<a href='$response.encodeURL($url_prefix,'actividades.jsp')?activity=$flow.getId()_$act.getPid()_$act.getSubpid()&ts=$ts'>$act.getSubpid()</a>")
+														#item("<a href='$response.encodeURL($url_prefix,'actividades.jsp')?activity=$flow.getId()_$act.getPid()_$act.getSubpid()&ts=$ts'>$act.getDescription()</a>")
+														#item("<a href='$response.encodeURL($url_prefix,'actividades.jsp')?activity=$flow.getId()_$act.getPid()_$act.getSubpid()&ts=$ts'>$act.getCreated()</a>")
+													</tr>
+												#end	
+										</table>
+									</td>
+								</tr>
+								<tr>	
+									<td>&nbsp;
+									</td>	
+								</tr>	
+								#end
+							</table>
+						</td>
+					</tr>
+				#end
+			</table>
+		</td>
+		<!-- FIM TABELA DE TAREFAS -->
+		<!-- TABELA DE DELEGACOES -->
+		<td valign="top">
+			<table border="1">
+				<tr bgcolor="#4b6e98">
+					<td class="v13bBRAN" valign="bottom">
+						<a href="$response.encodeURL($url_prefix,'gestao_tarefas.jsp')?ts=$ts">&nbsp;Delega&ccedil;&otilde;es
+						</a>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<table border="0" cellspacing="0" cellpadding="4" align="center" bordercolor="#ffffff" bordercolorlight="#ffffff" bordercolordark="#e3e3e3" width="100%">
+							<tr>
+								<td class="v12bAZU" valign="bottom">&nbsp;&nbsp;Recebidas	
+								</td>
+							</tr>
+							#if($receivedSize > 0)							
+								<tr>
+									<td>
+										<table border="1" width="100%" cellspacing="0" cellpadding="4" align="center" bordercolor="#ffffff" bordercolorlight="#ffffff" bordercolordark="#e3e3e3">
+											<tr bgcolor="#4b6e98">
+												#header_item("Dono")											
+												#header_item("Fluxo")											
+												#header_item("Data de Fim")											
+												#header_item("&nbsp;")											
+												#header_item("&nbsp;")											
+											</tr>
+											#foreach( $received in $receivedDelegs ) 
+												<tr>
+													#item($received.getOwnerID())
+													#item($received.getFlowID())
+													#item($received.getExpires())
+													#item("<a href='$response.encodeURL($url_prefix,'confirmar_agendamento.jsp')?id=$received.getHierarchyID()&owner=$received.getOwnerID()&key=$received.getAcceptKey()'>Aceitar</a>")
+													#item("<a href='$response.encodeURL($url_prefix,'confirmar_agendamento.jsp')?id=$received.getHierarchyID()&owner=$received.getOwnerID()&key=$received.getRejectKey()'>Recusar</a>")
+												</tr>
+											#end				
+										</table>
+									</td>
+								</tr>
+								#if($hasMoreReceived)
+									#item_more("$response.encodeURL($url_prefix,'gestao_tarefas.jsp')?ts=$ts")
+								#end 
+								#else
+									<tr>
+										<td class="txtVERM">&nbsp;&nbsp;&nbsp;&nbsp;N&atilde;o existem delega&ccedil;&otilde;es recebidas
+										</td>
+									</tr>
+							#end
+							<tr>
+								<td class="v12bAZU" valign="bottom">&nbsp;&nbsp;Enviadas
+								</td>
+							</tr>
+							#if($sentSize > 0)		
+								<tr id="aceitarrecusar">
+									<td>
+										<table border="1" width="100%" cellspacing="0" cellpadding="4" align="center" bordercolor="#ffffff" bordercolorlight="#ffffff" bordercolordark="#e3e3e3">
+											<tr bgcolor="#4b6e98">
+												#header_item("Dono")	
+												#header_item("Fluxo")	
+												#header_item("Colega")	
+												#header_item("Estado")	
+												#header_item("&nbsp;")	
+											</tr>
+											#foreach( $sent in $sentDelegs ) 
+												<tr>
+													#item($sent.getOwnerID())
+													#item($sent.getFlowID())
+													#item($sent.getUserID())
+													#if ($sent.getPending() == 0)
+														#item("Agendado")
+														#else
+															#item("Pendente")
+													#end
+													#item("<a href='#'>Terminar</a>")
+												</tr>
+											#end
+										</table>
+									</td>
+								</tr>
+								#if($hasMoreSent)
+									#item_more("$response.encodeURL($url_prefix,'gestao_tarefas.jsp')?ts=$ts")
+								#end 
+								#else
+									<tr>
+										<td class="txtVERM">&nbsp;&nbsp;&nbsp;&nbsp;N&atilde;o existem delega&ccedil;&otilde;es enviadas
+										</td>
+									</tr>
+							#end
+						</table>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>

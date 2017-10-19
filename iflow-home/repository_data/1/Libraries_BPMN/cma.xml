@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<processdata fid="159" pid="235607" spid="1" pnumber="235607"
+	creator="julia.augusto" creationDate="2015-08-07T13:27:24Z"
+	currentUser="ricardo.aparicio" lastUpdate="2015-08-12T17:57:19Z"
+	closed="0" xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns='http://www.iflow.pt/ProcessData'
+	xsi:schemaLocation='http://www.iflow.pt/ProcessData processdata.xsd'>
+	<a n="Aprovisionamento">Aprovisionamento</a>
+	<a n="Arquivo">Arquivo</a>
+	<a n="CMA@DF_Cont_Adm_Direta">CMA@DF_Cont. Adm Directa</a>
+	<a n="CMA@DJ_Actas">CMA@DJ_Actas</a>
+	<a n="Flag_Exp">100000000000000000000</a>
+	<a n="MAX_RESULTADOS">100000000000002000000</a>
+	<a n="PROCESS_SAVED">1</a>
+	<a n="accao_definida">100000000000000000000</a>
+	<a n="accao_executar_ant">Op&#231;&#227;o de decis&#227;o</a>
+	<a n="accao_resultado">Encaminhado</a>
+	<a n="accao_titulo">0</a>
+	<a n="alerta">0</a>
+	<a n="antigo">1</a>
+	<a n="area_processo">-1</a>
+	<a n="assoc_proc_existente">N&#227;o</a>
+	<a n="assunto">tradu&#231;&#227;o de textos de car&#237;z turistico para
+		ingl&#234;s</a>
+	<a n="auxPrioridade">Normal</a>
+	<a n="botao_accao">registar</a>
+	<a n="btAux">100000000000000000000</a>
+	<a n="categoria">1</a>
+	<a n="categoria_desc">-Escolha uma categoria-</a>
+	<a n="cntFecharArea">100000000000000000000</a>
+	<a n="comentario">Proposta Empresa Gravity</a>
+	<a n="consultar_tarefa">0</a>
+	<a n="cont">100000000000000000000</a>
+	<a n="conta_tit">100000000000000100000</a>
+	<a n="criar_novo_processo">100000000000000000000</a>
+	<a n="data">2015-08-07</a>
+	<a n="data_criacao">07082015132725193</a>
+	<a n="data_txt_criacao">//</a>
+	<a n="dh_encaminhamento">07082015132923371</a>
+	<a n="docs_no_alfresco">100000000000000000000</a>
+	<a n="dogu_notificacao_prazo">100000000000000000000</a>
+	<a n="encComConhecimento">100000000000000000000</a>
+	<a n="encaminhar_para">INDEF</a>
+	<a n="encaminhar_para_grupo">INDEF</a>
+	<a n="enviado_expediente">100000000000000000000</a>
+	<a n="flagActualizacaoDB">100000000000000100000</a>
+	<a n="flagBloco2">100000000000000100000</a>
+	<a n="flagEncaminhamento">100000000000000100000</a>
+	<a n="flagExpediente">100000000000000000000</a>
+	<a n="flagFecharArea">100000000000000000000</a>
+	<a n="flagOrdemExec">100000000000000000000</a>
+	<a n="flag_assoc_docs">100000000000000000000</a>
+	<a n="flag_procurou_entidade">100000000000000000000</a>
+	<a n="flowid_tarefa_colaborativa">100000000000009000000</a>
+	<a n="fluxo">159</a>
+	<a n="guardar_em">INDEF</a>
+	<a n="hasCM">N&#227;o</a>
+	<a n="hasCMRL">100000000000000000000</a>
+	<a n="hortasArquivo">0</a>
+	<a n="idDetalhe">100000000000000200000</a>
+	<a n="ja_foste">1</a>
+	<a n="macro_perfil">100000000000000200000</a>
+	<a n="mostrar_encaminhamento">100000000000000000000</a>
+	<a n="mostrar_ri">100000000000000000000</a>
+	<a n="msgBloco">Cabimenta&#231;&#227;o e autoriza&#231;&#227;o de despesas</a>
+	<a n="msgEnc"> / | </a>
+	<a n="myuser_expediente">100000000000000000000</a>
+	<a n="nivelPrioridade">Normal</a>
+	<a n="nota_pisco">0</a>
+	<a n="novo">1</a>
+	<a n="novoTitulo">Cabimenta&#231;&#227;o e autoriza&#231;&#227;o de despesas</a>
+	<a n="novo_processo">100000000000000000000</a>
+	<a n="num_docs_expediente">100000000000000000000</a>
+	<a n="numero_processo">PG11715/2015</a>
+	<a n="pasta_processo_documentos">/PG11715/2015//Documentos</a>
+	<a n="perfil_digitalizacao">Expediente</a>
+	<a n="permAcesso">Geral</a>
+	<a n="pid_origem">000000000000000100000</a>
+	<a n="pidficha">100000000000000000000</a>
+	<a n="pre_arquivo">pre-arquivo</a>
+	<a n="regista_atendimento">100000000000000000000</a>
+	<a n="sem_assoc">100000000000000000000</a>
+	<a n="server">192.168.1.46</a>
+	<a n="servicoOrigem">ADM@Desenvolvimento econ&#243;mico</a>
+	<a n="subpid_default">100000000000000100000</a>
+	<a n="tarefa_atribuida">julia.augusto</a>
+	<a n="termo">- Escolha -</a>
+	<a n="tipo_pesquisa">servicos</a>
+	<a n="tituloOrigem">Cabimenta&#231;&#227;o e autoriza&#231;&#227;o de despesas</a>
+	<a n="unitid">-10</a>
+	<a n="user_dmt">100000000000000000000</a>
+	<a n="user_expediente">100000000000000000000</a>
+	<a n="user_previo_aux">ricardo.aparicio</a>
+	<a n="utilizador_previo">ricardo.aparicio</a>
+	<a n="validEncaminhar">100000000000000000000</a>
+	<a n="vem_de">julia.augusto</a>
+	<a n="vem_do_expediente">100000000000000000000</a>
+	<a n="vem_lista_users">100000000000000000000</a>
+	<a n="vindo_de_processo">100000000000000100000</a>
+	<l n="accao" s="0"></l>
+	<l n="accaoPDF" s="0"></l>
+	<l n="accao_lfid" s="0"></l>
+	<l n="accao_titulo" s="0"></l>
+	<l n="accoes" s="4">
+		<i p="0">Encaminhado para ricardo.aparicio</i>
+		<i p="1">Informado</i>
+		<i p="2">Encaminhado para julia.augusto</i>
+		<i p="3">Informado</i>
+	</l>
+	<l n="array_pastas_requerimentos" s="0"></l>
+	<l n="array_teste" s="0"></l>
+	<l n="assDoc" s="0"></l>
+	<l n="assuntoDocList" s="0"></l>
+	<l n="assuntoDocsExp" s="0"></l>
+	<l n="auxNotif" s="0"></l>
+	<l n="comentario_reabertura" s="0"></l>
+	<l n="comentarios" s="4">
+		<i p="0">No seguimento da necessidade da tradu&#231;&#227;o de textos de
+			cariz tur&#237;stico procedeu-se a consulta tendo recebido propostas
+			de duas entidades. Tendo em conta os valores totais e o numero de
+			palavras verificou-se que uma das propostas apresenta o custo de
+			tradu&#231;&#227;o, por palavra, de 0,10&#8364; e a outra de
+			0,07&#8364;. Ap&#243;s contagem de palavras ao documento,
+			totalizou-se 16200 palavras pelo que o servi&#231;o custar&#225;
+			1134&#8364; acrescido de IVA a 23%. Sugere-se a adjudica&#231;&#227;o
+			do servi&#231;o &#224; proposta economicamente mais vantajosa, de
+			apenas 0,07&#8364; por palavra, apresentada por Helen Carter.
+			Seguem juntamente as certid&#245;es de n&#227;o d&#237;vida &#224;
+			Seguran&#231;a Social e &#224;s Finan&#231;as. Os dados para abertura
+			da ficha de fornecedor constam no ficheiro &quot;proposta de
+			tradu&#231;&#227;o Helen atualiza&#231;&#227;o palavras&quot;.</i>
+		<i p="1">Julia, faltam anexar as propostas bem como as certid&#245;es de
+			n&#227;o d&#237;vida &#224; Seguran&#231;a Social e &#224;s
+			Finan&#231;as.
+			Obrigado.
+		</i>
+		<i p="3">Proposta Empresa Gravity</i>
+	</l>
+	<l n="criadosNovo" s="0"></l>
+	<l n="critList_SearchFieldIdxs" s="0"></l>
+	<l n="critList_SearchFieldNames" s="0"></l>
+	<l n="critList_SearchFields" s="0"></l>
+	<l n="dataDocsExp" s="0"></l>
+	<l n="dataEntradaList" s="0"></l>
+	<l n="data_reabertura" s="0"></l>
+	<l n="datas_averbamento" s="0"></l>
+	<l n="datas_docs" s="0"></l>
+	<l n="datas_docs_oculto" s="0"></l>
+	<l n="datas_intervencao" s="4">
+		<i p="0">07082015143647516</i>
+		<i p="1">11082015232015410</i>
+		<i p="2">11082015232033000</i>
+		<i p="3">12082015175719574</i>
+	</l>
+	<l n="datas_ocultos" s="0"></l>
+	<l n="descLstOpcoes" s="0"></l>
+	<l n="detalhe" s="0"></l>
+	<l n="detalhe_assoc" s="0"></l>
+	<l n="detalhe_fid" s="0"></l>
+	<l n="detalhe_pid" s="0"></l>
+	<l n="dlinha" s="0"></l>
+	<l n="docDB" s="0"></l>
+	<l n="doc_requerimento" s="0"></l>
+	<l n="docsAnexos" s="0"></l>
+	<l n="docsAnexos2" s="0"></l>
+	<l n="docsAssinados" s="0"></l>
+	<l n="docsEmail" s="0"></l>
+	<l n="docsEmailStr" s="0"></l>
+	<l n="docsExp" s="0"></l>
+	<l n="docsProc" s="0"></l>
+	<l n="docs_assinar_seleccionados" s="1"></l>
+	<l n="docs_assinar_seleccionados_checkedtext" s="0"></l>
+	<l n="docs_expedir_seleccionados" s="0"></l>
+	<l n="docs_expedir_seleccionados_checkedtext" s="0"></l>
+	<l n="documento" s="0"></l>
+	<l n="documento_expediente_tmp" s="0"></l>
+	<l n="documentos_anexar" s="0"></l>
+	<l n="ficheiro" s="1"></l>
+	<l n="ficheiroAss" s="0"></l>
+	<l n="ficheiro_despacho" s="0"></l>
+	<l n="ficheiros" s="0"></l>
+	<l n="ficheiros_oculto" s="0"></l>
+	<l n="fids" s="0"></l>
+	<l n="flowidList" s="0"></l>
+	<l n="idLstOpcoes" s="0"></l>
+	<l n="idNovos" s="0"></l>
+	<l n="idTermos" s="0"></l>
+	<l n="idTitulo" s="4">
+		<i p="0">0</i>
+		<i p="1">1</i>
+		<i p="2">2</i>
+		<i p="3">3</i>
+	</l>
+	<l n="idcivil_cliente_averbamento" s="0"></l>
+	<l n="idcivil_cliente_oculto" s="0"></l>
+	<l n="ids_documentos" s="0"></l>
+	<l n="ids_documentos_entrada_expediente" s="0"></l>
+	<l n="ids_ficheiros_expedir" s="0"></l>
+	<l n="intervenientes" s="4">
+		<i p="0">julia.augusto</i>
+		<i p="1">ricardo.aparicio</i>
+		<i p="2">ricardo.aparicio</i>
+		<i p="3">ricardo.aparicio</i>
+	</l>
+	<l n="lfid" s="0"></l>
+	<l n="link_averbamento" s="0"></l>
+	<l n="listaFicheiros" s="0"></l>
+	<l n="lista_andar_cliente" s="0"></l>
+	<l n="lista_autor" s="0"></l>
+	<l n="lista_bi_cliente" s="0"></l>
+	<l n="lista_cod_post_cliente" s="0"></l>
+	<l n="lista_concelho_cliente" s="0"></l>
+	<l n="lista_data_criacao" s="0"></l>
+	<l n="lista_desig" s="0"></l>
+	<l n="lista_documentos_designacoes" s="0"></l>
+	<l n="lista_documentos_designacoes_2" s="0"></l>
+	<l n="lista_documentos_designacoes_3" s="0"></l>
+	<l n="lista_documentos_designacoes_4" s="0"></l>
+	<l n="lista_documentos_designacoes_5" s="0"></l>
+	<l n="lista_documentos_ids" s="0"></l>
+	<l n="lista_documentos_seleccionados" s="0"></l>
+	<l n="lista_documentos_seleccionados_2" s="0"></l>
+	<l n="lista_documentos_seleccionados_3" s="0"></l>
+	<l n="lista_documentos_seleccionados_4" s="0"></l>
+	<l n="lista_documentos_seleccionados_5" s="0"></l>
+	<l n="lista_documentos_seleccionados_checkedtext" s="0"></l>
+	<l n="lista_documentos_seleccionados_text" s="0"></l>
+	<l n="lista_email_cliente" s="0"></l>
+	<l n="lista_estado_civil_cliente" s="0"></l>
+	<l n="lista_freguesia_cliente" s="0"></l>
+	<l n="lista_idcivil_cliente" s="0"></l>
+	<l n="lista_informacao_despacho" s="0"></l>
+	<l n="lista_lado_cliente" s="0"></l>
+	<l n="lista_localidade_cliente" s="0"></l>
+	<l n="lista_localizacao" s="0"></l>
+	<l n="lista_morada_cliente" s="0"></l>
+	<l n="lista_nif_cliente" s="0"></l>
+	<l n="lista_nome_cliente" s="0"></l>
+	<l n="lista_numero_cliente" s="0"></l>
+	<l n="lista_numero_morada_cliente" s="0"></l>
+	<l n="lista_opcoes_estados_civis" s="0"></l>
+	<l n="lista_opcoes_papeis" s="0"></l>
+	<l n="lista_opcoes_pedidos_textos" s="0"></l>
+	<l n="lista_opcoes_pedidos_valores" s="0"></l>
+	<l n="lista_opcoes_processos_textos" s="0"></l>
+	<l n="lista_opcoes_processos_valores" s="0"></l>
+	<l n="lista_opcoes_seleccionadas" s="0"></l>
+	<l n="lista_profissao_cliente" s="0"></l>
+	<l n="lista_reqs_assuntos" s="0"></l>
+	<l n="lista_reqs_comentarios" s="0"></l>
+	<l n="lista_reqs_fluxos" s="0"></l>
+	<l n="lista_search_assunto" s="0"></l>
+	<l n="lista_search_comentario" s="0"></l>
+	<l n="lista_search_processo" s="0"></l>
+	<l n="lista_search_requerimento" s="0"></l>
+	<l n="lista_search_requerimento_tmp" s="0"></l>
+	<l n="lista_servicos" s="1">
+		<i p="0">ADM@Desenvolvimento econ&#243;mico</i>
+	</l>
+	<l n="lista_subprocessos" s="0"></l>
+	<l n="lista_tarefas_assuntos" s="0"></l>
+	<l n="lista_tarefas_comentarios" s="0"></l>
+	<l n="lista_telefone_cliente" s="0"></l>
+	<l n="lista_telemovel_cliente" s="0"></l>
+	<l n="lista_termos" s="0"></l>
+	<l n="lista_termos_serv" s="0"></l>
+	<l n="lista_tipovia_cliente" s="0"></l>
+	<l n="lista_titulo_serv" s="1">
+		<i p="0">Cabimenta&#231;&#227;o e autoriza&#231;&#227;o de despesas</i>
+	</l>
+	<l n="lista_titulos" s="0"></l>
+	<l n="lista_titulos_vt" s="0"></l>
+	<l n="llocalizacao" s="0"></l>
+	<l n="lpid" s="0"></l>
+	<l n="lst1" s="0"></l>
+	<l n="lst2" s="0"></l>
+	<l n="lst3" s="0"></l>
+	<l n="lst4" s="0"></l>
+	<l n="lstAux" s="0"></l>
+	<l n="lstAuxDecisao" s="0"></l>
+	<l n="lstAuxValDecisao" s="0"></l>
+	<l n="lstColabPerm" s="0"></l>
+	<l n="lstDatasDC" s="0"></l>
+	<l n="lstDescDecisao" s="11">
+		<i p="0">Aprovar</i>
+		<i p="1">N&#227;o aprovar</i>
+		<i p="2">Autorizar</i>
+		<i p="3">N&#227;o autorizar</i>
+		<i p="4">Deferir</i>
+		<i p="5">Indeferir</i>
+		<i p="6">Homologar</i>
+		<i p="7">N&#227;o homologar</i>
+		<i p="8">Admitir comunica&#231;&#227;o pr&#233;via</i>
+		<i p="9">Rejeitar liminarmente</i>
+		<i p="10">N&#227;o admitir comunica&#231;&#227;o pr&#233;via</i>
+	</l>
+	<l n="lstDocDataDB" s="0"></l>
+	<l n="lstDtDocOcult" s="0"></l>
+	<l n="lstDtOrigDocOcult" s="0"></l>
+	<l n="lstGrupo" s="0"></l>
+	<l n="lstID" s="0"></l>
+	<l n="lstIDAssocDocs" s="0"></l>
+	<l n="lstIDsAux" s="0"></l>
+	<l n="lstIDsAux_oculto" s="0"></l>
+	<l n="lstIDsDocsProc" s="0"></l>
+	<l n="lstIDsDocsProc_oculto" s="0"></l>
+	<l n="lstIdDecisao" s="11">
+		<i p="0">10</i>
+		<i p="1">11</i>
+		<i p="2">12</i>
+		<i p="3">13</i>
+		<i p="4">14</i>
+		<i p="5">15</i>
+		<i p="6">16</i>
+		<i p="7">17</i>
+		<i p="8">36</i>
+		<i p="9">39</i>
+		<i p="10">38</i>
+	</l>
+	<l n="lstIntervenientes" s="0"></l>
+	<l n="lstLocais" s="0"></l>
+	<l n="lstLocaisVal" s="0"></l>
+	<l n="lstLocalizacoes" s="0"></l>
+	<l n="lstMotivosDocOcult" s="0"></l>
+	<l n="lstRemovedUsers" s="0"></l>
+	<l n="lstSelecaoAux" s="0"></l>
+	<l n="lstSelecaoAux_checkedtext" s="0"></l>
+	<l n="lstSelecaoAux_oculto" s="0"></l>
+	<l n="lstSendersDC" s="0"></l>
+	<l n="lstSubArea" s="0"></l>
+	<l n="lstUsers" s="0"></l>
+	<l n="lstUsersDC" s="0"></l>
+	<l n="lst_doc_anexos" s="0"></l>
+	<l n="lstassuntorem" s="0"></l>
+	<l n="lstfidpai" s="0"></l>
+	<l n="lstnomerem" s="0"></l>
+	<l n="lstperfis" s="0"></l>
+	<l n="lstpidpai" s="0"></l>
+	<l n="lsttpdoc" s="0"></l>
+	<l n="mail_data" s="0"></l>
+	<l n="mail_enviado_por" s="0"></l>
+	<l n="mail_mensagem" s="0"></l>
+	<l n="mail_telemovel" s="0"></l>
+	<l n="mdocid" s="0"></l>
+	<l n="motivo_ocultar_oculto" s="0"></l>
+	<l n="mydoc" s="0"></l>
+	<l n="nif_cliente_averbamento" s="0"></l>
+	<l n="nif_cliente_oculto" s="0"></l>
+	<l n="nomeFicheiros" s="0"></l>
+	<l n="nomeFicheirosDocid" s="0"></l>
+	<l n="nomeRemetenteList" s="0"></l>
+	<l n="nome_cliente_averbamento" s="0"></l>
+	<l n="nome_cliente_oculto" s="0"></l>
+	<l n="nota_pisco" s="0"></l>
+	<l n="notas" s="1">
+		<i p="0">* Campo de preenchimento obrigat&#243;rio</i>
+	</l>
+	<l n="opcoes_exp_descs" s="0"></l>
+	<l n="opcoes_exp_descs_enviar" s="0"></l>
+	<l n="opcoes_exp_outras" s="0"></l>
+	<l n="opcoes_exp_seleccionadas" s="0"></l>
+	<l n="opcoes_exp_seleccionadas_checkedtext" s="0"></l>
+	<l n="opcoes_expedir" s="0"></l>
+	<l n="ordens_intervencao" s="4">
+		<i p="0">1</i>
+		<i p="1">2</i>
+		<i p="2">3</i>
+		<i p="3">4</i>
+	</l>
+	<l n="passocFilho" s="0"></l>
+	<l n="passocFilho_assuntos" s="0"></l>
+	<l n="passocFilho_datas" s="0"></l>
+	<l n="passocFilho_fid" s="0"></l>
+	<l n="perfis_do_utilizador" s="0"></l>
+	<l n="pidList" s="0"></l>
+	<l n="pids" s="0"></l>
+	<l n="processos_associados" s="0"></l>
+	<l n="processos_associados_2" s="0"></l>
+	<l n="processos_associados_assuntos" s="0"></l>
+	<l n="processos_associados_assuntos_2" s="0"></l>
+	<l n="processos_associados_datas" s="0"></l>
+	<l n="processos_associados_datas_2" s="0"></l>
+	<l n="processos_associados_fid" s="0"></l>
+	<l n="processos_associados_pid" s="0"></l>
+	<l n="processos_associados_pid_2" s="0"></l>
+	<l n="processos_associados_pids" s="0"></l>
+	<l n="refInternaList" s="0"></l>
+	<l n="reg_comentario_exp" s="0"></l>
+	<l n="reg_datas_coment_exp" s="0"></l>
+	<l n="reg_userid_exp" s="0"></l>
+	<l n="registo_accoes" s="0"></l>
+	<l n="remover_novo" s="0"></l>
+	<l n="remover_termos" s="0"></l>
+	<l n="res_CurrentUsers" s="0"></l>
+	<l n="res_FlowIds" s="0"></l>
+	<l n="res_PNumber" s="0"></l>
+	<l n="res_Pid" s="0"></l>
+	<l n="res_Processes" s="0"></l>
+	<l n="res_closed" s="0"></l>
+	<l n="res_createdDates" s="0"></l>
+	<l n="res_creators" s="0"></l>
+	<l n="res_datas" s="0"></l>
+	<l n="res_descriptions" s="0"></l>
+	<l n="res_link" s="0"></l>
+	<l n="res_outrosDados" s="0"></l>
+	<l n="ri_detalhe" s="0"></l>
+	<l n="ri_fids" s="0"></l>
+	<l n="ri_link" s="0"></l>
+	<l n="ri_pids" s="0"></l>
+	<l n="sel1_pisco" s="0"></l>
+	<l n="sel1_pisco_checkedtext" s="0"></l>
+	<l n="sel_pisco" s="0"></l>
+	<l n="sel_pisco_checkedtext" s="0"></l>
+	<l n="sms_data" s="0"></l>
+	<l n="sms_enviado_por" s="0"></l>
+	<l n="sms_mensagem" s="0"></l>
+	<l n="sms_telemovel" s="0"></l>
+	<l n="subAreaList" s="0"></l>
+	<l n="subordinados" s="0"></l>
+	<l n="termosExiste" s="0"></l>
+	<l n="tosign" s="0"></l>
+	<l n="tosignMail" s="0"></l>
+	<l n="tosignMail_checkedtext" s="0"></l>
+	<l n="tosign_checkedtext" s="0"></l>
+	<l n="user_q_ocultou" s="0"></l>
+	<l n="user_reabertura" s="0"></l>
+	<l n="userarray" s="0"></l>
+	<l n="usersids_docs" s="0"></l>
+	<l n="usersids_docs_oculto" s="0"></l>
+	<l n="utilizador_averbamento" s="0"></l>
+	<l n="utilizador_ocultos" s="0"></l>
+	<l n="view_lfid" s="0"></l>
+	<l n="view_lpid" s="0"></l>
+	<d n="PROCESS_NOT_IN_CREATOR">true</d>
+</processdata>

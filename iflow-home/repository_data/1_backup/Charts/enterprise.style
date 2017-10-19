@@ -1,0 +1,20 @@
+# Embedded color loader
+chart.style.loader=color
+chart.style.show.border=true
+chart.style.font=Verdana;bold;12
+chart.style.colors=10
+chart.style.color.0=16;00;B8;2E
+chart.style.color.1=16;ff;66;33
+chart.style.color.2=16;F5;B0;00
+chart.style.color.3=16;33;CC;FF
+chart.style.color.4=16;66;33;FF
+chart.style.color.5=16;B8;8A;00
+chart.style.color.6=16;00;B8;8A
+chart.style.color.7=16;B8;00;2E
+chart.style.color.8=16;00;8A;B8
+chart.style.color.9=16;00;B8;F5
+chart.style.background.color=16;ed;f0;f4
+chart.style.plot.background.color=16;ff;ff;ff
+# gray
+chart.style.legend.background.color=16;ed;f0;f4
+

@@ -30,10 +30,9 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableModel;
+import javax.xml.bind.JAXBException;
 
 import org.apache.commons.lang.StringUtils;
-import org.exolab.castor.xml.MarshalException;
-import org.exolab.castor.xml.ValidationException;
 import org.jdesktop.swingx.JXDatePicker;
 import org.jdesktop.swingx.JXTable;
 
@@ -171,7 +170,7 @@ public class AlteraAtributosDocumentList extends AlteraAtributosDMS {
       pack();
       setSize(600, 400);
       setVisible(true);
-    } catch (MarshalException e) {
+    } catch (JAXBException e) {
       adapter.log(adapter.getString("AlteraAtributosDocumentDMS.error.main.message"), e);
       JOptionPane.showMessageDialog(this, adapter.getString("AlteraAtributosDocumentDMS.error.main.message"), adapter
           .getString("AlteraAtributosDocumentDMS.error.main.title"), JOptionPane.ERROR_MESSAGE);
@@ -221,7 +220,7 @@ public class AlteraAtributosDocumentList extends AlteraAtributosDMS {
     return exitStatus;
   }
 
-  private void jbInit() throws MarshalException, ValidationException {
+  private void jbInit() throws JAXBException {
     JTabbedPane tabbedPane = new JTabbedPane();
     tabbedPane.addTab(adapter.getString("AlteraAtributosDocumentDMS.tab.input"), prepareInputPanel());
     tabbedPane.addTab(adapter.getString("AlteraAtributosDocumentDMS.tab.output"), prepareOutputPanel());
