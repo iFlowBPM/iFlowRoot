@@ -15,9 +15,9 @@ import pt.iflow.api.processdata.ProcessData;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.UserInfoInterface;
 import pt.iflow.api.xml.FlowMarshaller;
-import pt.iflow.api.xml.codegen.flow.XmlAttribute;
-import pt.iflow.api.xml.codegen.flow.XmlCatalogVarAttribute;
-import pt.iflow.api.xml.codegen.flow.XmlCatalogVars;
+import pt.iflow.api.xml.codegen.flow.XmlAttributeType;
+import pt.iflow.api.xml.codegen.flow.XmlCatalogVarAttributeType;
+import pt.iflow.api.xml.codegen.flow.XmlCatalogVarsType;
 import pt.iflow.api.xml.codegen.flow.XmlFlow;
 
 @Deprecated
@@ -80,16 +80,16 @@ public class BlockSubFlowIn extends Block {
           HashMap<String,String> hmValues = new HashMap<String, String>();
           byte [] sXml = BeanFactory.getFlowHolderBean().readSubFlowData(userInfo, this.getSubFlowFilename());
           XmlFlow xmlSubFlow = FlowMarshaller.unmarshal(sXml);
-          XmlCatalogVars xmlCatalog = xmlSubFlow.getXmlCatalogVars();
-          if(xmlCatalog.getXmlAttributeCount() > 0 && xmlCatalog.getXmlCatalogVarAttributeCount() == 0) {
-            for (int i = 0; i < xmlCatalog.getXmlAttributeCount(); i++) {
-              XmlAttribute attr = xmlCatalog.getXmlAttribute(i);
+          XmlCatalogVarsType xmlCatalog = xmlSubFlow.getXmlCatalogVars();
+          if(xmlCatalog.getXmlAttribute().size() > 0 && xmlCatalog.getXmlCatalogVarAttribute().size() == 0) {
+            for (int i = 0; i < xmlCatalog.getXmlAttribute().size(); i++) {
+              XmlAttributeType attr = xmlCatalog.getXmlAttribute().get(i);
               hmVars.put(attr.getName(), attr.getDescription());
               hmValues.put(attr.getName(), attr.getValue());
             }
           } else {
-            for (int i = 0; i < xmlCatalog.getXmlCatalogVarAttributeCount(); i++) {
-              XmlCatalogVarAttribute attr = xmlCatalog.getXmlCatalogVarAttribute(i);
+            for (int i = 0; i < xmlCatalog.getXmlCatalogVarAttribute().size(); i++) {
+              XmlCatalogVarAttributeType attr = xmlCatalog.getXmlCatalogVarAttribute().get(i);
               hmVars.put(attr.getName(), attr.getDataType());
               hmValues.put(attr.getName(), attr.getInitVal());
             }

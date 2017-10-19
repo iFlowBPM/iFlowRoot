@@ -54,11 +54,6 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>castor</groupId>
-			<artifactId>castor</artifactId>
-			<type>jar</type>
-		</dependency>
-		<dependency>
 			<groupId>commons-discovery</groupId>
 			<artifactId>commons-discovery</artifactId>
 			<type>jar</type>
@@ -154,6 +149,49 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-xjc-plugin</artifactId>
+				<version>2.7.0</version>
+				<configuration>
+					<extensions>
+						<extension>org.apache.cxf.xjcplugins:cxf-xjc-dv:2.7.0</extension>
+						<extension>net.java.dev.jaxb2-commons:jaxb-fluent-api:2.1.8</extension>
+					</extensions>
+				</configuration>
+				<executions>
+					<execution>
+						<id>generate-sources</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>xsdtojava</goal>
+						</goals>
+						<configuration>
+							<sourceRoot>${basedir}/target/generated-sources/cxf/schemas</sourceRoot>
+							<xsdOptions>						
+								<xsdOption>
+									<extension>true</extension>
+									<xsd>${basedir}/src/main/resources/color2.xsd</xsd>
+									<packagename>pt.iflow.editor.xml.codegen.color</packagename>
+									<extensionArgs>
+                                    	<extensionArg>-Xdv</extensionArg>
+										<extensionArg>-Xfluent-api</extensionArg>
+                                	</extensionArgs>
+								</xsdOption>
+								<xsdOption>
+									<extension>true</extension>
+									<xsd>${basedir}/src/main/resources/tipoLetra.xsd</xsd>
+									<packagename>pt.iflow.editor.xml.codegen.letter</packagename>
+									<extensionArgs>
+                                    	<extensionArg>-Xdv</extensionArg>
+										<extensionArg>-Xfluent-api</extensionArg>
+                                	</extensionArgs>
+								</xsdOption>
+							</xsdOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>

@@ -112,11 +112,7 @@
             #if($has_appname)
 			 <td align="center"><a $style_read href="javascript:open_process(2, $act.get("flowid"), '$response.encodeURL($url_prefix,$act.get("uri"))','flowid=$act.get("flowid")&pid=$act.get("pid")&subpid=$act.get("subpid")&ts=$ts', $act.get("runMax"));">$act.get("appname")</a></td>
 			#end
-			 <td align="center">
-			 	#if($act.get("flowType").equals("D"))
-				 <img class="toolTipImg" src="images/flow_type_D.png" border="0"/qu>
-				#end			 				 
-			 	<a $style_read href="javascript:open_process(2, $act.get("flowid"), '$response.encodeURL($url_prefix,$act.get("uri"))','flowid=$act.get("flowid")&pid=$act.get("pid")&subpid=$act.get("subpid")&ts=$ts', $act.get("runMax"));">
+			 <td align="center"><a $style_read href="javascript:open_process(2, $act.get("flowid"), '$response.encodeURL($url_prefix,$act.get("uri"))','flowid=$act.get("flowid")&pid=$act.get("pid")&subpid=$act.get("subpid")&ts=$ts', $act.get("runMax"));">
 			 #if($act.get("delegated") == "1")
 			   <img src="$response.encodeURL($url_prefix,'images/icon_delegations.png')" alt="$act.get("delegated_alt")" style="border:none; float:left;" />
 			 #end

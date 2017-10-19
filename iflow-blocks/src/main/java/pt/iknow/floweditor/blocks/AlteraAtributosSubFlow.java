@@ -15,14 +15,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-
-import org.exolab.castor.xml.MarshalException;
-import org.exolab.castor.xml.ValidationException;
+import javax.xml.bind.JAXBException;
 
 import pt.iflow.api.xml.FlowMarshaller;
-import pt.iflow.api.xml.codegen.flow.XmlAttribute;
-import pt.iflow.api.xml.codegen.flow.XmlCatalogVarAttribute;
-import pt.iflow.api.xml.codegen.flow.XmlCatalogVars;
+import pt.iflow.api.xml.codegen.flow.XmlAttributeType;
+import pt.iflow.api.xml.codegen.flow.XmlCatalogVarAttributeType;
+import pt.iflow.api.xml.codegen.flow.XmlCatalogVarsType;
 import pt.iknow.floweditor.Atributo;
 import pt.iknow.floweditor.FlowEditorAdapter;
 import pt.iknow.floweditor.IDesenho;
@@ -512,27 +510,26 @@ public class AlteraAtributosSubFlow extends AbstractAlteraAtributos implements A
       byte[] bXml = adapter.getRepository().getSubFlow(subflow);
       try {
         _xmlflow = FlowMarshaller.unmarshal(bXml);
-      } catch (ValidationException ve) {
-      } catch (MarshalException me) {
+      } catch (JAXBException je) {
       }
 
-      XmlCatalogVars xmlcv = _xmlflow.getXmlCatalogVars();
-      if(xmlcv.getXmlAttributeCount() > 0 && xmlcv.getXmlCatalogVarAttributeCount() == 0) {
-        inputFields = new String[xmlcv.getXmlAttributeCount()][fieldsColumnNames.length];
-        outputFields = new String[xmlcv.getXmlAttributeCount()][fieldsColumnNames.length];
-        for (int i = 0; i < xmlcv.getXmlAttributeCount(); i++) {
-          XmlAttribute attr = xmlcv.getXmlAttribute(i);
+      XmlCatalogVarsType xmlcv = _xmlflow.getXmlCatalogVars();
+      if(xmlcv.getXmlAttribute().size() > 0 && xmlcv.getXmlCatalogVarAttribute().size() == 0) {
+        inputFields = new String[xmlcv.getXmlAttribute().size()][fieldsColumnNames.length];
+        outputFields = new String[xmlcv.getXmlAttribute().size()][fieldsColumnNames.length];
+        for (int i = 0; i < xmlcv.getXmlAttribute().size(); i++) {
+          XmlAttributeType attr = xmlcv.getXmlAttribute().get(i);
           inputFields[i][1] = attr.getName();
           inputFields[i][2] = attr.getDescription();
           outputFields[i][1] = attr.getName();
           outputFields[i][2] = attr.getDescription();
         }
       } else {
-        String[][] inputFieldsTmp = new String[xmlcv.getXmlCatalogVarAttributeCount()][fieldsColumnNames.length];
-        String[][] outputFieldsTmp = new String[xmlcv.getXmlCatalogVarAttributeCount()][fieldsColumnNames.length];
+        String[][] inputFieldsTmp = new String[xmlcv.getXmlCatalogVarAttribute().size()][fieldsColumnNames.length];
+        String[][] outputFieldsTmp = new String[xmlcv.getXmlCatalogVarAttribute().size()][fieldsColumnNames.length];
 
-        for (int i = 0; i < xmlcv.getXmlCatalogVarAttributeCount(); i++) {
-          XmlCatalogVarAttribute attr = xmlcv.getXmlCatalogVarAttribute(i);
+        for (int i = 0; i < xmlcv.getXmlCatalogVarAttribute().size(); i++) {
+          XmlCatalogVarAttributeType attr = xmlcv.getXmlCatalogVarAttribute().get(i);
           inputFieldsTmp[i][0] = (inputFields.length == 0 || i >= inputFields.length) ? "" : inputFields[i][0];
           inputFieldsTmp[i][1] = attr.getName();
           inputFieldsTmp[i][2] = attr.getDataType();

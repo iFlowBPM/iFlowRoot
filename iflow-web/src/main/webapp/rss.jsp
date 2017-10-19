@@ -3,13 +3,6 @@
 <%@ taglib uri="http://www.iknow.pt/jsp/jstl/iflow" prefix="if" %>
 <%@include file="/inc/defs.jsp"%>
 
-
-<%
-  String sPage = "rss";
-UserInfoInterface ui = (UserInfoInterface) request.getSession().getAttribute(Const.USER_INFO);
-String auth = new String(Base64.encode( (ui.getUtilizador()+":"+ui.getPasswordString()).getBytes() ));
-%>
-
 <div class="table_inc">
 <h1 id="title_help"><%=messages.getString("rss.title")%></h1>
 	<p><%=messages.getString("rss.introMsg")%></p>

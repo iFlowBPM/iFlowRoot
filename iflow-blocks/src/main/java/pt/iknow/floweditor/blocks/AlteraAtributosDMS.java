@@ -22,9 +22,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.ExpandVetoException;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
+import javax.xml.bind.JAXBException;
 
 import org.apache.commons.lang.StringUtils;
-import org.exolab.castor.xml.MarshalException;
 
 import pt.iflow.api.xml.FlowDocsMarshaller;
 import pt.iflow.connector.dms.ContentResult;
@@ -192,7 +192,7 @@ public abstract class AlteraAtributosDMS extends AbstractAlteraAtributos impleme
             node.add(new DefaultMutableTreeNode(contentChild));
           }
         }
-      } catch (MarshalException e) {
+      } catch (JAXBException e) {
         String errorMsg = adapter.getString("AlteraAtributosDMS.error.title") + ": "
             + adapter.getString("AlteraAtributosDMS.error.message");
         togglePath.setSelected(false);

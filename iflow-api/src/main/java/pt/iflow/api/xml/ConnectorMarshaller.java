@@ -9,10 +9,11 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.exolab.castor.xml.MarshalException;
-import org.exolab.castor.xml.Marshaller;
-import org.exolab.castor.xml.Unmarshaller;
-import org.exolab.castor.xml.ValidationException;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+
 import org.xml.sax.InputSource;
 
 import pt.iflow.api.connectors.ConnectorInterface;
@@ -22,58 +23,70 @@ import pt.iflow.api.xml.helpers.ConnectorTransferObject;
 
 public class ConnectorMarshaller {
 
-  public static byte[] marshall(NameValuePair<String, Class<ConnectorInterface>>[] connectors) throws MarshalException,
-      ValidationException {
-    ByteArrayOutputStream retObj = new ByteArrayOutputStream();
-    try {
-      Writer writer = new OutputStreamWriter(retObj, Const.ENCODING);
-      Marshaller.marshal(encode(connectors), writer);
-      writer.close();
-    } catch (Exception e) {
-      throw new MarshalException(e);
-    }
-    return retObj.toByteArray();
-  }
+	public static byte[] marshall(NameValuePair<String, Class<ConnectorInterface>>[] connectors) throws JAXBException {
+		ByteArrayOutputStream retObj = new ByteArrayOutputStream();
 
-  public static NameValuePair<String, String>[] unmarshal(byte[] data) throws MarshalException,
-      ValidationException {
-    InputSource source = null;
-    try {
-      source = new InputSource(new InputStreamReader(new ByteArrayInputStream(data), Const.ENCODING));
-    } catch (UnsupportedEncodingException e) {
-      throw new MarshalException(e);
-    }
-    return decode((ConnectorTransferObject) Unmarshaller.unmarshal(ConnectorTransferObject.class, source));
-  }
+		try {
+			Writer writer = null;
+			writer = new OutputStreamWriter(retObj, Const.ENCODING);
+			JAXBContext context = JAXBContext.newInstance(ConnectorTransferObject.class);
+			Marshaller marshaller = context.createMarshaller();
+			marshaller.marshal( encode(connectors), writer);
+			writer.close();
+		} catch (Exception e) {
+			throw new JAXBException(e);
+		}
 
-  private static ConnectorTransferObject encode(NameValuePair<String, Class<ConnectorInterface>>[] connectors) {
-    List<String> description = new ArrayList<String>();
-    List<String> clazz = new ArrayList<String>();
-    if (connectors != null) {
-      for (NameValuePair<String, Class<ConnectorInterface>> connector : connectors) {
-        description.add(connector.getName() == null ? "" : connector.getName());
-        clazz.add(connector.getValue() == null ? "" : connector.getValue().getName());
-      }
-    }
-    return new ConnectorTransferObject(description, clazz);
-  }
+		return retObj.toByteArray();
+	}
 
-  // now this method has a string value pair to remove editor classpath dependencies (with
-  // class value, editor had to be able to load class)
-  @SuppressWarnings("unchecked")
-  private static NameValuePair<String, String>[] decode(ConnectorTransferObject connectors) {
-    List<NameValuePair<String, String>> retObj = new ArrayList<NameValuePair<String, String>>();
-    if (connectors != null) {
-      for (int i = 0; i < connectors.getDescription().size(); i++) {
-        NameValuePair<String, String> nvp;
+	public static NameValuePair<String, String>[] unmarshal(byte[] data) throws JAXBException 
+	{
+		InputSource source = null;
+		try 
+		{
+			source = new InputSource(new InputStreamReader(new ByteArrayInputStream(data), Const.ENCODING));
+		} 
+		catch (UnsupportedEncodingException e) 
+		{
+			throw new JAXBException(e);
+		}
+		
+		JAXBContext context = JAXBContext.newInstance(ConnectorTransferObject.class);
+		
+		Unmarshaller unmarshaller = context.createUnmarshaller();
+		return decode( (ConnectorTransferObject) unmarshaller.unmarshal(source));
 
-        String sDescription = connectors.getDescription().get(i);
-        String sClazz = connectors.getClazz().get(i);
-        nvp = new NameValuePair<String, String>(sDescription, sClazz);
-        retObj.add(nvp);
-      }
-    }
-    return (NameValuePair<String, String>[]) retObj.toArray(new NameValuePair[retObj.size()]);
-  }
+	}
+
+	private static ConnectorTransferObject encode(NameValuePair<String, Class<ConnectorInterface>>[] connectors) {
+		List<String> description = new ArrayList<String>();
+		List<String> clazz = new ArrayList<String>();
+		if (connectors != null) {
+			for (NameValuePair<String, Class<ConnectorInterface>> connector : connectors) {
+				description.add(connector.getName() == null ? "" : connector.getName());
+				clazz.add(connector.getValue() == null ? "" : connector.getValue().getName());
+			}
+		}
+		return new ConnectorTransferObject(description, clazz);
+	}
+
+	// now this method has a string value pair to remove editor classpath
+	// dependencies (with
+	// class value, editor had to be able to load class)
+	@SuppressWarnings("unchecked")
+	private static NameValuePair<String, String>[] decode(ConnectorTransferObject connectors) {
+		List<NameValuePair<String, String>> retObj = new ArrayList<NameValuePair<String, String>>();
+		if (connectors != null) {
+			for (int i = 0; i < connectors.getDescription().size(); i++) {
+				NameValuePair<String, String> nvp;
+
+				String sDescription = connectors.getDescription().get(i);
+				String sClazz = connectors.getClazz().get(i);
+				nvp = new NameValuePair<String, String>(sDescription, sClazz);
+				retObj.add(nvp);
+			}
+		}
+		return (NameValuePair<String, String>[]) retObj.toArray(new NameValuePair[retObj.size()]);
+	}
 }
-

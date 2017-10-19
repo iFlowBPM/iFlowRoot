@@ -1,13 +1,11 @@
 package pt.iknow.floweditor.blocks;
 
-import org.exolab.castor.xml.MarshalException;
-import org.exolab.castor.xml.ValidationException;
 
 import pt.iflow.api.datatypes.DataTypeInterface;
 import pt.iflow.api.xml.FlowMarshaller;
-import pt.iflow.api.xml.codegen.flow.XmlAttribute;
-import pt.iflow.api.xml.codegen.flow.XmlCatalogVarAttribute;
-import pt.iflow.api.xml.codegen.flow.XmlCatalogVars;
+import pt.iflow.api.xml.codegen.flow.XmlAttributeType;
+import pt.iflow.api.xml.codegen.flow.XmlCatalogVarAttributeType;
+import pt.iflow.api.xml.codegen.flow.XmlCatalogVarsType;
 import pt.iknow.floweditor.FlowEditorAdapter;
 
 /**
@@ -83,26 +81,26 @@ public  class JSPPopupFormFieldData extends JSPFieldData {
     try {
       byte[] subflow = flowEditorAdapter.getRepository().getSubFlow(selectedPopupFlow);
       _xmlflow = FlowMarshaller.unmarshal(subflow);
-      XmlCatalogVars xmlcv = _xmlflow.getXmlCatalogVars();
+      XmlCatalogVarsType xmlcv = _xmlflow.getXmlCatalogVars();
 
-      if(xmlcv.getXmlAttributeCount() > 0 && xmlcv.getXmlCatalogVarAttributeCount() == 0) {
-        inputFields = new String[xmlcv.getXmlAttributeCount()][2];
-        for (int i = 0; i < xmlcv.getXmlAttributeCount(); i++) {
-          XmlAttribute attr = xmlcv.getXmlAttribute(i);
+      if(xmlcv.getXmlAttribute().size() > 0 && xmlcv.getXmlCatalogVarAttribute().size() == 0) {
+        inputFields = new String[xmlcv.getXmlAttribute().size()][2];
+        for (int i = 0; i < xmlcv.getXmlAttribute().size(); i++) {
+          XmlAttributeType attr = xmlcv.getXmlAttribute().get(i);
           inputFields[i][0] = attr.getName();
           inputFields[i][1] = attr.getDescription();
         }
       } else {
-        inputFields = new String[xmlcv.getXmlCatalogVarAttributeCount()][2];
-        for (int i = 0; i < xmlcv.getXmlCatalogVarAttributeCount(); i++) {
-          XmlCatalogVarAttribute attr = xmlcv.getXmlCatalogVarAttribute(i);
+        inputFields = new String[xmlcv.getXmlCatalogVarAttribute().size()][2];
+        for (int i = 0; i < xmlcv.getXmlCatalogVarAttribute().size(); i++) {
+          XmlCatalogVarAttributeType attr = xmlcv.getXmlCatalogVarAttribute().get(i);
           inputFields[i][0] = attr.getName();
           inputFields[i][1] = attr.getFormat();
         }
       }
-    } catch (ValidationException ve) {
-    } catch (MarshalException me) {
-    }
+    } 
+    catch (Exception ve) {}
+    
     return inputFields;
   }
 }

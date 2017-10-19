@@ -11,6 +11,7 @@ package pt.iknow.floweditor;
  ****************************************************/
 
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -18,14 +19,14 @@ import java.util.Map;
 
 import pt.iflow.api.flows.FlowUpgrade;
 import pt.iflow.api.xml.FlowMarshaller;
-import pt.iflow.api.xml.codegen.flow.XmlAttribute;
-import pt.iflow.api.xml.codegen.flow.XmlBlock;
-import pt.iflow.api.xml.codegen.flow.XmlCatalogVarAttribute;
-import pt.iflow.api.xml.codegen.flow.XmlCatalogVars;
+import pt.iflow.api.xml.codegen.flow.XmlAttributeType;
+import pt.iflow.api.xml.codegen.flow.XmlBlockType;
+import pt.iflow.api.xml.codegen.flow.XmlCatalogVarAttributeType;
+import pt.iflow.api.xml.codegen.flow.XmlCatalogVarsType;
 import pt.iflow.api.xml.codegen.flow.XmlFlow;
-import pt.iflow.api.xml.codegen.flow.XmlFormTemplate;
-import pt.iflow.api.xml.codegen.flow.XmlPort;
-import pt.iflow.api.xml.codegen.flow.XmlPosition;
+import pt.iflow.api.xml.codegen.flow.XmlPortType;
+import pt.iflow.api.xml.codegen.flow.XmlPositionType;
+import pt.iflow.api.xml.codegen.flow.XmlTemplateType;
 
 /*******************************************************************************
  * Gravar_Ficheiro
@@ -68,10 +69,10 @@ abstract class GravarFicheiro {
       // Variable catalog
       Collection<Atributo> catalogo = desenho.getCatalogue();
       if (catalogo != null && catalogo.size() > 0) {
-        XmlCatalogVars xmlcv = new XmlCatalogVars();
+        XmlCatalogVarsType xmlcv = new XmlCatalogVarsType();
         flow.setXmlCatalogVars(xmlcv);
         for (Atributo at : catalogo) {
-          XmlCatalogVarAttribute catVarAttr = new XmlCatalogVarAttribute();
+          XmlCatalogVarAttributeType catVarAttr = new XmlCatalogVarAttributeType();
 
           catVarAttr.setDataType(at.getDataType());
           catVarAttr.setInitVal(at.getInitValue());
@@ -80,7 +81,7 @@ abstract class GravarFicheiro {
           catVarAttr.setPublicName(at.getPublicName());
           catVarAttr.setFormat(at.getValor());
 
-          xmlcv.addXmlCatalogVarAttribute(catVarAttr);
+          xmlcv.withXmlCatalogVarAttribute(catVarAttr);
 
           //          XmlAttribute xmlattr = new XmlAttribute();
           //          xmlattr.setName(at.getNome());
@@ -97,31 +98,31 @@ abstract class GravarFicheiro {
       Map<String,String> templates = desenho.getFormTemplates();
       for(String templateName : templates.keySet()) {
         String at = templates.get(templateName);
-        XmlFormTemplate xmlAt = new XmlFormTemplate();
+        XmlTemplateType xmlAt = new XmlTemplateType();
         xmlAt.setName(templateName);
         xmlAt.setValue(at);
-        flow.addXmlFormTemplate(xmlAt);
+        flow.withXmlFormTemplate(xmlAt);
       }
 
 
 
       /* blocks */
-      List<XmlBlock> alBlocos = new ArrayList<XmlBlock>();
+      List<XmlBlockType> alBlocos = new ArrayList<XmlBlockType>();
       List<InstanciaComponente> componentes = desenho.getComponentList();
       for (int i = 0; i < componentes.size(); i++) {
         InstanciaComponente ic = componentes.get(i);
 
-        XmlBlock bloco = new XmlBlock();
-        bloco.setId(ic.ID);
+        XmlBlockType bloco = new XmlBlockType();
+        bloco.setId(BigInteger.valueOf(ic.ID));
         bloco.setName(ic.Nome);
-        bloco.setType(ic.C_B.Nome);
+        bloco.setClazz(ic.C_B.Nome);
 
         /* atributos */
         List<Atributo> atributos = ic.getAtributos();
-        XmlAttribute[] attrs = new XmlAttribute[atributos.size()];
+        XmlAttributeType[] attrs = new XmlAttributeType[atributos.size()];
         for (int k = 0; k < atributos.size(); k++) {
           Atributo at = atributos.get(k);
-          XmlAttribute xmlAt = new XmlAttribute();
+          XmlAttributeType xmlAt = new XmlAttributeType();
           xmlAt.setName(at.getNome());
           xmlAt.setValue(at.getValor() != null ? at.getValor() : "");
           if (at.getDescricao() != null)
@@ -130,10 +131,10 @@ abstract class GravarFicheiro {
             xmlAt.setDescription(""); //$NON-NLS-1$
           attrs[k] = xmlAt;
         }
-        bloco.setXmlAttribute(attrs);
+        bloco.withXmlAttribute(attrs);
 
         /* portos */
-        ArrayList<XmlPort> portList = new ArrayList<XmlPort>();
+        ArrayList<XmlPortType> portList = new ArrayList<XmlPortType>();
 
         /* ins */
         for (int k = 0; k < ic.lista_estado_entradas.size(); k++) {
@@ -142,9 +143,9 @@ abstract class GravarFicheiro {
           for (int j = 0; j < list2.size() && !ja; j++) {
             Conector c = Linha.daIn(list2.get(j));
             if (c != null) {
-              XmlPort p = new XmlPort();
+              XmlPortType p = new XmlPortType();
               p.setName((String) ic.C_B.nomes_entradas.get(k));
-              p.setConnectedBlockId(((InstanciaComponente) c.Comp).ID);
+              p.setConnectedBlockId( BigInteger.valueOf(((InstanciaComponente) c.Comp).ID) );
               p.setConnectedPortName((String) ((InstanciaComponente) c.Comp).C_B.nomes_saidas.get(c.Numero));
               portList.add(p);
               ja = true;
@@ -157,30 +158,30 @@ abstract class GravarFicheiro {
           for (int j = 0; j < list2.size(); j++) {
             Conector c = Linha.daOut(list2.get(j));
             if (c != null) {
-              XmlPort p = new XmlPort();
+              XmlPortType p = new XmlPortType();
               p.setName((String) ic.C_B.nomes_saidas.get(k));
-              p.setConnectedBlockId(((InstanciaComponente) c.Comp).ID);
+              p.setConnectedBlockId( BigInteger.valueOf(((InstanciaComponente) c.Comp).ID ));
               p.setConnectedPortName((String) ((InstanciaComponente) c.Comp).C_B.nomes_entradas.get(c.Numero));
               portList.add(p);
             }
           }
         }
 
-        XmlPort[] portos = new XmlPort[portList.size()];
+        XmlPortType[] portos = new XmlPortType[portList.size()];
         portos = portList.toArray(portos);
 
-        bloco.setXmlPort(portos);
+        bloco.withXmlPort(portos);
 
         alBlocos.add(bloco);
-        XmlPosition p = new XmlPosition();
-        p.setX(ic.Posicao_X);
-        p.setY(ic.Posicao_Y);
+        XmlPositionType p = new XmlPositionType();
+        p.setX( BigInteger.valueOf(ic.Posicao_X) );
+        p.setY( BigInteger.valueOf(ic.Posicao_Y) );
         bloco.setXmlPosition(p);
       } // for
 
-      XmlBlock[] xmlblocos = new XmlBlock[alBlocos.size()];
+      XmlBlockType[] xmlblocos = new XmlBlockType[alBlocos.size()];
       xmlblocos = alBlocos.toArray(xmlblocos);
-      flow.setXmlBlock(xmlblocos);
+      flow.withXmlBlock(xmlblocos);
 
       flow = FlowUpgrade.upgradeFlow(FlowUpgrade.VERSION_4X, flow);
       FlowEditor.log("Saving flow id "+flowId+" to outputstream..."); //$NON-NLS-1$ //$NON-NLS-2$

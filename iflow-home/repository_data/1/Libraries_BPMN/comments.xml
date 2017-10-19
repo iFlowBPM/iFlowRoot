@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- Nesta biblioteca encontram-se blocos relativos a comentários nos fluxos (Comment, todo, etc) -->
-<XmlLibrary xmlns="http://www.iknow.pt/XmlLibrary"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.iknow.pt/XmlLibrary ../schemas/xmllibrary.xsd">
+<XmlLibrary xmlns="http://www.iflow.pt/Library" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://www.iflow.pt/Library ../schemas/xmllibrary.xsd">
 	<name>Comments</name>
 	<version>1.0</version>
 	<author>iKnow</author>

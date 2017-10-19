@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<XmlLibrary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="library.xsd">
+<XmlLibrary xmlns="http://www.iflow.pt/Library" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://www.iflow.pt/Library ../schemas/xmllibrary.xsd">
     <name>Utils</name>
     <version>1.0</version>
     <author>iKnow</author>
@@ -197,22 +198,27 @@
         <XmlAttribute>
             <name>inputVar</name>
             <description>Input Variable</description>
+            <value></value>
         </XmlAttribute>
         <XmlAttribute>
             <name>outputVar</name>
             <description>Output Variable</description>
+            <value></value>
         </XmlAttribute>
         <XmlAttribute>
             <name>operation</name>
             <description>Operation</description>
+            <value></value>
         </XmlAttribute>
         <XmlAttribute>
             <name>type</name>
             <description>Type</description>
+            <value></value>
         </XmlAttribute>
         <XmlAttribute>
             <name>value</name>
             <description>Value</description>
+            <value></value>
         </XmlAttribute>
         <image>bpmn_date_operation.png</image>
         <className>pt.iknow.floweditor.blocks.AlteraAtributosDateOperation</className>
@@ -517,6 +523,7 @@
         <className>pt.iknow.floweditor.blocks.AlteraAtributosFormTemplate</className>
         <image>bpmn_task.png</image>
         <description>FormTemplate</description>
+        <i18n>library.utils.block.form_template</i18n>
     </XmlBlock>
     <XmlBlock>
         <class>BlockDocumentInfo</class>

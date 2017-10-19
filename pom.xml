@@ -27,15 +27,18 @@
 		<module>iflow-editor</module>
 		<module>iflow-fixtures</module>
 		<module>iflow-home</module>
-		<!--
-		<module>iflow-dist</module>
-		-->
+		
+		  <!-- <module>iflow-dist</module> -->
+		
+	 
 		<module>vfs-connector</module>
 	</modules>
 
 	<properties>
-		<iflow.baseversion>4.2.6</iflow.baseversion>
-		<iflow.buildnumber>20151214</iflow.buildnumber>
+		<iflow.baseversion>5.2.0</iflow.baseversion>
+
+		<iflow.buildnumber>20170928</iflow.buildnumber>
+
 		<iflow.version>${iflow.baseversion}-R${iflow.buildnumber}</iflow.version>
 		<dms-connector.version>0.0.7-R20100908</dms-connector.version>
 		<alfresco-connector.version>0.0.7-R20100908</alfresco-connector.version>
@@ -345,11 +348,11 @@
 				<version>3.7.ga</version>
 			</dependency>
 			<dependency>
-				<groupId>castor</groupId>
-				<artifactId>castor</artifactId>
-				<version>0.9.6</version>
-			</dependency>
-			<dependency>
+							 
+								   
+							
+				
+			   
 				<groupId>javax.servlet</groupId>
 				<artifactId>servlet-api</artifactId>
 				<version>2.4</version>
@@ -397,7 +400,7 @@
 			<dependency>
 				<groupId>javax.mail</groupId>
 				<artifactId>mail</artifactId>
-				<version>1.5.5</version> <!--  replicated in iflow-applet -->
+				<version>1.4.1</version> <!--  replicated in iflow-applet -->
 			</dependency>
 			<dependency>
 				<groupId>javax.activation</groupId>
@@ -467,8 +470,8 @@
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
+					<source>1.7</source>
+					<target>1.7</target>
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
@@ -530,6 +533,41 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.apache.maven.plugins
+										</groupId>
+										<artifactId>
+											maven-dependency-plugin
+										</artifactId>
+										<versionRange>
+											[2.1,)
+										</versionRange>
+										<goals>
+											<goal>copy</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 
 	<reporting>
@@ -569,6 +607,7 @@
 	</scm>
 
 	<repositories>
+	<!-- 
 		<repository>
 			<snapshots>
 				<enabled>true</enabled>
@@ -585,9 +624,14 @@
 			<name>Maven Repository at Eddie</name>
 			<url>http://vmsvn01.infosistema.com/maven2</url>
 		</repository>
+		 -->
+		<repository>
+			<id>maven2</id>	 
+		 	<url>https://repo.maven.apache.org/maven2/</url>
+		</repository>
 		<repository>
       		<id>Codehaus Snapshots</id>
-      		<url>http://snapshots.repository.codehaus.org/</url>
+      		<url>https://repository.mulesoft.org/nexus/content/repositories/public/</url>
   		</repository>
   		<repository>
 		    <id>snapshot-repository.java.net</id>

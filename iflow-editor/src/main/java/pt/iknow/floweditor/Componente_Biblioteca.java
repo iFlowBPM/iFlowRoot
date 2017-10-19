@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import pt.iflow.api.xml.codegen.library.Color;
+import pt.iflow.api.xml.codegen.library.XmlBlockColor;
 import pt.iknow.utils.StringUtilities;
 
 /****************************
@@ -38,7 +38,7 @@ public class Componente_Biblioteca {
   /* numero da funcao de desenho */
   protected Image funcao_Desenho;
   protected int Num_funcao_Desenho;
-  protected Color color = null;
+  protected XmlBlockColor color = null;
   
   /* variavel auxiliar */
   protected boolean gravado=false;
@@ -86,7 +86,7 @@ public class Componente_Biblioteca {
       int largura_x,int largura_y,
       Point p_e[],Point p_s[],
       ArrayList<String> nomes_, ArrayList<String> nomes_s, ArrayList<String> nomes_desc, ArrayList<String> nomes_s_desc,
-      ArrayList<Atributo> attrs, String nomeClasse, String nomeFile, String description, boolean automatic, Color color, String descrKey) {
+      ArrayList<Atributo> attrs, String nomeClasse, String nomeFile, String description, boolean automatic, XmlBlockColor color, String descrKey) {
 
     init(n_entradas,n_saidas,nome,
         funcao_desenho,largura_x,largura_y,
@@ -130,7 +130,7 @@ public class Componente_Biblioteca {
       String funcao_desenho, int largura_x,int largura_y,
       Point p_e[],Point p_s[], ArrayList<String> nomes_, ArrayList<String> nomes_s, ArrayList<String> nomes_desc,
       ArrayList<String> nomes_s_desc, ArrayList<Atributo> attrs, String nomeClasse, String nomeFile, String description,
-      boolean automatic, Color color, String descrKey) {
+      boolean automatic, XmlBlockColor color, String descrKey) {
     this.color = color;
     /* atributos */
     nomeClasseAlteraAtributos=nomeClasse;

@@ -5,6 +5,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlAccessType; 
+import javax.xml.bind.annotation.XmlAccessorType; 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Represents a DB table.
  * 
@@ -12,6 +16,9 @@ import java.util.Map;
  * @since 22.01.2010
  * @version 22.01.2010
  */
+
+@XmlAccessorType(XmlAccessType.FIELD) 
+@XmlRootElement
 public class DBTable {
 
   public static final String FIELD = "COLUMN_NAME";
