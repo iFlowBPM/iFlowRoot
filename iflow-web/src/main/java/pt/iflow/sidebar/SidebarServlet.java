@@ -92,10 +92,8 @@ public class SidebarServlet extends HttpServlet {
          
          session.setAttribute(Const.ORG_INFO,orgData);
          session.setAttribute(Const.USER_INFO,userInfo);
-         out.print(session.getId());
+        
          
-      } else {
-        out.print(session.getId());
       }
       
     } else if (todo.equals("data")) {

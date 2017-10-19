@@ -372,7 +372,7 @@ for(int i= 0; i < 4 ; i++){
     JPanel fillerPanel = new JPanel();
 //    this.getContentPane().add(fillerPanel, BorderLayout.NORTH);
 
-    //CHECKBOX NOTIFICAÇÃO
+    //CHECKBOX NOTIFICA
     JPanel checkPanel = new JPanel();
     link.setText("Incluir link para detalhes do processo");
     link.setSelected(Boolean.valueOf("" + data[4][1]));

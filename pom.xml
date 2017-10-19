@@ -34,8 +34,15 @@
 	</modules>
 
 	<properties>
+<<<<<<< Updated upstream
 		<iflow.baseversion>4.2.6</iflow.baseversion>
 		<iflow.buildnumber>20151214</iflow.buildnumber>
+=======
+		<iflow.baseversion>4.2.0</iflow.baseversion>
+
+		<iflow.buildnumber>20171019</iflow.buildnumber>
+
+>>>>>>> Stashed changes
 		<iflow.version>${iflow.baseversion}-R${iflow.buildnumber}</iflow.version>
 		<dms-connector.version>0.0.7-R20100908</dms-connector.version>
 		<alfresco-connector.version>0.0.7-R20100908</alfresco-connector.version>

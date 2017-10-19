@@ -16,7 +16,7 @@ public class RichTextArea implements FieldInterface {
   public static final String HEIGHT = "height";
 
   public String getDescription() {
-    return "Área de Texto rich text";
+	  return "area de Texto rich text";
   }
 
   public void generateHTML(PrintStream out, Properties prop) {

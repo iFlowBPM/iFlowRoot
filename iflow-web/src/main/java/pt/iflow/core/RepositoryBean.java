@@ -24,6 +24,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.TreeSet;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 
 import pt.iflow.api.core.BeanFactory;
@@ -140,7 +141,15 @@ public class RepositoryBean implements Repository {
     File orgFile = null;
     File locSysFile = null;
     File sysFile = null;
-
+    
+    // Normalize path to protect path manipulation
+    
+    name = FilenameUtils.normalize(name);
+    orgFileName = FilenameUtils.normalize(orgFileName);
+    locSysFileName = FilenameUtils.normalize(locSysFileName);
+    sysFileName = FilenameUtils.normalize(sysFileName);
+    
+    
     if(null != orgFileName)
       orgFile = new File(REPOSITORY_ROOT, orgFileName);
     if(null != locSysFileName)
