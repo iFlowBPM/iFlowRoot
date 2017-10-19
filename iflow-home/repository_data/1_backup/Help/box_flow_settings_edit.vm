@@ -1,0 +1,47 @@
+	<h2>$messages.getString("help.box_flow_settings_edit")</h2>
+	<p>$messages.getString("help.box_flow_settings_edit.concept")</p>
+
+	<p><input class="regular_button_00" type="button" value="$messages.getString("button.back")" disabled="disabled"></p>
+	<h3>$messages.getString("flow_settings_edit.help.back")</h3>
+	<p>$messages.getString("help.box_flow_settings_edit.back.p1")</p>
+
+	<p><input class="regular_button_00" type="button" value="$messages.getString("button.export")" disabled="disabled"></p>
+	<h3>$messages.getString("flow_settings_edit.help.export")</h3>
+	<p>$messages.getString("help.box_flow_settings_edit.export.p1")</p>
+
+	<p><input class="regular_button_00" type="button" value="$messages.getString("button.import")" disabled="disabled"></p>
+	<h3>$messages.getString("flow_settings_edit.help.import")</h3>
+	<p>$messages.getString("help.box_flow_settings_edit.import.p1")</p>
+
+	<p><input class="regular_button_00" type="button" value="$messages.getString("button.save")" disabled="disabled"></p>
+	<h3>$messages.getString("flow_settings_edit.help.save")</h3>
+	<p>$messages.getString("help.box_flow_settings_edit.save.p1")</p>
+
+	<h3>DEFAULT_STYLESHEET</h3>
+	<p>$messages.getString("help.box_flow_settings_edit.defSS.p1")</p>
+	<p>$messages.getString("help.box_flow_settings_edit.defSS.p2") <a href="javascript:tabber_save(4,'Admin/admin_nav.jsp','sel=24','Admin/Resources/dolist.jsp','type=stylesheet');">Style Sheets</a></p>
+
+	<h3>DENY_NOTIFY_FOR_PROFILE</h3>
+	<p>$messages.getString("help.box_flow_settings_edit.dnfp.p1")</p>
+	<p>$messages.getString("help.box_flow_settings_edit.dnfp.p2")</p>
+	
+	<h3>HOT_FOLDER</h3>
+	<p>$messages.getString("help.box_flow_settings_edit.hotfolder.p1")</p>
+	<p>$messages.getString("help.box_flow_settings_edit.hotfolder.p2")</p>
+	<p>$messages.getString("help.box_flow_settings_edit.hotfolder.p3")</p>
+	<p>$messages.getString("help.box_flow_settings_edit.hotfolder.p4")</p>
+	<p>$messages.getString("help.box_flow_settings_edit.hotfolder.p5")</p>
+	<p>$messages.getString("help.box_flow_settings_edit.hotfolder.p6")</p>
+		
+	
+	<h3>INICIO_EMAIL</h3>
+	<p>$messages.getString("help.box_flow_settings_edit.mail.p1")</p>
+	<p>$messages.getString("help.box_flow_settings_edit.hotfolder.p2")</p>
+	<p>$messages.getString("help.box_flow_settings_edit.mail.p2")</p>
+	<p>$messages.getString("help.box_flow_settings_edit.mail.p3")</p>
+	<p>$messages.getString("help.box_flow_settings_edit.mail.p4")</p>
+	<p>$messages.getString("help.box_flow_settings_edit.mail.p5")</p>
+	<p>$messages.getString("help.box_flow_settings_edit.mail.p6")</p>
+	<p>$messages.getString("help.box_flow_settings_edit.mail.p7")</p>
+	<p>$messages.getString("help.box_flow_settings_edit.mail.p8")</p>
+	<p>$messages.getString("help.box_flow_settings_edit.mail.p9")</p>

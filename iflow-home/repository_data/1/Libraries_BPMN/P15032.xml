@@ -1,0 +1,1831 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by jmv (.) -->
+<XmlLibrary xmlns="http://www.iflow.pt/Library" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://www.iflow.pt/Library ../schemas/xmllibrary.xsd">
+	<name>P15032</name>
+	<version>1.0</version>
+	<author>iKnow</author>
+	<description>P15032</description>
+	<i18nName>P15032</i18nName>
+	<i18nDescription>P15032</i18nDescription>
+
+	<XmlBlock>
+		<class>BlockP15032ReadAssetServiceById</class>
+		<XmlPort>
+			<name>portIn</name>
+			<description>portIn</description>
+			<in_out>in</in_out>
+			<position>
+				<x>-2</x>
+				<y>45</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portSuccess</name>
+			<description>portSuccess</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>20</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portEmpty</name>
+			<description>portEmpty</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>39</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portError</name>
+			<description>portError</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>62</y>
+			</position>
+		</XmlPort>
+		
+		<XmlAttribute>
+			<name>Id</name>
+			<description>Id</description>
+			<value />
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Error</name>
+			<description>OUT_Error</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Nome</name>
+			<description>OUT_Nome</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Versao</name>
+			<description>OUT_Versao</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Estado</name>
+			<description>OUT_Estado</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_OwnerList</name>
+			<description>OUT_OwnerList</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Categoria</name>
+			<description>OUT_Categoria</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Objectivo</name>
+			<description>OUT_Objectivo</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_LayerSoa</name>
+			<description>OUT_LayerSoa</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Driver</name>
+			<description>OUT_Driver</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_AreasList</name>
+			<description>OUT_AreasList</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Descricao</name>
+			<description>OUT_Descricao</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_ConformidadeSoa</name>
+			<description>OUT_ConformidadeSoa</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Revisao</name>
+			<description>OUT_Revisao</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_AplicacoesList</name>
+			<description>OUT_AplicacoesList</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Companhia</name>
+			<description>OUT_Companhia</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Consumidor</name>
+			<description>OUT_Consumidor</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Estimativa</name>
+			<description>OUT_Estimativa</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_TipoDeImpacto</name>
+			<description>OUT_TipoDeImpacto</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_AnaliseDeImpacto</name>
+			<description>OUT_AnaliseDeImpacto</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_TipoDeRisco</name>
+			<description>OUT_TipoDeRisco</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_AnaliseDeRisco</name>
+			<description>OUT_AnaliseDeRisco</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Complexidade</name>
+			<description>OUT_Complexidade</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_AuthorList</name>
+			<description>OUT_AuthorList</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_DataDasEspecificacoes</name>
+			<description>OUT_DataDasEspecificacoes</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_AprovadorDasEspecificacoes</name>
+			<description>OUT_AprovadorDasEspecificacoes</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_DataDoServico</name>
+			<description>OUT_DataDoServico</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_AprovadorDoServico</name>
+			<description>OUT_AprovadorDoServico</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Endpoint</name>
+			<description>OUT_Endpoint</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_EspecificacaoFuncional</name>
+			<description>OUT_EspecificacaoFuncional</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_EspecificacaoTestes</name>
+			<description>OUT_EspecificacaoTestes</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_DesempenhoPreMigracao</name>
+			<description>OUT_DesempenhoPreMigracao</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_DesempenhoServico</name>
+			<description>OUT_DesempenhoServico</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_ArquitecturaReferencia</name>
+			<description>OUT_ArquitecturaReferencia</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_ProxyClient</name>
+			<description>OUT_ProxyClient</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_CreatedDate</name>
+			<description>OUT_CreatedDate</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_CreatedUser</name>
+			<description>OUT_CreatedUser</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_LastUpdatedDate</name>
+			<description>OUT_LastUpdatedDate</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_LastUpdatedUser</name>
+			<description>OUT_LastUpdatedUser</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_CicloDeVida</name>
+			<description>OUT_CicloDeVida</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_KeywordsList</name>
+			<description>OUT_KeywordsList</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_AssetFolder</name>
+			<description>OUT_AssetFolder</description>
+		</XmlAttribute>
+
+		<image>bpmn_task.png</image>
+		<description>ReadAssetServiceById</description>
+		<i18n>ReadAssetServiceById</i18n>
+	</XmlBlock>
+
+	<XmlBlock>
+		<class>BlockP15032CreateAssetServicePasso1</class>
+		<XmlPort>
+			<name>portIn</name>
+			<description>portIn</description>
+			<in_out>in</in_out>
+			<position>
+				<x>-2</x>
+				<y>45</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portSuccess</name>
+			<description>portSuccess</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>20</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portError</name>
+			<description>portError</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>50</y>
+			</position>
+		</XmlPort>
+		
+		<XmlAttribute>
+			<name>Nome</name>
+			<description>Nome</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>Versao</name>
+			<description>Versao</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>Descricao</name>
+			<description>Descricao</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>Companhia</name>
+			<description>Companhia</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>Driver</name>
+			<description>Driver</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>Objectivo</name>
+			<description>Objectivo</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>AreasList</name>
+			<description>AreasList</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>AplicacoesList</name>
+			<description>AplicacoesList</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>KeywordsList</name>
+			<description>KeywordsList</description>
+		</XmlAttribute>
+		
+		<XmlAttribute>
+			<name>AssetFolder</name>
+			<description>AssetFolder</description>
+		</XmlAttribute>
+		
+		<XmlAttribute>
+			<name>OwnerList</name>
+			<description>OwnerList</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>AuthorList</name>
+			<description>AuthorList</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Id</name>
+			<description>OUT_Id</description>
+		</XmlAttribute>
+		
+		<XmlAttribute>
+			<name>OUT_Error</name>
+			<description>OUT_Error</description>
+		</XmlAttribute>
+
+		<!-- XmlAttribute>
+			<name>OUT_Nome</name>
+			<description>OUT_Nome</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Versao</name>
+			<description>OUT_Versao</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Estado</name>
+			<description>OUT_Estado</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_OwnerList</name>
+			<description>OUT_OwnerList</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Categoria</name>
+			<description>OUT_Categoria</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Objectivo</name>
+			<description>OUT_Objectivo</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_LayerSoa</name>
+			<description>OUT_LayerSoa</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Driver</name>
+			<description>OUT_Driver</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_AreasList</name>
+			<description>OUT_AreasList</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Descricao</name>
+			<description>OUT_Descricao</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_ConformidadeSoa</name>
+			<description>OUT_ConformidadeSoa</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Revisao</name>
+			<description>OUT_Revisao</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_AplicacoesList</name>
+			<description>OUT_AplicacoesList</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Companhia</name>
+			<description>OUT_Companhia</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Consumidor</name>
+			<description>OUT_Consumidor</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Estimativa</name>
+			<description>OUT_Estimativa</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_TipoDeImpacto</name>
+			<description>OUT_TipoDeImpacto</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_AnaliseDeImpacto</name>
+			<description>OUT_AnaliseDeImpacto</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_TipoDeRisco</name>
+			<description>OUT_TipoDeRisco</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_AnaliseDeRisco</name>
+			<description>OUT_AnaliseDeRisco</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Complexidade</name>
+			<description>OUT_Complexidade</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_AuthorList</name>
+			<description>OUT_AuthorList</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_DataDasEspecificacoes</name>
+			<description>OUT_DataDasEspecificacoes</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_AprovadorDasEspecificacoes</name>
+			<description>OUT_AprovadorDasEspecificacoes</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_DataDoServico</name>
+			<description>OUT_DataDoServico</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_AprovadorDoServico</name>
+			<description>OUT_AprovadorDoServico</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Endpoint</name>
+			<description>OUT_Endpoint</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_EspecificacaoFuncional</name>
+			<description>OUT_EspecificacaoFuncional</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_EspecificacaoTestes</name>
+			<description>OUT_EspecificacaoTestes</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_DesempenhoPreMigracao</name>
+			<description>OUT_DesempenhoPreMigracao</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_DesempenhoServico</name>
+			<description>OUT_DesempenhoServico</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_ArquitecturaReferencia</name>
+			<description>OUT_ArquitecturaReferencia</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_ProxyClient</name>
+			<description>OUT_ProxyClient</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_CreatedDate</name>
+			<description>OUT_CreatedDate</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_CreatedUser</name>
+			<description>OUT_CreatedUser</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_LastUpdatedDate</name>
+			<description>OUT_LastUpdatedDate</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_LastUpdatedUser</name>
+			<description>OUT_LastUpdatedUser</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_CicloDeVida</name>
+			<description>OUT_CicloDeVida</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_KeywordsList</name>
+			<description>OUT_KeywordsList</description>
+		</XmlAttribute -->
+
+
+
+		<image>bpmn_task.png</image>
+		<description>ServicePasso1</description>
+		<i18n>ServicePasso1</i18n>
+	</XmlBlock>
+
+	<XmlBlock>
+		<class>BlockP15032DefineServicePasso2</class>
+		<XmlPort>
+			<name>portIn</name>
+			<description>portIn</description>
+			<in_out>in</in_out>
+			<position>
+				<x>-2</x>
+				<y>45</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portSuccess</name>
+			<description>portSuccess</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>20</y>
+			</position>
+		</XmlPort>
+
+		<XmlPort>
+			<name>portError</name>
+			<description>portError</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>62</y>
+			</position>
+		</XmlPort>
+
+		<XmlAttribute>
+			<name>Id</name>
+			<description>Id</description>
+			<value />
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>LayerSoa</name>
+			<description>LayerSoa</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>AreasList</name>
+			<description>AreasList</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>AplicacoesList</name>
+			<description>AplicacoesList</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>ConformidadeSoa</name>
+			<description>ConformidadeSoa</description>
+		</XmlAttribute>
+		
+		<XmlAttribute>
+			<name>OUT_Error</name>
+			<description>OUT_Error</description>
+		</XmlAttribute>
+
+		<image>bpmn_task.png</image>
+		<description>DefineServicePasso2</description>
+		<i18n>DefineServicePasso2</i18n>
+	</XmlBlock>
+	
+	<XmlBlock>
+		<class>BlockP15032ServicePasso3</class>
+		<XmlPort>
+			<name>portIn</name>
+			<description>portIn</description>
+			<in_out>in</in_out>
+			<position>
+				<x>-2</x>
+				<y>45</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portSuccess</name>
+			<description>portSuccess</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>20</y>
+			</position>
+		</XmlPort>
+
+		<XmlPort>
+			<name>portError</name>
+			<description>portError</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>62</y>
+			</position>
+		</XmlPort>
+
+		<XmlAttribute>
+			<name>Id</name>
+			<description>Id</description>
+			<value />
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>DocumentNameList</name>
+			<description>DocumentNameList</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>DocumentURLList</name>
+			<description>DocumentURLList</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Error</name>
+			<description>OUT_Error</description>
+		</XmlAttribute>
+
+		<image>bpmn_task.png</image>
+		<description>ServicePasso3</description>
+		<i18n>ServicePasso3</i18n>
+	</XmlBlock>
+	
+	<XmlBlock>
+		<class>BlockP15032ServicePasso4</class>
+		<XmlPort>
+			<name>portIn</name>
+			<description>portIn</description>
+			<in_out>in</in_out>
+			<position>
+				<x>-2</x>
+				<y>45</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portSuccess</name>
+			<description>portSuccess</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>20</y>
+			</position>
+		</XmlPort>
+
+		<XmlPort>
+			<name>portError</name>
+			<description>portError</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>62</y>
+			</position>
+		</XmlPort>
+
+		<XmlAttribute>
+			<name>Id</name>
+			<description>Id</description>
+			<value />
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>AreasList</name>
+			<description>AreasList</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>AplicacoesList</name>
+			<description>AplicacoesList</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>Complexidade</name>
+			<description>Complexidade</description>
+		</XmlAttribute>
+		
+		<XmlAttribute>
+			<name>Estimativa</name>
+			<description>Estimativa</description>
+		</XmlAttribute>
+		
+		<XmlAttribute>
+			<name>TipoDeImpacto</name>
+			<description>TipoDeImpacto</description>
+		</XmlAttribute>
+		
+		<XmlAttribute>
+			<name>AnaliseDeImpacto</name>
+			<description>AnaliseDeImpacto</description>
+		</XmlAttribute>
+		
+		<XmlAttribute>
+			<name>TipoDeRisco</name>
+			<description>TipoDeRisco</description>
+		</XmlAttribute>
+		
+		<XmlAttribute>
+			<name>AnaliseDeRisco</name>
+			<description>AnaliseDeRisco</description>
+		</XmlAttribute>
+		
+		<XmlAttribute>
+			<name>OUT_Error</name>
+			<description>OUT_Error</description>
+		</XmlAttribute>
+
+		<image>bpmn_task.png</image>
+		<description>ServicePasso4</description>
+		<i18n>ServicePasso4</i18n>
+	</XmlBlock>
+	
+	<XmlBlock>
+		<class>BlockP15032ServicePasso5</class>
+		<XmlPort>
+			<name>portIn</name>
+			<description>portIn</description>
+			<in_out>in</in_out>
+			<position>
+				<x>-2</x>
+				<y>45</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portSuccess</name>
+			<description>portSuccess</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>20</y>
+			</position>
+		</XmlPort>
+
+		<XmlPort>
+			<name>portError</name>
+			<description>portError</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>62</y>
+			</position>
+		</XmlPort>
+
+		<XmlAttribute>
+			<name>Id</name>
+			<description>Id</description>
+			<value />
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>AplicacoesList</name>
+			<description>AplicacoesList</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>EspecificacaoFuncional</name>
+			<description>EspecificacaoFuncional</description>
+		</XmlAttribute>
+		
+		<XmlAttribute>
+			<name>EspecificacaoDeTestes</name>
+			<description>EspecificacaoDeTestes</description>
+		</XmlAttribute>
+		
+		<XmlAttribute>
+			<name>DesempenhoServico</name>
+			<description>DesempenhoServico</description>
+		</XmlAttribute>
+		
+		<XmlAttribute>
+			<name>DocumentNameList</name>
+			<description>DocumentNameList</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>DocumentURLList</name>
+			<description>DocumentURLList</description>
+		</XmlAttribute>
+		
+		<XmlAttribute>
+			<name>TestNameList</name>
+			<description>TestNameList</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>TestURLList</name>
+			<description>TestURLList</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Error</name>
+			<description>OUT_Error</description>
+		</XmlAttribute>
+
+		<image>bpmn_task.png</image>
+		<description>ServicePasso5</description>
+		<i18n>ServicePasso5</i18n>
+	</XmlBlock>
+	
+		<XmlBlock>
+		<class>BlockP15032ServicePasso6</class>
+		<XmlPort>
+			<name>portIn</name>
+			<description>portIn</description>
+			<in_out>in</in_out>
+			<position>
+				<x>-2</x>
+				<y>45</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portSuccess</name>
+			<description>portSuccess</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>20</y>
+			</position>
+		</XmlPort>
+
+		<XmlPort>
+			<name>portError</name>
+			<description>portError</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>62</y>
+			</position>
+		</XmlPort>
+
+		<XmlAttribute>
+			<name>Id</name>
+			<description>Id</description>
+			<value />
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>AprovadorDasEspecificacoes</name>
+			<description>AprovadorDasEspecificacoes</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>DataDeAprovacaoDasEspecificacoes</name>
+			<description>DataDeAprovacaoDasEspecificacoes</description>
+		</XmlAttribute>
+		
+		<XmlAttribute>
+			<name>OUT_Error</name>
+			<description>OUT_Error</description>
+		</XmlAttribute>
+
+		<image>bpmn_task.png</image>
+		<description>ServicePasso6</description>
+		<i18n>ServicePasso6</i18n>
+	</XmlBlock>
+	
+	<XmlBlock>
+		<class>BlockP15032ServicePasso7</class>
+		<XmlPort>
+			<name>portIn</name>
+			<description>portIn</description>
+			<in_out>in</in_out>
+			<position>
+				<x>-2</x>
+				<y>45</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portSuccess</name>
+			<description>portSuccess</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>20</y>
+			</position>
+		</XmlPort>
+
+		<XmlPort>
+			<name>portError</name>
+			<description>portError</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>62</y>
+			</position>
+		</XmlPort>
+
+		<XmlAttribute>
+			<name>Id</name>
+			<description>Id</description>
+			<value />
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>ConformidadeSOA</name>
+			<description>ConformidadeSOA</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>AprovadorDoServico</name>
+			<description>AprovadorDoServico</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>DataDeAprovacaoDoServico</name>
+			<description>DataDeAprovacaoDoServico</description>
+		</XmlAttribute>		
+		
+		<XmlAttribute>
+			<name>OUT_Error</name>
+			<description>OUT_Error</description>
+		</XmlAttribute>
+
+		<image>bpmn_task.png</image>
+		<description>ServicePasso7</description>
+		<i18n>ServicePasso7</i18n>
+	</XmlBlock>
+	
+	<XmlBlock>
+		<class>BlockP15032ServicePasso8</class>
+		<XmlPort>
+			<name>portIn</name>
+			<description>portIn</description>
+			<in_out>in</in_out>
+			<position>
+				<x>-2</x>
+				<y>45</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portSuccess</name>
+			<description>portSuccess</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>20</y>
+			</position>
+		</XmlPort>
+
+		<XmlPort>
+			<name>portError</name>
+			<description>portError</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>62</y>
+			</position>
+		</XmlPort>
+
+		<XmlAttribute>
+			<name>Id</name>
+			<description>Id</description>
+			<value />
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>Estimativa</name>
+			<description>Estimativa</description>
+		</XmlAttribute>
+		
+		<XmlAttribute>
+			<name>OUT_Error</name>
+			<description>OUT_Error</description>
+		</XmlAttribute>
+
+		<image>bpmn_task.png</image>
+		<description>ServicePasso8</description>
+		<i18n>ServicePasso8</i18n>
+	</XmlBlock>
+
+	<XmlBlock>
+		<class>BlockP15032ServicePasso9</class>
+		<XmlPort>
+			<name>portIn</name>
+			<description>portIn</description>
+			<in_out>in</in_out>
+			<position>
+				<x>-2</x>
+				<y>45</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portSuccess</name>
+			<description>portSuccess</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>20</y>
+			</position>
+		</XmlPort>
+
+		<XmlPort>
+			<name>portError</name>
+			<description>portError</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>62</y>
+			</position>
+		</XmlPort>
+
+		<XmlAttribute>
+			<name>Id</name>
+			<description>Id</description>
+			<value />
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>Endpoint</name>
+			<description>Endpoint</description>
+		</XmlAttribute>
+		
+		<XmlAttribute>
+			<name>Relationships</name>
+			<description>Relationships</description>
+		</XmlAttribute>
+		
+		<XmlAttribute>
+			<name>OUT_Error</name>
+			<description>OUT_Error</description>
+		</XmlAttribute>
+
+		<image>bpmn_task.png</image>
+		<description>ServicePasso9</description>
+		<i18n>ServicePasso9</i18n>
+	</XmlBlock>
+
+	<XmlBlock>
+		<class>BlockP15032ServicePasso10</class>
+		<XmlPort>
+			<name>portIn</name>
+			<description>portIn</description>
+			<in_out>in</in_out>
+			<position>
+				<x>-2</x>
+				<y>45</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portSuccess</name>
+			<description>portSuccess</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>20</y>
+			</position>
+		</XmlPort>
+
+		<XmlPort>
+			<name>portError</name>
+			<description>portError</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>62</y>
+			</position>
+		</XmlPort>
+
+		<XmlAttribute>
+			<name>Id</name>
+			<description>Id</description>
+			<value />
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>TestNameList</name>
+			<description>TestNameList</description>
+		</XmlAttribute>		
+		
+		<XmlAttribute>
+			<name>TestURLList</name>
+			<description>TestURLList</description>
+		</XmlAttribute>
+				
+		<XmlAttribute>
+			<name>OUT_Error</name>
+			<description>OUT_Error</description>
+		</XmlAttribute>
+
+		<image>bpmn_task.png</image>
+		<description>ServicePasso10</description>
+		<i18n>ServicePasso10</i18n>
+	</XmlBlock>
+	
+	<XmlBlock>
+		<class>BlockP15032ServicePasso11</class>
+		<XmlPort>
+			<name>portIn</name>
+			<description>portIn</description>
+			<in_out>in</in_out>
+			<position>
+				<x>-2</x>
+				<y>45</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portSuccess</name>
+			<description>portSuccess</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>20</y>
+			</position>
+		</XmlPort>
+
+		<XmlPort>
+			<name>portError</name>
+			<description>portError</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>62</y>
+			</position>
+		</XmlPort>
+
+		<XmlAttribute>
+			<name>Id</name>
+			<description>Id</description>
+			<value />
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>DocumentNameList</name>
+			<description>DocumentNameList</description>
+		</XmlAttribute>		
+		
+		<XmlAttribute>
+			<name>DocumentURLList</name>
+			<description>DocumentURLList</description>
+		</XmlAttribute>
+		
+		<XmlAttribute>
+			<name>OUT_Error</name>
+			<description>OUT_Error</description>
+		</XmlAttribute>
+
+		<image>bpmn_task.png</image>
+		<description>ServicePasso11</description>
+		<i18n>ServicePasso11</i18n>
+	</XmlBlock>
+	
+	<XmlBlock>
+		<class>BlockP15032ServicePasso12</class>
+		<XmlPort>
+			<name>portIn</name>
+			<description>portIn</description>
+			<in_out>in</in_out>
+			<position>
+				<x>-2</x>
+				<y>45</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portSuccess</name>
+			<description>portSuccess</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>20</y>
+			</position>
+		</XmlPort>
+
+		<XmlPort>
+			<name>portError</name>
+			<description>portError</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>62</y>
+			</position>
+		</XmlPort>
+
+		<XmlAttribute>
+			<name>Id</name>
+			<description>Id</description>
+			<value />
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>TestNameList</name>
+			<description>TestNameList</description>
+		</XmlAttribute>		
+		
+		<XmlAttribute>
+			<name>TestURLList</name>
+			<description>TestURLList</description>
+		</XmlAttribute>
+		
+		<XmlAttribute>
+			<name>OUT_Error</name>
+			<description>OUT_Error</description>
+		</XmlAttribute>
+
+		<image>bpmn_task.png</image>
+		<description>ServicePasso12</description>
+		<i18n>ServicePasso12</i18n>
+	</XmlBlock>
+	
+	<XmlBlock>
+		<class>BlockP15032ServicePasso13</class>
+		<XmlPort>
+			<name>portIn</name>
+			<description>portIn</description>
+			<in_out>in</in_out>
+			<position>
+				<x>-2</x>
+				<y>45</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portSuccess</name>
+			<description>portSuccess</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>20</y>
+			</position>
+		</XmlPort>
+
+		<XmlPort>
+			<name>portError</name>
+			<description>portError</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>62</y>
+			</position>
+		</XmlPort>
+
+		<XmlAttribute>
+			<name>Id</name>
+			<description>Id</description>
+			<value />
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>AprovadorPassagemAProducao</name>
+			<description>AprovadorPassagemAProducao</description>
+		</XmlAttribute>
+		
+		<XmlAttribute>
+			<name>DataPassagemAProducao</name>
+			<description>DataPassagemAProducao</description>
+		</XmlAttribute>
+		
+		<XmlAttribute>
+			<name>OUT_Error</name>
+			<description>OUT_Error</description>
+		</XmlAttribute>
+
+		<image>bpmn_task.png</image>
+		<description>ServicePasso13</description>
+		<i18n>ServicePasso13</i18n>
+	</XmlBlock>
+	
+	<XmlBlock>
+		<class>BlockP15032ServicePasso14</class>
+		<XmlPort>
+			<name>portIn</name>
+			<description>portIn</description>
+			<in_out>in</in_out>
+			<position>
+				<x>-2</x>
+				<y>45</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portSuccess</name>
+			<description>portSuccess</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>20</y>
+			</position>
+		</XmlPort>
+
+		<XmlPort>
+			<name>portError</name>
+			<description>portError</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>62</y>
+			</position>
+		</XmlPort>
+
+		<XmlAttribute>
+			<name>Id</name>
+			<description>Id</description>
+			<value />
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Error</name>
+			<description>OUT_Error</description>
+		</XmlAttribute>
+
+		<image>bpmn_task.png</image>
+		<description>ServicePasso14</description>
+		<i18n>ServicePasso14</i18n>
+	</XmlBlock>
+
+	<XmlBlock>
+		<class>BlockP15032DeleteAssetServiceById</class>
+		<XmlPort>
+			<name>portIn</name>
+			<description>portIn</description>
+			<in_out>in</in_out>
+			<position>
+				<x>-2</x>
+				<y>45</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portSuccess</name>
+			<description>portSuccess</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>20</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portEmpty</name>
+			<description>portEmpty</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>39</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portError</name>
+			<description>portError</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>62</y>
+			</position>
+		</XmlPort>
+		<XmlAttribute>
+			<name>userName</name>
+			<description>userName</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>password</name>
+			<description>password</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Id</name>
+			<description>Id</description>
+			<value />
+		</XmlAttribute>
+
+
+
+		<image>bpmn_task.png</image>
+		<description>DeleteAssetServiceById</description>
+		<i18n>DeleteAssetServiceById</i18n>
+	</XmlBlock>
+
+	<XmlBlock>
+		<class>BlockP15032CreateAplicacao</class>
+		<XmlPort>
+			<name>portIn</name>
+			<description>portIn</description>
+			<in_out>in</in_out>
+			<position>
+				<x>-2</x>
+				<y>45</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portSuccess</name>
+			<description>portSuccess</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>20</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portError</name>
+			<description>portError</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>62</y>
+			</position>
+		</XmlPort>
+
+		<XmlAttribute>
+			<name>Nome</name>
+			<description>Nome</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>Versao</name>
+			<description>Versao</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>Descricao</name>
+			<description>Descricao</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>Companhia</name>
+			<description>Companhia</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>TipoClienteList</name>
+			<description>TipoClienteList</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>DireccaoResponsavel</name>
+			<description>DireccaoResponsavel</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>ResponsavelOTI</name>
+			<description>ResponsavelOTI</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>NumberUsers</name>
+			<description>NumberUsers</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>KeywordsList</name>
+			<description>KeywordsList</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Id</name>
+			<description>OUT_Id</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Error</name>
+			<description>OUT_Error</description>
+		</XmlAttribute>
+
+		<image>bpmn_task.png</image>
+		<description>CreateAplicacao</description>
+		<i18n>CreateAplicacao</i18n>
+	</XmlBlock>
+
+	<XmlBlock>
+		<class>BlockP15032GetAplicacaoById</class>
+		<XmlPort>
+			<name>portIn</name>
+			<description>portIn</description>
+			<in_out>in</in_out>
+			<position>
+				<x>-2</x>
+				<y>45</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portSuccess</name>
+			<description>portSuccess</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>20</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portEmpty</name>
+			<description>portEmpty</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>39</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portError</name>
+			<description>portError</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>62</y>
+			</position>
+		</XmlPort>
+
+		<XmlAttribute>
+			<name>Id</name>
+			<description>Id</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Nome</name>
+			<description>OUT_Nome</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Versao</name>
+			<description>OUT_Versao</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Descricao</name>
+			<description>OUT_Descricao</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Companhia</name>
+			<description>OUT_Companhia</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_TipoClienteList</name>
+			<description>OUT_TipoClienteList</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_DireccaoResponsavel</name>
+			<description>OUT_DireccaoResponsavel</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_ResponsavelOTI</name>
+			<description>OUT_ResponsavelOTI</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_NumberUsers</name>
+			<description>OUT_NumberUsers</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_KeywordsList</name>
+			<description>OUT_KeywordsList</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Error</name>
+			<description>OUT_Error</description>
+		</XmlAttribute>
+
+		<image>bpmn_task.png</image>
+		<description>GetAplicacaoById</description>
+		<i18n>GetAplicacaoById</i18n>
+	</XmlBlock>
+
+	<XmlBlock>
+		<class>BlockP15032CreateServidor</class>
+		<XmlPort>
+			<name>portIn</name>
+			<description>portIn</description>
+			<in_out>in</in_out>
+			<position>
+				<x>-2</x>
+				<y>45</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portSuccess</name>
+			<description>portSuccess</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>20</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portError</name>
+			<description>portError</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>62</y>
+			</position>
+		</XmlPort>
+
+		<XmlAttribute>
+			<name>Nome</name>
+			<description>Nome</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>Versao</name>
+			<description>Versao</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>Descricao</name>
+			<description>Descricao</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>IP</name>
+			<description>IP</description>
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>VLan</name>
+			<description>VLan</description>
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Disco</name>
+			<description>Disco</description>
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Ram</name>
+			<description>Ram</description>
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Processador</name>
+			<description>Processador</description>
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>ServicePacks</name>
+			<description>ServicePacks</description>
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>SistemaOperativo</name>
+			<description>SistemaOperativo</description>
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>ImplementadoDR</name>
+			<description>ImplementadoDR</description>
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>PermissoesLocais</name>
+			<description>PermissoesLocais</description>
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>KeywordsList</name>
+			<description>KeywordsList</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Id</name>
+			<description>OUT_Id</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Error</name>
+			<description>OUT_Error</description>
+		</XmlAttribute>
+
+		<image>bpmn_task.png</image>
+		<description>CreateServidor</description>
+		<i18n>CreateServidor</i18n>
+	</XmlBlock>
+
+	<XmlBlock>
+		<class>BlockP15032GetServidorById</class>
+		<XmlPort>
+			<name>portIn</name>
+			<description>portIn</description>
+			<in_out>in</in_out>
+			<position>
+				<x>-2</x>
+				<y>45</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portSuccess</name>
+			<description>portSuccess</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>20</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portEmpty</name>
+			<description>portEmpty</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>39</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portError</name>
+			<description>portError</description>
+			<in_out>out</in_out>
+			<position>
+				<x>105</x>
+				<y>62</y>
+			</position>
+		</XmlPort>
+
+		<XmlAttribute>
+			<name>Id</name>
+			<description>Id</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Nome</name>
+			<description>OUT_Nome</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Versao</name>
+			<description>OUT_Versao</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_Descricao</name>
+			<description>OUT_Descricao</description>
+		</XmlAttribute>
+
+		<XmlAttribute>
+			<name>OUT_IP</name>
+			<description>OUT_IP</description>
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>OUT_VLan</name>
+			<description>OUT_VLan</description>
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>OUT_Disco</name>
+			<description>OUT_Disco</description>
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>OUT_Ram</name>
+			<description>OUT_Ram</description>
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>OUT_Processador</name>
+			<description>OUT_Processador</description>
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>OUT_ServicePacks</name>
+			<description>OUT_ServicePacks</description>
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>OUT_SistemaOperativo</name>
+			<description>OUT_SistemaOperativo</description>
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>OUT_ImplementadoDR</name>
+			<description>OUT_ImplementadoDR</description>
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>OUT_PermissoesLocais</name>
+			<description>PermissoesLocais</description>
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>OUT_KeywordsList</name>
+			<description>OUT_KeywordsList</description>
+		</XmlAttribute>
+		
+		<XmlAttribute>
+			<name>OUT_Error</name>
+			<description>OUT_Error</description>
+		</XmlAttribute>
+
+		<image>bpmn_task.png</image>
+		<description>GetAplicacaoById</description>
+		<i18n>GetAplicacaoById</i18n>
+	</XmlBlock>
+
+</XmlLibrary>

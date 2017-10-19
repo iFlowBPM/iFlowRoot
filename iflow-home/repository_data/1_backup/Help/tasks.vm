@@ -1,0 +1,18 @@
+    <h2>$messages.getString("help.tasks.title")</h2>
+
+    <p>$messages.getString("help.tasks.concept.p1")</p>
+    <p>$messages.getString("help.tasks.concept.p2")</p>
+    <p>$messages.getString("help.tasks.concept.p3")</p>
+
+    <h3>$messages.getString("help.tasks.filtering.title")</h3>
+    <p>$messages.getString("help.tasks.filtering.concept.title")</p>
+    <ul>
+      <li>$messages.getString("help.tasks.filtering.concept.p1")</li>      
+      <li>$messages.getString("help.tasks.filtering.concept.p2")</li>      
+      <li>$messages.getString("help.tasks.filtering.concept.p3")</li>
+      <li>$messages.getString("help.tasks.filtering.concept.p4")</li>
+      <li>$messages.getString("help.tasks.filtering.concept.p5")</li>
+    </ul>
+    
+    <h3>$messages.getString("help.tasks.content.title")</h3>
+    <p>$messages.getString("help.tasks.content.concept")</p>

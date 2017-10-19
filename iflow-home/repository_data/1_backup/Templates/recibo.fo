@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">
+	<fo:layout-master-set>
+		<fo:simple-page-master master-name="A4" page-width="297mm" page-height="210mm" margin-top="1cm" margin-bottom="1cm"
+			margin-left="1cm" margin-right="1cm">
+			<fo:region-body margin="3cm" />
+			<fo:region-before extent="2cm" />
+			<fo:region-after extent="2cm" />
+			<fo:region-start extent="2cm" />
+			<fo:region-end extent="2cm" />
+		</fo:simple-page-master>
+	</fo:layout-master-set>
+
+	<fo:page-sequence master-reference="A4">
+		<!-- Page content goes here -->
+		<fo:flow flow-name="xsl-region-body">
+			<fo:block font-size="16pt" padding-bottom="2em" text-align="center">Lista de Compras</fo:block>
+			<fo:block>
+				<fo:inline>#atable:ii:0:carrinho_ids.length:1#</fo:inline>
+			</fo:block>
+			<fo:table table-width="100%" border="0.5pt solid black">
+				<fo:table-column column-width="proportional-column-width(1)" />
+				<fo:table-column column-width="proportional-column-width(1)" />
+				<fo:table-column column-width="proportional-column-width(1)" />
+				<fo:table-column column-width="proportional-column-width(1)" />
+				
+				<fo:table-body>
+					<fo:table-row>
+						<fo:table-cell>
+							<fo:block font-weight="bold">
+								<fo:inline>#if:true#</fo:inline>
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block font-weight="bold">
+								<fo:inline>#if:true#</fo:inline>
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block font-weight="bold">
+								<fo:inline>#if:true#</fo:inline>
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block font-weight="bold">
+								<fo:inline>#if:true#</fo:inline>
+							</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row>
+						<fo:table-cell border="0.5pt solid black">
+							<fo:block font-weight="bold"><fo:inline>Material</fo:inline></fo:block>
+						</fo:table-cell>
+						<fo:table-cell border="0.5pt solid black">
+							<fo:block font-weight="bold"><fo:inline>Quantidade</fo:inline></fo:block>
+						</fo:table-cell>
+						<fo:table-cell border="0.5pt solid black">
+							<fo:block font-weight="bold"><fo:inline>Preço (Unidade)</fo:inline></fo:block>
+						</fo:table-cell>
+						<fo:table-cell border="0.5pt solid black">
+							<fo:block font-weight="bold"><fo:inline>Preço</fo:inline></fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row>
+						<fo:table-cell border="0.5pt solid black">
+							<fo:block>
+								<fo:inline>$carrinho_name[ii]:t$</fo:inline>
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border="0.5pt solid black">
+							<fo:block text-align="right">
+								<fo:inline>$carrinho_qty[ii]:i$</fo:inline>
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border="0.5pt solid black">
+							<fo:block text-align="right">
+								<fo:inline>$carrinho_unit_price[ii]:e$</fo:inline>
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border="0.5pt solid black">
+							<fo:block text-align="right">
+								<fo:inline>$carrinho_price[ii]:e$</fo:inline>
+							</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+				</fo:table-body>
+
+			</fo:table>
+			<fo:block padding-top="2em">
+				<fo:inline>Total a Pagar: $ammount:e$</fo:inline>
+			</fo:block>
+		</fo:flow>
+	</fo:page-sequence>
+</fo:root>

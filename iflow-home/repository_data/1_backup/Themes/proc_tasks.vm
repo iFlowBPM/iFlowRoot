@@ -1,0 +1,33 @@
+  <div class="table_inc">
+    <div class="tab_title">$messages.getString('proc_hist.header.histTask')</div> 
+    <table class="item_list">
+      <tr class="tab_header">
+        <td>$messages.getString('proc_hist.field.user')</td>
+        <td>$messages.getString('proc_hist.field.start')</td>
+        <td>$messages.getString('proc_hist.field.end')</td>
+        <td>$messages.getString('proc_hist.field.description')</td>
+      </tr>
+	  #set($odd="odd")
+	  #foreach($act in $alTaskHist)
+		#if($odd == 'odd')
+			#set($odd="even")
+		#else
+			#set($odd="odd")
+		#end
+		#set($created='&nbsp;')
+		#set($archived=$sONGOING)
+		#if($act.getCreated())
+		#set($created=$dateUtil.formatTimestamp($act.getCreated()))
+		#end
+		#if($act.getArchived())
+		#set($archived=$dateUtil.formatTimestamp($act.getArchived()))
+		#end
+        <tr class="tab_row_$odd">
+        <td align="center" class="v10AZU">$act.getUserid()</td>
+        <td align="center" class="v10AZU">$created</td>
+        <td align="center" class="v10AZU">$archived</td>
+        <td align="center" class="v10AZU">$act.getDescription()</td>
+        </tr>
+	  #end
+    </table>
+  </div>

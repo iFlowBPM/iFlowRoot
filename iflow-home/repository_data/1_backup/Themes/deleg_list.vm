@@ -1,0 +1,94 @@
+
+						<table border="0" cellspacing="0" cellpadding="4" align="center" bordercolor="#ffffff" bordercolorlight="#ffffff" bordercolordark="#e3e3e3" width="100%">
+							<tr>
+								<td class="title2" valign="bottom">Pedidos&nbsp;Recebidos
+								</td>
+							</tr>
+							#if($receivedSize > 0)
+								<tr>
+									<td>
+										<table border="0" width="100%">
+											<tr class="table_header_large">
+												<td>Respons&aacute;vel</td>
+												<td>Fluxo</td>
+												<td>Data de Fim</td>
+												<td width="1" align="center">Aceitar</td>
+												<td width="1" align="center">Recusar</td>
+											</tr>
+											#set($odd=1)
+											#foreach( $received in $receivedDelegs )
+													#if($odd == 0)
+														#set($class_type="even")
+														#set($odd=1)
+													#else
+														#set($class_type="odd")
+														#set($odd=0)
+													#end
+												<tr class="table_row_$class_type">
+													<td>$received.getOwnerID()</td>
+													<td>$received.getFlowName()</td>
+													<td>$received.getExpires()</td>
+													<td width="1" align="center"><a href="$response.encodeURL($url_prefix,'confirmar_agendamento.jsp')?id=$received.getHierarchyID()&owner=$received.getOwnerID()&dkey=$received.getAcceptKey()"  target='_top'><img border="0" name="approve" src="$url_prefix/images/approve_icon.gif" alt="Aceitar" /></a></td>
+													<td width="1" align="center"><a href="$response.encodeURL($url_prefix,'confirmar_agendamento.jsp')?id=$received.getHierarchyID()&owner=$received.getOwnerID()&dkey=$received.getRejectKey()"  target='_top'><img border="0" name="refuse" src="$url_prefix/images/refuse_icon.gif" alt="Recusar" /></a></td>
+												</tr>
+											#end
+										</table>
+									</td>
+								</tr>
+								<tr>
+									<td class="v10bAZU" valign="bottom" align="right"><a href="$response.encodeURL($url_prefix,'gestao_tarefas.jsp')?ts=$ts" target='_top'>Gest&atilde;o&nbsp;Delega&ccedil;&otilde;es</a></td>
+								</tr>
+							#else
+								<tr>
+									<td class="table_row_odd" valign="bottom" align="left">&nbsp;N&atilde;o tem nenhum pedido recebido.</td>
+								</tr>
+							#end
+
+						    <tr>
+								<td class="title2" valign="bottom">Pedidos&nbsp;Enviados
+								</td>
+							</tr>
+							#if($sentSize > 0)
+								<tr id="aceitarrecusar">
+									<td>
+										<table border="0" width="100%">
+											<tr class="table_header_large">
+												<td>Respons&atilde;vel</td>
+												<td>Fluxo</td>
+												<td>Substituto</td>
+												<td>Estado</td>
+												<td width="1" align="center">Terminar</td>
+											</tr>
+											#set($odd=1)
+											#foreach( $sent in $sentDelegs )
+													#if($odd == 0)
+														#set($class_type="even")
+														#set($odd=1)
+													#else
+														#set($class_type="odd")
+														#set($odd=0)
+													#end
+												<tr class="table_row_$class_type">
+													<td>$sent.getOwnerID()</td>
+													<td>$sent.getFlowName()</td>
+													<td>$sent.getUserID()</td>
+													#if ($sent.getPending() == 0)
+														<td>Agendado</td>
+														#else
+															<td>Pendente</td>
+													#end
+													<td width="1" align="center"><a href="$response.encodeURL($url_prefix,'terminar_agendamento.jsp')?id=$sent.getHierarchyID()" target='_top'><img border="0" name="terminate" src="$url_prefix/images/notok.jpg" alt="Terminar" /></a></td>
+												</tr>
+											#end
+										</table>
+									</td>
+								</tr>
+								<tr>
+									<td class="v10bAZU" valign="bottom" align="right"><a href="$response.encodeURL($url_prefix,'gestao_tarefas.jsp')?ts=$ts" target='_top'>Gest&atilde;o&nbsp;Delega&ccedil;&otilde;es</a></td>
+								</tr>
+							#else
+								<tr>
+									<td  class="table_row_odd" valign="bottom" align="left">&nbsp;N&tilde;o tem nenhum pedido enviado.</td>
+								</tr>
+							#end
+						</table>

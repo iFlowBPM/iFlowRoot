@@ -1,0 +1,607 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://ausenciasuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://ausenciasuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://ausenciasuri.org/">
+      <s:element name="ConsultaColaborador">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="num_empregado" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="num_empresa" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConsultaColaboradorResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ConsultaColaboradorResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConsultaCategPro">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="num_categ" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConsultaCategProResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ConsultaCategProResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConsultaLocaisTrabalho">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="id_empresa" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="id_area" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="id_subarea" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConsultaLocaisTrabalhoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ConsultaLocaisTrabalhoResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConsultaHorarioTrabalho">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="num_empregado" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConsultaHorarioTrabalhoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ConsultaHorarioTrabalhoResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConsultaCentroCusto">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Empresa" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="CentroCusto" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConsultaCentroCustoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ConsultaCentroCustoResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConsultaHorarioTrabalhoPcg">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="num_empregado" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConsultaHorarioTrabalhoPcgResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ConsultaHorarioTrabalhoPcgResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DataSet" nillable="true">
+        <s:complexType>
+          <s:sequence>
+            <s:element ref="s:schema" />
+            <s:any />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DataTable" nillable="true">
+        <s:complexType>
+          <s:sequence>
+            <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+            <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="ConsultaColaboradorSoapIn">
+    <wsdl:part name="parameters" element="tns:ConsultaColaborador" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaColaboradorSoapOut">
+    <wsdl:part name="parameters" element="tns:ConsultaColaboradorResponse" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaCategProSoapIn">
+    <wsdl:part name="parameters" element="tns:ConsultaCategPro" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaCategProSoapOut">
+    <wsdl:part name="parameters" element="tns:ConsultaCategProResponse" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaLocaisTrabalhoSoapIn">
+    <wsdl:part name="parameters" element="tns:ConsultaLocaisTrabalho" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaLocaisTrabalhoSoapOut">
+    <wsdl:part name="parameters" element="tns:ConsultaLocaisTrabalhoResponse" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaHorarioTrabalhoSoapIn">
+    <wsdl:part name="parameters" element="tns:ConsultaHorarioTrabalho" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaHorarioTrabalhoSoapOut">
+    <wsdl:part name="parameters" element="tns:ConsultaHorarioTrabalhoResponse" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaCentroCustoSoapIn">
+    <wsdl:part name="parameters" element="tns:ConsultaCentroCusto" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaCentroCustoSoapOut">
+    <wsdl:part name="parameters" element="tns:ConsultaCentroCustoResponse" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaHorarioTrabalhoPcgSoapIn">
+    <wsdl:part name="parameters" element="tns:ConsultaHorarioTrabalhoPcg" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaHorarioTrabalhoPcgSoapOut">
+    <wsdl:part name="parameters" element="tns:ConsultaHorarioTrabalhoPcgResponse" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaColaboradorHttpGetIn">
+    <wsdl:part name="num_empregado" type="s:string" />
+    <wsdl:part name="num_empresa" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaColaboradorHttpGetOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaCategProHttpGetIn">
+    <wsdl:part name="num_categ" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaCategProHttpGetOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaLocaisTrabalhoHttpGetIn">
+    <wsdl:part name="id_empresa" type="s:string" />
+    <wsdl:part name="id_area" type="s:string" />
+    <wsdl:part name="id_subarea" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaLocaisTrabalhoHttpGetOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaHorarioTrabalhoHttpGetIn">
+    <wsdl:part name="num_empregado" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaHorarioTrabalhoHttpGetOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaCentroCustoHttpGetIn">
+    <wsdl:part name="Empresa" type="s:string" />
+    <wsdl:part name="CentroCusto" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaCentroCustoHttpGetOut">
+    <wsdl:part name="Body" element="tns:DataTable" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaHorarioTrabalhoPcgHttpGetIn">
+    <wsdl:part name="num_empregado" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaHorarioTrabalhoPcgHttpGetOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaColaboradorHttpPostIn">
+    <wsdl:part name="num_empregado" type="s:string" />
+    <wsdl:part name="num_empresa" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaColaboradorHttpPostOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaCategProHttpPostIn">
+    <wsdl:part name="num_categ" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaCategProHttpPostOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaLocaisTrabalhoHttpPostIn">
+    <wsdl:part name="id_empresa" type="s:string" />
+    <wsdl:part name="id_area" type="s:string" />
+    <wsdl:part name="id_subarea" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaLocaisTrabalhoHttpPostOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaHorarioTrabalhoHttpPostIn">
+    <wsdl:part name="num_empregado" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaHorarioTrabalhoHttpPostOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaCentroCustoHttpPostIn">
+    <wsdl:part name="Empresa" type="s:string" />
+    <wsdl:part name="CentroCusto" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaCentroCustoHttpPostOut">
+    <wsdl:part name="Body" element="tns:DataTable" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaHorarioTrabalhoPcgHttpPostIn">
+    <wsdl:part name="num_empregado" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaHorarioTrabalhoPcgHttpPostOut">
+    <wsdl:part name="Body" element="tns:DataSet" />
+  </wsdl:message>
+  <wsdl:portType name="Service1Soap">
+    <wsdl:operation name="ConsultaColaborador">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Nome do Colaborador SAP</wsdl:documentation>
+      <wsdl:input message="tns:ConsultaColaboradorSoapIn" />
+      <wsdl:output message="tns:ConsultaColaboradorSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaCategPro">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Categorias Profissionais SAP</wsdl:documentation>
+      <wsdl:input message="tns:ConsultaCategProSoapIn" />
+      <wsdl:output message="tns:ConsultaCategProSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaLocaisTrabalho">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Seleccao de Local de Trabalho</wsdl:documentation>
+      <wsdl:input message="tns:ConsultaLocaisTrabalhoSoapIn" />
+      <wsdl:output message="tns:ConsultaLocaisTrabalhoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaHorarioTrabalho">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Horario de Trabalho</wsdl:documentation>
+      <wsdl:input message="tns:ConsultaHorarioTrabalhoSoapIn" />
+      <wsdl:output message="tns:ConsultaHorarioTrabalhoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaCentroCusto">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Consultar Centros de Custo</wsdl:documentation>
+      <wsdl:input message="tns:ConsultaCentroCustoSoapIn" />
+      <wsdl:output message="tns:ConsultaCentroCustoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaHorarioTrabalhoPcg">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Horario de Trabalho PCG</wsdl:documentation>
+      <wsdl:input message="tns:ConsultaHorarioTrabalhoPcgSoapIn" />
+      <wsdl:output message="tns:ConsultaHorarioTrabalhoPcgSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="Service1HttpGet">
+    <wsdl:operation name="ConsultaColaborador">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Nome do Colaborador SAP</wsdl:documentation>
+      <wsdl:input message="tns:ConsultaColaboradorHttpGetIn" />
+      <wsdl:output message="tns:ConsultaColaboradorHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaCategPro">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Categorias Profissionais SAP</wsdl:documentation>
+      <wsdl:input message="tns:ConsultaCategProHttpGetIn" />
+      <wsdl:output message="tns:ConsultaCategProHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaLocaisTrabalho">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Seleccao de Local de Trabalho</wsdl:documentation>
+      <wsdl:input message="tns:ConsultaLocaisTrabalhoHttpGetIn" />
+      <wsdl:output message="tns:ConsultaLocaisTrabalhoHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaHorarioTrabalho">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Horario de Trabalho</wsdl:documentation>
+      <wsdl:input message="tns:ConsultaHorarioTrabalhoHttpGetIn" />
+      <wsdl:output message="tns:ConsultaHorarioTrabalhoHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaCentroCusto">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Consultar Centros de Custo</wsdl:documentation>
+      <wsdl:input message="tns:ConsultaCentroCustoHttpGetIn" />
+      <wsdl:output message="tns:ConsultaCentroCustoHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaHorarioTrabalhoPcg">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Horario de Trabalho PCG</wsdl:documentation>
+      <wsdl:input message="tns:ConsultaHorarioTrabalhoPcgHttpGetIn" />
+      <wsdl:output message="tns:ConsultaHorarioTrabalhoPcgHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="Service1HttpPost">
+    <wsdl:operation name="ConsultaColaborador">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Nome do Colaborador SAP</wsdl:documentation>
+      <wsdl:input message="tns:ConsultaColaboradorHttpPostIn" />
+      <wsdl:output message="tns:ConsultaColaboradorHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaCategPro">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Categorias Profissionais SAP</wsdl:documentation>
+      <wsdl:input message="tns:ConsultaCategProHttpPostIn" />
+      <wsdl:output message="tns:ConsultaCategProHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaLocaisTrabalho">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Seleccao de Local de Trabalho</wsdl:documentation>
+      <wsdl:input message="tns:ConsultaLocaisTrabalhoHttpPostIn" />
+      <wsdl:output message="tns:ConsultaLocaisTrabalhoHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaHorarioTrabalho">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Horario de Trabalho</wsdl:documentation>
+      <wsdl:input message="tns:ConsultaHorarioTrabalhoHttpPostIn" />
+      <wsdl:output message="tns:ConsultaHorarioTrabalhoHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaCentroCusto">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Consultar Centros de Custo</wsdl:documentation>
+      <wsdl:input message="tns:ConsultaCentroCustoHttpPostIn" />
+      <wsdl:output message="tns:ConsultaCentroCustoHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaHorarioTrabalhoPcg">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Horario de Trabalho PCG</wsdl:documentation>
+      <wsdl:input message="tns:ConsultaHorarioTrabalhoPcgHttpPostIn" />
+      <wsdl:output message="tns:ConsultaHorarioTrabalhoPcgHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="Service1Soap" type="tns:Service1Soap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ConsultaColaborador">
+      <soap:operation soapAction="http://ausenciasuri.org/ConsultaColaborador" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaCategPro">
+      <soap:operation soapAction="http://ausenciasuri.org/ConsultaCategPro" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaLocaisTrabalho">
+      <soap:operation soapAction="http://ausenciasuri.org/ConsultaLocaisTrabalho" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaHorarioTrabalho">
+      <soap:operation soapAction="http://ausenciasuri.org/ConsultaHorarioTrabalho" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaCentroCusto">
+      <soap:operation soapAction="http://ausenciasuri.org/ConsultaCentroCusto" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaHorarioTrabalhoPcg">
+      <soap:operation soapAction="http://ausenciasuri.org/ConsultaHorarioTrabalhoPcg" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="Service1Soap12" type="tns:Service1Soap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ConsultaColaborador">
+      <soap12:operation soapAction="http://ausenciasuri.org/ConsultaColaborador" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaCategPro">
+      <soap12:operation soapAction="http://ausenciasuri.org/ConsultaCategPro" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaLocaisTrabalho">
+      <soap12:operation soapAction="http://ausenciasuri.org/ConsultaLocaisTrabalho" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaHorarioTrabalho">
+      <soap12:operation soapAction="http://ausenciasuri.org/ConsultaHorarioTrabalho" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaCentroCusto">
+      <soap12:operation soapAction="http://ausenciasuri.org/ConsultaCentroCusto" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaHorarioTrabalhoPcg">
+      <soap12:operation soapAction="http://ausenciasuri.org/ConsultaHorarioTrabalhoPcg" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="Service1HttpGet" type="tns:Service1HttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="ConsultaColaborador">
+      <http:operation location="/ConsultaColaborador" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaCategPro">
+      <http:operation location="/ConsultaCategPro" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaLocaisTrabalho">
+      <http:operation location="/ConsultaLocaisTrabalho" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaHorarioTrabalho">
+      <http:operation location="/ConsultaHorarioTrabalho" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaCentroCusto">
+      <http:operation location="/ConsultaCentroCusto" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaHorarioTrabalhoPcg">
+      <http:operation location="/ConsultaHorarioTrabalhoPcg" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="Service1HttpPost" type="tns:Service1HttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="ConsultaColaborador">
+      <http:operation location="/ConsultaColaborador" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaCategPro">
+      <http:operation location="/ConsultaCategPro" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaLocaisTrabalho">
+      <http:operation location="/ConsultaLocaisTrabalho" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaHorarioTrabalho">
+      <http:operation location="/ConsultaHorarioTrabalho" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaCentroCusto">
+      <http:operation location="/ConsultaCentroCusto" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaHorarioTrabalhoPcg">
+      <http:operation location="/ConsultaHorarioTrabalhoPcg" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Service1">
+    <wsdl:port name="Service1Soap" binding="tns:Service1Soap">
+      <soap:address location="http://carn-xcpg/Trilog_HR_Ausencias/Service1.asmx" />
+    </wsdl:port>
+    <wsdl:port name="Service1Soap12" binding="tns:Service1Soap12">
+      <soap12:address location="http://carn-xcpg/Trilog_HR_Ausencias/Service1.asmx" />
+    </wsdl:port>
+    <wsdl:port name="Service1HttpGet" binding="tns:Service1HttpGet">
+      <http:address location="http://carn-xcpg/Trilog_HR_Ausencias/Service1.asmx" />
+    </wsdl:port>
+    <wsdl:port name="Service1HttpPost" binding="tns:Service1HttpPost">
+      <http:address location="http://carn-xcpg/Trilog_HR_Ausencias/Service1.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

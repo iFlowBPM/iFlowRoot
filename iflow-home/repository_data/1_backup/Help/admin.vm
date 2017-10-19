@@ -1,0 +1,6 @@
+
+	<h2>$messages.getString("help.admin")</h2>
+	
+	<p>$messages.getString("help.admin.p1")</p>
+	<p>$messages.getString("help.admin.p2")</p>
+	

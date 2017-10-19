@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by jmv (.) -->
+<XmlLibrary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="library.xsd">
+	<name>WebServices</name>
+	<version>1.0</version>
+	<author>iKnow</author>
+	<description>WebServices</description>
+	<i18nName>library.webservices.name</i18nName>
+	<i18nDescription>library.webservices.description</i18nDescription>
+	<XmlBlock>
+		<class>BlockWebServiceSinc</class>
+		<XmlPort>
+			<name>portIn</name>
+			<description>portIn</description>
+			<in_out>in</in_out>
+			<position>
+				<x>-2</x>
+				<y>45</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portOk</name>
+			<description>portOk</description>
+			<in_out>out</in_out>
+			<position>
+				<x>106</x>
+				<y>20</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portError</name>
+			<description>portError</description>
+			<in_out>out</in_out>
+			<position>
+				<x>106</x>
+				<y>39</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portTimeout</name>
+			<description>portTimeout</description>
+			<in_out>out</in_out>
+			<position>
+				<x>106</x>
+				<y>62</y>
+			</position>
+		</XmlPort>
+		<image>bpmn_ws.png</image>    
+		<className>pt.iknow.floweditor.blocks.AlteraAtributosWebServiceSinc</className>
+		<description>Web Services</description>
+		<i18n>library.webservices.block.wscli</i18n>
+	</XmlBlock>
+</XmlLibrary>

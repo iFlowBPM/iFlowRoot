@@ -1,0 +1,12 @@
+#set( $emDelegations = "<em>" + $messages.getString("help.title.delegations") + "</em>" )
+#set( $emRequest = "<em>" + $messages.getString("button.request") + "</em>" )
+    <h2>$messages.getString("help.title.delegations")</h2>
+    <p>$messages.getString("help.delegations.concept.p1")</p>
+    <p>$messages.getString("help.delegations.concept.p2")</p>
+    <p>$messages.getString("help.delegations.concept.p3", $emRequest)</p>
+    <p>$messages.getString("help.delegations.concept.p4", $emDelegations)</p>
+    <h3>$messages.getString("help.delegations.request.title")</h3>
+    <p>$messages.getString("help.delegations.request.concept")</p>
+    <h3>$messages.getString("help.delegations.terminate.title")</h3>
+    <p>$messages.getString("help.delegations.terminate.concept")</p>
+    

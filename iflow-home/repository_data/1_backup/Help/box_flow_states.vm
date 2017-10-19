@@ -1,0 +1,13 @@
+	<h2>$messages.getString("admin_nav.title") $navSep $messages.getString("admin_nav.section.processes.title") $navSep $messages.getString("admin_nav.section.processes.link.status")</h2>
+	
+	<p>$messages.getString("help.box_flow_states.concept.p1", $messages.getString("flow_states.field.flow"))</p>
+	
+	<p>$messages.getString("help.box_flow_states.concept.p2")</p>
+	
+	<h3>$messages.getString("flow_state_procs.link.users")</h3>
+	<img src="images/icon_user.png" border="0" title="$messages.getString("flow_state_procs.link.users")" alt="$messages.getString("flow_state_procs.link.users")" />
+	<p>$messages.getString("help.box_flow_states.users.p1")</p>
+	
+	<h3>$messages.getString("flow_state_procs.link.history")</h3>
+    <img src="images/icon_history.png" border="0" title="$messages.getString("flow_state_procs.link.history")" alt="$messages.getString("flow_state_procs.link.history")" />
+    <p>$messages.getString("help.box_flow_states.history.p1")</p>

@@ -1,0 +1,20 @@
+	<h2>$messages.getString("admin_nav.title") $navSep $messages.getString("admin_nav.section.users.title") $navSep $messages.getString("admin_nav.section.users.link.profiles") </h2>
+
+	<p>$messages.getString("help.box_profileadm.concept")</p>
+
+	<h3>$messages.getString("profileadm.help.create")</h3>
+	<div class="help_item_img"><input class="regular_button_01" type="button" value="$messages.getString("button.add")" disabled="disabled"></div>	
+	<p>$messages.getString("help.box_profileadm.create.p1")</p>
+
+	<h3>$messages.getString("profileadm.help.edit")</h3>
+	<div class="help_item_img"><img class="icon" src="images/icon_modify.png"/></div>	
+	<p>$messages.getString("help.box_profileadm.edit.p1")</p>
+	<p>$messages.getString("help.box_profileadm.edit.p2")</p>
+
+	<h3>$messages.getString("profileadm.help.profiles")</h3>
+	<div class="help_item_img"><img class="icon" src="images/icon_profile.png"/></div>
+	<p>$messages.getString("help.box_profileadm.profiles.p1")</p>
+
+	<h3>$messages.getString("profileadm.help.delete")</h3>
+	<div class="help_item_img"><img class="icon" src="images/icon_delete.png"/></div>
+	<p>$messages.getString("help.box_profileadm.delete.p1")</p>

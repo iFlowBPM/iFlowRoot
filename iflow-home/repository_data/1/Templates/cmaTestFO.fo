@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><fop:root xmlns:fop="http://www.w3.org/1999/XSL/Format" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0">
+   <fop:layout-master-set>
+      <fop:simple-page-master border="" margin-bottom="2cm" margin-left="2cm" margin-right="2cm" margin-top="2cm" master-name="pm1" page-height="29.7cm" page-width="21.001cm">
+         <fop:region-body/>
+      </fop:simple-page-master>
+   </fop:layout-master-set>
+   <fop:page-sequence master-reference="pm1">
+      <fop:static-content flow-name="xsl-footnote-separator">
+         <fop:block>
+            <fop:leader leader-length="100%" leader-pattern="rule" rule-style="solid" rule-thickness="0.5pt"/>
+         </fop:block>
+      </fop:static-content>
+      <fop:flow flow-name="xsl-region-body">
+         <fop:block>
+            <fop:block country="PT" font-family="Consolas,sans-serif" font-size="10pt" hyphenate="false" hyphenation-ladder-count="no-limit" language="pt" line-height="110%" margin-left="0cm" margin-right="0cm" text-align="start" text-indent="0cm">
+               <fop:leader leader-length="1.251cm" leader-pattern="space"/><fop:inline font-weight="bold">Hello World</fop:inline></fop:block>
+            
+            <fop:block country="PT" font-family="Consolas,sans-serif" font-size="10pt" hyphenate="false" hyphenation-ladder-count="no-limit" language="pt" line-height="110%" margin-left="0cm" margin-right="0cm" text-align="start" text-indent="0cm">
+               <fop:leader leader-length="1.251cm" leader-pattern="space"/><fop:inline font-weight="bold">$var1:t$</fop:inline></fop:block>
+            
+            <fop:block country="PT" font-family="Consolas,sans-serif" font-size="10pt" hyphenate="false" hyphenation-ladder-count="no-limit" language="pt" line-height="110%" margin-left="0cm" margin-right="0cm" text-align="start" text-indent="0cm">
+               <fop:leader leader-length="1.251cm" leader-pattern="space"/>$var2:t$</fop:block>                    
+            
+            <fop:block country="PT" font-family="Consolas,sans-serif" font-size="10pt" hyphenate="false" hyphenation-ladder-count="no-limit" language="pt" line-height="110%" margin-left="0cm" margin-right="0cm" text-align="start" text-indent="0cm">
+               <fop:leader/>
+            </fop:block>
+         </fop:block>
+         <fop:block id="last-page"/>
+      </fop:flow>
+   </fop:page-sequence>
+</fop:root>
+

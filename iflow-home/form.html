@@ -1,0 +1,574 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:encoder="xalan://java.net.URLEncoder">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="/iFlow//javascript/yahoo/fonts/fonts-min.css" type="text/css" rel="stylesheet">
+<link href="/iFlow//javascript/yahoo/container/assets/container-core.css" type="text/css" rel="stylesheet">
+<link title="iflow_form" media="all" href="/iFlow//Themes/generic/iflow_form.css" type="text/css" rel="stylesheet">
+<link media="all" href="/iFlow//javascript/calendar/calendar-iflow.css" type="text/css" rel="stylesheet">
+<link href="/iFlow//javascript/jquery-ui/jquery-ui.css" type="text/css" rel="stylesheet">
+<style type="text/css">
+		html {
+	font-family: Verdana, Arial, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+}
+
+body {
+/*	background-color: #e3e3e3;
+	background-color: #f7f5e8;*/
+}
+* html body { padding-left:5px !important; }
+
+a {
+	color: #03679e;
+}
+
+a:VISITED {
+    color: #03679e;
+}
+
+a:HOVER {
+    color: #B5B45D;
+}
+
+#main {
+	/*padding: 20px;*/
+padding-top:10px;
+	text-align: center;
+	width: 100%;
+	background: white;
+	/*border: 1px solid #bababa;*/
+	/*margin: 30px auto;*/
+	margin: 0px auto;
+	width: 94%;
+	display: table;
+}
+
+* html #main { margin-left:20px; }
+
+.error_msg {
+	font-size: 12px;
+	font-weight: bold;
+	color: red;
+	padding: 10px 0px 10px 10px;
+	text-align: left;
+}
+
+.info_msg {
+	font-size: 12px;
+	font-weight: bold;
+	color: #1E5B78;
+	padding: 10px 0px 10px 10px;
+	text-align: left;
+}
+
+.header_msg {
+	font-size: 16px;
+	font-weight: bold;
+	color: #1E5B78;
+	padding: 10px 0px 10px 10px;
+	text-align: center;
+}
+
+.normal_text {
+	font-weight: normal;
+}
+
+.blockdivision {
+	border: none;
+	clear: left;
+}
+
+.columndivision {
+	margin: 0;
+	*position: relative;
+}
+
+.columnholder {
+  *position: static;
+}
+
+.txt {
+	color: #444444;
+}
+
+
+.txt#montante {
+	text-align: right;
+}
+.txt#dataResgate {
+	text-align: right;
+}
+.txt#motivo {
+	text-align: right;
+}
+
+.txt#nif{
+text-align: right;
+}
+.txt#local{
+text-align: right;
+}
+.txt#dataPartida{
+text-align: right;
+}
+.txt#dataChegada{
+text-align: right;
+}
+.txt#matricula{
+text-align: right;
+}
+.txt#nkms{
+text-align: right;
+}
+.txt#valorDinheiro{
+text-align: right;
+}
+
+
+.mensagem_erro {
+color:red;
+font-weight:bold;
+}
+
+
+
+.mensagem_certo {
+color:green;
+font-weight:bold;
+}
+
+.button {
+	font-weight: bold;
+	color: #444444;
+}
+
+.center {
+	text-align: center;
+}
+
+.border {
+	border: 1px solid #cccccc;
+}
+
+hr {
+	height: 1px;
+	background-color: #B5B45D;
+	border: none;
+}
+
+.table_main_header , .table_sub_header  {
+	font-weight: bold;
+	color: #FFFFFF;
+	text-decoration: none;
+	height: 23px;
+}
+
+.table_main_header {
+	font-size: 12px;
+	background-color: #555;
+}
+
+.table_sub_header {
+	font-size: 11px;
+	background-color: #858585;
+}
+
+.document_header {
+	font-size: 11px;
+	background-color: white;
+        color: #c5c5c5;
+}
+
+.note {
+	font-size: 10px;
+	color: #2C5586;
+}
+
+.normal {
+	font-size: 11px;
+	color: #444444;
+	font-weight: bold;
+}
+
+ol {
+	list-style: none;
+	text-align: right;
+	clear:both;
+	padding: 0;
+	margin: 0;
+}
+
+ol.submit {
+	text-align: center;
+}
+
+label {
+	float: left;
+}
+
+.multicol {
+	/*margin-left: 5px;*/
+}
+
+.multicol_first {
+	margin-left: 0px;
+}
+
+.multicoltext {
+	position: relative;
+	border: 1px solid #bababa;
+	margin: 4px 0;
+	padding: 3px;
+	background-color: #f7f5e8;
+	font-weight: bold;
+	font-size:11px;
+}
+
+div.submit {
+	float: none;
+	clear: both;
+	width: auto;
+	padding-top: 25px;
+	padding-bottom: 25px;
+	border: none;
+	background: transparent;
+	text-align: center;
+}
+
+
+.txtVerm {
+	color: #222244;
+	font-weight: bold;
+	width: 100%;
+}
+
+table.arraytable {
+	border-spacing: 2px;
+	empty-cells: show;
+	width: 100%;
+	margin-top: 10px;
+	font-size: 12px;
+}
+
+table.arraytable td {
+	border: 1px solid #cccccc;
+	margin: 0;
+	padding: 2px 5px 2px 5px;
+}
+
+.filler {
+	height: 11px;
+}
+
+.tab_spacer {
+	border-bottom: 1px solid #aea998;
+	width: 5px;
+}
+
+
+div.multiupload{
+  border: 1px solid #aea998;
+  background-color: #dad7c9;
+  float:left;
+  padding:3px;
+}
+
+div.multiupload div.list{
+  background-color: #dad7c9;
+}
+div.multiupload div.list div.item{
+  margin:1px;
+  background-color: #f7f5e8;
+  font-size: 0.8em;
+  margin: 4px 0;
+}
+div.multiupload div.list div.item:hover{
+/*  background: #ccc;*/
+}
+div.multiupload div.list img{
+  float:left;
+  margin: 3px;
+  cursor:pointer;
+}
+
+.cp_main_header {
+	color:black;
+	font: bold 14px verdana;
+	text-align:center;
+	margin:0;
+	padding: 2px 0px;
+	border-bottom: 1px solid black;
+}
+
+.cp_top_nav {
+	color:black;
+	font: bold 10px verdana;
+	text-align:left;
+	margin:0;
+	padding: 2px 10px;
+}
+
+a.cp_top_nav_link {
+    color: black;
+}
+
+input {
+	border: 1px solid #999;
+}
+
+input.readonly {
+	background-color: #f7f5e8;
+}
+
+textarea {
+	border: 1px solid #999;
+        font-family:verdana;
+        font-size:12px;
+        font-weight:normal;
+}
+
+textarea.readonly {
+	background-color: #fff;
+	border: 1px solid #d0d0d0;
+        font-family:verdana;
+        font-size:12px;
+        font-weight:bold;
+}
+
+li.field {
+	margin: 2px 0;
+	text-align: right;
+	clear: both;
+	min-height: 1em;
+}
+
+li.field_multicol {
+	margin: 0 0 2px 0;
+	text-align: right;
+	clear: both;
+	min-height: 1em;
+}
+
+li.submit {
+	clear: none;
+	width: inherit;
+}
+
+li.textmessage,
+li.textlabel,
+li.textbox,
+li.password {
+	font-weight: bold;
+	min-height:20px;
+  	height:auto !important;
+  	height:20px;
+	padding: 5px 5px 2px 0;
+	/*background-color: #e0e0e0;*/
+	border-bottom: 1px solid #cccccc;
+}
+
+li.textmessage {
+	border: none;	
+}
+
+li.textbox {
+	padding: 5px 1px 5px 0;
+}
+
+li.datecal {
+	font-weight: bold;
+	/*background-color: #e0e0e0;*/
+	border-bottom: 1px solid #cccccc;
+	padding: 5px 5px 5px 0;	
+}
+
+li.textarea {
+	font-weight: bold;
+	height: auto;
+	/*background-color: #e0e0e0;*/
+	border-bottom: 1px solid #cccccc;
+	padding: 5px 5px 5px 0;
+}
+
+li.selection,
+li.arraytable,
+li.image,
+li.file {
+	padding: 2px 5px 2px 0;
+}
+
+li.link {
+	padding: 2px 5px 2px 5px;
+}
+
+li.selection {
+	border-bottom: 1px solid #cccccc;
+	padding: 8px 5px 2px 0;
+}
+
+
+li.header {
+	    background: #4080E0;
+/*background-color:#6C95BE;*/
+	border-bottom:1px solid #BABABA;
+	border-right:1px solid #BABABA;
+	height:19px;
+	padding:5px 5px 2px 0;
+}
+
+li.subheader {
+	margin: 10px 0 10px 0;
+	height: 17px;
+	padding: 2px 5px 2px 5px;
+        background-color: #e0e0e0;
+}
+
+.labelField {
+	font-weight: normal;
+	color: #222244;
+	margin-left: 5px;
+}
+
+label.field {
+	font-weight: normal;
+	color: #222244;
+	margin-left: 5px;
+}
+
+label.textmessage,
+label.textlabel,
+label.textbox,
+label.password,
+label.datecal,
+label.textarea,
+label.selection,
+label.image,
+label.link,
+label.file {
+}
+
+label.arraytable {
+	display: none;
+}
+
+label.header {
+	color: white;
+	font-weight: bold;
+    margin: 0px 5px;
+}
+
+label.subheader {
+	color: black;
+	font-weight: bold;
+    margin: 0px 0px;
+}
+
+.table_row_title_item {
+	background-color: #ccc;
+	font-weight: bold;
+}
+
+.table_row_subheader {
+	background-color: #ccc;
+	font-weight: bold;
+}
+
+.toolTipImg {
+	padding: 0 3px;
+}
+
+.sqllabel {
+	white-space: pre;
+	overflow-x: auto;
+}
+
+
+#codPostal1 {
+text-align:right;
+}
+
+
+#codPostal2 {
+text-align:right;
+}
+
+/* IE min-height fix */
+* html li.field { height: 1em; }
+* html li.field_multicol { height: 1em; }
+* html li.textmessage { height: 20px; }
+* html li.textlabel { height: 20px; }
+* html li.textbox { height: 20px; }
+* html li.password { height: 20px; }
+
+		</style>
+<script src="/iFlow//javascript/yahoo/yahoo-dom-event/yahoo-dom-event.js" type="text/javascript"></script><script src="/iFlow//javascript/yahoo/dragdrop/dragdrop-min.js" type="text/javascript"></script><script src="/iFlow//javascript/yahoo/container/container-min.js" type="text/javascript"></script><script src="/iFlow//javascript/ajax_processing.js" type="text/javascript"></script><script src="/iFlow//javascript/tabs.js" type="text/javascript"></script><script src="/iFlow//javascript/iflow_main.js" type="text/javascript"></script><script src="/iFlow//javascript/calendar/calendar.js" type="text/javascript"></script><script src="/iFlow//javascript/calendar/lang/calendar-pt.js" type="text/javascript"></script><script src="/iFlow//javascript/calendar/calendar-setup.js" type="text/javascript"></script><script src="/iFlow//javascript/mootools.js" type="text/javascript"></script><script src="/iFlow//javascript/FormFunctions.js" type="text/javascript"></script><script src="/iFlow//javascript/Stickman.MultiUpload.js" type="text/javascript"></script><script src="/iFlow//javascript/livevalidation_standalone.js" type="text/javascript"></script><script src="/iFlow//Themes/default/javascript/theme.js" type="text/javascript"></script><script src="/iFlow//javascript/applet_functions.js" type="text/javascript"></script><script type="text/javascript">
+			window.addEvent('domready', getAppletElem);
+		</script>
+</head>
+<body onload="initProcFrame();">
+<div style="margin:auto;">
+<form enctype="multipart/form-data" method="post" name="dados" style="width: 100%;margin:auto;" id="dados" action="form.jsp">
+<input type="hidden" name="0_MAX_ROW" id="0_MAX_ROW" value="0">
+    <input type="hidden" name="2_MAX_ROW" id="2_MAX_ROW" value="0">
+    <input type="hidden" name="subpid" id="subpid" value="-10">
+    <input type="hidden" name="flowid" id="flowid" value="59">
+    <input type="hidden" name="op" id="op" value="0">
+    <input type="hidden" name="flowExecType" id="flowExecType" value="">
+    <input type="hidden" name="1_MAX_ROW" id="1_MAX_ROW" value="0">
+    <input type="hidden" name="pid" id="pid" value="-10">
+    <input type="hidden" name="_serv_field_" id="_serv_field_" value="-1">
+    <input type="hidden" name="curmid" id="curmid" value="0">
+    <input type="hidden" name="_changed_form" id="_changed_form" value="null">
+    <input type="hidden" name="_button_clicked_id" id="_button_clicked_id" value="null">
+    
+<div id="main">
+<div class="blockdivision">
+<div class="columndivision">
+<ol class="fieldlist">
+<li class="arraytable  field">
+<label class="arraytable field"></label>
+<table class="arraytable">
+<tr bgcolor="#FFFFFF" class="txt">
+<td class="table_sub_header" align="left">teste</td>
+</tr>
+<tr>
+<td align="center" colspan="1" class="info_msg">&lt;Vazio&gt;</td>
+</tr>
+</table>
+</li>
+<li class="filler  field"></li>
+<li class="arraytable  field">
+<label class="arraytable field"></label>
+<table class="arraytable">
+<tr bgcolor="#FFFFFF" class="txt">
+<td class="table_sub_header" align="left">teste2</td>
+</tr>
+<tr>
+<td align="center" colspan="1" class="info_msg">&lt;Vazio&gt;</td>
+</tr>
+</table>
+</li>
+</ol>
+</div>
+</div>
+<div class="blockdivision">
+<div class="columndivision columnholder">
+<div class="submit">&nbsp;
+		<button type="submit" class="button" valign="center" align="center" name="_avancar" value="4" onClick="if (CheckEmptyFields()) { disableForm(); document.dados.op.value='3'; document.getElementById('_button_clicked_id').value='4'; } else { return false; }" title="Avan&ccedil;ar">Avan&ccedil;ar</button>&nbsp;
+		</div>
+</div>
+</div>
+</div>
+</form>
+</div>
+<div style="text-align:center;width:99%;height:99%;position:absolute;left:0;top:0;z-index:99;display:none" id="_formLoadingDiv">
+<div class="loadingDivContainer">
+<div class="loadingDivInfo">
+<p>A processar...</p>
+<img src="/iFlow//images/loading.gif"></div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XmlLibrary xmlns="http://www.iknow.pt/XmlLibrary" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.iknow.pt/XmlLibrary ../schemas/xmllibrary.xsd">
+	<name>Reporting</name>
+	<version>1.0</version>
+	<author>iKnow</author>
+	<description>Reporting</description>
+	<i18nName>library.report.name</i18nName>
+	<i18nDescription>library.report.description</i18nDescription>
+	<XmlBlock>
+		<class>BlockReport</class>
+		<XmlPort>
+			<name>portIn</name>
+			<description>portIn</description>
+			<in_out>in</in_out>
+			<position>
+				<x>-5</x>
+				<y>25</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portOut</name>
+			<description>portOut</description>
+			<in_out>out</in_out>
+			<position>
+				<x>55</x>
+				<y>25</y>
+			</position>
+		</XmlPort>
+		<XmlAttribute>
+			<name>Report</name>
+			<description>Report code</description>
+			<value></value>
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>TTL</name>
+			<description>Expected time to completion</description>
+			<value>days=0;hours=0;mins=0;secs=0</value>
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>Deadline</name>
+			<description>Deadline</description>
+			<value></value>
+		</XmlAttribute>
+		<image>report.png</image>
+		<description>Report</description>
+		<i18n>library.report.block.report</i18n>
+	</XmlBlock>
+</XmlLibrary>
+	

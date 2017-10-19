@@ -1,0 +1,75 @@
+<div style="vertical-align: middle;">
+    <img src="images/note.png" class="icon_item" />
+    <h1>${title}</h1>
+</div>
+
+#if($notifications.size() > 0)
+	#set($msg_display="")
+	#set($msg_empty_display="none")
+#else
+	#set($msg_display="none")
+	#set($msg_empty_display="")
+#end
+<div class="table_inc" id="msg_table" style="display:${msg_display}">
+	<table class="item_list">
+		<tr class="tab_header">
+			<td></td>
+			<td>$notes_from</td>
+			<td>$notes_message</td>
+			<td>$notes_date</td>
+			<td>$notificationtitle</td>
+			<td></td>
+		</tr>
+		#set($odd=1)
+		#foreach($note in $notifications)
+			#if($odd == 0)
+				#set($class_type="even")
+				#set($odd=1)
+			#else
+				#set($class_type="odd")
+				#set($odd=0)
+			#end
+			#if($note.get("read")=="true")
+				#set($text_style="")
+				#set($msg_icon="read")
+				#set($msg_action="U")
+			#else
+				#set($text_style="font-weight:bold")
+				#set($msg_icon="unread")
+				#set($msg_action="R")
+			#end
+			<tr class="tab_row_$class_type" id="msg_tr_$note.get("id")" style="${text_style}">
+				<td class="itemlist_icon">
+					<a href="javascript:markNotification($note.get("id"), '${msg_action}');" >
+						<img class="toolTipImg" src="images/icon_${msg_icon}.png" id="msg_img_$note.get("id")" width="16" height="16" border="0" title="$tooltip_mark_read"></img>
+					</a>
+				</td>
+				<td>$note.get("from")</td>
+				<td>$note.get("message")</td>
+				<td>$note.get("date")</td>
+		
+			#if($note.get("link")=="false")
+				<td></td>
+			#else
+				<td class="itemlist">
+				<a href="javascript:process_detail($note.get("link"));" > $notificationitem </a>	
+				</td>
+			#end	
+				
+				<td class="itemlist_icon">
+					<a href="javascript:markNotification($note.get("id"), 'D');" >
+						<img class="toolTipImg" src="images/icon_delete.png" id="msg_img_$note.get("id")" width="16" height="16" border="0" title="$tooltip_delete"></img>
+					</a>
+				</td>
+			</tr>
+		#end
+	</table>
+</div>
+<div class="info_msg" id="msg_empty_div" style="display:${msg_empty_display}">
+	$notes_empty
+</div>
+#if($hasMoreNotifications)
+<div class="info_msg" id="msg_more_div">
+	$notes_more
+</div>
+#end

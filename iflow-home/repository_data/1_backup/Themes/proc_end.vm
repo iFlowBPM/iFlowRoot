@@ -1,0 +1,54 @@
+#if($hasActivities)
+	<div class="table_inc">
+      	<p>$label</p>
+        <table class="item_list">
+          <tr class="tab_header_ng">
+		#if($has_appname)
+			<td>$messages.getString("main_content.tasks.field.application")</td>
+		#end
+			<td>$messages.getString("main_content.tasks.field.flow")</td>
+			<td>$messages.getString("main_content.tasks.field.pnumber")</td>
+			<td>$messages.getString("main_content.tasks.field.subject")</td>#*
+			<td>$messages.getString("main_content.tasks.field.arrived")</td>*#
+			<td>$messages.getString("main_content.tasks.field.waiting")</td>
+		  </tr>
+		  #set($odd=1)
+		  #foreach($act in $newact)
+			#if($odd == 0)
+				#set($class_type="even")
+				#set($odd=1)
+			#else
+				#set($class_type="odd")
+				#set($odd=0)
+			#end
+			#set($style_read="")
+			#if($act.get("read") == 0)
+				#set($style_read="style='font-weight:bold;'")
+			#end
+
+			<tr class="tab_row_$class_type">
+ 		    #if($has_appname)
+			 <td align="center"><a $style_read href="javascript:if(parent) parent.open_process(2, $act.get("flowid"), '$response.encodeURL($url_prefix,$act.get("uri"))','flowid=$act.get("flowid")&pid=$act.get("pid")&subpid=$act.get("subpid")&ts=$ts',$act.get("runMax"));">$act.get("appname")</a></td>
+			#end
+			 <td align="center"><a $style_read href="javascript:if(parent) parent.open_process(2, $act.get("flowid"), '$response.encodeURL($url_prefix,$act.get("uri"))','flowid=$act.get("flowid")&pid=$act.get("pid")&subpid=$act.get("subpid")&ts=$ts',$act.get("runMax"));">
+			 #if($act.get("delegated") == "1")
+			   <img src="$response.encodeURL($url_prefix,'images/icon_delegations.png')" alt="$act.get("delegated_alt")" style="border:none; float:left;" />
+			 #end
+			   $act.get("flowname")
+			 </a></td>
+			 <td align="center"><a $style_read href="javascript:if(parent) parent.open_process(2, $act.get("flowid"), '$response.encodeURL($url_prefix,$act.get("uri"))','flowid=$act.get("flowid")&pid=$act.get("pid")&subpid=$act.get("subpid")&ts=$ts',$act.get("runMax"));">$act.get("pnumber")</a></td>
+			 <td align="center"><a $style_read href="javascript:if(parent) parent.open_process(2, $act.get("flowid"), '$response.encodeURL($url_prefix,$act.get("uri"))','flowid=$act.get("flowid")&pid=$act.get("pid")&subpid=$act.get("subpid")&ts=$ts',$act.get("runMax"));">$act.get("desc")</a></td>#*
+			 <td align="center"><a $style_read href="javascript:if(parent) parent.open_process(2, $act.get("flowid"), '$response.encodeURL($url_prefix,$act.get("uri"))','flowid=$act.get("flowid")&pid=$act.get("pid")&subpid=$act.get("subpid")&ts=$ts');">$act.get("created")</a></td>*#
+			 <td align="center"><a $style_read href="javascript:if(parent) parent.open_process(2, $act.get("flowid"), '$response.encodeURL($url_prefix,$act.get("uri"))','flowid=$act.get("flowid")&pid=$act.get("pid")&subpid=$act.get("subpid")&ts=$ts',$act.get("runMax"));">$act.get("duration")</a></td>
+			</tr>
+		  #end
+  		</table>	
+	</div>
+	#if($hasMoreActivities)
+	    <div class="button_box">
+	    	<input class="regular_button_00" type="button" name="more" value="$messages.getString("button.more")" 
+				onClick="javascript:if(parent && parent.close_process) parent.close_process(3); parent.tabber(2, '$response.encodeURL($url_prefix,'actividades_filtro.jsp')','$moreParams','$response.encodeURL($url_prefix,'actividades.jsp')','$moreParams');"
+			/>
+		</div>
+	#end
+#end

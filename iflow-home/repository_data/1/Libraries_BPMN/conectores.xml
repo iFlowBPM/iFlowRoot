@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by jmv (.) -->
+<XmlLibrary xmlns="http://www.iflow.pt/Library" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://www.iflow.pt/Library ../schemas/xmllibrary.xsd">
+	<name>Conectors</name>
+	<version>1.0</version>
+	<author>iKnow</author>
+	<description>Conectors</description>
+	<i18nName>Conectors</i18nName>
+	<i18nDescription>Conectors</i18nDescription>
+	<XmlBlock>
+		<class>BlockCurrencyConvertor</class>
+		<XmlPort>
+			<name>portIn</name>
+			<description>portIn</description>
+			<in_out>in</in_out>
+			<position>
+				<x>-2</x>
+				<y>45</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portSuccess</name>
+			<description>portSuccess</description>
+			<in_out>out</in_out>
+			<position>
+				<x>106</x>
+				<y>20</y>
+			</position>
+		</XmlPort>
+		<XmlPort>
+			<name>portError</name>
+			<description>portError</description>
+			<in_out>out</in_out>
+			<position>
+				<x>106</x>
+				<y>39</y>
+			</position>
+		</XmlPort>	
+        <XmlAttribute>
+            <name>URL</name>
+            <description>URL</description>
+            <value />
+        </XmlAttribute>	
+        <XmlAttribute>
+            <name>FROM</name>
+            <description>FROM</description>
+            <value />
+        </XmlAttribute>
+        <XmlAttribute>
+            <name>TO</name>
+            <description>TO</description>
+            <value />
+        </XmlAttribute>
+        <XmlAttribute>
+            <name>RATE</name>
+            <description>RATE</description>
+            <value />
+        </XmlAttribute>
+		<image>bpmn_task.png</image>    		
+		<description>Currency Convertor</description>
+		<i18n>Currency Convertor</i18n>
+	</XmlBlock>
+</XmlLibrary>

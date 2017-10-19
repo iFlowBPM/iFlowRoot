@@ -1,0 +1,7 @@
+  <h2>$messages.getString("help.notifications.title")</h2>
+
+  <p>$messages.getString("help.notifications.concept.p1")</p>
+  <p>$messages.getString("help.notifications.concept.p2")</p>
+  <p>$messages.getString("help.notifications.concept.p3")</p>
+  <p>$messages.getString("help.notifications.concept.p4")</p>
+  

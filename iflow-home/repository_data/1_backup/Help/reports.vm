@@ -1,0 +1,19 @@
+#set ( $emSearch = "<em>" + $messages.getString("help.myprocesses.title") + "</em>" )
+  <h2>$messages.getString("help.reports.title")</h2>
+
+  <h3>$messages.getString("help.reports.predefinidos.title")</h3>
+  <p>$messages.getString("help.reports.predefinidos.p1")</p>
+  <h4>$messages.getString("help.reports.predefinidos.desempenho.title")</h4>
+  <p>$messages.getString("help.reports.predefinidos.desempenho.p1")</p>
+  <h4>$messages.getString("help.reports.predefinidos.estatisticas.title")</h4>
+  <p>$messages.getString("help.reports.predefinidos.estatisticas.p1")</p>
+  <h4>$messages.getString("help.reports.predefinidos.sla.title")</h4>
+  <p>$messages.getString("help.reports.predefinidos.sla.p1")</p>
+
+  <h3>$messages.getString("help.reports.dinamicos.title")</h3>
+  <p>$messages.getString("help.reports.dinamicos.concept.p1")</p>
+  <p>$messages.getString("help.reports.dinamicos.concept.p2")</p>
+  <p>$messages.getString("help.reports.dinamicos.concept.p3")</p>
+  <p>$messages.getString("help.reports.dinamicos.concept.p4")</p>
+  <p>$messages.getString("help.reports.dinamicos.concept.p5")</p>
+  
