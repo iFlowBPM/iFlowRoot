@@ -20,7 +20,7 @@
 		<dependency>
 			<groupId>com.infosistema</groupId>
 			<artifactId>crypto-api</artifactId>
-			
+
 			<!-- exclude xml stuff since we will not sign XML (at least for now) -->
 			<exclusions>
 				<exclusion>
@@ -76,110 +76,152 @@
 			<artifactId>pdf-renderer-ext</artifactId>
 		</dependency>
 		<dependency>
-		  <groupId>org.apache.pdfbox</groupId>
-		  <artifactId>pdfbox</artifactId>
-		  <version>2.0.0</version>
+			<groupId>org.apache.pdfbox</groupId>
+			<artifactId>pdfbox</artifactId>
+			<version>2.0.0</version>
 		</dependency>
 	</dependencies>
 
 	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-source-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<archive>
-					<addMavenDescriptor>true</addMavenDescriptor>
-					<manifest>
-						<addClasspath>true</addClasspath>
-						<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-					</manifest>
-					<manifestEntries>
-						<Trusted-Only>true</Trusted-Only>
-						<Application-Name>infosistema.com</Application-Name>
-						<Permissions>all-permissions</Permissions>
-						<Caller-Allowable-Codebase>*</Caller-Allowable-Codebase>
-					</manifestEntries>
-					</archive>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.3</version>
-				<executions>
-					<execution>
-						<id>generate-files</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
+			<plugins>
+				<plugin>
+					<artifactId>maven-source-plugin</artifactId>
+					<executions>
+						<execution>
+							<id>attach-sources</id>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<configuration>
+						<archive>
+							<addMavenDescriptor>true</addMavenDescriptor>
+							<manifest>
+								<addClasspath>true</addClasspath>
+								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							</manifest>
+							<manifestEntries>
+								<Trusted-Only>true</Trusted-Only>
+								<Application-Name>infosistema.com</Application-Name>
+								<Permissions>all-permissions</Permissions>
+								<Caller-Allowable-Codebase>*</Caller-Allowable-Codebase>
+							</manifestEntries>
+						</archive>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-antrun-plugin</artifactId>
+					<version>1.3</version>
+					<executions>
+						<execution>
+							<id>generate-files</id>
+							<phase>generate-sources</phase>
+							<goals>
+								<goal>run</goal>
+							</goals>
+							<configuration>
+								<tasks>
+									<!-- Prepare classpath -->
+									<taskdef resource="net/sf/antcontrib/antcontrib.properties"
+										classpathref="maven.plugin.classpath" />
+									<property name="ant.regexp.regexpimpl"
+										value="org.apache.tools.ant.util.regexp.Jdk14RegexpRegexp" />
+									<pathconvert property="depends" pathsep=","
+										refid="maven.runtime.classpath">
+										<mapper type="flatten" />
+									</pathconvert>
+									<propertyregex property="fixedClasspath" input="${depends}"
+										regexp="(classes,)" replace="" defaultValue="" />
+									<property name="artifactClasspath"
+										value="${project.artifactId}-${project.version}.jar" />
+									<property name="finalClasspath"
+										value="${artifactClasspath},${fixedClasspath}" />
+									<echo>${finalClasspath}</echo>
+
+									<!-- Transform files -->
+									<delete
+										dir="${project.build.directory}/generated-sources/main/java" />
+									<copy toDir="${project.build.directory}/generated-sources/main/java"
+										encoding="UTF-8" outputencoding="UTF-8" failonerror="false">
+										<fileset dir="${basedir}/src/main/templates" />
+										<globmapper from="*.atl" to="*.java" />
+										<filterset>
+											<filter token="APP_VER" value="${project.version}" />
+											<filter token="CLASSPATH" value="${finalClasspath}" />
+										</filterset>
+									</copy>
+								</tasks>
+								<sourceRoot>
+									${project.build.directory}/generated-sources/main/java
+								</sourceRoot>
+							</configuration>
+						</execution>
+					</executions>
+					<dependencies>
+						<dependency>
+							<groupId>pt.iknow.iflow</groupId>
+							<artifactId>iflow-api</artifactId>
+							<version>${iflow.version}</version>
+						</dependency>
+						<dependency>
+							<groupId>org.apache.ant</groupId>
+							<artifactId>ant-nodeps</artifactId>
+							<version>1.7.1</version>
+						</dependency>
+						<dependency>
+							<groupId>ant-contrib</groupId>
+							<artifactId>ant-contrib</artifactId>
+							<version>1.0b3</version>
+							<exclusions>
+								<exclusion>
+									<groupId>ant</groupId>
+									<artifactId>ant</artifactId>
+								</exclusion>
+							</exclusions>
+						</dependency>
+					</dependencies>
+				</plugin>
+			</plugins>
+			<pluginManagement>
+				<plugins>
+					<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+					<plugin>
+						<groupId>org.eclipse.m2e</groupId>
+						<artifactId>lifecycle-mapping</artifactId>
+						<version>1.0.0</version>
 						<configuration>
-							<tasks>
-                                <!-- Prepare classpath -->
-                                <taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="maven.plugin.classpath"/>
-                                <property name="ant.regexp.regexpimpl" value="org.apache.tools.ant.util.regexp.Jdk14RegexpRegexp"/>
-								<pathconvert property="depends" pathsep="," refid="maven.runtime.classpath">
-									<mapper type="flatten" />
-								</pathconvert>
-								<propertyregex property="fixedClasspath" input="${depends}" regexp="(classes,)" replace="" defaultValue=""/>
-								<property name="artifactClasspath" value="${project.artifactId}-${project.version}.jar"/>
-								<property name="finalClasspath" value="${artifactClasspath},${fixedClasspath}"/>
-								<echo>${finalClasspath}</echo>
-								
-								<!-- Transform files -->
-								<delete dir="${project.build.directory}/generated-sources/main/java" />
-								<copy toDir="${project.build.directory}/generated-sources/main/java"
-									encoding="UTF-8" outputencoding="UTF-8" failonerror="false">
-									<fileset dir="${basedir}/src/main/templates" />
-									<globmapper from="*.atl" to="*.java" />
-									<filterset>
-										<filter token="APP_VER" value="${project.version}" />
-										<filter token="CLASSPATH" value="${finalClasspath}" />
-									</filterset>
-								</copy>
-							</tasks>
-							<sourceRoot>
-								${project.build.directory}/generated-sources/main/java
-							</sourceRoot>
+							<lifecycleMappingMetadata>
+								<pluginExecutions>
+									<pluginExecution>
+										<pluginExecutionFilter>
+											<groupId>
+												org.apache.maven.plugins
+											</groupId>
+											<artifactId>
+												maven-antrun-plugin
+											</artifactId>
+											<versionRange>
+												[1.3,)
+											</versionRange>
+											<goals>
+												<goal>run</goal>
+											</goals>
+										</pluginExecutionFilter>
+										<action>
+											<ignore></ignore>
+										</action>
+									</pluginExecution>
+								</pluginExecutions>
+							</lifecycleMappingMetadata>
 						</configuration>
-					</execution>
-				</executions>
-                <dependencies>
-                	<dependency>
-			            <groupId>pt.iknow.iflow</groupId>
-			            <artifactId>iflow-api</artifactId>
-			            <version>${iflow.version}</version>
-		            </dependency>                
-                    <dependency>
-                        <groupId>org.apache.ant</groupId>
-                        <artifactId>ant-nodeps</artifactId>
-                        <version>1.7.1</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>ant-contrib</groupId>
-                        <artifactId>ant-contrib</artifactId>
-                        <version>1.0b3</version>
-                        <exclusions>
-	                        <exclusion>
-		                        <groupId>ant</groupId>
-		                        <artifactId>ant</artifactId>
-	                        </exclusion>
-                        </exclusions>
-                    </dependency>
-               </dependencies>
-			</plugin>
-		</plugins>
+					</plugin>
+				</plugins>
+			</pluginManagement>
 	</build>
 </project>

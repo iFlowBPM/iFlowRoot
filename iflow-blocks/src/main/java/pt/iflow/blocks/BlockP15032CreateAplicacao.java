@@ -54,7 +54,7 @@ public class BlockP15032CreateAplicacao extends BlockP15032OER {
 	  	    asset.setNumberUsers(getParsedAttribute(userInfo, "NumberUsers", procData));
 	  	    asset.setResponsavelOTI(getParsedAttribute(userInfo, "ResponsavelOTI", procData));
 	  	    asset.setVersao(getParsedAttribute(userInfo, "Versao", procData));
-	  	    asset.setAppId(getParsedAttribute(userInfo, "AppId", procData));
+	  	    //asset.setAppId(getParsedAttribute(userInfo, "AppId", procData));
 	  	    Logger.debug(login, this, "after", procData.getSignature() + "AppId value=" + getParsedAttribute(userInfo, "AppId", procData));
 	  	    
 	  	    ProcessListVariable keywordsLististVar = procData.getList(getAttribute("KeywordsList"));
