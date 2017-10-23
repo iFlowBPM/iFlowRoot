@@ -60,7 +60,7 @@ public class IMAPMailSSLClient extends IMAPMailClient {
 //    super.init(props);  
 		props = new Properties();  
 		props.put("mail.imap.com", _sHost);  
-		props.put("mail.imap.starttls.enable","true");
+		props.put("mail.imap.starttls.enable", "true");
 		props.put("mail.imap.auth", "true");  
 
 		props.put("mail.imap.socketFactory.port", String.valueOf(_nPort));

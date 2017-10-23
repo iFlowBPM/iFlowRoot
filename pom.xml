@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
- 
+
 	<organization>
 		<name>Infosistema, S.A.</name>
 		<url>http://www.infosistema.pt/</url>
@@ -27,9 +27,7 @@
 		<module>iflow-editor</module>
 		<module>iflow-fixtures</module>
 		<module>iflow-home</module>
-		<!--
-		<module>iflow-dist</module>
-		-->
+		<!-- <module>iflow-dist</module>  -->
 		<module>vfs-connector</module>
 	</modules>
 
@@ -39,18 +37,16 @@
 		<iflow.version>${iflow.baseversion}-R${iflow.buildnumber}</iflow.version>
 		<dms-connector.version>0.0.7-R20100908</dms-connector.version>
 		<alfresco-connector.version>0.0.7-R20100908</alfresco-connector.version>
-		
+
 		<iflow.home>${basedir}/iflow-home</iflow.home>
 		<maven.test.skip>true</maven.test.skip>
-		
+
 		<!-- NOTE: don't forget to change in iflow-applet -->
 		<crypto-api.version>1.0.3</crypto-api.version>
 	</properties>
 
-<!-- 
- 	NOTE: when versions change, make sure that iflow-applet versions are 
- 	also changed accordingly. See NOTE at iflow-applet's pom.xml
--->
+	<!-- NOTE: when versions change, make sure that iflow-applet versions are 
+		also changed accordingly. See NOTE at iflow-applet's pom.xml -->
 
 
 	<dependencyManagement>
@@ -84,7 +80,7 @@
 			<dependency>
 				<groupId>com.infosistema</groupId>
 				<artifactId>crypto-api</artifactId>
-				<version>${crypto-api.version}</version> <!--  replicated in iflow-applet -->
+				<version>${crypto-api.version}</version> <!-- replicated in iflow-applet -->
 			</dependency>
 
 			<!-- APP.external -->
@@ -109,7 +105,7 @@
 				<artifactId>kaptcha</artifactId>
 				<version>2.0</version>
 			</dependency>
-			
+
 			<!-- OEM -->
 			<dependency>
 				<groupId>org.swinglabs</groupId>
@@ -187,6 +183,7 @@
 				<groupId>log4j</groupId>
 				<artifactId>log4j</artifactId>
 				<version>1.2.9</version>
+				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>axis</groupId>
@@ -197,6 +194,7 @@
 				<groupId>axis</groupId>
 				<artifactId>axis-ant</artifactId>
 				<version>1.4</version>
+				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>axis</groupId>
@@ -297,7 +295,7 @@
 			<dependency>
 				<groupId>com.lowagie</groupId>
 				<artifactId>itext</artifactId>
-				<version>2.1.7</version> <!--  replicated in iflow-applet -->				
+				<version>2.1.7</version> <!-- replicated in iflow-applet -->
 			</dependency>
 			<dependency>
 				<groupId>org.beanshell</groupId>
@@ -328,12 +326,12 @@
 				<groupId>org.apache.poi</groupId>
 				<artifactId>poi-ooxml-schemas</artifactId>
 				<version>3.11</version>
-			</dependency>	
+			</dependency>
 			<dependency>
 				<groupId>org.apache.xmlbeans</groupId>
 				<artifactId>xmlbeans</artifactId>
 				<version>2.4.0</version>
-			</dependency>										
+			</dependency>
 			<dependency>
 				<groupId>hivemind</groupId>
 				<artifactId>hivemind</artifactId>
@@ -372,53 +370,53 @@
 			<dependency>
 				<groupId>uk.co.mmscomputing</groupId>
 				<artifactId>mmsc</artifactId>
-				<version>2009</version> <!--  replicated in iflow-applet -->
+				<version>2009</version> <!-- replicated in iflow-applet -->
 			</dependency>
 			<dependency>
 				<groupId>bouncycastle</groupId>
 				<artifactId>bcprov-jdk14</artifactId>
-				<version>142</version> <!--  replicated in iflow-applet -->
+				<version>142</version> <!-- replicated in iflow-applet -->
 			</dependency>
 			<dependency>
 				<groupId>bouncycastle</groupId>
 				<artifactId>bcmail-jdk14</artifactId>
-				<version>142</version> <!--  replicated in iflow-applet -->
+				<version>142</version> <!-- replicated in iflow-applet -->
 			</dependency>
 			<dependency>
 				<groupId>bouncycastle</groupId>
 				<artifactId>bctsp-jdk14</artifactId>
-				<version>142</version> <!--  replicated in iflow-applet -->
+				<version>142</version> <!-- replicated in iflow-applet -->
 			</dependency>
 			<dependency>
 				<groupId>bouncycastle</groupId>
 				<artifactId>bcpg-jdk14</artifactId>
-				<version>142</version> <!--  replicated in iflow-applet -->
+				<version>142</version> <!-- replicated in iflow-applet -->
 			</dependency>
 			<dependency>
 				<groupId>javax.mail</groupId>
-				<artifactId>mail</artifactId>
-				<version>1.5.5</version> <!--  replicated in iflow-applet -->
+				<artifactId>mailapi</artifactId>
+				<version>1.4.3</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.activation</groupId>
 				<artifactId>activation</artifactId>
-				<version>1.1</version> <!--  replicated in iflow-applet -->
+				<version>1.1</version> <!-- replicated in iflow-applet -->
 			</dependency>
 			<dependency>
 				<groupId>org.swinglabs</groupId>
 				<artifactId>pdf-renderer</artifactId>
-				<version>20090927</version> <!--  replicated in iflow-applet -->
+				<version>20090927</version> <!-- replicated in iflow-applet -->
 			</dependency>
 			<dependency>
 				<groupId>org.psicover</groupId>
 				<artifactId>pdf-renderer-ext</artifactId>
-				<version>0.0.2</version> <!--  replicated in iflow-applet -->
+				<version>0.0.2</version> <!-- replicated in iflow-applet -->
 			</dependency>
 			<dependency>
-		      <groupId>commons-beanutils</groupId>
-		      <artifactId>commons-beanutils</artifactId>
-		      <version>1.8.2</version>
-		    </dependency>
+				<groupId>commons-beanutils</groupId>
+				<artifactId>commons-beanutils</artifactId>
+				<version>1.8.2</version>
+			</dependency>
 
 			<!-- TESTS -->
 			<dependency>
@@ -502,16 +500,16 @@
 			<plugin>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<version>2.1</version>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>jmockit</groupId>
-									<artifactId>jmockit</artifactId>
-									<version>0.95</version>
+				<configuration>
+					<artifactItems>
+						<artifactItem>
+							<groupId>jmockit</groupId>
+							<artifactId>jmockit</artifactId>
+							<version>0.95</version>
 							<outputDirectory>${project.build.directory}/lib</outputDirectory>
-								</artifactItem>
-							</artifactItems>
-						</configuration>
+						</artifactItem>
+					</artifactItems>
+				</configuration>
 				<executions>
 					<execution>
 						<id>copy</id>
@@ -526,7 +524,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
 				<configuration>
-				    <encoding>UTF-8</encoding>
+					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -586,22 +584,22 @@
 			<url>http://vmsvn01.infosistema.com/maven2</url>
 		</repository>
 		<repository>
-      		<id>Codehaus Snapshots</id>
-      		<url>http://snapshots.repository.codehaus.org/</url>
-  		</repository>
-  		<repository>
-		    <id>snapshot-repository.java.net</id>
-		    <name>Java.net Snapshot Repository for Maven</name>
-		    <url>https://maven.java.net/content/repositories/snapshots/</url>
-		    <layout>default</layout>
+			<id>Codehaus Snapshots</id>
+			<url>http://snapshots.repository.codehaus.org/</url>
+		</repository>
+		<repository>
+			<id>snapshot-repository.java.net</id>
+			<name>Java.net Snapshot Repository for Maven</name>
+			<url>https://maven.java.net/content/repositories/snapshots/</url>
+			<layout>default</layout>
 		</repository>
 	</repositories>
 	<pluginRepositories>
-	    <pluginRepository>
-	        <id>tlc</id>
-	        <name>TLC Repository</name>
-	        <url>http://commons.ucalgary.ca/pub/m2</url>
-	    </pluginRepository>
+		<pluginRepository>
+			<id>tlc</id>
+			<name>TLC Repository</name>
+			<url>http://commons.ucalgary.ca/pub/m2</url>
+		</pluginRepository>
 	</pluginRepositories>
 
 	<distributionManagement>

@@ -53,13 +53,13 @@
 			<artifactId>alfresco-connector</artifactId>
 			<version>${alfresco-connector.version}</version>
 		</dependency>
-		
+
 		<!-- APP.crypto -->
 		<dependency>
 			<groupId>com.infosistema</groupId>
 			<artifactId>crypto-api</artifactId>
 		</dependency>
-		
+
 		<!-- APP.iKnow -->
 		<dependency>
 			<groupId>org.alfresco</groupId>
@@ -73,7 +73,7 @@
 		<dependency>
 			<groupId>pt.iknow</groupId>
 			<artifactId>iutils</artifactId>
-			<version>2.0.6</version><!--$NO-MVN-MAN-VER$-->
+			<version>2.0.6</version><!--$NO-MVN-MAN-VER$ -->
 		</dependency>
 		<dependency>
 			<groupId>pt.iknow</groupId>
@@ -252,7 +252,7 @@
 		</dependency>
 		<dependency>
 			<groupId>javax.mail</groupId>
-			<artifactId>mail</artifactId>
+			<artifactId>mailapi</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.lowagie</groupId>
@@ -273,28 +273,28 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-	      <groupId>commons-beanutils</groupId>
-    	  <artifactId>commons-beanutils</artifactId>
-	    </dependency>
-        <dependency>
-          <groupId>pt.iflow.vfs</groupId>
-          <artifactId>virtual-entity</artifactId>
-          <version>0.0.1</version>
-        </dependency>
-        <dependency>
-		    <groupId>com.sun.jersey</groupId>
-		    <artifactId>jersey-server</artifactId>
-		    <version>1.17</version>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
 		</dependency>
 		<dependency>
-		    <groupId>com.sun.jersey</groupId>
-		    <artifactId>jersey-grizzly2</artifactId>
-		    <version>1.17</version>
+			<groupId>pt.iflow.vfs</groupId>
+			<artifactId>virtual-entity</artifactId>
+			<version>0.0.1</version>
 		</dependency>
 		<dependency>
-		    <groupId>com.sun.jersey</groupId>
-		    <artifactId>jersey-servlet</artifactId>
-		    <version>1.14</version>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-server</artifactId>
+			<version>1.17</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-grizzly2</artifactId>
+			<version>1.17</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-servlet</artifactId>
+			<version>1.14</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey.contribs</groupId>
@@ -321,43 +321,6 @@
 			<artifactId>esapi</artifactId>
 			<version>2.1.0</version>
 		</dependency>
-		
-		<!-- P15013 -->
-		<dependency>
-			<groupId>P15013</groupId>
-			<artifactId>commons-codec</artifactId>
-			<version>1.10</version>
-		</dependency>
-		<dependency>
-			<groupId>P15013</groupId>
-			<artifactId>commons-fileupload</artifactId>
-			<version>1.3</version>
-		</dependency>
-		<dependency>
-			<groupId>P15013</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.4</version>
-		</dependency>
-		<dependency>
-			<groupId>P15013</groupId>
-			<artifactId>estrutura-gestao-entidades</artifactId>
-			<version>1</version>
-		</dependency>
-		<dependency>
-			<groupId>P15013</groupId>
-			<artifactId>mongo-java-driver</artifactId>
-			<version>2.12.4</version>
-		</dependency>
-		<dependency>
-			<groupId>P15013</groupId>
-			<artifactId>no-sql-connection</artifactId>
-			<version>1</version>
-		</dependency>
-		<dependency>
-			<groupId>P15013</groupId>
-			<artifactId>reposws_dev</artifactId>
-			<version>1</version>
-		</dependency>		
 
 		<!-- TESTS -->
 		<dependency>
@@ -371,40 +334,51 @@
 			<version>4.2.0</version>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.xmlgraphics</groupId>
+			<artifactId>batik-extension</artifactId>
+			<version>1.7</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
 		<plugins>
-	    	<plugin>
-        		<artifactId>maven-resources-plugin</artifactId>
-        		<version>2.4</version>
-        		<executions>
-          			<execution>
-            			<id>copy-resources</id>
-            			<phase>process-resources</phase>
-            			<goals>
-              				<goal>copy-resources</goal>
-            			</goals>
-            			<configuration>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
 							<outputDirectory>${basedir}/target/classes/pt/iflow/web</outputDirectory>
 							<resources>
-     							<resource>
-  									<directory>${basedir}</directory>
-       								<filtering>false</filtering>
+								<resource>
+									<directory>${basedir}</directory>
+									<filtering>false</filtering>
 									<includes>
 										<include>RELEASE_NOTES.txt</include>
 									</includes>
-     							</resource>
-     						</resources>
-     					</configuration>
-     				</execution>
-          			<execution>
-            			<id>copy-resources-version</id>
-            			<phase>process-resources</phase>
-            			<goals>
-              				<goal>copy-resources</goal>
-            			</goals>
-            			<configuration>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-resources-version</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
 							<outputDirectory>${basedir}/target/classes/pt/iflow</outputDirectory>
 							<resources>
 								<resource>
@@ -414,11 +388,11 @@
 									</includes>
 									<filtering>true</filtering>
 								</resource>
-     						</resources>
-     					</configuration>
-     				</execution>
-     			</executions>
-     		</plugin>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<artifactId>maven-source-plugin</artifactId>
 				<executions>
