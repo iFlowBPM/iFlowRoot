@@ -256,9 +256,8 @@ if(userInfo.isLogged()){
 
       //Tirar vector com nao permissoes da organiza�ao e dos perfis
       if (StringUtils.isNumeric(userInfo.getUserId())) {
-        sqlQuery = "SELECT tabid FROM profiles_tabs " 
-          + "WHERE profileid in (SELECT profileid FROM userprofiles WHERE userid="+userInfo.getUserId()+") "
-          + "UNION SELECT tabid FROM organizations_tabs WHERE organizationid="+userInfo.getOrganization();
+        sqlQuery = "SELECT tabid FROM profiles_tabs "; 
+         
       } else {
         StringBuilder sbProfiles = new StringBuilder();
         String aux = "('";
@@ -268,9 +267,7 @@ if(userInfo.isLogged()){
           aux = "', '";
         }
         sbProfiles.append("'))");
-        sqlQuery = "SELECT tabid FROM profiles_tabs" 
-          + " WHERE profileid in (SELECT profileid FROM profiles WHERE name in " + sbProfiles.toString()
-          + " UNION SELECT tabid FROM organizations_tabs WHERE organizationid=" + userInfo.getOrganization();
+        sqlQuery = "SELECT tabid FROM profiles_tabs";
       }
       
       rs = st.executeQuery(sqlQuery);

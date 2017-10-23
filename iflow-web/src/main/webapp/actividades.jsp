@@ -8,6 +8,7 @@
 <%@page import="pt.iflow.api.folder.Folder"%>
 <%@ page import="pt.iflow.processannotation.ProcessAnnotationManagerBean"%>
 <%@page import="pt.iflow.api.processannotation.*"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <%
   String title = messages.getString("actividades.title");
 
@@ -1189,13 +1190,13 @@ jscolor.bind();
 %>
 		<input type="hidden" name="mode" value="0">
 		<input type="hidden" name="activity" value="">
-		<input type="hidden" name="startindex" value="<%=nStartIndex%>">
-		<input type="hidden" name="nextstartindex" value="<%=nNextStartIndex%>">
-		<input type="hidden" name="numitemspage" value="<%=nItems%>">
-		<input type="hidden" name="showflowid" value="<%=nShowFlowId%>" >
-		<input type="hidden" name="dtafter" value="<%=dtAfter%>" >
-		<input type="hidden" name="dtbefore" value="<%=dtBefore%>" >
-		<input type="hidden" name="orderby" value="<%=orderBy%>" >
+		<input type="hidden" name="startindex" value="${fn:escapeXml(nStartIndex)}">
+		<input type="hidden" name="nextstartindex" value="${fn:escapeXml(nNextStartIndex)}">
+		<input type="hidden" name="numitemspage" value="${fn:escapeXml(nItems)}">
+		<input type="hidden" name="showflowid" value="${fn:escapeXml(nShowFlowId)}" >
+		<input type="hidden" name="dtafter" value="${fn:escapeXml(dtAfter)}" >
+		<input type="hidden" name="dtbefore" value="${fn:escapeXml(dtBefore)}" >
+		<input type="hidden" name="orderby" value="${fn:escapeXml(orderBy)}" >
    </form>
    
 <script language="JavaScript" >

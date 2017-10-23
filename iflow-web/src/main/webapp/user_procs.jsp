@@ -3,6 +3,7 @@
 <%@ include file = "inc/defs.jsp" %>
 <%@page import="java.util.Date" %>
 <%@page import="pt.iflow.api.filters.FlowFilter"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%
   final String ALL_PROCS = "__ALL_PROCS__";
   final String MY_PROCS = "__MY_PROCS__";
@@ -414,22 +415,22 @@
    <% } %>
    </div>
 	<input type="hidden" name="mode" value="0">
-	<input type="hidden" name="startindex" value="<%=nStartIndex%>">
-	<input type="hidden" name="numitemspage" value="<%=nItems%>">
-	<input type="hidden" name="showUserProcs" value="<%=showUserProcs%>" >
-	<input type="hidden" name="dtafter" value="<%=sDtAfter%>" >
-	<input type="hidden" name="dtbefore" value="<%=sDtBefore%>" >
-	<input type="hidden" name="processStatus" value="<%=processStatus%>" >
-	<input type="hidden" name="showflowid" value="<%=nShowFlowId%>" >
-	<input type="hidden" name="targetUser" value="<%=sTargetUser%>" >
-	<input type="hidden" name="orderby" value="<%=orderBy%>" >
-	<input type="hidden" name="ordertype" value="<%=orderType%>" >
-	<input type="hidden" name="pnumber" value="<%=pnumber%>" >
-	<input type="hidden" name="proc_search" value="<%=proc_search%>" >
+	<input type="hidden" name="startindex" value="${fn:escapeXml(nStartIndex)}">
+	<input type="hidden" name="numitemspage" value="${fn:escapeXml(nItems)}">
+	<input type="hidden" name="showUserProcs" value="${fn:escapeXml(showUserProcs)}" >
+	<input type="hidden" name="dtafter" value="${fn:escapeXml(sDtAfter)}" >
+	<input type="hidden" name="dtbefore" value="${fn:escapeXml(sDtBefore)}" >
+	<input type="hidden" name="processStatus" value="${fn:escapeXml(processStatus)}" >
+	<input type="hidden" name="showflowid" value="${fn:escapeXml(nShowFlowId)}" >
+	<input type="hidden" name="targetUser" value="${fn:escapeXml(sTargetUser)}" >
+	<input type="hidden" name="orderby" value="${fn:escapeXml(orderBy)}" >
+	<input type="hidden" name="ordertype" value="${fn:escapeXml(orderType)}" >
+	<input type="hidden" name="pnumber" value="${fn:escapeXml(pnumber)}" >
+	<input type="hidden" name="proc_search" value="${fn:escapeXml(proc_search)}" >
     <%if (StringUtils.equals("true", proc_search)) {
       for (int i = 0; i < Const.INDEX_COLUMN_COUNT; i++) { 
       	String idxVal = (idx[i] == null ? "" : String.valueOf(idx[i]));%>
-	<input type="hidden" name="idx<%=i%>" value="<%=idxVal%>" >
+	<input type="hidden" name="idx<%=i%>" value="${fn:escapeXml(idxVal)}" >
 		<%}
      }%>
 </form>		

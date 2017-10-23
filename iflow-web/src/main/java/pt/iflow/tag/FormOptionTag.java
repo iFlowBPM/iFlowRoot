@@ -89,7 +89,7 @@ public class FormOptionTag extends IknowTag {
     if(parent.isEdit()) {
       StringBuffer sb = new StringBuffer();
 
-      sb.append("<option value=\"").append(value).append("\"");
+      sb.append("<option value=\"").append("${fn:escapeXml(" + value + ")}").append("\"");
 
       // check if selected value is good
       if(parentValueMatch) {

@@ -9,6 +9,7 @@
 <%@ page import="pt.iflow.api.msg.IMessages" %>
 <%@ page import="pt.iflow.api.errors.UserErrorCode"%>
 <%@ include file = "inc/defs.jsp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%
 
 	UserInfoInterface ui = (UserInfoInterface)session.getAttribute(Const.USER_INFO);
@@ -134,11 +135,11 @@
 
 <%@page import="pt.iflow.api.userdata.views.UserViewInterface"%><form method="post" name="userform">
 
-  <h1 id="title_account"><c:out value="${title}" escapeXml="false"/></h1>
+  <h1 id="title_account">${fn:escapeXml(title)}</h1>
 
   <c:if test="${not empty err_msg}">
     <div class="error_msg">
-      <c:out value="${err_msg}" escapeXml="false"/>
+      ${fn:escapeXml(err_msg)}
     </div>
   </c:if>
   <c:if test="${not empty password_changed}">
@@ -176,7 +177,7 @@
   	<if:formInput type="text" name="companyPhone" value="${user.companyPhone}" labelkey="userform.field.companyPhone" edit="${bEdit}" maxlength="20"/>
 	<% } %>
 	<% for (int i = 0; i < listExtraValues.length; i++) { %>
-	  <if:formInput name="<%=\"extra_\"+listExtraProperties[i]%>" labelkey='<%="userform.field."+listExtraProperties[i]%>' type="text" value='<%=listExtraValues[i]%>' edit="<%=bEdit%>" required="false" maxlength="50" />
+	  <if:formInput name="<%=\"extra_\"+listExtraProperties[i]%>" labelkey='<%="userform.field."+listExtraProperties[i]%>' type="text" value="${fn:escapeXml(listExtraValues[i])}" edit="<%=bEdit%>" required="false" maxlength="50" />
 	<% } %>
   </c:when>
   <c:otherwise>

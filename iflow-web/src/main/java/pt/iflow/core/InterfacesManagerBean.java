@@ -245,43 +245,12 @@ InterfaceInfo  umaInterface = new InterfaceInfo(2,"Tarefas","Lista de tarefas qu
 
 
 //------------------------------------------ TIRAR DA BD ARRAY IDs TABS SEM PERMISSAO
-public int[] tabsRejeitadas( UserInfoInterface userInfo , String perfil)
-{   
-  int [] ids = new int [0];
-  int i = 0;
-  int tam = 0;
-  DataSource ds = Utils.getDataSource();
-  Connection db = null;
-  Statement st = null;
-  ResultSet rs = null;
-  try {
-    db = ds.getConnection();
-    st = db.createStatement();
-    
-    //Tirar vector com nao permissoes da organizaçao e dos perfis
-    rs = st.executeQuery("SELECT tabid FROM profiles_tabs" 
-                        + "where profileid = "+ perfil
-                        + " union select tabid from organizations_tabs where organizationid = "+userInfo.getOrganization());
-
- //Inicializar array com numero de tabs
- while (rs.next()) tam++;
- rs.beforeFirst();  
- ids = new int[tam];
   
-    //Preencher array com IDs das tabs
-    while (rs.next()){
-    ids[i] = rs.getInt(1);
-    i++;
-    }     
-    rs.close();
-  }
-  catch (SQLException sqle) {
-    sqle.printStackTrace();
-  }
-  finally {
-    DatabaseInterface.closeResources(db, st, rs);
-  }   
-  return ids;
+  public int[] tabsRejeitadas( UserInfoInterface userInfo , String perfil)
+  
+  {
+	return null;
+
 }
 //----------------------------------------------------------  FIM
 }

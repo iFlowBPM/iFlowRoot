@@ -24,6 +24,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.TreeSet;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 
 import pt.iflow.api.core.BeanFactory;
@@ -81,11 +82,7 @@ public class RepositoryBean implements Repository {
   private static final String sLOGFILES_DIR_TEMPLATE = "log/{1}";
   // private static final String sBLOCKS_DIR_TEMPLATE = "{0}/Blocks/{1}"; // The future is Block!
 
-  private static final File REPOSITORY_ROOT;
-
-  static {
-    REPOSITORY_ROOT = new File(Const.IFLOW_HOME + "/repository_data");
-  }
+  private static final File REPOSITORY_ROOT = new File(FilenameUtils.normalize(Const.IFLOW_HOME + "/repository_data"));
 
   protected RepositoryBean() {
     if (StringUtils.equals(Const.EDITOR_MODE_BPMN, Setup.getProperty(Const.EDITOR_MODE)))
@@ -142,11 +139,12 @@ public class RepositoryBean implements Repository {
     File sysFile = null;
 
     if(null != orgFileName)
-      orgFile = new File(REPOSITORY_ROOT, orgFileName);
+     orgFile = new File(REPOSITORY_ROOT, FilenameUtils.normalize(orgFileName));
     if(null != locSysFileName)
-      locSysFile = new File(REPOSITORY_ROOT, locSysFileName);
+     locSysFile = new File(REPOSITORY_ROOT, FilenameUtils.normalize(locSysFileName));
     if(null != sysFileName) {
-      sysFile = new File(REPOSITORY_ROOT, sysFileName);
+      	
+      sysFile = new File(REPOSITORY_ROOT, FilenameUtils.normalize(sysFileName));
       if(sysFile == null || !sysFile.exists() || !sysFile.isFile()) {
         sysFile = new File(Const.IFLOW_HOME, sysFileName);
       }

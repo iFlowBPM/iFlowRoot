@@ -2,8 +2,9 @@
 %><%@ taglib uri="http://jakarta.apache.org/taglibs/core" prefix="c" 
 %><%@ taglib uri="http://www.iknow.pt/jsp/jstl/iflow" prefix="if" 
 %><%@ page import="org.apache.commons.collections15.map.ListOrderedMap"
-%><%@ page import="org.apache.commons.collections15.OrderedMap"
-%><%@ include file = "inc/defs.jsp" 
+%><%@ page import="org.apache.commons.collections15.OrderedMap"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ include file = "inc/defs.jsp" 
 %><%
 int ITEMS_PAGE = 20;
 
@@ -181,17 +182,17 @@ if (StringUtils.equals(searchType,"ss")) {
 			<% } %>
 	
 			<p class="item"><if:message string="user_procs_filtro.field.pnumber"/>:</p>
-			<p class="item_indent"><input type="text" id="pnumber" name="pnumber" size="12" value="<%=pnumber %>" maxlength="1024"/><img class="icon_clear" src="images/icon_delete.png" onclick="javascript:document.getElementById('pnumber').value='';"/></p>
+			<p class="item_indent"><input type="text" id="pnumber" name="pnumber" size="12" value="${fn:escapeXml(pnumber)}" maxlength="1024"/><img class="icon_clear" src="images/icon_delete.png" onclick="javascript:document.getElementById('pnumber').value='';"/></p>
 			
 			<p class="item"><if:message string="user_procs_filtro.field.fromdate"/>:</p>
-			<p class="item_indent"><%=sAfterHtml%></p>
+			<p class="item_indent">${fn:escapeXml(sAfterHtml)}</p>
 			
 			<p class="item"><if:message string="user_procs_filtro.field.todate"/>:</p>
-			<p class="item_indent"><%=sBeforeHtml%></p>
+			<p class="item_indent">${fn:escapeXml(sBeforeHtml)}</p>
 			
 			<p class="item"><if:message string="user_procs_filtro.field.process_status"/>:</p>
 			<p class="item_indent">
-			<if:formSelect name="processStatus" edit="true" value="<%=processStatus %>" noli="true" >
+			<if:formSelect name="processStatus" edit="true" value="${fn:escapeXml(processStatus)}" noli="true" >
 				<if:formOption value="__OPEN__" labelkey="user_procs_filtro.field.open"/>
 				<if:formOption value="__CLOSED__" labelkey="user_procs_filtro.field.closed"/>
 			</if:formSelect>

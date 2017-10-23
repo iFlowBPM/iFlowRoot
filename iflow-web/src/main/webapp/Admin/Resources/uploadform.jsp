@@ -2,6 +2,8 @@
 <%@ taglib uri="http://jakarta.apache.org/taglibs/core" prefix="c" %>
 <%@ taglib uri="http://www.iknow.pt/jsp/jstl/iflow" prefix="if" %>
 <%@ include file = "../../inc/defs.jsp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+
 <if:checkUserAdmin type="both">
 	<div class="error_msg"><if:message string="admin.error.unauthorizedaccess"/></div>
 </if:checkUserAdmin>
@@ -10,15 +12,15 @@
 <div class="upload_box table_inc">
 	<form name="formulario" action="<%=response.encodeURL("Admin/Resources/doupload.jsp")%>" method="POST" enctype="multipart/form-data"
 		onsubmit="javascript:return AIM.submit(this, {'onStart' : getStartUploadCallback(), 'onComplete' : getUploadCompleteCallback('Upload complete', 4, '<%=response.encodeURL("Admin/Resources/dolist.jsp")%>', 'type=${param.type}')})">
-		<input type="hidden" name="type" value="${param.type}" />
+		<input type="hidden" name="type" value="${fn:escapeXml(param.type)}" />
 		<c:if test="${not empty param.file}">
-			<input type="hidden" name="filename" value="${param.file}" />
+			<input type="hidden" name="filename" value="${fn:escapeXml(param.file)}" />
 		</c:if>
 		<fieldset>
 			<legend></legend>
 			<ol>
 				<c:if test="${not empty param.file}">
-					<li><if:message string="resources.file.label"/>&nbsp;<c:out value="'${param.file}'"/></li>
+					<li><if:message string="resources.file.label"/>&nbsp;<c:out value="'${fn:escapeXml(param.file)}'"/></li>
 				</c:if>
 				<li>
 					<label for="file">

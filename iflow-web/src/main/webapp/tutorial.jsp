@@ -9,6 +9,7 @@
 <%@ page import="pt.iflow.api.msg.IMessages" %>
 <%@ page import="pt.iflow.api.errors.UserErrorCode"%>
 <%@ include file = "inc/defs.jsp" %>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <%
 
 	UserInfoInterface ui = (UserInfoInterface)session.getAttribute(Const.USER_INFO);
@@ -32,12 +33,12 @@
 
   <div style="vertical-align: middle;">
     <img src="images/icon_tab_account.png" class="icon_item"/>
-    <h1><c:out value="${title}" escapeXml="false"/></h1>
+    <h1><c:out value="${title}" escapeXml="true"/></h1>
   </div>
 
     <fieldset>
       <ol>
-      	<li><a href="javascript:<%=functionName%>"><%=linkName%></a></li>
+      	<li><a href="javascript:<%=functionName%>">${fn:escapeXml(linkName)}</a></li>
       </ol>
     </fieldset>
 </form>
