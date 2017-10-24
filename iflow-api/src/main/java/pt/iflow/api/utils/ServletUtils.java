@@ -2,6 +2,7 @@ package pt.iflow.api.utils;
 
 import java.io.IOException;
 import java.util.Hashtable;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -11,7 +12,31 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 
+
 public class ServletUtils {
+	
+public static void sendEncodeRedirect(HttpServletResponse response, ServletUtilsRoutesEnum route, Map<String,String> params) throws IOException {
+		
+		String urlFinal;
+		if( params == null )
+		{
+			urlFinal = route.getUrl();
+		}
+		else
+		{
+			StringBuilder urlWithParam = new StringBuilder();
+			urlWithParam.append( route.getUrl() );
+			urlWithParam.append( "?" );
+			for( Map.Entry<String, String> entry : params.entrySet() )
+			{
+				urlWithParam.append( entry.getKey()+"="+entry.getValue()+"&" );
+			}
+			urlFinal = urlWithParam.toString();
+		}
+		
+		sendEncodeRedirect(response, urlFinal);
+		
+	}
 
   public static void sendEncodeRedirect(HttpServletResponse response, String url) throws IOException {
     response.sendRedirect(response.encodeRedirectURL(url));

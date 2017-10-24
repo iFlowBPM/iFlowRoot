@@ -16,6 +16,8 @@ import pt.iflow.api.processdata.ProcessData;
 import pt.iflow.api.transition.FlowStateLogTO;
 import pt.iflow.api.transition.LogTO;
 
+import org.owasp.esapi.ESAPI;
+
 
 public class Logger {
   
@@ -117,35 +119,43 @@ public class Logger {
       System.out.println(logLevel+" "+sMessage);
       return;
     }
+    
+    String clean = sMessage.replace( '\n', '_' ).replace( '\r', '_' );
+    
+    
+    clean = ESAPI.encoder().encodeForHTML(sMessage);
+    if (!sMessage.equals(clean)) {
+        clean += " (Encoded)";
+    }
 
 
     switch (logLevel) {
     case DEBUG:
       if (logger.isDebugEnabled()) {
-        logger.debug(sMessage, t);
+        logger.debug(clean, t);
       }
       break;
     case INFO:
       if (logger.isInfoEnabled()) {
-        logger.info(sMessage, t);
+        logger.info(clean, t);
       }
       break;
     case WARNING:
-      logger.warn(sMessage, t);
+      logger.warn(clean, t);
       break;
     case ERROR:
-      logger.error(sMessage, t);
+      logger.error(clean, t);
       break;
     case FATAL:
-      logger.fatal(sMessage, t);
+      logger.fatal(clean, t);
       break;
     case TRACE:
     case TRACE_JSP:
       if (logger.isInfoEnabled()) {
-        logger.info("TRACE " + sMessage, t);
+        logger.info("TRACE " + clean, t);
       } // also log with other
       if (_trace_logger.isInfoEnabled()) {
-        _trace_logger.info("TRACE " + sMessage, t);
+        _trace_logger.info("TRACE " + clean, t);
       }
       break;
     default:

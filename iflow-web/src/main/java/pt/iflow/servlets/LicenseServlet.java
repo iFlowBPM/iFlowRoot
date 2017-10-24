@@ -15,6 +15,7 @@ import pt.iflow.api.licensing.LicenseServiceFactory;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.ServletUtils;
+import pt.iflow.api.utils.ServletUtilsRoutesEnum;
 import pt.iflow.api.utils.UserInfoInterface;
 
 public class LicenseServlet extends HttpServlet implements Servlet {
@@ -45,7 +46,7 @@ public class LicenseServlet extends HttpServlet implements Servlet {
     } else {
       Logger.warning(userInfo.getUtilizador(), this, "service", "Unknown method invocation: " + method);
     }
-    String url = "http://" + Const.APP_HOST + ":" + Const.APP_PORT + Const.APP_URL_PREFIX + "Admin/Organization/license.jsp";
-    ServletUtils.sendEncodeRedirect(response, url);
+       
+    ServletUtils.sendEncodeRedirect(response, ServletUtilsRoutesEnum.LICENSESERVLET ,null);
   }
 }

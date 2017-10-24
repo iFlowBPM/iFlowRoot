@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.ServletUtils;
+import pt.iflow.api.utils.ServletUtilsRoutesEnum;
 import pt.iflow.api.utils.UserInfoInterface;
 import pt.iflow.servlets.AuthenticationServlet.AuthenticationResult;
 
@@ -43,7 +44,7 @@ public class SysAdmAuthenticationFilter extends IFlowFilter {
               AuthenticationResult result = AuthenticationServlet.authenticate(httpRequest, httpResponse, username, password, "");
               mustAuthenticate = !result.isAuth;
               if(result.isAuth) {
-                ServletUtils.sendEncodeRedirect(httpResponse, Const.APP_URL_PREFIX+"main.jsp");
+                ServletUtils.sendEncodeRedirect(httpResponse, ServletUtilsRoutesEnum.MAIN,null);
                 return;
               }
             }

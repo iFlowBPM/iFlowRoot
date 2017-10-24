@@ -2,6 +2,7 @@
 <%@ taglib uri="http://jakarta.apache.org/taglibs/core" prefix="c" %>
 <%@ taglib uri="http://www.iknow.pt/jsp/jstl/iflow" prefix="if" %>
 <%@ include file = "inc/defs.jsp" %>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <% 
 
 String title = messages.getString("actividades_filtro.title"); 
@@ -347,7 +348,7 @@ request.setAttribute("flow_type", FlowType.WORKFLOW);
 	<% } %>
 	
 	  <p class="item"><%=messages.getString("actividades_filtro.field.pnumber")%>:</p>
-	  <p class="item_indent"><input type="text" id="pnumber" name="pnumber" size="12" value="<%=pnumber %>" maxlength="1024"><img class="icon_clear" src="images/icon_delete.png" onclick="javascript:document.getElementById('pnumber').value='';"/></p>
+	  <p class="item_indent"><input type="text" id="pnumber" name="pnumber" size="12" value="${fn:escapeXml(pnumber)}" maxlength="1024"><img class="icon_clear" src="images/icon_delete.png" onclick="javascript:document.getElementById('pnumber').value='';"/></p>
 
 	  <p class="item"><%=messages.getString("actividades_filtro.field.fromdate")%>:</p>
 	  <p class="item_indent">

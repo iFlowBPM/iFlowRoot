@@ -11,6 +11,7 @@ import pt.iflow.api.core.BeanFactory;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.ServletUtils;
+import pt.iflow.api.utils.ServletUtilsRoutesEnum;
 import pt.iflow.msg.Messages;
 
 /**
@@ -41,7 +42,7 @@ public class ResetPassword extends HttpServlet {
     if(Const.INSTALL_LOCAL.equals(Const.INSTALL_TYPE)) {
       request.getSession().invalidate();
       Logger.info(null, this, "doGet", "Password reset disabled in LOCAL installation mode");
-      ServletUtils.sendEncodeRedirect(response, "login.jsp");
+      ServletUtils.sendEncodeRedirect(response, ServletUtilsRoutesEnum.LOGIN, null);
       return;
     }
     
@@ -52,7 +53,7 @@ public class ResetPassword extends HttpServlet {
     if(Const.INSTALL_LOCAL.equals(Const.INSTALL_TYPE)) {
       request.getSession().invalidate();
       Logger.info(null, this, "doPost", "Password reset disabled in LOCAL installation mode");
-      ServletUtils.sendEncodeRedirect(response, "login.jsp");
+      ServletUtils.sendEncodeRedirect(response, ServletUtilsRoutesEnum.LOGIN, null);
       return;
     }
     
@@ -61,7 +62,7 @@ public class ResetPassword extends HttpServlet {
     if(null != cancelButton && cancelButton.length()>0) {
       request.getSession().invalidate();
       Logger.info(null, this, "doPost", "Cancel button detected. Redirecting to login.");
-      ServletUtils.sendEncodeRedirect(response, "login.jsp");
+      ServletUtils.sendEncodeRedirect(response, ServletUtilsRoutesEnum.LOGIN, null);
       return;
     }
 

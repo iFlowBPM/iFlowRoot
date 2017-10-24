@@ -36,12 +36,16 @@
 %><%@ page import="pt.iflow.api.transition.*"
 %><%@ page import="com.infosistema.crypto.Base64"
 %><%@ page import="pt.iflow.utils.FormDataSanitizer"
-%><%@ page import="org.apache.commons122.fileupload.servlet.ServletFileUpload"
+%><%@ page import="org.apache.commons.fileupload.servlet.ServletFileUpload"
+
+%>
+<%@ page import="pt.iflow.api.utils.ServletUtilsRoutesEnum"
+
 %><%
     // TODO move sizing constants to properties (in iflow property file)
 FormData fdFormData = FormUtils.parseRequest(request, Const.nUPLOAD_THRESHOLD_SIZE, Const.nUPLOAD_MAX_SIZE,Const.fUPLOAD_TEMP_DIR);
-//if(ServletFileUpload.isMultipartContent(request))
-//	FormDataSanitizer.FormDataParameterSanitize(fdFormData, application);
+if(ServletFileUpload.isMultipartContent(request))
+	FormDataSanitizer.FormDataParameterSanitize(fdFormData, application);
 %><%@ include file = "checkSession.jspf" 
 %><%////////////////////////// Application Data //////////////////////////
     // Date urldate = new Date();
@@ -76,8 +80,8 @@ FormData fdFormData = FormUtils.parseRequest(request, Const.nUPLOAD_THRESHOLD_SI
     String unit = userInfo.getOrgUnit();
     String bank = userInfo.getCompanyName();
     
-    String css = themeData==null?"":themeData.getCssURL();
-    String logo = themeData==null?"":themeData.getLogoURL();
+    String css = themeData.getCssURL();
+    String logo = themeData.getLogoURL();
     
     int userflowid = -1;
     String userflowname = null;
@@ -99,7 +103,7 @@ FormData fdFormData = FormUtils.parseRequest(request, Const.nUPLOAD_THRESHOLD_SI
     if (request.getRequestURI().indexOf("logout.jsp") == -1) {
         // CHECK MAINTENANCE MODE
   		if (Const.isInMaintenance() && !(Const.sMAINTENANCE_USER.equals(login) || userInfo.isSysAdmin())) {
-   			 ServletUtils.sendEncodeRedirect(response, sURL_PREFIX + "maintenance.jsp");
+   			// ServletUtils.sendEncodeRedirect(response, sURL_PREFIX + "maintenance.jsp");
             return;
         }
     }

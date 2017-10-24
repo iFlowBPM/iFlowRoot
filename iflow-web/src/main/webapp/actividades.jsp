@@ -8,6 +8,7 @@
 <%@page import="pt.iflow.api.folder.Folder"%>
 <%@ page import="pt.iflow.processannotation.ProcessAnnotationManagerBean"%>
 <%@page import="pt.iflow.api.processannotation.*"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <%
   String title = messages.getString("actividades.title");
 
@@ -135,7 +136,6 @@
   String stmp = null;
   String stmp2 = null;
   String stmp3 = null;
-  String stmp4 = null;
 
   int ITEMS_PAGE = 500;
   int nStartIndex = 0;
@@ -301,13 +301,10 @@
       }
     }
 
-    
-    FlowType[] flowTypeExcluded = {FlowType.SUPPORT,FlowType.SEARCH,FlowType.REPORTS};
-    //fda = BeanFactory.getFlowHolderBean().listFlowsOnline(userInfo,FlowType.WORKFLOW);
-    fda = BeanFactory.getFlowHolderBean().listFlowsOnline(userInfo,null,flowTypeExcluded);
+    fda = BeanFactory.getFlowHolderBean().listFlowsOnline(userInfo,FlowType.WORKFLOW);
 
     // get online flows with app information
-    FlowMenu menu = BeanFactory.getFlowApplicationsBean().getAllApplicationOnlineFlows(userInfo,null,flowTypeExcluded);
+    FlowMenu menu = BeanFactory.getFlowApplicationsBean().getAllApplicationOnlineFlows(userInfo,FlowType.WORKFLOW);
 
     // now build map with key flowid and value flowdata
     Iterator<FlowAppMenu> itera = menu.getAppMenuList().iterator();
@@ -597,15 +594,11 @@
 	    List<String> actividade = new ArrayList<String>();
 	    actividade.add(a.flowid + "_" + a.pid + "_" + a.subpid);
 	    actividade.add(stmp + appName + stmp2);
-	    if(BeanFactory.getFlowHolderBean().getFlow(userInfo, a.getFlowid()).getFlowType().compareTo(FlowType.DOCUMENT)==0)
-	    	stmp4="<img class=\"toolTipImg\" src=\"images/flow_type_D.png\" border=\"0\"/>";
-	    else
-	    	stmp4="";
 	    if (a.delegated) {
 	      actividade.add("<a title=\"" + messages.getString("actividades.msg.taskdeleg")
-	          + "\"><img src=\"images/icon_delegations.png\" height=\"10\"/></a>" + stmp + flowName + stmp2 + stmp4);
+	          + "\"><img src=\"images/icon_delegations.png\" height=\"10\"/></a>" + stmp + flowName + stmp2);
 	    } else {
-	      actividade.add(stmp4 + stmp + flowName + stmp2);
+	      actividade.add(stmp + flowName + stmp2);
 	    }
 	
 	    // replaced by process number
@@ -746,7 +739,7 @@ function editFolder(folderid, from){
 		document.activities_form.nextstartindex.value='<%=nNextStartIndex%>';
 		var editname = escape(document.getElementById('edit_'+folderid).value);
 		var cor = escape(document.getElementById('bt_pickColor_'+folderid).color);
-		//alert(cor);
+		alert(cor);
 		if(editname != "" && cor != "ffffff") 
 			tabber_right(2, '<%=response.encodeURL("actividades.jsp")%>?editfolder='+folderid+'&editname='+editname+'&color='+cor);
 	} else {
@@ -1189,13 +1182,13 @@ jscolor.bind();
 %>
 		<input type="hidden" name="mode" value="0">
 		<input type="hidden" name="activity" value="">
-		<input type="hidden" name="startindex" value="<%=nStartIndex%>">
-		<input type="hidden" name="nextstartindex" value="<%=nNextStartIndex%>">
-		<input type="hidden" name="numitemspage" value="<%=nItems%>">
-		<input type="hidden" name="showflowid" value="<%=nShowFlowId%>" >
-		<input type="hidden" name="dtafter" value="<%=dtAfter%>" >
-		<input type="hidden" name="dtbefore" value="<%=dtBefore%>" >
-		<input type="hidden" name="orderby" value="<%=orderBy%>" >
+		<input type="hidden" name="startindex" value="${fn:escapeXml(nStartIndex)}">
+		<input type="hidden" name="nextstartindex" value="${fn:escapeXml(nNextStartIndex)}">
+		<input type="hidden" name="numitemspage" value="${fn:escapeXml(nItems)}">
+		<input type="hidden" name="showflowid" value="${fn:escapeXml(nShowFlowId)}" >
+		<input type="hidden" name="dtafter" value="${fn:escapeXml(dtAfter)}" >
+		<input type="hidden" name="dtbefore" value="${fn:escapeXml(dtBefore)}" >
+		<input type="hidden" name="orderby" value="${fn:escapeXml(orderBy)}" >
    </form>
    
 <script language="JavaScript" >

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 
 import pt.iflow.api.core.BeanFactory;
@@ -18,6 +19,7 @@ import pt.iflow.api.msg.IMessages;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.ServletUtils;
+import pt.iflow.api.utils.ServletUtilsRoutesEnum;
 import pt.iflow.api.utils.UserInfoInterface;
 import pt.iflow.msg.Messages;
 
@@ -64,7 +66,7 @@ public class Register extends HttpServlet {
   };
   
   
-  private static final String LOGIN_URI = "login.jsp";
+  //private static final String LOGIN_URI = "login.jsp";
   private static final String ORG_URI = "/Register/neworg.jsp";
   private static final String USER_URI = "/Register/newuser.jsp";
   private static final String ERROR_URI = "/Register/error.jsp";
@@ -128,7 +130,7 @@ public class Register extends HttpServlet {
     String password = request.getParameter("pass");
     String repeatpass = request.getParameter("repeatpass");
     String gender = request.getParameter("gender");
-    String emailAddress = request.getParameter("emailAddress");
+    String emailAddress = StringEscapeUtils.unescapeHtml(request.getParameter("emailAddress"));;
     String firstName = request.getParameter("firstName");
     String lastName = request.getParameter("lastName");
     String phoneNumber = request.getParameter("phoneNumber");
@@ -274,7 +276,7 @@ public class Register extends HttpServlet {
     if(Const.INSTALL_LOCAL.equals(Const.INSTALL_TYPE) && !isSystemAdmin ) {
       clearSession(session, isSystemAdmin);
       Logger.info(null, this, "doGet", "Registration disabled in LOCAL installation mode");
-      ServletUtils.sendEncodeRedirect(response, LOGIN_URI);
+      ServletUtils.sendEncodeRedirect(response, ServletUtilsRoutesEnum.LOGIN, null);
       return;
     }
 
@@ -298,7 +300,7 @@ public class Register extends HttpServlet {
     if(Const.INSTALL_LOCAL.equals(Const.INSTALL_TYPE) && !isSystemAdmin ) {
       clearSession(session, isSystemAdmin);
       Logger.info(null, this, "doPost", "Registration disabled in LOCAL installation mode");
-      ServletUtils.sendEncodeRedirect(response, LOGIN_URI);
+      ServletUtils.sendEncodeRedirect(response, ServletUtilsRoutesEnum.LOGIN, null);
       return;
     }
     
@@ -318,7 +320,7 @@ public class Register extends HttpServlet {
         request.getRequestDispatcher(ORG_ADM_URI).forward(request, response);
       } else {
         Logger.info(null, this, "doPost", "Done button detected. Redirecting to login.");
-        ServletUtils.sendEncodeRedirect(response, LOGIN_URI);
+        ServletUtils.sendEncodeRedirect(response, ServletUtilsRoutesEnum.LOGIN, null);
       }
       return;
     }
@@ -331,7 +333,7 @@ public class Register extends HttpServlet {
         request.getRequestDispatcher(ORG_ADM_URI).forward(request, response);
       } else {
         Logger.info(null, this, "doPost", "Cancel button detected. Redirecting to login.");
-        ServletUtils.sendEncodeRedirect(response, LOGIN_URI);
+        ServletUtils.sendEncodeRedirect(response, ServletUtilsRoutesEnum.LOGIN, null);
       }
       return;
     }

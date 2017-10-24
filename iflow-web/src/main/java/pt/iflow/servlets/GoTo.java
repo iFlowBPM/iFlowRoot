@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import pt.iflow.api.utils.ServletUtils;
+import pt.iflow.api.utils.ServletUtilsRoutesEnum;
 
 /**
  * Servlet implementation class for Servlet: GoTo
@@ -51,13 +52,8 @@ import pt.iflow.api.utils.ServletUtils;
 			mapper = new PageMapper(request.getParameterMap());
 		}
 		
-		if (mapper == null) {
-      ServletUtils.sendEncodeRedirect(response, PageMapper.getDefaultUrlString());
-		}
-		else {
-			String responseStr = mapper.getUrlString();
-      ServletUtils.sendEncodeRedirect(response, responseStr);
-		}
+      ServletUtils.sendEncodeRedirect(response, ServletUtilsRoutesEnum.MAIN,request.getParameterMap());
+
 		
 		return;
 	}  	

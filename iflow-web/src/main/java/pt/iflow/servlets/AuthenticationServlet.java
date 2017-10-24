@@ -21,6 +21,7 @@ import pt.iflow.api.presentation.OrganizationThemeData;
 import pt.iflow.api.userdata.OrganizationData;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.ServletUtils;
+import pt.iflow.api.utils.ServletUtilsRoutesEnum;
 import pt.iflow.api.utils.UserInfoInterface;
 import pt.iflow.api.utils.UserSettings;
 import pt.iflow.api.utils.Utils;
@@ -203,7 +204,7 @@ public class AuthenticationServlet extends javax.servlet.http.HttpServlet implem
     }
 
     if(doRedirect)
-      ServletUtils.sendEncodeRedirect(response, result.nextUrl);
+      ServletUtils.sendEncodeRedirect(response, ServletUtilsRoutesEnum.MAIN,null);
   }
 
 

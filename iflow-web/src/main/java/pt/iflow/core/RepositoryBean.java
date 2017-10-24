@@ -37,6 +37,8 @@ import pt.iflow.api.utils.Setup;
 import pt.iflow.api.utils.UserInfoInterface;
 import pt.iflow.api.utils.XslTransformerFactory;
 
+import org.apache.commons.io.FilenameUtils;
+
 
 /**
  * <p>Title: RepositoryBean</p>
@@ -142,11 +144,11 @@ public class RepositoryBean implements Repository {
     File sysFile = null;
 
     if(null != orgFileName)
-      orgFile = new File(REPOSITORY_ROOT, orgFileName);
+      orgFile = new File(REPOSITORY_ROOT, FilenameUtils.normalize(orgFileName));
     if(null != locSysFileName)
-      locSysFile = new File(REPOSITORY_ROOT, locSysFileName);
+    	locSysFile = new File(REPOSITORY_ROOT, FilenameUtils.normalize(locSysFileName));
     if(null != sysFileName) {
-      sysFile = new File(REPOSITORY_ROOT, sysFileName);
+      sysFile = new File(REPOSITORY_ROOT, FilenameUtils.normalize(sysFileName));
       if(sysFile == null || !sysFile.exists() || !sysFile.isFile()) {
         sysFile = new File(Const.IFLOW_HOME, sysFileName);
       }

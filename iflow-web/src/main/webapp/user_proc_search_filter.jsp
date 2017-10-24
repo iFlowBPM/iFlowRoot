@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://jakarta.apache.org/taglibs/core" prefix="c" %>
 <%@ taglib uri="http://www.iknow.pt/jsp/jstl/iflow" prefix="if" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file = "inc/defs.jsp" %><% 
 
 String sflowid = fdFormData.getParameter("showflowid");
@@ -92,8 +93,8 @@ for(Integer pos : invIdx.keySet()) {
   fields[pos] = name;
   descrs[pos] = desc;
 %>
-<p class="item"><%= desc %></p>
-<p class="item_indent"><input id="idx<%=pos%>" name="idx<%=pos%>" value="<%=idx[pos]%>" type="text" size="12" maxlength="1024"><img class="icon_clear" src="images/icon_delete.png" onclick="javascript:document.getElementById('idx<%=pos%>').value='';tabber_right(8, '<%= response.encodeURL("user_procs.jsp") %>', get_params(document.user_procs_filter));"/></p>
+<p class="item">${fn:escapeXml(desc)}</p>
+<p class="item_indent"><input id="idx<%=pos%>" name="idx<%=pos%>" value="${fn:escapeXml(idx[pos])}" type="text" size="12" maxlength="1024"><img class="icon_clear" src="images/icon_delete.png" onclick="javascript:document.getElementById('idx<%=pos%>').value='';tabber_right(8, '<%= response.encodeURL("user_procs.jsp") %>', get_params(document.user_procs_filter));"/></p>
 <% } %>
 <input type="hidden" id="proc_search" name="proc_search" value="true">
 

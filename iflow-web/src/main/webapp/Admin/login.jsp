@@ -14,6 +14,7 @@
 <%@ page import = "org.apache.commons.lang.*" %>
 <%@ page import = "pt.iflow.api.core.BeanFactory"%>
 <%@ page import = "pt.iflow.api.core.Settings"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <html>
 <%
@@ -74,6 +75,16 @@ session.setAttribute(AuthenticationServlet.ADMIN_SESSION_NAME, Boolean.TRUE);
 
 //first of all, check license status.
 boolean notifyInvalid = !LicenseServiceFactory.getLicenseService().isLicenseOK();
+
+boolean isInstallLocal = Const.INSTALL_LOCAL.equals(Const.INSTALL_TYPE);
+boolean isInstallDemo = Const.INSTALL_DEMO.equals(Const.INSTALL_TYPE);
+boolean useEmail = Const.bUSE_EMAIL;
+
+
+boolean isInMaintenance = Const.isInMaintenance();
+String maintenance = Const.isInMaintenance() ? "maintenance" : "";
+
+
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -84,7 +95,8 @@ boolean notifyInvalid = !LicenseServiceFactory.getLicenseService().isLicenseOK()
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 	<meta http-equiv="Pragma" content="no-cache"/>
 	
-	<link rel="stylesheet" href="../Themes/<%=BeanFactory.getOrganizationThemeBean().getOrganizationTheme(null).getThemeName() %>/css/iflow_main.css" type="text/css">
+	<link href="../Themes/newflow/cssNew/style_login.css" rel="stylesheet" type="text/css" >
+	<link href="../javascript/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
     <link rel="shortcut icon" href="../images/favicon.ico" />
 
     <script type="text/javascript" src="../javascript/messages.js"> </script><!-- default messages -->
@@ -109,73 +121,56 @@ boolean notifyInvalid = !LicenseServiceFactory.getLicenseService().isLicenseOK()
 	</script>
 </head>
 
-<body class="lp_admin_body">
+<body style="background: #e2e4eb">
 
-<form name="dados" id='dados' method="post" action="<%= response.encodeURL("../AuthenticationServlet") %>">
-	<input type="hidden" name="url" value="<%= url %>"/>
-	<input type="hidden" name="<%=Const.sUSER_FLOWID%>" value="<%=ufid%>"/>
+<form name="dados" id='dados' method="post" action="<%= response.encodeURL("../AuthenticationServlet") %>" class="form-signin">
+	<input type="hidden" name="url" value=${fn:escapeXml(url)}/>
+	<input type="hidden" name="<%=Const.sUSER_FLOWID%>" value=${fn:escapeXml(ufid)}/>
 	<input type="hidden" name="source" value="internet"/>
 	<input type="hidden" name="do_redirect" value="true"/>
 	<input type="hidden" name="url" value="../main.jsp"/>
 
-<% if(!Const.INSTALL_LOCAL.equals(Const.INSTALL_TYPE)) { %>
-<div class="lp_top_nav_pos">
-	<div class="lp_top_nav_text" style="float:left;">
-		<a class="lp_top_nav_link" href="http://www.iflowbpm.com/">iflowbpm.pt</a> 
-		: <a class="lp_top_nav_link" href="../login.jsp"><if:message string="login.link.login"/></a>
-	</div>
-</div>
-<% } %>
+<div class="login_bartop"> 
+				<%if (!isInstallLocal)  {%>
+				
+				<div class="loginbar_left"><a class="linklogin" href="../login.jsp"><if:message string="login.link.login"/></a>
+				<span style="visibility:hidden;">|</span> <a href="register"  class="linklogin"></a> 
+				</div>
+				 				
+				<%} %>
+				</div>
+				
+<div class="bos_login" style="background:beige;margin-top:50px;width:460px;">
 
-<div class="lp_admin_login_box">
-    <div class="error_msg lp_error_msg">
-<% if(bError) { %>
-        <%=sLoginError%>
-<% } else if(notifyInvalid){ %>
-	<if:message string="admin.error.license"/>
-<% } %>
-    </div>	
+<div class="alert alert-info" style="text-align:center;width: 75%;padding: 4px;height:30px;margin: 10px 4rem;background-color: gray;color:white;font-weight: bold;"><if:message string="login.admin.title"/></div>
 
-	<div class="user_info lp_field_label"> 
-	  <if:message string="login.field.systemuser"/>
+    <div class="img"> <img src="../Themes/newflow/images/iflowbpm_logo.png" width="196" height="68" alt=""/></div>
+    
+	<div class="error_msg lp_error_msg">
+			       <% if(bError) { %>
+        			<%=sLoginError%>
+						<% } else if(notifyInvalid){ %>
+					<if:message string="admin.error.license"/>
+					<% } %>
 	</div>
-	<div class="item lp_field_input">
-	  <input type="text" name="login" id="login" value="<%= login %>" size="15" maxlength="40"/>
-	</div>    
+    <input type="text" name="login" id="login" value="${login}" class="form-control" placeholder="<if:message string="login.field.user"/>" required autofocus>
 	<div class="user_info lp_field_label">
-	  <span id="capsWarn" class="error_msg" style="display:none">Caps&nbsp;ON&nbsp;</span><if:message string="login.field.password"/>
+					<span id="capsWarn" class="error_msg" style="display:none">Caps&nbsp;ON&nbsp;</span>&nbsp;
+				</div>
+    <input type="password" name="password" id="password" class="form-control" placeholder="<if:message string="login.field.password"/>" required>
+    <label class="checkbox">
+      <!-- <input type="checkbox" name="keep_session" id="keep_logged" > -->
+     <!--  $msg.get('login.field.keepSession')  --></label>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+  </form>
+  
+  <div class="loginfooter" style="padding-top:20px">iFlowBPM <%= Version.VERSION %>  <a class="lp_top_nav_link" style="color:#5D7891;" href="http://www.uniksystem.pt"><if:message string="iflow.copyright"/></a><br>
+    <!--iFlow Version ${version}-->
 	</div>
-	<div class="item lp_field_input">
-	    <input type="password" name="password" id="password" size="15" maxlength="40"/>
-	</div>
-    <div class="lp_login_button">
-  		<input id="link_search_span" class="regular_button_01" type="button" name="filter" value="Login" onClick="document.dados.submit();" />
-    </div> 
-</div>
-<div class="lp_footer_nav">
-    <a class="lp_top_nav_link" style="color:#5D7891;" href="https://infosistema.com"><if:message string="iflow.copyright"/></a>
-    <br><span class="lp_top_nav_text">iFlow Version <%= Version.VERSION %></span>
-</div>
 
 </form>
 
-<div id="languages_div">
-<%
-	for (int i = 0, lim = Settings.localeKeys.length; i < lim; i++) {
-	  Locale locale = Settings.localeKeys[i];
-	  String loc = locale.toString();
-	  String append = " |";
-	  String language = StringUtils.capitalize(locale.getDisplayLanguage(locale));
-	  String selected = StringUtils.equals(loc, lang) ? "class=\"language_selected\"" : "";
-	  if (i == (lim - 1)) {
-	    append = "";
-	  }
-	  %>
-	  <a href="login.jsp" onclick="setCookie('<%=Const.LANG_COOKIE%>', '<%=loc %>');" title="<%=language %>" <%=selected %>><%=language %></a><%=append %>
-	  <%
-	}
-%>
-</div>
+
 
 </body>
 </html>
