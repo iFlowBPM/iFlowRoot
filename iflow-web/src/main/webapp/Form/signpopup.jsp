@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://jakarta.apache.org/taglibs/core" prefix="c" %>
 <%@ taglib uri="http://www.iknow.pt/jsp/jstl/iflow" prefix="if" %>
-<%@ include file="../inc/defs.jsp"%><%
+<%@ include file="../inc/defs.jsp"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%
 
 pt.iflow.documents.PdfSampleImages pdfFile = new pt.iflow.documents.PdfSampleImages();
 
@@ -96,7 +98,7 @@ $(function() {
 </head>
 <body>
 <form name="pointform" method="post">
-	<div id="pointer_div" onClick="point_it(event)" style="background-image:url('../pdfsample?f=<%=docid%>&p=<%=totalpag%>');width:297px;height:420px;">
+	<div id="pointer_div" onClick="point_it(event)" style="background-image:url('../pdfsample?f=${fn:escapeXml(docid)}&p=${fn:escapeXml(totalpag)}');width:297px;height:420px;">
 		<img 	src="../signsample?u=<%=ui.getUserId()%>" id="cross" class="drag-image" onClick="point_it2(event)"  style="position:relative;visibility:hidden;z-index:2;;width:<%=tamAss[0] %>px;height:<%=tamAss[1] %>px;">
 	</div>
 	<hr align="left" width="300">

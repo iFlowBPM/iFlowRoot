@@ -2,6 +2,7 @@
 <%@ taglib uri="http://jakarta.apache.org/taglibs/core" prefix="c" %>
 <%@ taglib uri="http://www.iknow.pt/jsp/jstl/iflow" prefix="if" %>
 <%@ include file="../../inc/defs.jsp"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <if:checkUserAdmin type="both">
 	<div class="error_msg">
@@ -21,7 +22,8 @@
 
 <c:if test="${not empty actionResult}">
 	<div class="info_msg">
-		<c:out value="${actionResult}"></c:out>
+	${fn:escapeXml(actionResult)}
+		
 	</div>
 </c:if>
 
@@ -45,7 +47,7 @@
 		      RepositoryFile file = fileList[i];
 		  %>
 		    <tr class="<%=((l % 2) == 0) ? "tab_row_even" : "tab_row_odd" %>">
-				<td><c:out value='<%=file.getName() %>'></c:out></td>
+				<td>${fn:escapeXml(file.getName())}</td>
 				<td class="itemlist_icon">
 					<% if(RepositoryEditor.checkFileMIME(userInfo, file.getName(), new String[] {"text", "application/octet-stream"}, new String[] {".pdf"})) { %>
 					  <a href="<c:url value="Admin/Resources/edit_form.jsp" ><c:param name="file" value='<%=file.getName() %>'></c:param><c:param name="type" value="${param.type}"></c:param></c:url>" onclick="javascript:tabber_right(4,this.href,'');return false;">

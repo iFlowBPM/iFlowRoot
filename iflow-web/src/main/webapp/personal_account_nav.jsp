@@ -6,7 +6,7 @@
 		
 		/* PELA TUA SAUDINHA NAO ALTERES DO NOT CHANGE OS VALORES DESTAS CONSTANTES */
 		final int USER_DATA = 1;
-		final int USER_PASSWORD = 2;
+		final int USER_P = 2;
 		final int PREFS_LOCALE = 3;
 		final int PREFS_TUTORIAL = 4;
 
@@ -17,7 +17,6 @@
 		}
 		catch (Exception e) {
 		}
-
 
 		%>
 

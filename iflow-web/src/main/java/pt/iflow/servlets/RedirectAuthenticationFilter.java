@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.ServletUtils;
+import pt.iflow.api.utils.ServletUtilsRoutesEnum;;
 
 /**
  * 
@@ -27,7 +28,7 @@ public class RedirectAuthenticationFilter extends IFlowFilter {
       HttpServletResponse httpResponse = (HttpServletResponse) response;
       httpRequest.getSession().invalidate();
       sendError(httpResponse);
-      ServletUtils.sendEncodeRedirect(httpResponse, Const.APP_URL_PREFIX + "main.jsp");
+      ServletUtils.sendEncodeRedirect(httpResponse, ServletUtilsRoutesEnum.MAIN, null);
       return;
     }
     chain.doFilter(request, response);

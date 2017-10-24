@@ -12,6 +12,7 @@ import pt.iflow.api.xml.codegen.flow.XmlAttributeType;
 import pt.iflow.api.xml.codegen.flow.XmlBlockType;
 import pt.iflow.api.xml.codegen.flow.XmlFlow;
 
+
 /**
  * Upgrades a Flow for version compatibility.
  * 

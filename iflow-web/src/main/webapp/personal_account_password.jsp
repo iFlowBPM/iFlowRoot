@@ -7,6 +7,7 @@
 <%@ page import="pt.iflow.userdata.views.UserView" %>
 <%@ page import="pt.iflow.api.msg.IMessages" %>
 <%@ include file = "inc/defs.jsp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ page import="java.util.HashMap" %><%
 	UserInfo ui = (UserInfo) session.getAttribute(Const.USER_INFO);
 	String sErrorMsg = "";
@@ -70,11 +71,11 @@
 <form method="post" name="userform">
   <input type="hidden" name="userid" value="<%=userId%>" />
 
-  <h1 id="title_account"><%=title%></h1>
+  <h1 id="title_account">${fn:escapeXml(title)}</h1>
 
   <% if (sErrorMsg != null) { %>
   <div class="error_msg">
-    <%=sErrorMsg %>
+	${fn:escapeXml(sErrorMsg)}
   </div>
   <% } %>
 

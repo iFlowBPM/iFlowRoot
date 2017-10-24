@@ -1,4 +1,5 @@
 package pt.iflow.authentication;
+import org.alfresco.webservice.accesscontrol.HasPermissionsResult;
 import org.apache.commons.codec.binary.Base64;
 import java.io.IOException;
 import java.util.Hashtable;
@@ -22,6 +23,7 @@ import pt.iflow.api.presentation.OrganizationThemeData;
 import pt.iflow.api.userdata.OrganizationData;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.ServletUtils;
+import pt.iflow.api.utils.ServletUtilsRoutesEnum;
 import pt.iflow.api.utils.UserInfoInterface;
 import pt.iflow.api.utils.UserSettings;
 import pt.iflow.api.utils.Utils;
@@ -191,9 +193,12 @@ public class AuthWinUserServlet extends javax.servlet.http.HttpServlet implement
       ServletUtils.forward(request, response, "/javascript/encodedURLS.jsp");
       return;
     }
-
+    
+       
+    
     if(doRedirect)
-      ServletUtils.sendEncodeRedirect(response, result.nextUrl);
+    	ServletUtils.sendEncodeRedirect(response, ServletUtilsRoutesEnum.MAIN, null);
+     
   }
 
 

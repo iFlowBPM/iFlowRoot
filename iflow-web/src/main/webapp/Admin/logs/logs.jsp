@@ -3,6 +3,7 @@
 <%@ taglib uri="http://www.iknow.pt/jsp/jstl/iflow" prefix="if"%>
 <%@ include file="../../inc/defs.jsp"%>
 <%@ page import="org.apache.commons.lang.math.NumberUtils"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <if:checkUserAdmin type="both">
 	<div class="error_msg"><if:message string="admin.error.unauthorizedaccess" /></div>
@@ -36,7 +37,7 @@ if (NumberUtils.isNumber(sLogType)) {
   		}
   	}
 </script>
-<h1 id="title_admin"><%=title%></h1>
+<h1 id="title_admin">${fn:escapeXml(title)}</h1>
 <div style="float: left; margin-left: 34px; margin-top: 20px;">
 	<select id="log_type" name="log_type" onchange="javascript:changeLogType(this);">
 		<option value="-1"><%=messages.getString("admin-logs.choose") %></option>
@@ -46,5 +47,5 @@ if (NumberUtils.isNumber(sLogType)) {
 </div>
 
 <% if (StringUtils.isNotBlank(errMsg)) { %>
-	<div class="error_msg"><%=errMsg %></div>
+	<div class="error_msg">${fn:escapeXml(errMsg)}</div>
 <% } %>
