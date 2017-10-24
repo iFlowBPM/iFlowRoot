@@ -3,6 +3,12 @@ package pt.iknow.floweditor;
 import java.util.HashMap;
 import java.util.Locale;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement
 public class FlowRepUrl {
   String url = null;
   String user = null;

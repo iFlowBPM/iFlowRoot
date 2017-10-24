@@ -19,13 +19,15 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import pt.iflow.api.xml.LibraryMarshaller;
-import pt.iflow.api.xml.codegen.library.Size;
-import pt.iflow.api.xml.codegen.library.XmlAttribute;
-import pt.iflow.api.xml.codegen.library.XmlBlock;
+import pt.iflow.api.xml.codegen.library.BoolType;
+import pt.iflow.api.xml.codegen.library.InOutType;
+import pt.iflow.api.xml.codegen.library.SizeType;
+import pt.iflow.api.xml.codegen.library.XmlAttributeType;
+import pt.iflow.api.xml.codegen.library.XmlBlockColor;
+import pt.iflow.api.xml.codegen.library.XmlBlockType;
 import pt.iflow.api.xml.codegen.library.XmlLibrary;
-import pt.iflow.api.xml.codegen.library.XmlPort;
-import pt.iflow.api.xml.codegen.library.types.BoolType;
-import pt.iflow.api.xml.codegen.library.types.InOutType;
+import pt.iflow.api.xml.codegen.library.XmlPortType;
+
 import pt.iknow.utils.StringUtilities;
 
 /*******************************************************************************
@@ -85,14 +87,14 @@ public class Ler_Biblioteca {
 
       bib = new Library(xmlLibrary.getName(), ""); //$NON-NLS-1$
       bib.setDescription(xmlLibrary.getDescription());
-      bib.setDescriptionKey(xmlLibrary.getI18nDescription());
-      bib.setNameKey(xmlLibrary.getI18nName());
+      bib.setDescriptionKey(xmlLibrary.getI18NDescription().getValue());
+      bib.setNameKey(xmlLibrary.getI18NName().getValue());
 
-      for (int i = 0; i < xmlLibrary.getXmlBlockCount(); i++) {
-        XmlBlock block = xmlLibrary.getXmlBlock(i);
+      for (int i = 0; i < xmlLibrary.getXmlBlock().size(); i++) {
+        XmlBlockType block = xmlLibrary.getXmlBlock().get(i);
         String name = block.getType();
         String descricao = block.getDescription();
-        String descrKey = block.getI18n();
+        String descrKey = block.getI18N().getValue();
         if (StringUtilities.isEmpty(descricao))
           descricao = name.substring(5);
 
@@ -109,9 +111,9 @@ public class Ler_Biblioteca {
           ArrayList<String> portosDescSaida = new ArrayList<String>();
 
           /* portos */
-          for (int j = 0; j < block.getXmlPortCount(); j++) {
-            XmlPort port = block.getXmlPort(j);
-            if (port.getInOut().getType() == InOutType.IN_TYPE) {
+          for (int j = 0; j < block.getXmlPort().size(); j++) {
+            XmlPortType port = block.getXmlPort().get(j);
+            if (port.getInOut() == InOutType.IN ) {
               nEntradas++;
               portosEntrada.add(port.getName());
               String desc = port.getDescription();
@@ -137,9 +139,9 @@ public class Ler_Biblioteca {
 
           int _i = 0;
           int _j = 0;
-          for (int j = 0; j < block.getXmlPortCount(); j++) {
-            XmlPort port = block.getXmlPort(j);
-            if (port.getInOut().getType() == InOutType.IN_TYPE) {
+          for (int j = 0; j < block.getXmlPort().size(); j++) {
+            XmlPortType port = block.getXmlPort().get(j);
+            if (port.getInOut() == InOutType.IN) {
               if (port.getPosition() != null)
                 p_e[_i] = new Point(port.getPosition().getX(), port.getPosition().getY());
               else
@@ -157,15 +159,16 @@ public class Ler_Biblioteca {
 
           /* atributos */
           ArrayList<Atributo> attrs = new ArrayList<Atributo>();
-          for (int j = 0; j < block.getXmlAttributeCount(); j++) {
-            XmlAttribute attr = block.getXmlAttribute(j);
-            attrs.add(new AtributoImpl(attr.getName(), attr.getValue(), attr.getDescription(), attr.getValueType()));
+          for (int j = 0; j < block.getXmlAttribute().size(); j++) {
+            XmlAttributeType attr = block.getXmlAttribute().get(j);
+            attrs.add(new AtributoImpl(attr.getName(), attr.getValue().getValue(), 
+            		attr.getDescription(), attr.getValueType().toArray( new String[ attr.getValueType().size()] ) ));
           }
 
           /* tamanho do bloco */
           int largX = 0;
           int largY = 0;
-          Size pos = block.getSize();
+          SizeType pos = block.getSize();
           if (pos != null) {
             largX = pos.getX();
             largY = pos.getY();
@@ -182,9 +185,9 @@ public class Ler_Biblioteca {
 
           _i = 0;
           _j = 0;
-          for (int j = 0; j < block.getXmlPortCount(); j++) {
-            XmlPort port = block.getXmlPort(j);
-            if (port.getInOut().getType() == InOutType.OUT_TYPE) {
+          for (int j = 0; j < block.getXmlPort().size(); j++) {
+            XmlPortType port = block.getXmlPort().get(j);
+            if (port.getInOut() == InOutType.OUT) {
               if (port.getPosition() == null)
                 p_s[_j].x = 10 + largX;
               _j++;
@@ -203,11 +206,10 @@ public class Ler_Biblioteca {
 
           boolean automatic = false;
           if (block.getAutomatic() != null) {
-            int autotype = block.getAutomatic().getType();
-            automatic = (autotype == BoolType.TRUE_TYPE || autotype == BoolType.YES_TYPE);
+            automatic = ( block.getAutomatic() == BoolType.TRUE || block.getAutomatic() == BoolType.YES );
           }
           
-          pt.iflow.api.xml.codegen.library.Color color = block.getColor();
+          XmlBlockColor color = block.getColor();
 
           Componente_Biblioteca cb = new Componente_Biblioteca(nEntradas, nSaidas, name, imageName, largX, largY, p_e, p_s,
               portosEntrada, portosSaida, portosDescEntrada, portosDescSaida, attrs, nomeClasseAlteraAtributos,

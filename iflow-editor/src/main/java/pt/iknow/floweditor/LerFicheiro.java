@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
@@ -22,13 +23,13 @@ import org.apache.commons.lang.StringUtils;
 import pt.iflow.api.flows.FlowUpgrade;
 import pt.iflow.api.utils.FlowInfo;
 import pt.iflow.api.xml.FlowMarshaller;
-import pt.iflow.api.xml.codegen.flow.XmlAttribute;
-import pt.iflow.api.xml.codegen.flow.XmlBlock;
-import pt.iflow.api.xml.codegen.flow.XmlCatalogVarAttribute;
-import pt.iflow.api.xml.codegen.flow.XmlCatalogVars;
+import pt.iflow.api.xml.codegen.flow.XmlAttributeType;
+import pt.iflow.api.xml.codegen.flow.XmlBlockType;
+import pt.iflow.api.xml.codegen.flow.XmlCatalogVarAttributeType;
+import pt.iflow.api.xml.codegen.flow.XmlCatalogVarsType;
 import pt.iflow.api.xml.codegen.flow.XmlFlow;
-import pt.iflow.api.xml.codegen.flow.XmlFormTemplate;
-import pt.iflow.api.xml.codegen.flow.XmlPort;
+import pt.iflow.api.xml.codegen.flow.XmlPortType;
+import pt.iflow.api.xml.codegen.flow.XmlTemplateType;
 import pt.iknow.utils.StringUtilities;
 
 /*******************************************************************************
@@ -102,8 +103,8 @@ abstract class LerFicheiro {
       /* find equal ids */
       HashSet<Integer> col = new HashSet<Integer>();
       col.add(0);
-      for (int i = 0; i < flow.getXmlBlockCount(); i++) {
-        XmlBlock block = flow.getXmlBlock(i);
+      for (int i = 0; i < flow.getXmlBlock().size(); i++) {
+        XmlBlockType block = flow.getXmlBlock().get(i);
         int ident = block.getId();
         if(col.contains(ident))
           throw new Exception(Mesg.ErroLerFicheiroIdsIguais);
@@ -111,8 +112,8 @@ abstract class LerFicheiro {
       }
 
       /* create blocks */
-      for (int i = 0; i < flow.getXmlBlockCount(); i++) {
-        XmlBlock block = flow.getXmlBlock(i);
+      for (int i = 0; i < flow.getXmlBlock().size(); i++) {
+        XmlBlockType block = flow.getXmlBlock().get(i);
         String tipo = block.getType();
 
         Componente_Biblioteca cb = cbib.getComponent(tipo);
@@ -127,8 +128,8 @@ abstract class LerFicheiro {
         ic.Posicao_Y = block.getXmlPosition().getY();
 
         /* atributos */
-        for (int k = 0; k < block.getXmlAttributeCount(); k++) {
-          XmlAttribute attr = block.getXmlAttribute(k);
+        for (int k = 0; k < block.getXmlAttribute().size(); k++) {
+          XmlAttributeType attr = block.getXmlAttribute().get(k);
           Atributo atr = ic.getAtributo(attr.getName());
           if(null != atr) { // ja existe
             atr.setValor(attr.getValue());
@@ -142,12 +143,12 @@ abstract class LerFicheiro {
       if(finfo!=null)
           MAXID = Math.max(finfo.getMaxBlockId(), MAXID);
       /* ligar blocos */
-      for (int i = 0; i < flow.getXmlBlockCount(); i++) {
-        XmlBlock block = flow.getXmlBlock(i);
+      for (int i = 0; i < flow.getXmlBlock().size(); i++) {
+        XmlBlockType block = flow.getXmlBlock().get(i);
         InstanciaComponente ic = daPorID(block.getId(), comp);
 
-        for (int k = 0; k < block.getXmlPortCount(); k++) {
-          XmlPort port = block.getXmlPort(k);
+        for (int k = 0; k < block.getXmlPort().size(); k++) {
+          XmlPortType port = block.getXmlPort().get(k);
           String name = port.getName();
 
           int outPort = inListaString(name, ic.C_B.nomes_saidas);
@@ -173,19 +174,19 @@ abstract class LerFicheiro {
       }
 
       /* CatalogVars */
-      XmlCatalogVars xmlcv = flow.getXmlCatalogVars();
+      XmlCatalogVarsType xmlcv = flow.getXmlCatalogVars();
       // ArrayList<Atributo> catalogo = desenho.getVariableCatalog();
       // catalogo.clear();
       desenho.newCatalog();
       if (xmlcv != null) {
-        for (int i = 0; i < xmlcv.getXmlCatalogVarAttributeCount(); i++) {
-          XmlCatalogVarAttribute attr = xmlcv.getXmlCatalogVarAttribute(i);
+        for (int i = 0; i < xmlcv.getXmlCatalogVarAttribute().size(); i++) {
+          XmlCatalogVarAttributeType attr = xmlcv.getXmlCatalogVarAttribute().get(i);
           Atributo catAttr = new AtributoImpl();
           catAttr.setDataType(attr.getDataType());
           catAttr.setInitValue(attr.getInitVal());
           catAttr.setNome(attr.getName());
           catAttr.setPublicName(attr.getPublicName());
-          catAttr.setSearchable(attr.getIsSearchable());
+          catAttr.setSearchable(attr.isIsSearchable());
 
           // catalogo.add(catAttr);
           desenho.addCatalogVariable(catAttr);
@@ -196,11 +197,11 @@ abstract class LerFicheiro {
 
       /* Templates */
 
-      XmlFormTemplate [] templates = flow.getXmlFormTemplate();
-      for(int i = 0; templates != null && i < flow.getXmlFormTemplateCount(); i++) {
+      List<XmlTemplateType> templates = flow.getXmlFormTemplate();
+      for(int i = 0; templates != null && i < flow.getXmlFormTemplate().size(); i++) {
         if(null == templates) continue;
-        String name = templates[i].getName();
-        String form = templates[i].getValue();
+        String name = templates.get(i).getName();
+        String form = templates.get(i).getValue();
 
         desenho.setFormTemplate(name, form);
 

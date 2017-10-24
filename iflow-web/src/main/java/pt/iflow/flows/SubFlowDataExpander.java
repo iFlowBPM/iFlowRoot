@@ -6,21 +6,20 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.xml.bind.JAXBException;
+
 import org.apache.commons.lang.StringUtils;
-import org.exolab.castor.xml.MarshalException;
-import org.exolab.castor.xml.ValidationException;
 
 import pt.iflow.api.core.BeanFactory;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.UserInfoInterface;
 import pt.iflow.api.xml.FlowMarshaller;
-import pt.iflow.api.xml.codegen.flow.XmlAttribute;
-import pt.iflow.api.xml.codegen.flow.XmlBlock;
+import pt.iflow.api.xml.codegen.flow.XmlAttributeType;
 import pt.iflow.api.xml.codegen.flow.XmlBlockType;
-import pt.iflow.api.xml.codegen.flow.XmlCatalogVarAttribute;
-import pt.iflow.api.xml.codegen.flow.XmlCatalogVars;
+import pt.iflow.api.xml.codegen.flow.XmlCatalogVarAttributeType;
+import pt.iflow.api.xml.codegen.flow.XmlCatalogVarsType;
 import pt.iflow.api.xml.codegen.flow.XmlFlow;
-import pt.iflow.api.xml.codegen.flow.XmlPort;
+import pt.iflow.api.xml.codegen.flow.XmlPortType;
 import pt.iflow.blocks.form.PopupFormField;
 import pt.iknow.floweditor.blocks.JSPFieldData;
 
@@ -39,7 +38,7 @@ public class SubFlowDataExpander {
   
   private XmlFlow xmlFlow;
   private Integer flowId;
-  private XmlBlock blockEnd;
+  private XmlBlockType blockEnd;
 
   public void setXmlFlow(XmlFlow xmlFlow) {
     this.xmlFlow = xmlFlow;
@@ -67,16 +66,16 @@ public class SubFlowDataExpander {
   }
 
   public Boolean containsSubFlow() {
-    for (XmlBlock block : getXmlFlow().getXmlBlock())
+    for (XmlBlockType block : getXmlFlow().getXmlBlock())
       if (block.getType().equals(SUB_FLOW_TYPE)){
         return true;
       }
     return false;
   }
 
-  private SubFlowDataSuportClass getSubFlowDataFromSubFlowBlock(UserInfoInterface userInfo, XmlBlock subFlowBlock) throws MarshalException, ValidationException {
+  private SubFlowDataSuportClass getSubFlowDataFromSubFlowBlock(UserInfoInterface userInfo, XmlBlockType subFlowBlock) throws JAXBException {
     SubFlowDataSuportClass subFlowData = null;
-    for (XmlAttribute xmlAttribute : subFlowBlock.getXmlAttribute())
+    for (XmlAttributeType xmlAttribute : subFlowBlock.getXmlAttribute())
       if (SUB_FLOW_NAME_ATTRIBUTE_START.equals("" + xmlAttribute.getName().charAt(0))) {
         byte[] sXml = BeanFactory.getFlowHolderBean().readSubFlowData(userInfo, xmlAttribute.getValue());
         XmlFlow xmlSubFlow = null;
@@ -86,7 +85,7 @@ public class SubFlowDataExpander {
         String prefix = getSubFlowPrefix(subFlowBlock);
         if(StringUtils.isBlank(prefix))
         	prefix = "" + subFlowBlock.getId();
-        for(XmlBlock block:xmlSubFlow.getXmlBlock())
+        for(XmlBlockType block:xmlSubFlow.getXmlBlock())
         	setSubFlowPrefix(block, prefix+"_"+ block.getId());
         
         subFlowData = new SubFlowDataSuportClass();
@@ -98,12 +97,12 @@ public class SubFlowDataExpander {
     return subFlowData;
   }
   
-  private String getSubFlowPrefix(XmlBlock block){
-	  XmlAttribute result = new XmlAttribute();
+  private String getSubFlowPrefix(XmlBlockType block){
+	  XmlAttributeType result = new XmlAttributeType();
 	  result.setName(SUBFLOW_PREFIX);
 	  result.setValue("");
 	  
-	  for (XmlAttribute xmlAttribute : block.getXmlAttribute())
+	  for (XmlAttributeType xmlAttribute : block.getXmlAttribute())
 		  if(StringUtils.equals(xmlAttribute.getName(),SUBFLOW_PREFIX)){
 			  result = xmlAttribute;
 			  break;
@@ -112,20 +111,20 @@ public class SubFlowDataExpander {
 	  return result.getValue();
   }
   
-  private void setSubFlowPrefix(XmlBlock block, String value){
-	  XmlAttribute result = new XmlAttribute();
+  private void setSubFlowPrefix(XmlBlockType block, String value){
+	  XmlAttributeType result = new XmlAttributeType();
 	  result.setName(SUBFLOW_PREFIX);
 	  result.setValue(value);
 	  
-	  XmlAttribute[] allAttributes = block.getXmlAttribute();
-	  for (int i=0; i< allAttributes.length; i++)
-		  if(StringUtils.equals(allAttributes[i].getName(),SUBFLOW_PREFIX)){
-			  allAttributes[i] = result;
-			  block.setXmlAttribute(allAttributes);
+	  List<XmlAttributeType> allAttributes = block.getXmlAttribute();
+	  for (int i=0; i< allAttributes.size(); i++)
+		  if(StringUtils.equals(allAttributes.get(i).getName(),SUBFLOW_PREFIX)){
+			  allAttributes.set(i, result);
+			  block.withXmlAttribute(allAttributes);
 			  return;
 		  }
 	  	  
-	  block.addXmlAttribute(result);
+	  block.withXmlAttribute(result);
   }
     
   public List<SubFlowMapping> expandSubFlow(UserInfoInterface userInfo) throws Exception {
@@ -143,7 +142,7 @@ public class SubFlowDataExpander {
           // if subflow has no content bypass it by converting to copy block
           if (subFlow == null && subFlowData.getSubFlowName() == null) {
             subFlowData.getPrimaryBlock().setType(BLOCK_COPY_TYPE);
-            subFlowData.getPrimaryBlock().getXmlPort()[1].setName(PORT_OUT_COPY);
+            subFlowData.getPrimaryBlock().getXmlPort().get(0).setName(PORT_OUT_COPY);
             break;
           }
           Logger.debug(userInfo.getUtilizador(), this, "expandSubFlow", "starting on Sub Flow: " + subFlow.getName());          
@@ -192,7 +191,7 @@ public class SubFlowDataExpander {
 	          // if subflow has no content bypass it by converting to copy block
 	          if (subFlow == null && subFlowData.getSubFlowName() == null) {
 	            subFlowData.getPrimaryBlock().setType(BLOCK_COPY_TYPE);
-	            subFlowData.getPrimaryBlock().getXmlPort()[1].setName(PORT_OUT_COPY);
+	            subFlowData.getPrimaryBlock().getXmlPort().get(1).setName(PORT_OUT_COPY);
 	            break;
 	          }
 	          Logger.debug(userInfo.getUtilizador(), this, "expandSubFlow", "starting on Sub Flow: " + subFlow.getName());          
@@ -228,7 +227,7 @@ public class SubFlowDataExpander {
 
   private void validateSubFlow(XmlFlow xmlSubFlow, UserInfoInterface userInfo) throws Exception {
     Boolean hasBlockEnd = Boolean.FALSE;
-    for (XmlBlock block : xmlSubFlow.getXmlBlock()) {
+    for (XmlBlockType block : xmlSubFlow.getXmlBlock()) {
       // if (block.getType().equals(SUB_FLOW_TYPE)) {
       // Logger.error(userInfo.getUtilizador(), this, "buildFlow", "exception caught: " + "SubFlow" + xmlSubFlow.getName()
       // + " contains another inner SubFlow!");
@@ -245,30 +244,30 @@ public class SubFlowDataExpander {
   }
 
   private void addSubCatalogVarsToMain(XmlFlow xmlSubFlow) {
-    XmlCatalogVars mainCatalogVars = getXmlFlow().getXmlCatalogVars();
-    for (XmlCatalogVarAttribute xmlCatalogVarAttribute : xmlSubFlow.getXmlCatalogVars().getXmlCatalogVarAttribute()) {
+    XmlCatalogVarsType mainCatalogVars = getXmlFlow().getXmlCatalogVars();
+    for (XmlCatalogVarAttributeType xmlCatalogVarAttribute : xmlSubFlow.getXmlCatalogVars().getXmlCatalogVarAttribute()) {
       if (!contains(mainCatalogVars, xmlCatalogVarAttribute)) {
-        mainCatalogVars.addXmlCatalogVarAttribute(xmlCatalogVarAttribute);
+        mainCatalogVars.withXmlCatalogVarAttribute(xmlCatalogVarAttribute);
       }
     }
   }
 
-  private boolean contains(XmlCatalogVars mainCatalogVars, XmlCatalogVarAttribute xmlCatalogVarAttribute) {
-    for (XmlCatalogVarAttribute mainCatalogVarAttribute : mainCatalogVars.getXmlCatalogVarAttribute())
+  private boolean contains(XmlCatalogVarsType mainCatalogVars, XmlCatalogVarAttributeType xmlCatalogVarAttribute) {
+    for (XmlCatalogVarAttributeType mainCatalogVarAttribute : mainCatalogVars.getXmlCatalogVarAttribute())
       if (mainCatalogVarAttribute.getName().equals(xmlCatalogVarAttribute.getName()))
         return Boolean.TRUE;
     return Boolean.FALSE;
   }
 
-  static String[][] retrieveSubflowVarMappings(XmlBlock subFlowBlock) {
+  static String[][] retrieveSubflowVarMappings(XmlBlockType subFlowBlock) {
     // get the var mapping of subflow
-    int size = (subFlowBlock.getXmlAttributeCount() - 1) / 4 - 1; // raio de conta
+    int size = (subFlowBlock.getXmlAttribute().size() - 1) / 4 - 1; // raio de conta
 
     String[][] saInVars = new String[size][3];
 
     // Attributes do block In & Out
-    for (int attrNumber = 0; attrNumber < subFlowBlock.getXmlAttributeCount(); attrNumber++) {
-      XmlAttribute xmlAttribute = subFlowBlock.getXmlAttribute(attrNumber);
+    for (int attrNumber = 0; attrNumber < subFlowBlock.getXmlAttribute().size(); attrNumber++) {
+      XmlAttributeType xmlAttribute = subFlowBlock.getXmlAttribute().get(attrNumber);
       String name = xmlAttribute.getName();
 
       int pos = -1;
@@ -299,13 +298,13 @@ public class SubFlowDataExpander {
   }
 
   private void buildCopyBlocksInSubFlow(SubFlowDataSuportClass subFlowData, UserInfoInterface userInfo) throws Exception {
-    XmlBlock[] rawSubFlow = subFlowData.getSubFlowXML().getXmlBlock();
+    List<XmlBlockType> rawSubFlow = subFlowData.getSubFlowXML().getXmlBlock();
     // get the var mapping of subflow
 
     XmlBlockType subFlowBlock = subFlowData.getPrimaryBlock();
     int size = 1;
-    if(subFlowBlock .getXmlAttributeCount()>8)
-    	size = (subFlowBlock .getXmlAttributeCount() - 1) / 4 - 1; // raio de conta
+    if(subFlowBlock .getXmlAttribute().size()>8)
+    	size = (subFlowBlock.getXmlAttribute().size() - 1) / 4 - 1; // raio de conta
     if (size < 0){
       size = 0; // FIXME correcção temporaria de subfluxo sem variaveis, 
     }
@@ -316,8 +315,8 @@ public class SubFlowDataExpander {
     // INI - SUB FLOW ACQUISITION OF VARIABLES TO COPY BLOCKS
     if (SubFlowDataSuportClass.SUBFLOW_BLOCK == subFlowData.getTypeOfSubFlowImplementation()){
       // Attributes do block In & Out
-      for (int attrNumber = 0; attrNumber < subFlowBlock.getXmlAttributeCount(); attrNumber++) {
-        XmlAttribute xmlAttribute = subFlowBlock.getXmlAttribute(attrNumber);
+      for (int attrNumber = 0; attrNumber < subFlowBlock.getXmlAttribute().size(); attrNumber++) {
+        XmlAttributeType xmlAttribute = subFlowBlock.getXmlAttribute().get(attrNumber);
         String name = xmlAttribute.getName();
 
         int pos = -1;
@@ -370,43 +369,43 @@ public class SubFlowDataExpander {
     // FIM - SUB FLOW ACQUISITION OF VARIABLES TO COPY BLOCKS 
 
     // setting ports on start block
-    rawSubFlow[0] = processSubFlowStartBlock(subFlowData, userInfo);
+    rawSubFlow.set(0, processSubFlowStartBlock(subFlowData, userInfo) );
 
     if (SubFlowDataSuportClass.POPUP_FORM_BLOCK == subFlowData.getTypeOfSubFlowImplementation()){
-      subFlowData.updatePopUpStartBlockId(rawSubFlow[0], userInfo);
+      subFlowData.updatePopUpStartBlockId(rawSubFlow.get(0), userInfo);
     }
 
     // setting ports on end block
     blockEnd = processSubFlowEndBlock (subFlowData, userInfo);
 
     // adding copy variables to xml attributtes
-    List<XmlAttribute> startCopyAttr = new ArrayList<XmlAttribute>();
-    List<XmlAttribute> endCopyAttr = new ArrayList<XmlAttribute>();
+    List<XmlAttributeType> startCopyAttr = new ArrayList<XmlAttributeType>();
+    List<XmlAttributeType> endCopyAttr = new ArrayList<XmlAttributeType>();
     for (int i = 0; i < saInVars.length; i++) {
-      XmlAttribute startOrig = new XmlAttribute();
+      XmlAttributeType startOrig = new XmlAttributeType();
       startOrig.setName("orig" + i);
       startOrig.setDescription("orig" + i);
       startOrig.setValue(saInVars[i][FLOW]);
-      XmlAttribute startDest = new XmlAttribute();
+      XmlAttributeType startDest = new XmlAttributeType();
       startDest.setName("dest" + i);
       startDest.setDescription("dest" + i);
       startDest.setValue(saInVars[i][SUBFLOW]);
       startCopyAttr.add(startOrig);
       startCopyAttr.add(startDest);
 
-      XmlAttribute endOrig = new XmlAttribute();
+      XmlAttributeType endOrig = new XmlAttributeType();
       endOrig.setName("orig" + i);
       endOrig.setDescription("orig" + i);
       endOrig.setValue(saInVars[i][SUBFLOW]);
-      XmlAttribute endDest = new XmlAttribute();
+      XmlAttributeType endDest = new XmlAttributeType();
       endDest.setName("dest" + i);
       endDest.setDescription("dest" + i);
       endDest.setValue(saInVars[i][FLOW]);
       endCopyAttr.add(endOrig);
       endCopyAttr.add(endDest);
     }
-    rawSubFlow[0].setXmlAttribute(startCopyAttr.toArray(new XmlAttribute[startCopyAttr.size()]));
-    blockEnd.setXmlAttribute(endCopyAttr.toArray(new XmlAttribute[endCopyAttr.size()]));
+    rawSubFlow.get(0).withXmlAttribute(startCopyAttr.toArray(new XmlAttributeType[startCopyAttr.size()]));
+    blockEnd.withXmlAttribute(endCopyAttr.toArray(new XmlAttributeType[endCopyAttr.size()]));
   }
 
   /**
@@ -421,34 +420,34 @@ public class SubFlowDataExpander {
    * @param userInfo 
    */
   private void insertSubInMainFlow(SubFlowDataSuportClass subFlowData, UserInfoInterface userInfo) {
-    XmlBlock subFlowBlock = subFlowData.getPrimaryBlock();
-    XmlBlock[] rawSubFlow = subFlowData.getSubFlowXML().getXmlBlock();
+    XmlBlockType subFlowBlock = subFlowData.getPrimaryBlock();
+    List<XmlBlockType> rawSubFlow = subFlowData.getSubFlowXML().getXmlBlock();
 
     if (SubFlowDataSuportClass.SUBFLOW_BLOCK == subFlowData.getTypeOfSubFlowImplementation()){
       // 1.Connect beginning of subflow
-      for (XmlBlock block : xmlFlow.getXmlBlock()){
+      for (XmlBlockType block : xmlFlow.getXmlBlock()){
         //if(block.getId()==subFlowBlock.getXmlPort(0).getConnectedBlockId()){ // é bloco que liga ao subFluxo
-          for (XmlPort port : block.getXmlPort())
+          for (XmlPortType port : block.getXmlPort())
             if (port.getConnectedBlockId() == subFlowBlock.getId())
-              port.setConnectedBlockId(rawSubFlow[0].getId());
+              port.setConnectedBlockId(rawSubFlow.get(0).getId());
         //}
       }
     }
 
     if (SubFlowDataSuportClass.SUBFLOW_BLOCK == subFlowData.getTypeOfSubFlowImplementation()){
       // 3.Add blocks to main flow ("Link's" the last block of sub flow to the block conected to the subflowBlock from main flow)
-      for (XmlBlock block : xmlFlow.getXmlBlock()){
-        if(block.getId()==subFlowBlock.getXmlPort(1).getConnectedBlockId()){
-          block.getXmlPort(0).setConnectedBlockId(blockEnd.getId());
-          block.getXmlPort(0).setConnectedPortName("portOut");
+      for (XmlBlockType block : xmlFlow.getXmlBlock()){
+        if(block.getId()==subFlowBlock.getXmlPort().get(1).getConnectedBlockId()){
+          block.getXmlPort().get(0).setConnectedBlockId(blockEnd.getId());
+          block.getXmlPort().get(0).setConnectedPortName("portOut");
         }
       }
     }
 
-    ArrayList<XmlBlock> newMainFlow = new ArrayList<XmlBlock>();
+    ArrayList<XmlBlockType> newMainFlow = new ArrayList<XmlBlockType>();
 
     // ADDs MAIN FLOW
-    for (XmlBlock block : xmlFlow.getXmlBlock()){
+    for (XmlBlockType block : xmlFlow.getXmlBlock()){
       if(block.getId()!=subFlowBlock.getId() 
           || SubFlowDataSuportClass.POPUP_FORM_BLOCK == subFlowData.getTypeOfSubFlowImplementation()){
         newMainFlow.add(block);
@@ -456,19 +455,20 @@ public class SubFlowDataExpander {
     }
 
     // ADDs SUB FLOW
-    for (XmlBlock block : rawSubFlow){
+    for (XmlBlockType block : rawSubFlow){
       newMainFlow.add(block);
     }
 
     //REPLACES xmlFlow WITH THE MERGE OF PRIMARY FLOW AND SUB FLOW
-    xmlFlow.setXmlBlock(newMainFlow.toArray(new XmlBlock[newMainFlow.size()]));
+    xmlFlow.getXmlBlock().clear();
+    xmlFlow.withXmlBlock(newMainFlow.toArray(new XmlBlockType[newMainFlow.size()]));
   }
 
-  private String[][] processMappingOfPopupVariables(XmlAttribute[] xmlAttributes) {
-    HashMap<String, XmlAttribute> masterFlowVariables = new HashMap<String, XmlAttribute>();
-    HashMap<String, XmlAttribute> popupFlowVariables = new HashMap<String, XmlAttribute>();
+  private String[][] processMappingOfPopupVariables(List<XmlAttributeType> xmlAttributes) {
+    HashMap<String, XmlAttributeType> masterFlowVariables = new HashMap<String, XmlAttributeType>();
+    HashMap<String, XmlAttributeType> popupFlowVariables = new HashMap<String, XmlAttributeType>();
 
-    for (XmlAttribute xmlAttribute : xmlAttributes){
+    for (XmlAttributeType xmlAttribute : xmlAttributes){
       String attributeName = xmlAttribute.getName();
       if (attributeName.startsWith("OBJ_") && attributeName.contains("_ROW_")){
         int variableLineNumberInitialIdx = attributeName.indexOf("_ROW_") + "_ROW_".length();
@@ -495,7 +495,7 @@ public class SubFlowDataExpander {
       masterFlowVariablesArray[mappedVariablesIdx][FLOW] = masterFlowVariables.get(key).getValue();
 
       String popupFlowVar = "";
-      XmlAttribute popupFlowVariable = popupFlowVariables.get(key);
+      XmlAttributeType popupFlowVariable = popupFlowVariables.get(key);
       if (popupFlowVariable != null){
         popupFlowVar = popupFlowVariable.getValue();
       }
@@ -505,42 +505,42 @@ public class SubFlowDataExpander {
     return masterFlowVariablesArray;
   }
 
-  private XmlBlock processSubFlowStartBlock(SubFlowDataSuportClass subFlowData, UserInfoInterface userInfo) {
-    XmlBlock[] rawSubFlow = subFlowData.getSubFlowXML().getXmlBlock();
+  private XmlBlockType processSubFlowStartBlock(SubFlowDataSuportClass subFlowData, UserInfoInterface userInfo) {
+    List<XmlBlockType> rawSubFlow = subFlowData.getSubFlowXML().getXmlBlock();
     XmlBlockType subFlowBlock = subFlowData.getPrimaryBlock();
 
-    XmlBlock subFlowBlockStart = rawSubFlow[0];
+    XmlBlockType subFlowBlockStart = rawSubFlow.get(0);
 
     subFlowBlockStart.setType(BLOCK_COPY_TYPE);
-    XmlPort[] startPorts = new XmlPort[2];
+    XmlPortType[] startPorts = new XmlPortType[2];
 
     if (SubFlowDataSuportClass.POPUP_FORM_BLOCK != subFlowData.getTypeOfSubFlowImplementation()) {
-      if (subFlowBlock.getXmlPort().length == 2){
-      startPorts[0] = subFlowBlock.getXmlPort(0);
-      startPorts[1] = rawSubFlow[0].getXmlPort(0);
+      if (subFlowBlock.getXmlPort().size() == 2){
+      startPorts[0] = subFlowBlock.getXmlPort().get(0);
+      startPorts[1] = rawSubFlow.get(0).getXmlPort().get(0);
       } else {
         startPorts[0] = null;
-        startPorts[1] = rawSubFlow[0].getXmlPort(0);
+        startPorts[1] = rawSubFlow.get(0).getXmlPort().get(0);
       }
     } else {
-      startPorts = new XmlPort[1]; // POPUP só terá uma saida.
-      startPorts[0] = rawSubFlow[0].getXmlPort(0); // se for do tipo form block nao tem entrada
+      startPorts = new XmlPortType[1]; // POPUP só terá uma saida.
+      startPorts[0] = rawSubFlow.get(0).getXmlPort().get(0); // se for do tipo form block nao tem entrada
     }
 
-    subFlowBlockStart.setXmlPort(startPorts);
-    subFlowBlockStart.setXmlAttribute(new XmlAttribute[0]);
+    subFlowBlockStart.withXmlPort(startPorts);
+    subFlowBlockStart.withXmlAttribute(new XmlAttributeType[0]);
 
     return subFlowBlockStart;
   }
 
-  private XmlBlock processSubFlowEndBlock(SubFlowDataSuportClass subFlowData, UserInfoInterface userInfo) {
-    XmlBlock[] rawSubFlow = subFlowData.getSubFlowXML().getXmlBlock();
+  private XmlBlockType processSubFlowEndBlock(SubFlowDataSuportClass subFlowData, UserInfoInterface userInfo) {
+	  List<XmlBlockType> rawSubFlow = subFlowData.getSubFlowXML().getXmlBlock();
     XmlBlockType subFlowBlock = subFlowData.getPrimaryBlock();
 
-    XmlBlock subFlowBlockEnd = null;
+    XmlBlockType subFlowBlockEnd = null;
     ArrayList<Integer> endId = new ArrayList<Integer>();
 
-    for (XmlBlock block : rawSubFlow){
+    for (XmlBlockType block : rawSubFlow){
       if (block.getType().equals(BLOCK_END_TYPE)){
         subFlowBlockEnd = block;
         endId.add(block.getId());
@@ -548,32 +548,32 @@ public class SubFlowDataExpander {
     }
 
     subFlowBlockEnd.setType(BLOCK_COPY_TYPE);
-    XmlPort[] endPorts = new XmlPort[2];
-    endPorts[0] = subFlowBlockEnd.getXmlPort(0);
+    XmlPortType[] endPorts = new XmlPortType[2];
+    endPorts[0] = subFlowBlockEnd.getXmlPort().get(0);
 
-    XmlPort outPort = new XmlPort();
+    XmlPortType outPort = new XmlPortType();
 
     if (SubFlowDataSuportClass.POPUP_FORM_BLOCK == subFlowData.getTypeOfSubFlowImplementation()){
       outPort.setConnectedBlockId(subFlowData.getPrimaryBlock().getId()); //Target's main flow form block
       outPort.setName("portOut");
     } else if (SubFlowDataSuportClass.SUBFLOW_BLOCK == subFlowData.getTypeOfSubFlowImplementation()){
-      XmlPort primarySubFlowBlockExitPort = subFlowBlock.getXmlPort(1);
+    	XmlPortType primarySubFlowBlockExitPort = subFlowBlock.getXmlPort().get(1);
       outPort.setName("portOut");
       outPort.setConnectedBlockId(primarySubFlowBlockExitPort.getConnectedBlockId());
       outPort.setConnectedPortName(primarySubFlowBlockExitPort.getConnectedPortName());
     }
 
     // merges all possible end blocks into one
-    for (XmlBlock block : rawSubFlow)
-      for (XmlPort port : block.getXmlPort())
+    for (XmlBlockType block : rawSubFlow)
+      for (XmlPortType port : block.getXmlPort())
         if (endId.contains(port.getConnectedBlockId())) {
           port.setConnectedBlockId(subFlowBlockEnd.getId());
           port.setConnectedPortName("portIn");
         }
 
     endPorts[1] = outPort;
-    subFlowBlockEnd.setXmlPort(endPorts);
-    subFlowBlockEnd.setXmlAttribute(new XmlAttribute[0]);
+    subFlowBlockEnd.withXmlPort(endPorts);
+    subFlowBlockEnd.withXmlAttribute(new XmlAttributeType[0]);
 
     return subFlowBlockEnd;
   }
@@ -585,27 +585,27 @@ public class SubFlowDataExpander {
    * @param userInfo
    */
   private void insertPopupReturnBlockInInSubFlowBocksProperties(SubFlowDataSuportClass subFlowData, UserInfoInterface userInfo) {
-    XmlBlock[] subFlowBlocks = subFlowData.getSubFlowXML().getXmlBlock();
+    List<XmlBlockType> subFlowBlocks = subFlowData.getSubFlowXML().getXmlBlock();
 
-    for (XmlBlock block :subFlowBlocks){
+    for (XmlBlockType block :subFlowBlocks){
       block.setPopupReturnBlockId(new Integer(subFlowData.getPrimaryBlock().getId()));
 
-      XmlAttribute xmlAttribute = new XmlAttribute();
+      XmlAttributeType xmlAttribute = new XmlAttributeType();
       xmlAttribute.setName("popupReturnBlockId");
       xmlAttribute.setDescription("popupReturnBlockId");
       xmlAttribute.setValue(String.valueOf(subFlowData.getPrimaryBlock().getId()));
-      block.addXmlAttribute(xmlAttribute);
+      block.withXmlAttribute(xmlAttribute);
     }
   }
 
-  private List<SubFlowDataSuportClass> getAllSubFlowsReferencesFromFlow(UserInfoInterface userInfo) throws MarshalException, ValidationException {
+  private List<SubFlowDataSuportClass> getAllSubFlowsReferencesFromFlow(UserInfoInterface userInfo) throws JAXBException {
     String operationUser = userInfo.getUtilizador();
     String methodName = "getFlowSubFlows";
 
     Logger.debug(operationUser, this, methodName, "INI - Processing search of subFlows.");
 
     List<SubFlowDataSuportClass> listOfSubFlows = new ArrayList<SubFlowDataSuportClass>();
-    for (XmlBlock block : getXmlFlow().getXmlBlock()){
+    for (XmlBlockType block : getXmlFlow().getXmlBlock()){
       SubFlowDataSuportClass subFlowData = null;
       if (SUB_FLOW_TYPE.equals(block.getType())){
         Logger.debug(operationUser, this, methodName, "INI - Processing block of SubFlow." + block.getId() + ", " +  getXmlFlow().getName());
@@ -617,21 +617,21 @@ public class SubFlowDataExpander {
           Logger.debug(operationUser, this, methodName, "Info - Flow: "+getXmlFlow().getName()+" will use subFlow "+subFlowData.getSubFlowName());
         }
         // missing ports..
-        if (block.getXmlPort().length == 0) {
-          XmlPort portIn = new XmlPort();
-          XmlPort portSuccess = new XmlPort();
+        if (block.getXmlPort().size() == 0) {
+          XmlPortType portIn = new XmlPortType();
+          XmlPortType portSuccess = new XmlPortType();
           portSuccess.setName("portSuccess");
           portIn.setName("portIn");
-          XmlPort[] ports = { portIn, portSuccess };
-          block.setXmlPort(ports);
-        } else if (block.getXmlPort().length == 1) {
-          XmlPort blankPort = new XmlPort();
-          if (block.getXmlPort(0).getName().equals("portIn")) {
+          XmlPortType[] ports = { portIn, portSuccess };
+          block.withXmlPort(ports);
+        } else if (block.getXmlPort().size() == 1) {
+          XmlPortType blankPort = new XmlPortType();
+          if (block.getXmlPort().get(0).getName().equals("portIn")) {
             blankPort.setName("portSuccess");
-            block.addXmlPort(1, blankPort);
+            block.getXmlPort().add(1, blankPort);
           } else {
             blankPort.setName("portIn");
-            block.addXmlPort(0, blankPort);
+            block.getXmlPort().add(0, blankPort);
           }
         }
         Logger.debug(operationUser, this, methodName, "FIM - Processing block of SubFlow.");
@@ -657,18 +657,18 @@ public class SubFlowDataExpander {
     return listOfSubFlows;
   }
 
-  private List<SubFlowDataSuportClass> getSubFlowDataFromFormBlock(UserInfoInterface userInfo, XmlBlock formBlock) throws MarshalException, ValidationException {
+  private List<SubFlowDataSuportClass> getSubFlowDataFromFormBlock(UserInfoInterface userInfo, XmlBlockType formBlock) throws JAXBException {
     String operationUser = userInfo.getUtilizador();
     String methodName = "getFlowSubFlows";
     Logger.debug(operationUser, this, methodName, "INI - Processing Form block xml attribute.");
 
     List<SubFlowDataSuportClass> subFlowReferencesInForm = new ArrayList<SubFlowDataSuportClass>();
-    List<List<XmlAttribute>> listOfPopupFormfields = getPopupFormFields(userInfo, formBlock);
+    List<List<XmlAttributeType>> listOfPopupFormfields = getPopupFormFields(userInfo, formBlock);
     if (listOfPopupFormfields != null){
       for(int i=0; i<listOfPopupFormfields.size(); i++){
         SubFlowDataSuportClass popupFlowData = new SubFlowDataSuportClass();
 
-        for (XmlAttribute fieldAtribute : listOfPopupFormfields.get(i)) {
+        for (XmlAttributeType fieldAtribute : listOfPopupFormfields.get(i)) {
           String fieldAttributeName = fieldAtribute.getName();
           if (fieldAttributeName.startsWith("OBJ_") && fieldAttributeName.endsWith("_ID")){
             String popupFieldId = fieldAttributeName.substring(4, fieldAttributeName.indexOf("_ID"));
@@ -699,13 +699,13 @@ public class SubFlowDataExpander {
     return subFlowReferencesInForm;
   }
 
-  private List <List<XmlAttribute>> getPopupFormFields(UserInfoInterface userInfo, XmlBlock block) {
+  private List <List<XmlAttributeType>> getPopupFormFields(UserInfoInterface userInfo, XmlBlockType block) {
     List<String> popupFormFieldsPositions = new ArrayList<String>();
-    HashMap <String,List<XmlAttribute>> formFieldsList = new HashMap <String,List<XmlAttribute>>();
+    HashMap <String,List<XmlAttributeType>> formFieldsList = new HashMap <String,List<XmlAttributeType>>();
 
-    List <XmlAttribute> formField = null;
+    List <XmlAttributeType> formField = null;
     String currentFieldId = "0";
-    for (XmlAttribute formAttribute : block.getXmlAttribute()) {
+    for (XmlAttributeType formAttribute : block.getXmlAttribute()) {
       String attributteName = formAttribute.getName();
 
       if (attributteName.startsWith("OBJ_")){
@@ -713,7 +713,7 @@ public class SubFlowDataExpander {
           if (formField != null){ //existe campo anterior
             formFieldsList.put(currentFieldId, formField);
           }
-          formField = new ArrayList <XmlAttribute>();
+          formField = new ArrayList <XmlAttributeType>();
           currentFieldId = String.valueOf(formAttribute.getValue());
         }
 
@@ -731,9 +731,9 @@ public class SubFlowDataExpander {
       formFieldsList.put(currentFieldId, formField);; // inclui o ultimo campo do formulario
     }
 
-    List <List<XmlAttribute>> subFlowsFormFieldsList = null;
+    List <List<XmlAttributeType>> subFlowsFormFieldsList = null;
     if (popupFormFieldsPositions.size() > 0) {
-      subFlowsFormFieldsList = new ArrayList <List<XmlAttribute>>();
+      subFlowsFormFieldsList = new ArrayList <List<XmlAttributeType>>();
 
       Logger.info(userInfo.getUtilizador(), this, "getPopupFormFields", "Processing fields ["+popupFormFieldsPositions.toString()+"], as popup fields");
       for (String popupFormField : popupFormFieldsPositions){
@@ -755,11 +755,11 @@ public class SubFlowDataExpander {
   private List<SubFlowMapping> assignNewBlockIds(SubFlowDataSuportClass subflow, Integer mainFlowMaxBlockId) {
     List<SubFlowMapping> mappings = new ArrayList<SubFlowMapping>();
 
-    for (XmlBlock block : subflow.getSubFlowXML().getXmlBlock()) {
+    for (XmlBlockType block : subflow.getSubFlowXML().getXmlBlock()) {
       mappings.add(new SubFlowMapping(xmlFlow.getName(), getSubFlowPrefix(block), block
           .getId(), block.getId() + mainFlowMaxBlockId));
       block.setId(block.getId() + mainFlowMaxBlockId);
-      for (XmlPort xmlPort : block.getXmlPort())
+      for (XmlPortType xmlPort : block.getXmlPort())
         xmlPort.setConnectedBlockId(xmlPort.getConnectedBlockId() + mainFlowMaxBlockId);
     }
     return mappings;
@@ -774,9 +774,8 @@ public class SubFlowDataExpander {
    * @param userInfo
    *          user information required for database querys
    */
-  private XmlFlow retrieveRawSubFlow(XmlBlock subFlowBlock, UserInfoInterface userInfo) throws MarshalException,
-      ValidationException {
-    for (XmlAttribute xmlAttribute : subFlowBlock.getXmlAttribute())
+  private XmlFlow retrieveRawSubFlow(XmlBlockType subFlowBlock, UserInfoInterface userInfo) throws JAXBException {
+    for (XmlAttributeType xmlAttribute : subFlowBlock.getXmlAttribute())
       if (SUB_FLOW_NAME_ATTRIBUTE_START.equals("" + xmlAttribute.getName().charAt(0))) {
         byte[] sXml = BeanFactory.getFlowHolderBean().readSubFlowData(userInfo, xmlAttribute.getValue());
         XmlFlow xmlSubFlow = FlowMarshaller.unmarshal(sXml);
@@ -790,7 +789,7 @@ public class SubFlowDataExpander {
    */
   public Integer findMaxblockId() {
     Integer result = 0;
-    for (XmlBlock block : xmlFlow.getXmlBlock())
+    for (XmlBlockType block : xmlFlow.getXmlBlock())
       if (block.getId() > result)
         result = block.getId();
 
@@ -804,7 +803,7 @@ class SubFlowDataSuportClass {
 
   private int typeOfSubFlowImplementation;
   private String subFlowName = "";
-  private XmlBlock primaryBlock;
+  private XmlBlockType primaryBlock;
   private XmlFlow subFlowXML;
   private String popupVariable;
   private int formFieldId = -1;
@@ -825,11 +824,11 @@ class SubFlowDataSuportClass {
     this.subFlowName = subFlowName;
   }
 
-  public XmlBlock getPrimaryBlock() {
+  public XmlBlockType getPrimaryBlock() {
     return primaryBlock;
   }
 
-  public void setPrimaryBlock(XmlBlock subFlowBlock) {
+  public void setPrimaryBlock(XmlBlockType subFlowBlock) {
     this.primaryBlock = subFlowBlock;
   }
 
@@ -837,7 +836,7 @@ class SubFlowDataSuportClass {
     return subFlowXML;
   }
 
-  public SubFlowDataSuportClass(int typeOfSubFlowImplementation, String subFlowName, XmlBlock primaryBlock, XmlFlow subFlowXML,
+  public SubFlowDataSuportClass(int typeOfSubFlowImplementation, String subFlowName, XmlBlockType primaryBlock, XmlFlow subFlowXML,
       String popupVariable, int formFieldId) {
     super();
     this.typeOfSubFlowImplementation = typeOfSubFlowImplementation;
@@ -872,15 +871,15 @@ class SubFlowDataSuportClass {
     this.formFieldId = formFieldId;
   }
 
-  public void updatePopUpStartBlockId(XmlBlock popupFlowStartupBlock, UserInfoInterface userInfo) {
-    XmlAttribute popupFlowStartBlockIdXMLAttribute = new XmlAttribute();
+  public void updatePopUpStartBlockId(XmlBlockType popupFlowStartupBlock, UserInfoInterface userInfo) {
+	  XmlAttributeType popupFlowStartBlockIdXMLAttribute = new XmlAttributeType();
 
     StringBuffer attributeName = new StringBuffer("OBJ_").append(formFieldId).append("_").append(PopupFormField.POPUP_FLOW_START_BLOCK_ID);
     popupFlowStartBlockIdXMLAttribute.setName(attributeName.toString());
     popupFlowStartBlockIdXMLAttribute.setDescription(PopupFormField.POPUP_FLOW_START_BLOCK_ID);
     popupFlowStartBlockIdXMLAttribute.setValue(String.valueOf(popupFlowStartupBlock.getId()));
 
-    primaryBlock.addXmlAttribute(popupFlowStartBlockIdXMLAttribute);
+    primaryBlock.withXmlAttribute(popupFlowStartBlockIdXMLAttribute);
   }
 
   @Override
@@ -908,7 +907,7 @@ class SubFlowDataSuportClass {
   }
 }
 
-class XmlBlockSubFlow extends XmlBlock{
+class XmlBlockSubFlow extends XmlBlockType{
 	private String subflowPath;
 
 	public String getSubflowPath() {

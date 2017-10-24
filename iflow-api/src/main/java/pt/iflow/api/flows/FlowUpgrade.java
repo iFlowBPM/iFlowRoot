@@ -8,8 +8,8 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 
 import pt.iflow.api.utils.Logger;
-import pt.iflow.api.xml.codegen.flow.XmlAttribute;
-import pt.iflow.api.xml.codegen.flow.XmlBlock;
+import pt.iflow.api.xml.codegen.flow.XmlAttributeType;
+import pt.iflow.api.xml.codegen.flow.XmlBlockType;
 import pt.iflow.api.xml.codegen.flow.XmlFlow;
 
 /**
@@ -70,12 +70,13 @@ public class FlowUpgrade {
       Logger.trace("FlowUpgrade", "upgradeFlow", "Upgrading flow '" + flow.getName() + "' from version '" + flow.getIFlowVersion()
           + "' to '" + version + "'.");
       if (StringUtils.equals(version, VERSION_4X)) {
-        List<XmlBlock> blocks = new ArrayList<XmlBlock>();
-        for (XmlBlock block : flow.getXmlBlock()) {
+        List<XmlBlockType> blocks = new ArrayList<XmlBlockType>();
+        for (XmlBlockType block : flow.getXmlBlock()) {
           block = upgradeBlock(version, block);
           blocks.add(block);
         }
-        flow.setXmlBlock(blocks.toArray(new XmlBlock[blocks.size()]));
+        flow.getXmlBlock().clear();
+        flow.withXmlBlock(blocks.toArray(new XmlBlockType[blocks.size()]));
         
         flow.setIFlowVersion(VERSION_4X);
       }
@@ -95,14 +96,15 @@ public class FlowUpgrade {
    *          Block to be upgraded.
    * @return Upgraded block.
    */
-  public static XmlBlock upgradeBlock(String version, XmlBlock block) {
+  public static XmlBlockType upgradeBlock(String version, XmlBlockType block) {
     if (StringUtils.equals(version, VERSION_4X)) {
-      List<XmlAttribute> attributes = new ArrayList<XmlAttribute>();
-      for (XmlAttribute attribute : block.getXmlAttribute()) {
+      List<XmlAttributeType> attributes = new ArrayList<XmlAttributeType>();
+      for (XmlAttributeType attribute : block.getXmlAttribute()) {
         attribute = upgradeAttribute(version, attribute);
         attributes.add(attribute);
       }
-      block.setXmlAttribute(attributes.toArray(new XmlAttribute[attributes.size()]));
+      block.getXmlAttribute().clear();
+      block.withXmlAttribute(attributes.toArray(new XmlAttributeType[attributes.size()]));
     }
     return block;
   }
@@ -119,7 +121,7 @@ public class FlowUpgrade {
    *          Attribute to be upgraded.
    * @return Upgraded attribute.
    */
-  public static XmlAttribute upgradeAttribute(String version, XmlAttribute attribute) {
+  public static XmlAttributeType upgradeAttribute(String version, XmlAttributeType attribute) {
     if (StringUtils.equals(version, VERSION_4X)) {
       String value = attribute.getValue();
       for (String[] replacements : upgradeAttributeValue.get(VERSION_4X)) {

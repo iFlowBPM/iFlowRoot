@@ -51,12 +51,6 @@
 
 		<!-- OEM -->
 		<dependency>
-			<groupId>castor</groupId>
-			<artifactId>castor</artifactId>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>			
 		</dependency>

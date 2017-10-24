@@ -11,56 +11,54 @@ package pt.iknow.floweditor;
  *
  ****************************************************/
 
+import pt.iknow.XmlColor2.XmlColorType;
 
-import pt.iknow.XmlColor.XmlColor;
-import pt.iknow.XmlColor.XmlColorLibrary;
+import java.awt.Color;
+import java.util.List;
 
-
+import pt.iknow.XmlColor2.XmlColorDescription;
+import pt.iknow.XmlColor2.XmlColorLibrary;
 
 class AcessoFicheiroCores {
-    
-/**************************************************
- * Ler descricao de cores a serem utilizados
- */
-  public void LerFicheiroCores() {
-    XmlColorLibrary colors = FlowEditorConfig.getColors();
-    XmlColor[] items=colors.getXmlColor();
 
-    for (int i=0; i<items.length; i++) {
-      XmlColor cor=items[i];
-      pt.iknow.XmlColor.Rgb xcd=cor.getRgb();
+	/**************************************************
+	 * Ler descricao de cores a serem utilizados
+	 */
+	public void LerFicheiroCores() {
+		XmlColorLibrary colors = FlowEditorConfig.getColors();
+		List<XmlColorType> items = colors.getXmlColor();
 
-      /* colocar cor na class de cores */
-      Cor.getInstance().setCor(cor.getItem().toLowerCase(), new java.awt.Color(xcd.getRed(), xcd.getGreen(), xcd.getBlue()));
-    }
-  }
-    
-    
-    
-    
-/*********************************************
- * grava ficheiro com descricao de cores
- */
-  public void GravarFicheiroCores() {
-    XmlColorLibrary colors=new XmlColorLibrary();
-    XmlColor[] cores=new XmlColor[Mesg.CompComCor.length];
+		for( XmlColorType cor : items ) 
+		{
+			XmlColorDescription xcd = cor.getRgb();
 
-    /* recolher informacao */
-    for(int i=0;i<Mesg.CompComCor.length;i++) {
-      XmlColor cor=new XmlColor();
-      cor.setItem(Mesg.CompComCor[i]);
-      pt.iknow.XmlColor.Rgb clr=new pt.iknow.XmlColor.Rgb();
-      clr.setRed(Cor.getInstance().getCor(Mesg.CompComCor[i]).getRed());
-      clr.setGreen(Cor.getInstance().getCor(Mesg.CompComCor[i]).getGreen());
-      clr.setBlue(Cor.getInstance().getCor(Mesg.CompComCor[i]).getBlue());
-      cor.setRgb(clr);
-      cores[i]=cor;
-    }            
-    colors.setXmlColor(cores);
+			/* colocar cor na class de cores */
+			Cor.getInstance().setCor(cor.getItem().toLowerCase(),new Color(xcd.getRed(), xcd.getGreen(), xcd.getBlue()));
+		}
+	}
 
-    /* grava ficheiro */
-    FlowEditorConfig.saveColors(colors);
-  }
-    
-    
+	/*********************************************
+	 * grava ficheiro com descricao de cores
+	 */
+	public void GravarFicheiroCores() {
+		XmlColorLibrary colors = new XmlColorLibrary();
+		XmlColorType[] cores = new XmlColorType[Mesg.CompComCor.length];
+
+		/* recolher informacao */
+		for (int i = 0; i < Mesg.CompComCor.length; i++) {
+			XmlColorType cor = new XmlColorType();
+			cor.setItem(Mesg.CompComCor[i]);
+			XmlColorDescription clr = new XmlColorDescription();
+			clr.setRed(Cor.getInstance().getCor(Mesg.CompComCor[i]).getRed());
+			clr.setGreen(Cor.getInstance().getCor(Mesg.CompComCor[i]).getGreen());
+			clr.setBlue(Cor.getInstance().getCor(Mesg.CompComCor[i]).getBlue());
+			cor.setRgb(clr);
+			cores[i] = cor;
+		}
+		colors.withXmlColor(cores);
+
+		/* grava ficheiro */
+		FlowEditorConfig.saveColors(colors);
+	}
+
 }

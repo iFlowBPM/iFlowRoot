@@ -7,77 +7,71 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
-import org.exolab.castor.xml.MarshalException;
-import org.exolab.castor.xml.Marshaller;
-import org.exolab.castor.xml.Unmarshaller;
-import org.exolab.castor.xml.ValidationException;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+
 import org.xml.sax.InputSource;
 
-import pt.iflow.api.xml.codegen.flow.XmlAttribute;
-import pt.iflow.api.xml.codegen.flow.XmlCatalogVarAttribute;
-import pt.iflow.api.xml.codegen.flow.XmlCatalogVars;
+import pt.iflow.api.xml.codegen.flow.XmlAttributeType;
+import pt.iflow.api.xml.codegen.flow.XmlCatalogVarAttributeType;
+import pt.iflow.api.xml.codegen.flow.XmlCatalogVarsType;
 import pt.iflow.api.xml.codegen.flow.XmlFlow;
 
 public class FlowMarshaller {
 
-  public static byte [] marshall(XmlFlow flow) throws MarshalException, ValidationException {
-    flow = validate(flow);
-    ByteArrayOutputStream bout = new ByteArrayOutputStream();
-    try {
-      Writer w = new OutputStreamWriter(bout, "UTF-8");
-      Marshaller.marshal(flow, w);
-      w.close();
-    } catch (Exception e) {
-      throw new MarshalException(e);
-    }
+	public static byte[] marshall(XmlFlow flow) throws JAXBException {
+		flow = validate(flow);
+		ByteArrayOutputStream bout = new ByteArrayOutputStream();
+		try {
+			Writer writer = new OutputStreamWriter(bout, "UTF-8");
+			JAXBContext context = JAXBContext.newInstance(XmlFlow.class);
+			javax.xml.bind.Marshaller marshaller = context.createMarshaller();
+			marshaller.marshal(flow, writer);
+			writer.close();
+		} catch (Exception e) {
+			throw new JAXBException(e);
+		}
 
-    return bout.toByteArray();
-  }
+		return bout.toByteArray();
+	}
 
-  public static XmlFlow unmarshal(byte [] data)
-  throws MarshalException, ValidationException
-  {
-    InputSource source = null;
-    try {
-      source = new InputSource(new InputStreamReader(new ByteArrayInputStream(data), "UTF-8"));
-    } catch (UnsupportedEncodingException e) {
-      throw new MarshalException(e);
-    }
-    XmlFlow retFlow = (XmlFlow) Unmarshaller.unmarshal(XmlFlow.class, source);
+	public static XmlFlow unmarshal(byte[] data) throws JAXBException {
+		InputSource source = null;
+		try {
+			source = new InputSource(new InputStreamReader(new ByteArrayInputStream(data), "UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			throw new JAXBException(e);
+		}
+		
+		JAXBContext context = JAXBContext.newInstance(XmlFlow.class);
+		Unmarshaller unmarshaller = context.createUnmarshaller();
+		XmlFlow retFlow = (XmlFlow) unmarshaller.unmarshal(source);
+		return validate(retFlow);
+	}
 
-    return validate(retFlow);
-  }
+	private static XmlFlow validate(XmlFlow xmlFlow) {
+		if (null == xmlFlow.getXmlCatalogVars())
+			xmlFlow.setXmlCatalogVars(new XmlCatalogVarsType());
+		if (xmlFlow.getXmlCatalogVars().getXmlAttribute().size() > 0) 
+		{
+			XmlCatalogVarsType oldCatalogVars = xmlFlow.getXmlCatalogVars();
+			for (XmlAttributeType oldAttribute : oldCatalogVars.getXmlAttribute()) {
+				XmlCatalogVarAttributeType newAttribute = new XmlCatalogVarAttributeType();
 
-  private static XmlFlow validate(XmlFlow xmlFlow) {
-    if(null == xmlFlow.getXmlCatalogVars()) xmlFlow.setXmlCatalogVars(new XmlCatalogVars());
-    if(xmlFlow.getXmlCatalogVars().getXmlAttributeCount() > 0) {
-      XmlCatalogVars oldCatalogVars = xmlFlow.getXmlCatalogVars();
-      for (XmlAttribute oldAttribute : oldCatalogVars.getXmlAttribute()) {
-        XmlCatalogVarAttribute newAttribute = new XmlCatalogVarAttribute();
+				newAttribute.setDataType(oldAttribute.getDescription());
+				newAttribute.setInitVal(oldAttribute.getValue());
+				newAttribute.setName(oldAttribute.getName());
 
-        newAttribute.setDataType(oldAttribute.getDescription());
-        newAttribute.setInitVal(oldAttribute.getValue());
-        newAttribute.setName(oldAttribute.getName());
+				newAttribute.setPublicName("");
+				newAttribute.setIsSearchable(false);
 
-        newAttribute.setPublicName("");
-        newAttribute.setIsSearchable(false);
+				xmlFlow.getXmlCatalogVars().withXmlCatalogVarAttribute( newAttribute );
+			}
+			xmlFlow.getXmlCatalogVars().getXmlCatalogVarAttribute().clear();
+		}
 
-        xmlFlow.getXmlCatalogVars().addXmlCatalogVarAttribute(newAttribute);
-      }
-      xmlFlow.getXmlCatalogVars().clearXmlAttribute();
-    }
-
-    for (XmlCatalogVarAttribute varType : xmlFlow.getXmlCatalogVars().getXmlCatalogVarAttribute()) {
-      try {
-        varType.validate();
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    }
-    return xmlFlow;
-  }
-
-
-
+		return xmlFlow;
+	}
 
 }

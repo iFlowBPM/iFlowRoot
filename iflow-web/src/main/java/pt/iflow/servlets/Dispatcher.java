@@ -36,9 +36,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
 
 import org.apache.commons.lang.StringUtils;
-import org.exolab.castor.xml.Marshaller;
 
 import pt.iflow.api.annotations.RepositoryWebOp;
 import pt.iflow.api.connectors.ConnectorInterface;
@@ -63,6 +64,7 @@ import pt.iflow.api.transition.FlowStateLogTO;
 import pt.iflow.api.utils.CheckSum;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.FlowInfo;
+import pt.iflow.api.utils.FlowInfoList;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.NameValuePair;
 import pt.iflow.api.utils.RepositoryWebOpCodes;
@@ -213,11 +215,15 @@ public class Dispatcher extends HttpServlet {
       return;
     ByteArrayOutputStream input = new ByteArrayOutputStream();
     OutputStreamWriter w = new OutputStreamWriter(input, RepositoryWebOpCodes.DEFAULT_ENCODING);
-
-    Marshaller marshaller = new Marshaller(w);
-    marshaller.setEncoding(RepositoryWebOpCodes.DEFAULT_ENCODING);
     try {
-      marshaller.marshal(flows);
+		JAXBContext context = JAXBContext.newInstance(FlowInfoList.class);
+		Marshaller marshaller = context.createMarshaller();
+		marshaller.setProperty(Marshaller.JAXB_ENCODING, RepositoryWebOpCodes.DEFAULT_ENCODING);
+
+		FlowInfoList list = new FlowInfoList();
+		list.setElements( flows );
+		
+		marshaller.marshal(list, w);
     } catch (Exception e) {
       logMsg("sendFlowList", e);
       throw new IOException("Error marshalling data: " + e.getMessage());
@@ -232,10 +238,12 @@ public class Dispatcher extends HttpServlet {
     ByteArrayOutputStream input = new ByteArrayOutputStream();
     OutputStreamWriter w = new OutputStreamWriter(input, RepositoryWebOpCodes.DEFAULT_ENCODING);
 
-    Marshaller marshaller = new Marshaller(w);
-    marshaller.setEncoding(RepositoryWebOpCodes.DEFAULT_ENCODING);
     try {
-      marshaller.marshal(flow);
+		JAXBContext context = JAXBContext.newInstance(FlowInfo.class);
+		Marshaller marshaller = context.createMarshaller();
+		marshaller.setProperty(Marshaller.JAXB_ENCODING, RepositoryWebOpCodes.DEFAULT_ENCODING);
+
+		marshaller.marshal(flow, w);
     } catch (Exception e) {
       logMsg("sendFlowInfo", e);
       throw new IOException("Error marshalling data: " + e.getMessage());

@@ -52,13 +52,13 @@ import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.UserInfoInterface;
 import pt.iflow.api.utils.Utils;
 import pt.iflow.api.xml.FlowMarshaller;
-import pt.iflow.api.xml.codegen.flow.XmlAttribute;
-import pt.iflow.api.xml.codegen.flow.XmlBlock;
-import pt.iflow.api.xml.codegen.flow.XmlCatalogVarAttribute;
-import pt.iflow.api.xml.codegen.flow.XmlCatalogVars;
+import pt.iflow.api.xml.codegen.flow.XmlAttributeType;
+import pt.iflow.api.xml.codegen.flow.XmlBlockType;
+import pt.iflow.api.xml.codegen.flow.XmlCatalogVarAttributeType;
+import pt.iflow.api.xml.codegen.flow.XmlCatalogVarsType;
 import pt.iflow.api.xml.codegen.flow.XmlFlow;
-import pt.iflow.api.xml.codegen.flow.XmlFormTemplate;
-import pt.iflow.api.xml.codegen.flow.XmlPort;
+import pt.iflow.api.xml.codegen.flow.XmlPortType;
+import pt.iflow.api.xml.codegen.flow.XmlTemplateType;
 import pt.iknow.utils.StringUtilities;
 import pt.iknow.utils.security.SecurityException;
 
@@ -264,16 +264,16 @@ public class FlowData implements IFlowData,Serializable {
 
 
        /* CatalogVars */
-       XmlCatalogVars xmlcv = aXmlFlow.getXmlCatalogVars();
+       XmlCatalogVarsType xmlcv = aXmlFlow.getXmlCatalogVars();
 
-       if (xmlcv != null && xmlcv.getXmlCatalogVarAttributeCount() > 0) {
-         for (int i = 0; i < xmlcv.getXmlCatalogVarAttributeCount(); i++) {
-           XmlCatalogVarAttribute attr = xmlcv.getXmlCatalogVarAttribute(i);
+       if (xmlcv != null && xmlcv.getXmlCatalogVarAttribute().size() > 0) {
+         for (int i = 0; i < xmlcv.getXmlCatalogVarAttribute().size(); i++) {
+           XmlCatalogVarAttributeType attr = xmlcv.getXmlCatalogVarAttribute().get(i);
            DataTypeEnum dataType = DataTypeEnum.getDataType(attr.getDataType());
            String format = attr.getFormat();
            if(StringUtils.isBlank(format)) format = mapSettings.get(dataType);
 
-           this.setCatalogueVar(attr.getName(), attr.getInitVal(), dataType, attr.getIsSearchable(), attr.getPublicName(), format);
+           this.setCatalogueVar(attr.getName(), attr.getInitVal(), dataType, attr.isIsSearchable(), attr.getPublicName(), format);
          
            flowClassFile.addVar(dataType, attr.getName());
          }
@@ -329,8 +329,8 @@ public class FlowData implements IFlowData,Serializable {
      Class<? extends Block> blockClass = null;
      LicenseService licService = LicenseServiceFactory.getLicenseService();
 
-     for (int b = 0; b < aXmlFlow.getXmlBlockCount(); b++) {
-       XmlBlock block = aXmlFlow.getXmlBlock(b);
+     for (int b = 0; b < aXmlFlow.getXmlBlock().size(); b++) {
+       XmlBlockType block = aXmlFlow.getXmlBlock().get(b);
        String blockType = block.getType();
        
        try {
@@ -373,11 +373,11 @@ public class FlowData implements IFlowData,Serializable {
        Block bBlock = argsConstructor.newInstance(anFlowId, blockId, block
            .getId(), aXmlFlow.getName());
 
-       XmlPort xmlPort = null;
+       XmlPortType xmlPort = null;
        try {
          // Ports
-         for (int portNumber = 0; portNumber < block.getXmlPortCount(); portNumber++) {
-           xmlPort = block.getXmlPort(portNumber);
+         for (int portNumber = 0; portNumber < block.getXmlPort().size(); portNumber++) {
+           xmlPort = block.getXmlPort().get(portNumber);
            Logger.debug(null, this, "constructor", "Processing port "
                + xmlPort.getName());
 
@@ -399,8 +399,8 @@ public class FlowData implements IFlowData,Serializable {
 
        HashMap<String, String> hmtmp = new HashMap<String, String>();
        // Attributes
-       for (int attrNumber = 0; attrNumber < block.getXmlAttributeCount(); attrNumber++) {
-         XmlAttribute xmlAttribute = block.getXmlAttribute(attrNumber);
+       for (int attrNumber = 0; attrNumber < block.getXmlAttribute().size(); attrNumber++) {
+         XmlAttributeType xmlAttribute = block.getXmlAttribute().get(attrNumber);
 
          String name = xmlAttribute.getName();
          String value = xmlAttribute.getValue();
@@ -565,7 +565,7 @@ public class FlowData implements IFlowData,Serializable {
    }
 @Deprecated
    private InstantiationResult instantiateSubFlow(UserInfoInterface ui,
-       XmlBlock xmlblock, int anFlowId, List<FlowSetting> alSettings,
+       XmlBlockType xmlblock, int anFlowId, List<FlowSetting> alSettings,
        Hashtable<Integer, Block> htBlocks, int offset) throws Exception {
      Class<?>[] argsClass = new Class[] { int.class, int.class, int.class,
          String.class };
@@ -577,14 +577,14 @@ public class FlowData implements IFlowData,Serializable {
 
      offset += iOFFSET;
 
-     int size = (xmlblock.getXmlAttributeCount() - 1) / 4; // raio de conta
+     int size = (xmlblock.getXmlAttribute().size() - 1) / 4; // raio de conta
 
      String[][] saInVars = new String[size][3];
      String[][] saOutVars = new String[size][3];
 
      // Attributes do block In & Out
-     for (int attrNumber = 0; attrNumber < xmlblock.getXmlAttributeCount(); attrNumber++) {
-       XmlAttribute xmlAttribute = xmlblock.getXmlAttribute(attrNumber);
+     for (int attrNumber = 0; attrNumber < xmlblock.getXmlAttribute().size(); attrNumber++) {
+       XmlAttributeType xmlAttribute = xmlblock.getXmlAttribute().get(attrNumber);
        String name = xmlAttribute.getName();
 
        int pos = -1;
@@ -706,7 +706,7 @@ public class FlowData implements IFlowData,Serializable {
      // portos do BlockSubFlowIn
      Port port = null;
      try {
-       XmlPort xmlPort = xmlblock.getXmlPort(0); // portIn -> portIn
+       XmlPortType xmlPort = xmlblock.getXmlPort().get(0); // portIn -> portIn
        port = new Port();
        port.setName("portIn");
        port.setConnectedBlockId(xmlPort.getConnectedBlockId()
@@ -790,7 +790,7 @@ public class FlowData implements IFlowData,Serializable {
        fPort = blockClassOut.getField("portInThread");
        fPort.set(bBlockOut, port);
 
-       XmlPort xmlPort = xmlblock.getXmlPort(1); // portSuccess -> portOut
+       XmlPortType xmlPort = xmlblock.getXmlPort().get(1); // portSuccess -> portOut
        port = new Port();
        port.setName("portOut");
        port.setConnectedBlockId(xmlPort.getConnectedBlockId()
@@ -1637,11 +1637,11 @@ public class FlowData implements IFlowData,Serializable {
 
 
    private void loadFormTemplates(UserInfoInterface userInfo, XmlFlow aXmlFlow) {
-     XmlFormTemplate[] templates = aXmlFlow.getXmlFormTemplate();
-     if(null == templates || templates.length == 0) return;
+     List<XmlTemplateType> templates = aXmlFlow.getXmlFormTemplate();
+     if(null == templates || templates.size() == 0) return;
      Marshaller<Form> marshaller =  Marshaller.create(Form.class);
 
-     for(XmlFormTemplate xmlFormTemplate : templates) {
+     for(XmlTemplateType xmlFormTemplate : templates) {
        String templateName = xmlFormTemplate.getName();
        try {
          Form template = marshaller.unmarshall(new JSONObject(xmlFormTemplate.getValue()));

@@ -6,42 +6,43 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
-import org.exolab.castor.xml.MarshalException;
-import org.exolab.castor.xml.Marshaller;
-import org.exolab.castor.xml.Unmarshaller;
-import org.exolab.castor.xml.ValidationException;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+
 import org.xml.sax.InputSource;
 
 import pt.iflow.api.xml.codegen.library.XmlLibrary;
 
 public class LibraryMarshaller {
-  
-  public static byte[] marshall(XmlLibrary library) throws MarshalException, ValidationException {
-    ByteArrayOutputStream bout = new ByteArrayOutputStream();
-    try {
-      Writer w = new OutputStreamWriter(bout, "UTF-8");
-      Marshaller.marshal(library, w);
-      w.close();
-    } catch (Exception e) {
-      throw new MarshalException(e);
-    }
 
-    return bout.toByteArray();
-  }
-  
-  public static XmlLibrary unmarshal(byte [] data)
-  throws MarshalException, ValidationException
-  {
-    return unmarshal(new ByteArrayInputStream(data));
-  }
-  
-  public static XmlLibrary unmarshal(InputStream inStream)
-  throws MarshalException, ValidationException
-  {
-    InputSource source = null;
-    source = new InputSource(inStream); // guess encoding from file
-    return (XmlLibrary) Unmarshaller.unmarshal(XmlLibrary.class, source);
-  }
-  
+	public static byte[] marshall(XmlLibrary library) throws JAXBException {
+		ByteArrayOutputStream bout = new ByteArrayOutputStream();
+		try {
+			Writer writer = new OutputStreamWriter(bout, "UTF-8");
+			JAXBContext context = JAXBContext.newInstance(XmlLibrary.class);
+			Marshaller marshaller = context.createMarshaller();
+			marshaller.marshal(library, writer);
+			writer.close();
+		} catch (Exception e) {
+			throw new JAXBException(e);
+		}
+
+		return bout.toByteArray();
+	}
+
+	public static XmlLibrary unmarshal(byte[] data) throws JAXBException {
+		return unmarshal(new ByteArrayInputStream(data));
+	}
+
+	public static XmlLibrary unmarshal(InputStream inStream) throws JAXBException 
+	{
+		InputSource source = null;
+		source = new InputSource(inStream); // guess encoding from file		
+		JAXBContext context = JAXBContext.newInstance(XmlLibrary.class);
+		Unmarshaller unmarshaller = context.createUnmarshaller();
+		return (XmlLibrary) unmarshaller.unmarshal(source);	
+	}
 
 }

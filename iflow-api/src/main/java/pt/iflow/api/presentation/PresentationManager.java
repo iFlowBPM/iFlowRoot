@@ -255,7 +255,7 @@ if(userInfo.isLogged()){
       String sqlQuery;
 
       //Tirar vector com nao permissoes da organiza�ao e dos perfis
-      if (StringUtils.isNumeric(userInfo.getUserId())) {
+      if (userInfo.getUserId() != "" && StringUtils.isNumeric(userInfo.getUserId())) {
         sqlQuery = "SELECT tabid FROM profiles_tabs " 
           + "WHERE profileid in (SELECT profileid FROM userprofiles WHERE userid="+userInfo.getUserId()+") "
           + "UNION SELECT tabid FROM organizations_tabs WHERE organizationid="+userInfo.getOrganization();

@@ -75,10 +75,6 @@
 			<type>jar</type>
 		</dependency>
 		<dependency>
-			<groupId>castor</groupId>
-			<artifactId>castor</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>test</scope>
@@ -147,83 +143,98 @@
 	</dependencies>
 
 	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-xjc-plugin</artifactId>
+				<version>2.7.0</version>
+				<configuration>
+					<extensions>
+						<extension>org.apache.cxf.xjcplugins:cxf-xjc-dv:2.7.0</extension>
+						<extension>net.java.dev.jaxb2-commons:jaxb-fluent-api:2.1.8</extension>
+					</extensions>
+				</configuration>
+				<executions>
+					<execution>
+						<id>generate-sources</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>xsdtojava</goal>
+						</goals>
+						<configuration>
+							<sourceRoot>${basedir}/target/generated-sources/cxf/schemas</sourceRoot>
+							<xsdOptions>						
+								<xsdOption>
+									<extension>true</extension>
+									<xsd>${basedir}/src/main/schemas/processdata.xsd</xsd>
+									<packagename>pt.iflow.api.xml.codegen.processdata</packagename>
+									<bindingFile>${basedir}/src/main/resources/bindings/processdata-bindings.xjb</bindingFile>
+									<extensionArgs>
+                                    	<extensionArg>-Xdv</extensionArg>
+										<extensionArg>-Xfluent-api</extensionArg>
+                                	</extensionArgs>
+								</xsdOption>
+								<xsdOption>
+									<extension>true</extension>
+									<xsd>${basedir}/src/main/schemas/xmlFlow.xsd</xsd>
+									<packagename>pt.iflow.api.xml.codegen.flow</packagename>
+									<bindingFile>${basedir}/src/main/resources/bindings/xmlflow-bindings.xjb</bindingFile>
+									<extensionArgs>
+                                    	<extensionArg>-Xdv</extensionArg>
+										<extensionArg>-Xfluent-api</extensionArg>
+                                	</extensionArgs>
+								</xsdOption>
+								<xsdOption>
+									<extension>true</extension>
+									<xsd>${basedir}/src/main/schemas/xmllibrary.xsd</xsd>
+									<packagename>pt.iflow.api.xml.codegen.library</packagename>
+									<bindingFile>${basedir}/src/main/resources/bindings/xmllibrary-bindings.xjb</bindingFile>
+									<extensionArgs>
+                                    	<extensionArg>-Xdv</extensionArg>
+										<extensionArg>-Xfluent-api</extensionArg>
+                                	</extensionArgs>
+								</xsdOption>
+							</xsdOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+		<pluginManagement>
 			<plugins>
 				<plugin>
-					<artifactId>maven-source-plugin</artifactId>
-					<executions>
-						<execution>
-							<id>attach-sources</id>
-							<goals>
-								<goal>jar</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>castor-maven-plugin</artifactId>
-					<version>1.0</version>
-					<executions>
-						<execution>
-							<goals>
-								<goal>generate</goal>
-							</goals>
-						</execution>
-					</executions>
-					<configuration>
-						<verbose>true</verbose>
-						<lineSeparator>unix</lineSeparator>
-						<schemaDirectory>${basedir}/src/main/schemas</schemaDirectory>
-					</configuration>
-				</plugin>
-				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-jar-plugin</artifactId>
+					<artifactId>maven-compiler-plugin</artifactId>
 					<configuration>
-						<archive>
-							<manifest>
-								<addClasspath>true</addClasspath>
-								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-							</manifest>
-						</archive>
+						<source>1.7</source>
+						<target>1.7</target>
 					</configuration>
 				</plugin>
 			</plugins>
-			<pluginManagement>
-				<plugins>
-					<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-					<plugin>
-						<groupId>org.eclipse.m2e</groupId>
-						<artifactId>lifecycle-mapping</artifactId>
-						<version>1.0.0</version>
-						<configuration>
-							<lifecycleMappingMetadata>
-								<pluginExecutions>
-									<pluginExecution>
-										<pluginExecutionFilter>
-											<groupId>
-												org.codehaus.mojo
-											</groupId>
-											<artifactId>
-												castor-maven-plugin
-											</artifactId>
-											<versionRange>
-												[1.0,)
-											</versionRange>
-											<goals>
-												<goal>generate</goal>
-											</goals>
-										</pluginExecutionFilter>
-										<action>
-											<ignore></ignore>
-										</action>
-									</pluginExecution>
-								</pluginExecutions>
-							</lifecycleMappingMetadata>
-						</configuration>
-					</plugin>
-				</plugins>
-			</pluginManagement>
+		</pluginManagement>
 	</build>
 </project>
 

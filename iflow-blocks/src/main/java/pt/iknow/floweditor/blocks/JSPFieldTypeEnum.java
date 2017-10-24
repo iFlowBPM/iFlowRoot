@@ -41,17 +41,10 @@ public enum JSPFieldTypeEnum {
   FIELD_TYPE_RICH_TEXT_AREA(31, "JSPFieldData.fieldtype.richtextarea", "JSPFieldData.tootltip.richtextarea", "JSPRichTextAreaData", "pt.iflow.blocks.form.RichTextArea"),
   FIELD_TYPE_BUTTON(32, "JSPFieldData.fieldtype.button", "JSPFieldData.tootltip.button", "JSPButtonData", "pt.iflow.blocks.form.Button"),
   FIELD_TYPE_SUB_FLOW_FORM_FIELD(33, "JSPFieldData.fieldtype.popupformfield", "JSPFieldData.tootltip.popupformfield", "JSPPopupFormFieldData", "pt.iflow.blocks.form.PopupFormField", true),
-  
   FIELD_TYPE_MENU_DIVISION(34, "JSPFieldData.fieldtype.menu.container.start", "JSPFieldData.fieldtype.menu.container.start", "JSPMenuDivision", "pt.iflow.blocks.form.MenuDivision"),
   FIELD_TYPE_MENU(35, "JSPFieldData.fieldtype.menu.start", "JSPFieldData.fieldtype.menu.start", "JSPMenuEntry", "pt.iflow.blocks.form.MenuEntry"),
   FIELD_TYPE_MENUEND_DIVISION(36, "JSPFieldData.fieldtype.menu.container.end", "JSPFieldData.fieldtype.menu.container.end", "JSPMenuEndDivision", "pt.iflow.blocks.form.MenuEndDivision"),
-  FIELD_TYPE_FORM_TEMPLATE(
-      37, "JSPFieldData.fieldtype.formtemplate", "JSPFieldData.tootltip.formtemplate", "JSPFormTemplate",
-      "pt.iflow.blocks.form.FormTemplate"),
-  FIELD_TYPE_DOCUMENT_PREVIEW(
-	      38, "JSPFieldData.fieldtype.documentpreview", "JSPFieldData.tootltip.documentpreview", "JSPDocumentPreview",
-	      "pt.iflow.blocks.form.DocumentPreview"),
-  FIELD_TYPE_RADIOBUTTON(39, "JSPFieldData.fieldtype.radiobutton", "JSPFieldData.tootltip.radiobutton", "JSPRadioButton", "pt.iflow.blocks.form.RadioButton", true),
+  FIELD_TYPE_FORM_TEMPLATE(37, "JSPFieldData.fieldtype.formtemplate", "JSPFieldData.tootltip.formtemplate", "JSPFormTemplate","pt.iflow.blocks.form.FormTemplate"),
   ;
 
   private final int code;

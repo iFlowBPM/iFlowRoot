@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-	<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by jmv (.) -->
-<XmlLibrary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:noNamespaceSchemaLocation="library.xsd">
+<XmlLibrary xmlns="http://www.iflow.pt/Library" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://www.iflow.pt/Library ../schemas/xmllibrary.xsd">
 	<name>Profiles</name>
 	<version>1.0</version>
 	<author>iKnow</author>

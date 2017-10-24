@@ -2,15 +2,28 @@ package pt.iknow.floweditor;
 
 import java.util.Locale;
 
-public class UserCacheEntry {
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "user-cache-entry")
+public class UserCacheEntry 
+{
   private static String defaultLang = "";
   static {
     Locale l = Locale.getDefault();
     defaultLang = l.getLanguage()+"_"+l.getCountry();
   }
   
+  @XmlElement( name="icons-hash")
   String iconsHash = "";
+  
+  @XmlElement( name="libraries-hash")
   String librariesHash = "";
+  
+  @XmlElement( name="language")
   String language = defaultLang;
 
   public String getIconsHash() {
