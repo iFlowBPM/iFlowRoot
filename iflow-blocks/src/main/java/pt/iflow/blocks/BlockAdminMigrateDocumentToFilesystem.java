@@ -172,20 +172,17 @@ public class BlockAdminMigrateDocumentToFilesystem extends Block {
 	@Override
 	public String getDescription(UserInfoInterface userInfo,
 			ProcessData procData) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.getDesc(userInfo, procData, true, "AdminMigrateDocumentToFilesystem");
 	}
 
 	@Override
 	public String getResult(UserInfoInterface userInfo, ProcessData procData) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.getDesc(userInfo, procData, false, "AdminMigrateDocumentToFilesystem Efectuada");
 	}
 
 	@Override
 	public String getUrl(UserInfoInterface userInfo, ProcessData procData) {
-		// TODO Auto-generated method stub
-		return null;
+		return "";
 	}
 
 }
