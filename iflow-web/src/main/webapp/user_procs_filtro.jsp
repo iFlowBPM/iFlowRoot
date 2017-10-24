@@ -3,9 +3,9 @@
 %><%@ taglib uri="http://www.iknow.pt/jsp/jstl/iflow" prefix="if" 
 %><%@ page import="org.apache.commons.collections15.map.ListOrderedMap"
 %><%@ page import="org.apache.commons.collections15.OrderedMap"
-%><%@ include file = "inc/defs.jsp"
+%><%@ include file = "inc/defs.jsp"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-%><%
+<%
 int ITEMS_PAGE = 20;
 
 String stmp = null;
