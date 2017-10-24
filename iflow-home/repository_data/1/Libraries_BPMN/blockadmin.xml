@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<XmlLibrary xmlns="http://www.iflow.pt/Library" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xsi:schemaLocation="http://www.iflow.pt/Library ../schemas/xmllibrary.xsd">
+<XmlLibrary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="library.xsd">
   <name>Administration</name>
   <version>1.0</version>
   <author>iKnow</author>
@@ -113,10 +112,25 @@
     <i18n>library.administration.block.undo_process.name</i18n>
   </XmlBlock>
   <XmlBlock>
-    <class>BlockAdminMigrateDocument</class>
+    <class>BlockAdminMigrateDocumentToFilesystem</class>
     <XmlAttribute>
-        <name>docid</name>
-        <description>docid</description>
+        <name>batchSize</name>
+        <description>batch size</description>
+        <value />
+    </XmlAttribute>
+    <XmlAttribute>
+        <name>batchLimit</name>
+        <description>batch limit</description>
+        <value />
+    </XmlAttribute>
+    <XmlAttribute>
+        <name>timeLimit</name>
+        <description>time limit</description>
+        <value />
+    </XmlAttribute>
+    <XmlAttribute>
+        <name>startDocId</name>
+        <description>start docid </description>
         <value />
     </XmlAttribute>
       <XmlPort>
