@@ -142,7 +142,7 @@ public class SubFlowDataExpander {
           // if subflow has no content bypass it by converting to copy block
           if (subFlow == null && subFlowData.getSubFlowName() == null) {
             subFlowData.getPrimaryBlock().setType(BLOCK_COPY_TYPE);
-            subFlowData.getPrimaryBlock().getXmlPort().get(0).setName(PORT_OUT_COPY);
+            subFlowData.getPrimaryBlock().getXmlPort().get(1).setName(PORT_OUT_COPY);
             break;
           }
           Logger.debug(userInfo.getUtilizador(), this, "expandSubFlow", "starting on Sub Flow: " + subFlow.getName());          
@@ -428,7 +428,7 @@ public class SubFlowDataExpander {
       for (XmlBlockType block : xmlFlow.getXmlBlock()){
         //if(block.getId()==subFlowBlock.getXmlPort(0).getConnectedBlockId()){ // é bloco que liga ao subFluxo
           for (XmlPortType port : block.getXmlPort())
-            if (port.getConnectedBlockId() == subFlowBlock.getId())
+            if (port.getConnectedBlockId().equals(subFlowBlock.getId()))
               port.setConnectedBlockId(rawSubFlow.get(0).getId());
         //}
       }
@@ -437,7 +437,7 @@ public class SubFlowDataExpander {
     if (SubFlowDataSuportClass.SUBFLOW_BLOCK == subFlowData.getTypeOfSubFlowImplementation()){
       // 3.Add blocks to main flow ("Link's" the last block of sub flow to the block conected to the subflowBlock from main flow)
       for (XmlBlockType block : xmlFlow.getXmlBlock()){
-        if(block.getId()==subFlowBlock.getXmlPort().get(1).getConnectedBlockId()){
+        if(block.getId().equals(subFlowBlock.getXmlPort().get(1).getConnectedBlockId())){
           block.getXmlPort().get(0).setConnectedBlockId(blockEnd.getId());
           block.getXmlPort().get(0).setConnectedPortName("portOut");
         }
@@ -448,7 +448,7 @@ public class SubFlowDataExpander {
 
     // ADDs MAIN FLOW
     for (XmlBlockType block : xmlFlow.getXmlBlock()){
-      if(block.getId()!=subFlowBlock.getId() 
+      if(!block.getId().equals(subFlowBlock.getId()) 
           || SubFlowDataSuportClass.POPUP_FORM_BLOCK == subFlowData.getTypeOfSubFlowImplementation()){
         newMainFlow.add(block);
       }
