@@ -428,7 +428,7 @@ public class SubFlowDataExpander {
       for (XmlBlockType block : xmlFlow.getXmlBlock()){
         //if(block.getId()==subFlowBlock.getXmlPort(0).getConnectedBlockId()){ // é bloco que liga ao subFluxo
           for (XmlPortType port : block.getXmlPort())
-            if (port.getConnectedBlockId().equals(subFlowBlock.getId()))
+            if (port.getConnectedBlockId() !=null && port.getConnectedBlockId().equals(subFlowBlock.getId()))
               port.setConnectedBlockId(rawSubFlow.get(0).getId());
         //}
       }

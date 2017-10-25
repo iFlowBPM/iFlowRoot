@@ -277,7 +277,7 @@
 					<groupId>org.eclipse</groupId>
 					<artifactId>swt</artifactId>
 					<version>3.4.1</version>
-					<classifier>gtk-linux-x86</classifier>
+					<classifier>gtk-linux-x86_64</classifier>
 					<scope>provided</scope>
 				</dependency>
 				<dependency>
@@ -371,7 +371,7 @@
 					<groupId>org.eclipse</groupId>
 					<artifactId>swt</artifactId>
 					<version>3.4.1</version>
-					<classifier>gtk-linux-x86</classifier>
+					<classifier>gtk-linux-x86_64</classifier>
 					<scope>provided</scope>
 				</dependency>
 				<dependency>

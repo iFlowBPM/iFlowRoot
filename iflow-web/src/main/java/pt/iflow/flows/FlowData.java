@@ -381,16 +381,20 @@ public class FlowData implements IFlowData,Serializable {
            Logger.debug(null, this, "constructor", "Processing port "
                + xmlPort.getName());
 
-           Port port = new Port();
-           port.setName(xmlPort.getName());
-           port.setConnectedBlockId(xmlPort.getConnectedBlockId()
-               + offset);
-           port.setConnectedPortName(xmlPort.getConnectedPortName());
            if (xmlPort.getName().equals("portEvent"))
-             bBlock.setHasEvent(true);
+               bBlock.setHasEvent(true);
+           
+           if( xmlPort.getConnectedBlockId() != null )
+           {
+        	   Port port = new Port();
+               port.setName(xmlPort.getName());
+               port.setConnectedBlockId(xmlPort.getConnectedBlockId()
+                   + offset);
+               port.setConnectedPortName(xmlPort.getConnectedPortName());
+               Field fPort = blockClass.getField(xmlPort.getName());
+               fPort.set(bBlock, port);
+           }
 
-           Field fPort = blockClass.getField(xmlPort.getName());
-           fPort.set(bBlock, port);
          }
        } catch (Exception e) {
          throw new Exception("Erro ao criar porto " + xmlPort.getName()

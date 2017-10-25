@@ -42,7 +42,7 @@
 		<dependencySet>
 			<outputDirectory>lib</outputDirectory>
 			<includes>
-				<include>org.eclipse:swt:jar:gtk-linux-x86</include>
+				<include>org.eclipse:swt:jar:gtk-linux-x86_64</include>
 			</includes>
 			<scope>provided</scope>
 			<unpack>false</unpack>
@@ -65,7 +65,7 @@
 		<dependencySet>
 			<outputDirectory>binlib</outputDirectory>
 			<includes>
-				<include>org.eclipse:swt:jar:gtk-linux-x86</include>
+				<include>org.eclipse:swt:jar:gtk-linux-x86_64</include>
 			</includes>
 			<scope>provided</scope>
 			<unpack>true</unpack>
