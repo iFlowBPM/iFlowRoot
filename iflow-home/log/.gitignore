@@ -1,7 +1,1 @@
-/iflow_admin.log
-/iflow_trace.log
-/iflow.log
-/iflow_admin.log.2
-/iflow_admin.log.3
-/iflow_trace.log.1
-/iflow_trace.log.2
+*.log
