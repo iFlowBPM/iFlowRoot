@@ -123,7 +123,7 @@ public class Logger {
     String clean = sMessage.replace( '\n', '_' ).replace( '\r', '_' );
     
     
-    clean = sMessage;//ESAPI.encoder().encodeForHTML(sMessage);
+    clean = ESAPI.encoder().encodeForHTML(sMessage);
     if (!sMessage.equals(clean)) {
         clean += " (Encoded)";
     }
