@@ -53,11 +53,13 @@
 			<groupId>pt.uniksystem.iflow-applet</groupId>
 			<artifactId>unikjson</artifactId>
 			<version>1</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>pt.uniksystem.iflow-applet</groupId>
 			<artifactId>unikwebclient</artifactId>
 			<version>1</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<!-- OEM -->
