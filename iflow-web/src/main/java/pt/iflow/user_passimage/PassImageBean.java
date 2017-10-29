@@ -198,8 +198,8 @@ public class PassImageBean implements PassImage {
           InputStream is = new ByteArrayInputStream(imgBytes);	      
           ObjectInputStream ois = new ObjectInputStream(is);  
 
-          Object ob = ois.readObject();
-          javax.swing.ImageIcon imageVersion = (javax.swing.ImageIcon)(ob);
+          ImageIconObject ob = new ImageIconObject(ois.readObject());
+          javax.swing.ImageIcon imageVersion = (javax.swing.ImageIcon)(ob.getImage());
 
           //javax.swing.ImageIcon imageVersion = (javax.swing.ImageIcon)(ois.readObject());
           ois.close();
