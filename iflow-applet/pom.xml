@@ -49,6 +49,17 @@
 			</exclusions>
 		</dependency>
 
+		<dependency>
+			<groupId>pt.uniksystem.iflow-applet</groupId>
+			<artifactId>unikjson</artifactId>
+			<version>1</version>
+		</dependency>
+		<dependency>
+			<groupId>pt.uniksystem.iflow-applet</groupId>
+			<artifactId>unikwebclient</artifactId>
+			<version>1</version>
+		</dependency>
+
 		<!-- OEM -->
 		<dependency>
 			<groupId>uk.co.mmscomputing</groupId>

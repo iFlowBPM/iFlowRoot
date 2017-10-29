@@ -1,0 +1,2 @@
+mvn install:install-file -Dfile=unikjson-1.jar -DgroupId=pt.uniksystem.iflow-applet -DartifactId=unikjson -Dversion=1 -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=unikwebclient-1.jar -DgroupId=pt.uniksystem.iflow-applet -DartifactId=unikwebclient -Dversion=1 -Dpackaging=jar -DgeneratePom=true
