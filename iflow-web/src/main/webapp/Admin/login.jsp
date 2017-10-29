@@ -153,7 +153,7 @@ String maintenance = Const.isInMaintenance() ? "maintenance" : "";
 					<if:message string="admin.error.license"/>
 					<% } %>
 	</div>
-    <input type="text" name="login" id="login" value="${login}" class="form-control" placeholder="<if:message string="login.field.user"/>" required autofocus>
+    <input type="text" name="login" id="login" value="${fn:escapeXml(login)}" class="form-control" placeholder="<if:message string="login.field.user"/>" required autofocus>
 	<div class="user_info lp_field_label">
 					<span id="capsWarn" class="error_msg" style="display:none">Caps&nbsp;ON&nbsp;</span>&nbsp;
 				</div>

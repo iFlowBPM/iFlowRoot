@@ -22,6 +22,8 @@ import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringUtils;
 
+import java.sql.PreparedStatement;
+
 import pt.iflow.api.core.BeanFactory;
 import pt.iflow.api.core.Repository;
 import pt.iflow.api.core.RepositoryFile;
@@ -30,7 +32,6 @@ import pt.iflow.api.flows.FlowSetting;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.ServletUtils;
-import pt.iflow.api.utils.UserInfoFactory;
 import pt.iflow.api.utils.UserInfoInterface;
 import pt.iflow.api.utils.Utils;
 import pt.iknow.utils.VelocityUtils;
@@ -238,62 +239,69 @@ if(userInfo.isLogged()){
     }
     return sHtml;
   }
-//------------------------------------------ TIRAR DA BD ARRAY IDs TABS SEM PERMISSAO
-  public static int[] tabsRejeitadas( UserInfoInterface userInfo )
-  {   
-    int [] ids = new int [0];
+  
+  
+  // Corrigido para PreparedStatement
+  
+  public static int[] tabsRejeitadas(UserInfoInterface userInfo)
+  {
+    int[] ids = new int[0];
     int i = 0;
     int tam = 0;
     DataSource ds = Utils.getDataSource();
     Connection db = null;
-    Statement st = null;
+    PreparedStatement st = null;
     ResultSet rs = null;
-    try {
+    try
+    {
       db = ds.getConnection();
-      st = db.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-      
-      String sqlQuery;
-
-      //Tirar vector com nao permissoes da organiza�ao e dos perfis
-      if (userInfo.getUserId() != "" && StringUtils.isNumeric(userInfo.getUserId())) {
-        sqlQuery = "SELECT tabid FROM profiles_tabs " 
-          + "WHERE profileid in (SELECT profileid FROM userprofiles WHERE userid="+userInfo.getUserId()+") "
-          + "UNION SELECT tabid FROM organizations_tabs WHERE organizationid="+userInfo.getOrganization();
-      } else {
+      if (StringUtils.isNumeric(userInfo.getUserId()))
+      {
+        String sqlQuery = "SELECT tabid FROM profiles_tabs WHERE profileid in (SELECT profileid FROM userprofiles WHERE userid=?) UNION SELECT tabid FROM organizations_tabs WHERE organizationid=?";
+        st = db.prepareStatement(sqlQuery);
+        st.setString(1, userInfo.getUserId());
+        st.setString(2, userInfo.getOrganization());
+      }
+      else
+      {
         StringBuilder sbProfiles = new StringBuilder();
         String aux = "('";
-        for (String profile : userInfo.getProfiles()) {
+        for (String profile : userInfo.getProfiles())
+        {
           sbProfiles.append(aux);
           sbProfiles.append(profile);
           aux = "', '";
         }
         sbProfiles.append("'))");
-        sqlQuery = "SELECT tabid FROM profiles_tabs" 
-          + " WHERE profileid in (SELECT profileid FROM profiles WHERE name in " + sbProfiles.toString()
-          + " UNION SELECT tabid FROM organizations_tabs WHERE organizationid=" + userInfo.getOrganization();
-      }
-      
-      rs = st.executeQuery(sqlQuery);
+        
+        String sqlQuery = "SELECT tabid FROM profiles_tabs WHERE profileid in (SELECT profileid FROM profiles WHERE name in ? UNION SELECT tabid FROM organizations_tabs WHERE organizationid=?";
+        
 
-   //Inicializar array com numero de tabs
-   while (rs.next()) tam++;
-   rs.beforeFirst();  
-   ids = new int[tam];
-    
-      //Preencher array com IDs das tabs
-      while (rs.next()){
-      ids[i] = rs.getInt(1);
-      i++;
-      }     
+        st = db.prepareStatement(sqlQuery);
+        st.setString(1, sbProfiles.toString());
+        st.setString(2, userInfo.getOrganization());
+      }
+      rs = st.executeQuery();
+      while (rs.next()) {
+        tam++;
+      }
+      rs.beforeFirst();
+      ids = new int[tam];
+      while (rs.next())
+      {
+        ids[i] = rs.getInt(1);
+        i++;
+      }
       rs.close();
     }
-    catch (SQLException sqle) {
+    catch (SQLException sqle)
+    {
       sqle.printStackTrace();
     }
-    finally {
-      DatabaseInterface.closeResources(db, st, rs);
-    }   
+    finally
+    {
+      DatabaseInterface.closeResources(new Object[] { db, st, rs });
+    }
     return ids;
   }
-//------------------------------------------ FIM
 }

@@ -1,6 +1,7 @@
 package pt.iflow.processannotation;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -50,28 +51,28 @@ public class ProcessAnnotationManagerBean implements ProcessAnnotationManager {
     try {
       db = DatabaseInterface.getConnection(userInfo);
       st = db.createStatement();      
-      query = "insert into process_label (labelid, flowid, pid, subpid) values ";         
-
+      query = "insert into process_label (labelid, flowid, pid, subpid) values (?,?,?,?)";         
+       
       for(int i = 0; i < label.length; i++){
-        if(i != label.length-1)
-          query += "('"+label[i]+"','"+flowid+"','"+pid+"','"+subpid+"') , ";
-        else
-          query += "('"+label[i]+"','"+flowid+"','"+pid+"','"+subpid+"') ";
+    	  PreparedStatement stmt = db.prepareStatement(query);
+    	  stmt.setString(1, label[i]); stmt.setString(2, ""+flowid); stmt.setString(3, ""+pid);  stmt.setString(4, ""+subpid);
+    	  stmt.execute();
+    	  stmt.close();    	  
       }
-      st.execute(query);
-      st.close();
+      
+      
 
       if(saveHistory){
         st = db.createStatement();      
-        query = "insert into process_label_history (labelid, flowid, pid, subpid, userid, date) values ";         
-
+        query = "insert into process_label_history (labelid, flowid, pid, subpid, userid, date) values (?,?,?,?,?,?)";         
+        
         for(int i = 0; i < label.length; i++){
-          if(i != label.length-1)
-            query += "('"+label[i]+"','"+flowid+"','"+pid+"','"+subpid+"','"+userInfo.getUtilizador()+"','"+datenow+"') , ";
-          else
-            query += "('"+label[i]+"','"+flowid+"','"+pid+"','"+subpid+"','"+userInfo.getUtilizador()+"','"+datenow+"') ";
+        	PreparedStatement stmt = db.prepareStatement(query);
+        	stmt.setString(1, label[i]); stmt.setString(2, ""+flowid); stmt.setString(3, ""+pid);  stmt.setString(4, ""+subpid); stmt.setString(5, userInfo.getUtilizador()); stmt.setString(6, datenow);
+        	stmt.execute();
+      	  	stmt.close();            
         }
-        st.execute(query);
+        
         st.close();
       }
     } catch (SQLException sqle) {
@@ -88,15 +89,15 @@ public class ProcessAnnotationManagerBean implements ProcessAnnotationManager {
     try {
       db = DatabaseInterface.getConnection(userInfo);
       st = db.createStatement();
-      query = "delete from process_label where ";
+      query = "delete from process_label where labelid=? and flowid=? and pid=? and subpid=?";
 
       for(int i = 0; i < label.length; i++){
-        if(i != label.length-1)
-          query += " labelid="+label[i]+" and flowid="+flowid+" and pid="+pid+" and subpid="+subpid+" or";
-        else
-          query += " labelid="+label[i]+" and flowid="+flowid+" and pid="+pid+" and subpid="+subpid;
+    	  PreparedStatement stmt = db.prepareStatement(query);
+    	  stmt.setString(1, label[i]); stmt.setString(2, ""+flowid); stmt.setString(3, ""+pid); stmt.setString(4, ""+subpid);
+          stmt.execute();
+          stmt.close();
       }  
-      st.executeUpdate(query);            
+      st.close();            
     } catch (SQLException sqle) {
       Logger.error(userInfo.getUtilizador(), this, "removeLabel","caught sql exception: " + sqle.getMessage(), sqle);
     } finally {
@@ -216,21 +217,21 @@ public class ProcessAnnotationManagerBean implements ProcessAnnotationManager {
     try {
       db = DatabaseInterface.getConnection(userInfo);
       st = db.createStatement();
-      query = "Update deadline set deadline='"+ deadline+"', userid='"+userInfo.getUtilizador()+"' where flowid='"+flowid+"' and pid='"+pid+"' and subpid='"+subpid+"'";
-      rows = st.executeUpdate(query);
-
+      query = "Update deadline set deadline=?, userid=? where flowid=? and pid=? and subpid=?";
+      PreparedStatement stmt = db.prepareStatement(query); stmt.setString(1, deadline); stmt.setString(2, userInfo.getUtilizador()); stmt.setString(3, ""+flowid); stmt.setString(4, ""+pid); stmt.setString(5, ""+subpid); 
+      rows = stmt.executeUpdate(); stmt.close();
       if(rows <= 0){
-        st.close();         
-        st = db.createStatement();
-        query = "insert into deadline (deadline, userid, flowid, pid, subpid) values ('"+ deadline+"','"+userInfo.getUtilizador()+"','"+flowid+"','"+pid+"','"+subpid+"')";
-        st.executeUpdate(query);
+    	  query = "insert into deadline (deadline, userid, flowid, pid, subpid) values (?,?,?,?,?)";         
+    	  stmt = db.prepareStatement(query);
+    	  stmt.setString(1, deadline); stmt.setString(2, userInfo.getUtilizador()); stmt.setString(3, ""+flowid); stmt.setString(4, ""+pid); stmt.setString(5, ""+subpid);
+    	  stmt.execute(); stmt.close();
       }
-
       st.close();
       if(saveHistory){
-        st = db.createStatement();
-        query = "insert into deadline_history (deadline, flowid, pid, subpid, userid, date) values ('"+deadline+"','"+flowid+"','"+pid+"','"+subpid+"','"+userInfo.getUtilizador()+"','"+datenow+"')";
-        st.execute(query);
+    	  query = "insert into deadline_history (deadline, flowid, pid, subpid, userid, date) values (?,?,?,?,?,?)";
+    	  stmt = db.prepareStatement(query);
+    	  stmt.setString(1, deadline); stmt.setString(2, ""+flowid); stmt.setString(3, ""+pid); stmt.setString(4, ""+subpid); stmt.setString(5, userInfo.getUtilizador()); stmt.setString(6, datenow);
+    	  stmt.execute();stmt.close();
       }
     } catch (SQLException sqle) {
       Logger.error(userInfo.getUtilizador(), this, "addDeadline","caught sql exception: " + sqle.getMessage(), sqle);
@@ -315,24 +316,25 @@ public class ProcessAnnotationManagerBean implements ProcessAnnotationManager {
 
     try {
       db = DatabaseInterface.getConnection(userInfo);
-      st = db.createStatement();
-      query = "Update comment set date='"+ datenow+"', userid='"+userInfo.getUtilizador()+"', comment='"+comment+"' where flowid='"+flowid+"' and pid='"+pid+"' and subpid='"+subpid+"'";
-      rows = st.executeUpdate(query);
+      query = "Update comment set date=?, userid=?, comment=? where flowid=? and pid=? and subpid=?";
+      PreparedStatement stmt = db.prepareStatement(query); 
+      stmt.setString(1, datenow); stmt.setString(2, userInfo.getUtilizador()); stmt.setString(3, comment); stmt.setString(4, ""+flowid); stmt.setString(5, ""+pid); stmt.setString(6, ""+subpid);
+      rows = stmt.executeUpdate(); stmt.close();
 
       if(rows <= 0){
-        st.close();         
-        st = db.createStatement();
-        query = "insert into comment (date, userid, comment, flowid, pid, subpid) values ";         
-        query += "('"+datenow+"','"+userInfo.getUtilizador()+"','"+comment+"','"+flowid+"','"+pid+"','"+subpid+"')"; 
-        st.executeUpdate(query);
+                 
+        query = "insert into comment (date, userid, comment, flowid, pid, subpid) values (?,?,?,?,?,?)";
+        stmt = db.prepareStatement(query);
+        stmt.setString(1, datenow); stmt.setString(2, userInfo.getUtilizador()); stmt.setString(3, comment); stmt.setString(4, ""+flowid); stmt.setString(5, ""+pid); stmt.setString(6, ""+subpid);
+        stmt.execute(); stmt.close();
       }
 
-      st.close(); 
+       
       if(saveHistory){
-        st = db.createStatement();
-        query = "insert into comment_history (comment, flowid, pid, subpid, userid, date) values ";         
-        query += "('"+comment+"','"+flowid+"','"+pid+"','"+subpid+"','"+userInfo.getUtilizador()+"','"+datenow+"')"; 
-        st.executeUpdate(query);
+    	  query = "insert into comment_history (date, userid, comment, flowid, pid, subpid) values (?,?,?,?,?,?)";
+    	  stmt = db.prepareStatement(query);       
+    	  stmt.setString(1, datenow); stmt.setString(2, userInfo.getUtilizador()); stmt.setString(3, comment); stmt.setString(4, ""+flowid); stmt.setString(5, ""+pid); stmt.setString(6, ""+subpid);
+    	  stmt.execute();stmt.close();
       }
     } catch (SQLException sqle) {
       Logger.error(userInfo.getUtilizador(), this, "addComment","caught sql exception: " + sqle.getMessage(), sqle);

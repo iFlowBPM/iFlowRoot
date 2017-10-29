@@ -50,31 +50,31 @@
 				<td>${fn:escapeXml(file.getName())}</td>
 				<td class="itemlist_icon">
 					<% if(RepositoryEditor.checkFileMIME(userInfo, file.getName(), new String[] {"text", "application/octet-stream"}, new String[] {".pdf"})) { %>
-					  <a href="<c:url value="Admin/Resources/edit_form.jsp" ><c:param name="file" value='<%=file.getName() %>'></c:param><c:param name="type" value="${param.type}"></c:param></c:url>" onclick="javascript:tabber_right(4,this.href,'');return false;">
+					  <a href="<c:url value="Admin/Resources/edit_form.jsp" ><c:param name="file" value='<%=file.getName() %>'></c:param><c:param name="type" value="${fn:escapeXml(param.type)}"></c:param></c:url>" onclick="javascript:tabber_right(4,this.href,'');return false;">
 						<img class="toolTipImg" src="images/icon_modify.png" width="16" height="16" border="0" title="<if:message string="resources.table.tooltip.edit"></if:message>" alt="<if:message string="resources.table.list.modify"></if:message>">
 					  </a>
 		  			<% } %>
 				</td>
 				<td class="itemlist_icon">
-					<a href="<c:url value="Admin/Resources/uploadform.jsp" ><c:param name="file" value='<%=file.getName() %>'></c:param><c:param name="type" value="${param.type}"></c:param></c:url>" onclick="javascript:tabber_right(4,this.href,'');return false;">
+					<a href="<c:url value="Admin/Resources/uploadform.jsp" ><c:param name="file" value='<%=file.getName() %>'></c:param><c:param name="type" value="${fn:escapeXml(param.type)}"></c:param></c:url>" onclick="javascript:tabber_right(4,this.href,'');return false;">
 						<img class="toolTipImg" src="images/icon_resync.png" width="16" height="16" border="0" title="<if:message string="resources.table.tooltip.modify"></if:message>" alt="<if:message string="resources.table.list.modify"></if:message>">
 					</a>
 				</td>
 				<td class="itemlist_icon">
-				<a href="<c:url value="download.rep" ><c:param name="file" value='<%=file.getName() %>'></c:param><c:param name="type" value="${param.type}"></c:param></c:url>">
+				<a href="<c:url value="download.rep" ><c:param name="file" value='<%=file.getName() %>'></c:param><c:param name="type" value="${fn:escapeXml(param.type)}"></c:param></c:url>">
 					<img class="toolTipImg" src="images/icon_download.png" width="16" height="16" border="0" title="<if:message string="resources.table.tooltip.download"></if:message>" alt="<if:message string="resources.table.list.download"></if:message>">
 				</a>
 				</td>
 				<td class="itemlist_icon">
 					<% if(file.isSystem() && file.isOrganization() && !userInfo.isSysAdmin()) { %>
-						<a href="<c:url value="reset.rep" ><c:param name="file" value='<%=file.getName() %>'></c:param><c:param name="type" value="${param.type}"></c:param></c:url>" onclick="javascript:tabber_right(4,this.href,'');return false;">
+						<a href="<c:url value="reset.rep" ><c:param name="file" value='<%=file.getName() %>'></c:param><c:param name="type" value="${fn:escapeXml(param.type)}"></c:param></c:url>" onclick="javascript:tabber_right(4,this.href,'');return false;">
 							<img class="toolTipImg" src="images/icon_reset.png" width="16" height="16" border="0" title="<if:message string="resources.table.tooltip.reset"></if:message>" alt="<if:message string="resources.table.list.reset"></if:message>">
 						</a>
 		  			<% } %>
 				</td>
 				<td class="itemlist_icon">
 					<% if(file.isOrganization()) { %>
-						<a href="<c:url value="delete.rep" ><c:param name="file" value='<%=file.getName() %>'></c:param><c:param name="type" value="${param.type}"></c:param></c:url>" onclick="javascript:tabber_right(4,this.href,'');return false;">
+						<a href="<c:url value="delete.rep" ><c:param name="file" value='<%=file.getName() %>'></c:param><c:param name="type" value="${fn:escapeXml(param.type)}"></c:param></c:url>" onclick="javascript:tabber_right(4,this.href,'');return false;">
 							<img class="toolTipImg" src="images/icon_delete.png" width="16" height="16" border="0" title="<if:message string="resources.table.tooltip.delete"></if:message>" alt="<if:message string="resources.table.list.delete"></if:message>">
 						</a>
 		  			<% } %>
@@ -86,6 +86,6 @@
 <% } %>
 
 <div class="button_box">
-   	<input class="regular_button_02" type="button" name="add" value="<if:message string="button.add"></if:message>" onClick="javascript:tabber_right(4, '<c:url value="Admin/Resources/uploadform.jsp"></c:url>','type=${param.type}');"></input>
+   	<input class="regular_button_02" type="button" name="add" value="Adicionar" onClick="javascript:tabber_right(4, '<c:url value="Admin/Resources/uploadform.jsp"></c:url>','type=${param.type}');"></input>
 	<if:generateHelpBox context="dolist"/>
 </div>

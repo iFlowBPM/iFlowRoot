@@ -11,7 +11,7 @@
 
 <div class="upload_box table_inc">
 	<form name="formulario" action="<%=response.encodeURL("Admin/Resources/doupload.jsp")%>" method="POST" enctype="multipart/form-data"
-		onsubmit="javascript:return AIM.submit(this, {'onStart' : getStartUploadCallback(), 'onComplete' : getUploadCompleteCallback('Upload complete', 4, '<%=response.encodeURL("Admin/Resources/dolist.jsp")%>', 'type=${param.type}')})">
+		onsubmit="javascript:return AIM.submit(this, {'onStart' : getStartUploadCallback(), 'onComplete' : getUploadCompleteCallback('Upload complete', 4, '<%=response.encodeURL("Admin/Resources/dolist.jsp")%>', 'type=${fn:escapeXml(param.type)}')})">
 		<input type="hidden" name="type" value="${fn:escapeXml(param.type)}" />
 		<c:if test="${not empty param.file}">
 			<input type="hidden" name="filename" value="${fn:escapeXml(param.file)}" />
@@ -20,7 +20,7 @@
 			<legend></legend>
 			<ol>
 				<c:if test="${not empty param.file}">
-					<li><if:message string="resources.file.label"/>&nbsp;<c:out value="'${fn:escapeXml(param.file)}'"/></li>
+					<li><if:message string="resources.file.label"/>&nbsp;<c:out value="${fn:escapeXml(param.file)}"/></li>
 				</c:if>
 				<li>
 					<label for="file">
@@ -39,7 +39,7 @@
 		</fieldset>
 		
 		<fieldset class="submit"> 
-			<input class="regular_button_01" type="button" name="back" value="<if:message string="button.back"/>" onClick="javascript:tabber_right(4, '<%=response.encodeURL("Admin/Resources/dolist.jsp")%>', 'type=${param.type}');"/>
+			<input class="regular_button_01" type="button" name="back" value="<if:message string="button.back"/>" onClick="javascript:tabber_right(4, '<%=response.encodeURL("Admin/Resources/dolist.jsp")%>', 'type=${fn:escapeXml(param.type)}');"/>
 			<input class="regular_button_01" type="button" name="clear" value="<if:message string="button.clear"/>" onClick="javascript:document.formulario.reset()"/>
 			<input class="regular_button_02" type="submit" name="add" value="<c:choose><c:when test="${not empty param.file}"><if:message string="resources.file.label"/></c:when><c:otherwise><if:message string="button.add"/></c:otherwise></c:choose>"/>
    		</fieldset>

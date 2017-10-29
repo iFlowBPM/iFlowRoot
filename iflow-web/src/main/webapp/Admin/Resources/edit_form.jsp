@@ -29,7 +29,7 @@
 				<c:param name="type" value="${fn:escapeXml(param.type)}" />
 				<c:param name="file" value="${fn:escapeXml(param.file)}" />
 			</c:url>"
-	onsubmit="javascript:return AIM.submit(this, {'onStart' : getStartUploadCallback(), 'onComplete' : getUploadCompleteCallback('Upload complete', 4, '<%=response.encodeURL("Admin/Resources/dolist.jsp")%>', 'type=${param.type}')})">
+	onsubmit="javascript:return AIM.submit(this, {'onStart' : getStartUploadCallback(), 'onComplete' : getUploadCompleteCallback('Upload complete', 4, '<%=response.encodeURL("Admin/Resources/dolist.jsp")%>', 'type=${fn:escapeXml(param.type)}')})">
 	<input type="hidden" name="type" value="${fn:escapeXml(param.type)}" />
 	
 	<c:if test="${not empty param.file}">

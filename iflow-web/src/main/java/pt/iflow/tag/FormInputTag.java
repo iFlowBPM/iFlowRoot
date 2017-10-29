@@ -135,7 +135,9 @@ public class FormInputTag extends IknowTag {
         sb.append("\" id=\"");
         sb.append(asName);
         sb.append("\" value=\"");
-        sb.append("${fn:escapeXml("+asValue+")}");
+        sb.append("<c:out value=\"");
+        sb.append(asValue);
+        sb.append("\" escapeXML=true ");
         if(("text".equals(asType) || "password".equals(asType))&&!StringUtils.isEmpty(maxlength)) {
           sb.append("\" maxlength=\"");
           sb.append(maxlength);

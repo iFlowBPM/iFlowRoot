@@ -121,13 +121,11 @@ public class Logger {
     }
     
     String clean = sMessage.replace( '\n', '_' ).replace( '\r', '_' );
-    
-    
+        
     clean = ESAPI.encoder().encodeForHTML(sMessage);
     if (!sMessage.equals(clean)) {
         clean += " (Encoded)";
     }
-
 
     switch (logLevel) {
     case DEBUG:

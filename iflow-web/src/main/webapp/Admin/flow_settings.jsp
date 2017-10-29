@@ -34,7 +34,7 @@ String deployResult = (String)request.getAttribute("deployResult");
 <% } %>
 <% if (StringUtils.isNotEmpty(deployResult)) { %>
 	<div class="error_msg">
-		<%=deployResult%>
+		
 	</div>
 <% } %>
 	<div class="table_inc">  

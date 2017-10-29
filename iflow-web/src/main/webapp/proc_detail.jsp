@@ -158,7 +158,7 @@ if (window.print) window.print();
   	<meta http-equiv="Pragma" content="no-cache"/>
     </head>
   <body>
-  <div><%=t.getMessage()%></div>
+ 
   <div>
   <form action="proc_detail.jsp" method="get" name="dados">
   <input type="hidden" value="3" name="op">

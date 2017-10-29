@@ -5,6 +5,7 @@
 <%@page import="java.util.Date" %>
 <%@page import="pt.iflow.api.filters.FlowFilter"%>
 <%@ page import = "pt.iflow.chart.AuditChartServlet" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <script type="text/javascript" src="../javascript/iflow_main.js"></script>
 <iframe onload="calcFrameHeight('open_proc_frame_report');" name="open_proc_frame_report" id="open_proc_frame_report" scrolling="auto" height="100%" width="100%" frameborder="0" src="" class="open_proc_frame_colapsed" style="display:block;">
   your browser does not support iframes or they are disabled at this time
@@ -19,5 +20,5 @@
 	}
 %>
 <script language="JavaScript" type="text/javascript">
-	open_process_report_exec('/iFlow/inicio_flow.jsp', '<%=params.toString()%>');
+	open_process_report_exec('/iFlow/inicio_flow.jsp', '${fn:escapeXml(params.toString())}');
 </script>

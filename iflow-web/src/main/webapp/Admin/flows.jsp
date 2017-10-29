@@ -191,7 +191,7 @@ sbHtmlSub.append("</select>");
 
 <% if (sbError.length() > 0) { %>
       <div class="error_msg">
-        <%=sbError.toString()%>
+     
 	  </div>
 <% } %>
 
