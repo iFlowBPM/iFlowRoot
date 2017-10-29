@@ -157,7 +157,7 @@ public class AuthWinUserServlet extends javax.servlet.http.HttpServlet implement
   protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
    
     String login = request.getParameter("login");
-    String password = request.getParameter("password");
+    String psd = request.getParameter("password");
     String sDoRedirect = request.getParameter("do_redirect");
     String nextUrl = request.getParameter("url"); 
     String source = request.getParameter("source");
@@ -173,7 +173,7 @@ public class AuthWinUserServlet extends javax.servlet.http.HttpServlet implement
       }
     }
 
-    AuthenticationResult result = authenticate(request, response, login, password, nextUrl);
+    AuthenticationResult result = authenticate(request, response, login, psd, nextUrl);
 
     // keep session in cookie
     Cookie sessionUsername = ServletUtils.newCookie(Const.SESSION_COOKIE_USERNAME, "");
@@ -183,7 +183,7 @@ public class AuthWinUserServlet extends javax.servlet.http.HttpServlet implement
 
     if (result.isAuth && StringUtils.equals(keepSession, "on")) {
       sessionUsername = ServletUtils.newCookie(Const.SESSION_COOKIE_USERNAME, login);
-      sessionPassword = ServletUtils.newCookie(Const.SESSION_COOKIE_PASSWORD, Utils.encrypt(password));
+      sessionPassword = ServletUtils.newCookie(Const.SESSION_COOKIE_PASSWORD, Utils.encrypt(psd));
       response.addCookie(sessionUsername);
       response.addCookie(sessionPassword);
     }

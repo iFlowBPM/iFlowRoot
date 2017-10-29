@@ -149,7 +149,7 @@ public class AuthenticationServlet extends javax.servlet.http.HttpServlet implem
   protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     String login = request.getParameter("login");
-    String password = request.getParameter("password");
+    String ps = request.getParameter("password");
     String sDoRedirect = request.getParameter("do_redirect");
     String nextUrl = request.getParameter("url"); 
     //Fix for stupid ESAPI non causal bug
@@ -174,10 +174,10 @@ public class AuthenticationServlet extends javax.servlet.http.HttpServlet implem
     String challenge = request.getParameter("challenge");
     if(isOverFailureLimit && (kaptcha == null || !kaptcha.equals(challenge))) {
     	login=null;
-    	password=null;
+    	ps=null;
     }
             
-    AuthenticationResult result = authenticate(request, response, login, password, nextUrl);
+    AuthenticationResult result = authenticate(request, response, login, ps, nextUrl);
 
     // keep session in cookie
     Cookie sessionUsername = ServletUtils.newCookie(Const.SESSION_COOKIE_USERNAME, "");
@@ -187,7 +187,7 @@ public class AuthenticationServlet extends javax.servlet.http.HttpServlet implem
 
     if (result.isAuth && StringUtils.equals(keepSession, "on")) {
       sessionUsername = ServletUtils.newCookie(Const.SESSION_COOKIE_USERNAME, login);
-      sessionPassword = ServletUtils.newCookie(Const.SESSION_COOKIE_PASSWORD, Utils.encrypt(password));
+      sessionPassword = ServletUtils.newCookie(Const.SESSION_COOKIE_PASSWORD, Utils.encrypt(ps));
       response.addCookie(sessionUsername);
       response.addCookie(sessionPassword);      
     }    	
