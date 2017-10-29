@@ -27,7 +27,7 @@
 		<module>iflow-editor</module>
 		<module>iflow-fixtures</module>
 		<module>iflow-home</module>
-		<!-- <module>iflow-dist</module>  -->
+		<!-- <module>iflow-dist</module> -->
 		<module>vfs-connector</module>
 	</modules>
 
@@ -56,6 +56,7 @@
 				<groupId>pt.iknow</groupId>
 				<artifactId>iutils</artifactId>
 				<version>2.0.6</version>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>pt.iknow</groupId>
@@ -81,6 +82,7 @@
 				<groupId>com.infosistema</groupId>
 				<artifactId>crypto-api</artifactId>
 				<version>${crypto-api.version}</version> <!-- replicated in iflow-applet -->
+				<scope>provided</scope>
 			</dependency>
 
 			<!-- APP.external -->
@@ -184,11 +186,13 @@
 				<artifactId>log4j</artifactId>
 				<version>1.2.9</version>
 				<type>jar</type>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>axis</groupId>
 				<artifactId>axis</artifactId>
 				<version>1.4</version>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>axis</groupId>
@@ -250,6 +254,7 @@
 				<groupId>commons-collections</groupId>
 				<artifactId>commons-collections</artifactId>
 				<version>3.2.1</version>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.jdom</groupId>
@@ -260,21 +265,25 @@
 				<groupId>net.sourceforge.collections</groupId>
 				<artifactId>collections-generic</artifactId>
 				<version>4.01</version>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>net.sf.ehcache</groupId>
 				<artifactId>ehcache</artifactId>
 				<version>1.5.0</version>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>regexp</groupId>
 				<artifactId>regexp</artifactId>
 				<version>1.3</version>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>rome</groupId>
 				<artifactId>rome</artifactId>
 				<version>0.9</version>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.simontuffs</groupId>
@@ -321,6 +330,7 @@
 				<groupId>org.apache.poi</groupId>
 				<artifactId>poi-ooxml</artifactId>
 				<version>3.11</version>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.poi</groupId>
@@ -371,6 +381,7 @@
 				<groupId>uk.co.mmscomputing</groupId>
 				<artifactId>mmsc</artifactId>
 				<version>2009</version> <!-- replicated in iflow-applet -->
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>bouncycastle</groupId>
@@ -406,6 +417,7 @@
 				<groupId>org.swinglabs</groupId>
 				<artifactId>pdf-renderer</artifactId>
 				<version>20090927</version> <!-- replicated in iflow-applet -->
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.psicover</groupId>
@@ -457,6 +469,71 @@
 				<version>1.1</version>
 				<scope>test</scope>
 			</dependency>
+			<!-- Declare provided dependencies -->
+			<dependency>
+				<groupId>com.sun.jersey</groupId>
+				<artifactId>jersey-core</artifactId>
+				<version>1.17</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.xmlgraphics</groupId>
+				<artifactId>fop</artifactId>
+				<version>1.1</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.glassfish.grizzly</groupId>
+				<artifactId>grizzly-framework</artifactId>
+				<version>2.2.16</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.axis</groupId>
+				<artifactId>axis</artifactId>
+				<version>1.4</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>net.java.dev.glazedlists</groupId>
+				<artifactId>glazedlists_java15</artifactId>
+				<version>1.8.0</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.lowagie</groupId>
+				<artifactId>itext</artifactId>
+				<version>2.1.7</version>
+				<scope>provided</scope>
+			</dependency>	
+			<dependency>
+				<groupId>iknow-local-libs</groupId>
+				<artifactId>swsms</artifactId>
+				<version>2.8.2</version>
+				<scope>provided</scope>
+			</dependency>	
+			<dependency>
+				<groupId>javax.media</groupId>
+				<artifactId>jai_core</artifactId>
+				<version>1.1.2_01</version>
+				<scope>provided</scope>
+			</dependency>	
+			<dependency>
+				<groupId>org.owasp.esapi</groupId>
+				<artifactId>esapi</artifactId>
+				<version>2.1.0</version>
+				<scope>provided</scope>
+			</dependency>	
+			<dependency>
+				<groupId>org.glassfish.grizzly</groupId>
+				<artifactId>grizzly-http-server</artifactId>
+				<version>2.2.16</version>
+				<scope>provided</scope>
+			</dependency>	
+			
+			
+						
+			
 		</dependencies>
 	</dependencyManagement>
 

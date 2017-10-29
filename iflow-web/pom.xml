@@ -226,10 +226,7 @@
 			<groupId>com.twolattes</groupId>
 			<artifactId>json</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>uk.co.mmscomputing</groupId>
-			<artifactId>mmsc</artifactId>
-		</dependency>
+
 		<dependency>
 			<groupId>bouncycastle</groupId>
 			<artifactId>bcprov-jdk14</artifactId>

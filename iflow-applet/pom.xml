@@ -20,7 +20,6 @@
 		<dependency>
 			<groupId>com.infosistema</groupId>
 			<artifactId>crypto-api</artifactId>
-
 			<!-- exclude xml stuff since we will not sign XML (at least for now) -->
 			<exclusions>
 				<exclusion>
