@@ -1,0 +1,33 @@
+2017.10.30
+Fix: Issues Medium: XML External Entity Injection
+
+
+20171029-1
+Bug Fixes
+    Critical: 
+    	JSON Injection
+    	Key Management
+    	Weak Encription
+    High: 
+    	Command Injection
+    	Cross-Site Scripting
+	Dynamic Code Evaluation
+    	Insecure Transport
+    	Server-Sise request Forgery
+    	Sql Injection
+   	Unreleased Resource: Synchronization
+    	XML Injection
+    Medium:
+	Cross-Site Scripting Reflected
+	Log Forging
+	Open Redirect
+	Password Management: Hardcoded Password​​
+	Weak Encryption​
+
+Known Issues
+    Medium:
+	Dynamic Code Evaluation: Code Injection
+	Insecure Transport: Mail Transmission  
+	Path Manipulation
+	System Information Leak: External​
+	XML External Entity Injection
