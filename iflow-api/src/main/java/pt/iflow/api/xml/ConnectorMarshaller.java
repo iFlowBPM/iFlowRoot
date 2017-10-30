@@ -13,8 +13,14 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.Source;
+import javax.xml.transform.sax.SAXSource;
 
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
 
 import pt.iflow.api.connectors.ConnectorInterface;
 import pt.iflow.api.utils.Const;
@@ -41,13 +47,19 @@ public class ConnectorMarshaller {
 		InputSource source = null;
 		try {
 			source = new InputSource(new InputStreamReader(new ByteArrayInputStream(data), Const.ENCODING));
-		} catch (UnsupportedEncodingException e) {
+			SAXParserFactory spf = SAXParserFactory.newInstance();
+			spf.setFeature("http://xml.org/sax/features/external-general-entities", false);
+			spf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+			spf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+			Source xmlSource = new SAXSource(spf.newSAXParser().getXMLReader(), source );
+			JAXBContext context = JAXBContext.newInstance(ConnectorTransferObject.class);
+			Unmarshaller unmarshaller = context.createUnmarshaller();
+			return decode( (ConnectorTransferObject) unmarshaller.unmarshal(xmlSource));
+			
+		} catch ( Exception e) 
+		{
 			throw new JAXBException(e);
 		}
-		
-		JAXBContext context = JAXBContext.newInstance(ConnectorTransferObject.class);
-		Unmarshaller unmarshaller = context.createUnmarshaller();
-		return decode( (ConnectorTransferObject) unmarshaller.unmarshal(source));
 	}
 
 	private static ConnectorTransferObject encode(NameValuePair<String, Class<ConnectorInterface>>[] connectors) {

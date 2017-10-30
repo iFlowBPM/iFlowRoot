@@ -5,12 +5,14 @@ import java.io.IOException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
+import javax.xml.XMLConstants;
 import javax.xml.crypto.dsig.XMLSignature;
 import javax.xml.crypto.dsig.XMLSignatureFactory;
 import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpression;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Base64;
@@ -40,6 +42,8 @@ public class Response {
 	public void loadXml(String xml) throws ParserConfigurationException,
 			SAXException, IOException {
 		DocumentBuilderFactory fty = DocumentBuilderFactory.newInstance();
+		fty.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ""); 
+		fty.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, ""); 	
 		fty.setNamespaceAware(true);
 		DocumentBuilder builder = fty.newDocumentBuilder();
 		ByteArrayInputStream bais = new ByteArrayInputStream(xml.getBytes());
