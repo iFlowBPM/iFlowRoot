@@ -35,6 +35,11 @@
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 		</dependency>
+		<dependency>
+		<groupId>org.apache.commons.fileupload</groupId>
+		<artifactId>commons-fileupload</artifactId>
+		<version>1.2.2-20091125</version>
+		</dependency>
 	</dependencies>
 	
 	<reporting>

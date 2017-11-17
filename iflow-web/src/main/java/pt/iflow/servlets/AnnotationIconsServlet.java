@@ -54,108 +54,143 @@ import pt.iknow.utils.StringUtilities;
  * @web.servlet-mapping url-pattern="/AnnotationIconsServlet"
  */
 public class AnnotationIconsServlet extends HttpServlet {
-  private static final long serialVersionUID = -9101755201777404343L;
-  private static final String REQUEST_PARAMETER_ICON_NAME = "icon_name";
-  private static final String REQUEST_PARAMETER_LABEL_NAME = "label_name";
+	private static final long serialVersionUID = -9101755201777404343L;
+	private static final String REQUEST_PARAMETER_ICON_NAME = "icon_name";
+	private static final String REQUEST_PARAMETER_LABEL_NAME = "label_name";
 
-  public AnnotationIconsServlet() {
-  }
+	public AnnotationIconsServlet() {
+	}
 
-  public void init() {
-  }
+	public void init() {
+	}
 
-  private static void copyTo(InputStream in, OutputStream out) throws IOException {
-    byte[] b = new byte[8092];
-    int r = -1;
-    while ((r = in.read(b)) != -1)
-      out.write(b, 0, r);
-  }
+	private static void copyTo(InputStream in, OutputStream out) throws IOException {
+		byte[] b = new byte[8092];
+		int r = -1;
+		while ((r = in.read(b)) != -1)
+			out.write(b, 0, r);
+	}
 
-  protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    InputStream input = null;
-    try {
-      Repository rep = BeanFactory.getRepBean();
-      int size = 0;
+	protected void service(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		InputStream input = null;
 
-      UserInfoInterface userInfo = (UserInfoInterface) request.getSession().getAttribute(Const.USER_INFO);
+		try {
+			Repository rep = BeanFactory.getRepBean();
+			int size = 0;
 
-      String iconName = request.getParameter(REQUEST_PARAMETER_ICON_NAME);
+			UserInfoInterface userInfo = (UserInfoInterface) request.getSession().getAttribute(Const.USER_INFO);
 
-      if (StringUtilities.isEmpty(iconName)){
-        String labelName = request.getParameter(REQUEST_PARAMETER_LABEL_NAME);
-        if (!StringUtilities.isEmpty(labelName)){
-          if ((labelName.charAt(0)) == '\'') {
-            labelName = labelName.substring(1, labelName.length()-1);
-          }
-          iconName = this.getIconFileName(userInfo, labelName);
-        }
-      } else {
-        if ((iconName.charAt(0)) == '\'') {
-          iconName = iconName.substring(1, iconName.length()-1);
-        }
-      }
+			//String iconName = ;
+			
+			String iconName = AnnotationIconsEnum.lookup(request.getParameter(REQUEST_PARAMETER_ICON_NAME)).getCode();
 
-      if (null != userInfo && !pt.iflow.applet.StringUtils.isEmpty(iconName)) {
-        RepositoryFile repFile = rep.getAnnotationIcon(userInfo, iconName);
-        input = repFile.getResourceAsStream();
-        size = repFile.getSize();
-      }
+			if (StringUtilities.isEmpty(iconName)) {
+				String labelName = request.getParameter(REQUEST_PARAMETER_LABEL_NAME);
+				if (!StringUtilities.isEmpty(labelName)) {
+					if ((labelName.charAt(0)) == '\'') {
+						labelName = labelName.substring(1, labelName.length() - 1);
+					}
+					iconName = this.getIconFileName(userInfo, labelName);
+				}
+			} else {
+				if ((iconName.charAt(0)) == '\'') {
+					iconName = iconName.substring(1, iconName.length() - 1);
+				}
+			}
 
-      if (input == null) {
-        response.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found");
-        return;
-      }
+			if (null != userInfo && !pt.iflow.applet.StringUtils.isEmpty(iconName)) {
+				RepositoryFile repFile = rep.getAnnotationIcon(userInfo, iconName);
+				input = repFile.getResourceAsStream();
+				size = repFile.getSize();
+			}
 
-      response.setHeader("Content-Disposition", "inline;filename="+iconName+".png");
-      OutputStream out = response.getOutputStream();
-      response.setContentLength(size);
-      copyTo(input, out);
-      out.flush();
-      out.close();
-    } catch (Exception e) {
-      e.printStackTrace();
-      response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
-    } finally {
-      if (null != input) {
-        try {
-          input.close();
-        } catch (IOException e) {
-        }
-      }
-    }
-  }
+			if (input == null) {
+				response.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found");
+				return;
+			}
 
-  private String getIconFileName(UserInfoInterface userInfo, String labelName) {
-    Connection db = null;
-    ResultSet rs = null;
-    PreparedStatement pst = null;
+			//response.setHeader("Content-Disposition", "inline;filename=" + iconName + ".png");
+			OutputStream out = response.getOutputStream();
+			response.setContentLength(size);
+			copyTo(input, out);
+			out.flush();
+			out.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+		} finally {
+			if (null != input) {
+				try {
+					input.close();
+				} catch (IOException e) {
+				}
+			}
+		}
+	}
 
-    String iconFileName = null;
-    String LABEL_ICON_COLLUM = "icon";
-    try {
-      db = DatabaseInterface.getConnection(userInfo);
-      db.setAutoCommit(false);
+	private String getIconFileName(UserInfoInterface userInfo, String labelName) {
+		Connection db = null;
+		ResultSet rs = null;
+		PreparedStatement pst = null;
 
-      StringBuffer query = new StringBuffer();
-      query.append("SELECT L.icon ");
-      query.append(" FROM label L ");
-      query.append(" WHERE L.name like ?");
+		String iconFileName = null;
+		String LABEL_ICON_COLLUM = "icon";
+		try {
+			db = DatabaseInterface.getConnection(userInfo);
+			db.setAutoCommit(false);
 
-      pst = db.prepareStatement(query.toString());
-      pst.setString(1,labelName);
+			StringBuffer query = new StringBuffer();
+			query.append("SELECT L.icon ");
+			query.append(" FROM label L ");
+			query.append(" WHERE L.name like ?");
 
-      rs = pst.executeQuery();
+			pst = db.prepareStatement(query.toString());
+			pst.setString(1, labelName);
 
-      if (rs.next()){
-        iconFileName = rs.getString(LABEL_ICON_COLLUM);
-        Logger.debug(userInfo.getUtilizador(), this, "getIconFileName", "Found Icon name: Label ["+labelName+"], icon ["+iconFileName+"]");
-      }
+			rs = pst.executeQuery();
 
-    } catch (Exception e) {
-      Logger.error(userInfo.getUtilizador(), this, "getIconFileName", "Unable to get label icon file name", e);
-    } finally {
-      DatabaseInterface.closeResources(db, pst, rs);
-    }
-    return iconFileName;
-  }
+			if (rs.next()) {
+				iconFileName = rs.getString(LABEL_ICON_COLLUM);
+				Logger.debug(userInfo.getUtilizador(), this, "getIconFileName",
+						"Found Icon name: Label [" + labelName + "], icon [" + iconFileName + "]");
+			}
+
+		} catch (Exception e) {
+			Logger.error(userInfo.getUtilizador(), this, "getIconFileName", "Unable to get label icon file name", e);
+		} finally {
+			DatabaseInterface.closeResources(db, pst, rs);
+		}
+		return iconFileName;
+	}
+	
+	enum AnnotationIconsEnum {
+		URGENT("label_urgent.png"), IMPORTANT("label_important.png"), NORMAL("label_normal.png"),CLOCK("label_clock.png"),COMMENT("label_comment_blue.png");
+
+		private String code;
+
+		private AnnotationIconsEnum(String code) {
+			this.code = code;
+		}
+
+		public String getCode() {
+			return code;
+		}
+
+		public void setCode(String code) {
+			this.code = code;
+		}
+
+	public static AnnotationIconsEnum lookup(String code){
+		for(AnnotationIconsEnum element : AnnotationIconsEnum.values()){
+			if(element.getCode().equals(code))
+				return element;
+		} 
+		
+		throw new IllegalArgumentException("Invalid Code AnnotationIconEnum");
+		
+	}
+
 }
+}
+

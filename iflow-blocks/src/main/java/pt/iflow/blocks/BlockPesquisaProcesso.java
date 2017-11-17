@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.sql.DataSource;
@@ -917,7 +918,7 @@ public class BlockPesquisaProcesso extends Block implements PesquisaProcesso {
   private static boolean isStringsOp(String sVal) {
     boolean retObj = false;
 
-    if (StringUtils.isNotEmpty(sVal) && sVal.trim().toLowerCase().startsWith(sMETHOD_STRINGS_PREFIX)) {
+    if (StringUtils.isNotEmpty(sVal) && sVal.trim().toLowerCase(Locale.ENGLISH).startsWith(sMETHOD_STRINGS_PREFIX)) {
       retObj = true;
     }
 

@@ -77,7 +77,7 @@ public static void sendEncodeRedirect(HttpServletResponse response, ServletUtils
   
   public String getRequestURL() {
     if(null == this.request) return null;
-    Logger.debug("", this, "", this.request.getRequestURI());
+    //Logger.debug("", this, "", this.request.getRequestURI());
     String scheme = this.request.getScheme();
     String host = this.request.getServerName();
     int port = this.request.getServerPort();
@@ -162,11 +162,12 @@ public static void sendEncodeRedirect(HttpServletResponse response, ServletUtils
   
   private static final int DAY = 60*60*24;
   public static Cookie newCookie(String name, String value) {
+	  
     // guardar lang actual
     Cookie cookie = new Cookie(name, value);
     cookie.setMaxAge(15*DAY);
     cookie.setSecure(true);
-    // cookie.setPath("/");
+    cookie.setPath("/");
     return cookie;
   }
   

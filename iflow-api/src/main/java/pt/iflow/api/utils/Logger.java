@@ -126,7 +126,8 @@ public class Logger {
     if (!sMessage.equals(clean)) {
         clean += " (Encoded)";
     }
-
+    
+    
     switch (logLevel) {
     case DEBUG:
       if (logger.isDebugEnabled()) {

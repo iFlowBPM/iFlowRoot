@@ -213,14 +213,14 @@ import pt.iflow.api.utils.Logger;
 
 	    if (!success || data == null || data.length < 1)
 	    {
-	      Logger.error("admin", this, "process",
-	         "Image generated had zero length byte array or failed to convert from parameters of:\n"
-	          + "[color:" + color + ", bgColor:" + bgColor
-	          + ", width:" + width + ", height:" + height
-	          + ", angle:" + angle + ", shadowWidth:" + shadowWidth
-	          + ", shadowOpacity:" + shadowOpacity + ", side:" + side
-	          + ", wholeShadow: " + wholeShadow + ", arcWidth: " + arcWidth
-	          + ", arcHeight:" + arcHeight + "\n image: " + image);
+//	      Logger.error("admin", this, "process",
+//	         "Image generated had zero length byte array or failed to convert from parameters of:\n"
+//	          + "[color:" + color + ", bgColor:" + bgColor
+//	          + ", width:" + width + ", height:" + height
+//	          + ", angle:" + angle + ", shadowWidth:" + shadowWidth
+//	          + ", shadowOpacity:" + shadowOpacity + ", side:" + side
+//	          + ", wholeShadow: " + wholeShadow + ", arcWidth: " + arcWidth
+//	          + ", arcHeight:" + arcHeight + "\n image: " + image);
 
 	      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 	      return;

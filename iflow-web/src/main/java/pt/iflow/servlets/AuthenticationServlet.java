@@ -26,6 +26,7 @@ import pt.iflow.api.utils.UserInfoInterface;
 import pt.iflow.api.utils.UserSettings;
 import pt.iflow.api.utils.Utils;
 import pt.iflow.core.PersistSession;
+import pt.iflow.core.UserManagerBean;
 
 
 /**
@@ -147,7 +148,7 @@ public class AuthenticationServlet extends javax.servlet.http.HttpServlet implem
    * @see javax.servlet.http.HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
    */
   protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		  
     String login = request.getParameter("login");
     String ps = request.getParameter("password");
     String sDoRedirect = request.getParameter("do_redirect");
@@ -180,16 +181,16 @@ public class AuthenticationServlet extends javax.servlet.http.HttpServlet implem
     AuthenticationResult result = authenticate(request, response, login, ps, nextUrl);
 
     // keep session in cookie
-    Cookie sessionUsername = ServletUtils.newCookie(Const.SESSION_COOKIE_USERNAME, "");
-    Cookie sessionPassword = ServletUtils.newCookie(Const.SESSION_COOKIE_PASSWORD, "");
-    response.addCookie(sessionUsername);
-    response.addCookie(sessionPassword);
+//    Cookie sessionUsername = ServletUtils.newCookie(Const.SESSION_COOKIE_USERNAME, "");
+//    Cookie sessionPassword = ServletUtils.newCookie(Const.SESSION_COOKIE_PASSWORD, "");
+//    response.addCookie(sessionUsername);
+//    response.addCookie(sessionPassword);
 
     if (result.isAuth && StringUtils.equals(keepSession, "on")) {
-      sessionUsername = ServletUtils.newCookie(Const.SESSION_COOKIE_USERNAME, login);
-      sessionPassword = ServletUtils.newCookie(Const.SESSION_COOKIE_PASSWORD, Utils.encrypt(ps));
-      response.addCookie(sessionUsername);
-      response.addCookie(sessionPassword);      
+//      sessionUsername = ServletUtils.newCookie(Const.SESSION_COOKIE_USERNAME, login);
+//      sessionPassword = ServletUtils.newCookie(Const.SESSION_COOKIE_PASSWORD, Utils.encrypt(ps));
+//      response.addCookie(sessionUsername);
+//      response.addCookie(sessionPassword);      
     }    	
 
     if (result.isAuth)

@@ -1430,7 +1430,7 @@ public class BlockFormulario extends Block implements FormOperations {
       if (hmExtraProps != null) {
         // title
         String tep = (String)hmExtraProps.get(FormProps.sROW_TITLE_EXTRAPROP);
-        if (tep != null && tep.toLowerCase().equals(FormProps.sTITLE_EXTRAPROP_VAR)) {
+        if (tep != null && tep.toLowerCase(Locale.ENGLISH).equals(FormProps.sTITLE_EXTRAPROP_VAR)) {
           // fetch var's value
           sTitle = procData.getFormatted(sTitle);
         }

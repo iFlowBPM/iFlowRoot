@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 	<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by jmv (.) -->
 
-<XmlLibrary xmlns="http://www.iknow.pt/XmlLibrary" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.iknow.pt/XmlLibrary ../schemas/xmllibrary.xsd">
+<XmlLibrary xmlns="http://www.iflow.pt/XmlLibrary" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.iflow.pt/XmlLibrary ../schemas/xmllibrary.xsd">
 	<name>Basic</name>
 	<version>1.0</version>
 	<author>iKnow</author>

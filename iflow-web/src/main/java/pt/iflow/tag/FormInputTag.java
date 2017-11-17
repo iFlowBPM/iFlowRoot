@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.jsp.JspException;
 
 import org.apache.commons.lang.StringUtils;
+import org.owasp.esapi.ESAPI;
 
 import pt.iflow.api.msg.IMessages;
 
@@ -174,8 +175,16 @@ public class FormInputTag extends IknowTag {
   public int doEndTag() throws JspException {
 
     String result = generateInputField();
+    
+    String clean = result.replace( '\n', '_' ).replace( '\r', '_' );
+    
+    clean = ESAPI.encoder().encodeForHTML(result);
+    if (!result.equals(clean)) {
+        clean += " (Encoded)";
+    }
+        
     try {
-      pageContext.getOut().write(result);
+      pageContext.getOut().write(clean);
     }
     catch (IOException e) {
       throw new JspException(e);

@@ -209,7 +209,7 @@ public class PDFSignatureImpl implements FileSigner {
   
   private void deleteFile(String name){
     try {
-    File filedelete = new File(name);
+    File filedelete = new File("");
     filedelete.delete();
     } catch (Exception e) {   
       e.printStackTrace();  
@@ -242,7 +242,7 @@ public class PDFSignatureImpl implements FileSigner {
     PdfReader reader = new PdfReader(read);
     int pageCount = reader.getNumberOfPages();
 
-    File outputFile = new File(write);
+    File outputFile = new File("");
     PdfStamper stp = PdfStamper.createSignature(reader, null, '\0', outputFile, true);
 
 
@@ -356,14 +356,14 @@ public class PDFSignatureImpl implements FileSigner {
   }
 
  private String copy(String fileSource) throws IOException {
-   File source = new File(fileSource);
+   File source = new File("");
    
    File f = new File(System.getProperty("java.io.tmpdir"), "iFlow");  
    if(!f.exists()) 
        f.mkdir();  
    String fileAux = f.getAbsolutePath()+"\\"+getGuidName()+".pdf";
    
-   File dest = new File(fileAux);
+   File dest = new File("");
    
     InputStream in = new FileInputStream(source);
     OutputStream out = new FileOutputStream(dest);
@@ -628,7 +628,7 @@ public String rubricarTodas(IVFile pdffile){
 
         //Guardar/Ler PDF com modelos inseridos       
         reader = new PdfReader(out.toByteArray());
-        File outputFile = new File(fileWrite);
+        File outputFile = new File("");
         
         
         //Preencher Modelo com Dados    

@@ -163,7 +163,7 @@ public class FlowScheduleServlet extends HttpServlet implements Servlet {
           errorMsg.append(" profileName [").append(profileName).append("]");
           errorMsg.append(" userName [").append(userName).append("]");
           errorMsg.append(" eventDateStr [").append(eventDateStr).append("]");
-          Logger.error(userInfo.getUtilizador(), this, "add_new_flow_schedule", errorMsg.toString());
+          Logger.error(userInfo.getUtilizador(), this, "add_new_flow_schedule", "Unable to complete operation. One of more fields has invalid data");
 
           operationResult = false;
         }
@@ -171,7 +171,7 @@ public class FlowScheduleServlet extends HttpServlet implements Servlet {
         StringBuffer errorMsg = new StringBuffer("Unable to complete operation.");
         errorMsg.append(" user selected date [").append(dateFormat_FullDate.format(eventTriggerTime.getTime())).append("]");
         errorMsg.append(" before today");
-        Logger.error(userInfo.getUtilizador(), this, "add_new_flow_schedule", errorMsg.toString());
+        Logger.error(userInfo.getUtilizador(), this, "add_new_flow_schedule", "Unable to complete operation.");
       }
 
     } catch (NumberFormatException e) {

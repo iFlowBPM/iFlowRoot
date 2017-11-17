@@ -245,7 +245,8 @@
 		</dependency>
 		<dependency>
 			<groupId>javax.mail</groupId>
-			<artifactId>mailapi</artifactId>
+			<artifactId>mail</artifactId>
+			<version>1.4</version>
 		</dependency>
 		<dependency>
 			<groupId>com.lowagie</groupId>
@@ -384,6 +385,26 @@
 							</resources>
 						</configuration>
 					</execution>
+				<!-- Cópia da pasta Libs bombadas para a pasta Lib de modo a ser incluido no War -->
+					<execution>
+						<id>copy-libs-bombadas</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/src/main/webapp/WEB-INF/lib</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/../libs_bombadas</directory>
+									<includes>
+										<include>*</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+
 				</executions>
 			</plugin>
 			<plugin>

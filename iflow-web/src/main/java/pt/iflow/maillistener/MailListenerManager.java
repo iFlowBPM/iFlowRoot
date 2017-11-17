@@ -44,7 +44,7 @@ import pt.iflow.api.utils.UserInfoManagerInterface;
 import pt.iflow.api.utils.mail.MailChecker;
 import pt.iflow.api.utils.mail.MailClient;
 import pt.iflow.api.utils.mail.MailConfig;
-import pt.iflow.api.utils.mail.imap.IMAPMailPlainClient;
+//import pt.iflow.api.utils.mail.imap.IMAPMailPlainClient;
 import pt.iflow.api.utils.mail.imap.IMAPMailSSLClient;
 import pt.iflow.api.utils.mail.parsers.AbstractPropertiesMessageParser;
 import pt.iflow.api.utils.mail.parsers.MessageParseException;
@@ -178,10 +178,10 @@ public class MailListenerManager extends Thread {
           "no mail configuration for flow " + flowid);
       return;
     }
-    MailClient mclient = mconfig.isSecure() ? new IMAPMailSSLClient(mconfig) : new IMAPMailPlainClient(mconfig);
-    MailChecker mchecker = new MailChecker(flowid, mconfig.getCheckIntervalInSeconds(), mclient, getMessageParser(flowid));
+   // MailClient mclient = mconfig.isSecure() ? new IMAPMailSSLClient(mconfig) : new IMAPMailPlainClient(mconfig);
+   // MailChecker mchecker = new MailChecker(flowid, mconfig.getCheckIntervalInSeconds(), mclient, getMessageParser(flowid));
 
-    checkers.put(flowid, mchecker);
+   // checkers.put(flowid, mchecker);
     Logger.adminInfo("MailListenerManager", "prepareChecker", 
         "mail checker prepared for flow " + flowid);
 

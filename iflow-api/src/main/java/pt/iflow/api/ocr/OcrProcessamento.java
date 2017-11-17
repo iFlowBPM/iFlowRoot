@@ -135,8 +135,8 @@ private static RenderedImage readImage(String filename){
 }
 
 
-private static void saveImage(RenderedImage img, String path) { 
-	File file = new File(path);
+private static void saveImage(RenderedImage img, String path) {
+	File file = new File(path + File.separator);
 	try {
 		ImageIO.write(img,"PNG", file);
 	} catch (IOException e) {e.printStackTrace();}

@@ -16,7 +16,7 @@ import javax.mail.internet.InternetAddress;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 
-import pt.iflow.api.utils.mail.imap.IMAPMailPlainClient;
+//import pt.iflow.api.utils.mail.imap.IMAPMailPlainClient;
 import pt.iflow.api.utils.mail.parsers.AbstractPropertiesMessageParser;
 import pt.iflow.api.utils.mail.parsers.MessageParseException;
 import pt.iflow.api.utils.mail.parsers.MessageParser;
@@ -30,11 +30,11 @@ public class MailTester {
     String user = args[1];
     byte[] pass = args[2].getBytes();
     
-    MailClient client = new IMAPMailPlainClient(host, user, pass);
-    client.setDebug(false);    
+   // MailClient client = new IMAPMailPlainClient(host, user, pass);
+  /*  client.setDebug(false);    
     client.setInboxFolder("Inbox");
 
-    client.connect();
+    client.connect();*/
 
     
     MessageParser parser = new AbstractPropertiesMessageParser() {
@@ -85,15 +85,15 @@ public class MailTester {
     };
     
     
-    MailChecker mc = new MailChecker(1, 5, client, parser);
-    mc.start();
+  //  MailChecker mc = new MailChecker(1, 5, client, parser);
+    //mc.start();
  
     while (true) {
       BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
       try {
         String s = br.readLine();
         if (StringUtils.equals(s, "stop")) {
-          mc.stop();
+         // mc.stop();
           break;
         }
       } catch (IOException ioe) {

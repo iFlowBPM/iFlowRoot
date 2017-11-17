@@ -161,12 +161,12 @@ public class UserInfo implements Serializable, UserInfoInterface {
 	    this._sIntranetSessionId = null;
 	    this._sAuthProfile = null;
 	    
-	    Logger.trace("USER " + asLogin + " requesting LOGIN");
+	    Logger.trace("USER requesting LOGIN");
 	    
 	    AuthProfile ap = BeanFactory.getAuthProfileBean();
 	    
 	    String sUsername = ap.fixUsername(asLogin);
-	    Logger.trace("Username fixed to: " + sUsername);
+	    Logger.trace("Username fixed to: sUsername");
 	    
 	    Messages msg = StringUtils.isNotEmpty(this.cookieLang) ? 
 	      Messages.getInstance(this.cookieLang) : Messages.getInstance();
@@ -229,7 +229,7 @@ public class UserInfo implements Serializable, UserInfoInterface {
 	    }
 	    catch (Throwable e)
 	    {
-	      Logger.error(sUsername, this, "login", "Exception: " + e.getMessage(), e);
+	      Logger.error(sUsername, this, "login", "Exception:  e.getMessage()" , e);
 	      this._sError = msg.getString("login.error.generic");
 	      this._bLogged = false;
 	    }
@@ -291,7 +291,7 @@ public class UserInfo implements Serializable, UserInfoInterface {
 	    }
 	    catch (Exception e)
 	    {
-	      Logger.error(getUtilizador(), this, "updatePrivileges", "Exception: " + e.getMessage(), e);
+	      Logger.error(getUtilizador(), this, "updatePrivileges", "Exception:  + e.getMessage()", e);
 	    }
 	  }
 	  
@@ -313,18 +313,18 @@ public class UserInfo implements Serializable, UserInfoInterface {
 	    }
 	    this._unitData = ap.getOrganicalUnitInfo(this._userData.getUnitId());
 	    
-	    Logger.debug(asLogin, this, "login", "UTILIZADOR: " + this._sUtilizador);
-	    Logger.debug(asLogin, this, "login", "INTRANET SESSION ID: " + this._sIntranetSessionId);
-	    Logger.debug(asLogin, this, "login", "INTRANET PROFILE: " + this._sAuthProfile);
-	    Logger.debug(asLogin, this, "login", "NOMEUTILIZADOR: " + getUserFullName());
-	    Logger.debug(asLogin, this, "login", "NUMEMPREGADO: " + getUserId());
-	    Logger.debug(asLogin, this, "login", "Unit DATA: " + this._unitData);
+	    Logger.debug(asLogin, this, "login", "UTILIZADOR: + this._sUtilizador");
+	    Logger.debug(asLogin, this, "login", "INTRANET SESSION ID:  + this._sIntranetSessionId");
+	    Logger.debug(asLogin, this, "login", "INTRANET PROFILE: + this._sAuthProfile");
+	    Logger.debug(asLogin, this, "login", "NOMEUTILIZADOR:  + getUserFullName()");
+	    Logger.debug(asLogin, this, "login", "NUMEMPREGADO: + getUserId()");
+	    Logger.debug(asLogin, this, "login", "Unit DATA: + this._unitData");
 	    
 	    Iterator<?> liUP = ap.getUserProfiles(this).iterator();
 	    while (liUP.hasNext())
 	    {
 	      stmp = (String)liUP.next();
-	      Logger.debug(asLogin, this, "login", "ADDING PROFILE: " + stmp);
+	      Logger.debug(asLogin, this, "login", "ADDING PROFILE: + stmp");
 	      this._hsProfiles.add(stmp);
 	    }
 	    this._sUtilizador = this._userData.getUsername();
@@ -548,7 +548,7 @@ public class UserInfo implements Serializable, UserInfoInterface {
 	    while (liUP.hasNext())
 	    {
 	      String profileName = (String)liUP.next();
-	      Logger.debug(getUtilizador(), this, "login", "ADDING PROFILE: " + profileName);
+	      Logger.debug(getUtilizador(), this, "login", "ADDING PROFILE: + profileName" );
 	      this._hsProfiles.add(profileName);
 	    }
 	  }
@@ -683,7 +683,7 @@ public class UserInfo implements Serializable, UserInfoInterface {
 		    this._sIntranetSessionId = null;
 		    this._sAuthProfile = null;
 
-		    Logger.trace("USER with employeeid " + employeeid + " requesting LOGIN");
+		    Logger.trace("USER with employeeid  + employeeid +  requesting LOGIN");
 		    String asLogin=null;
 		    AuthProfile ap = BeanFactory.getAuthProfileBean();
 		    UserManager userManager = BeanFactory.getUserManagerBean();
@@ -701,7 +701,7 @@ public class UserInfo implements Serializable, UserInfoInterface {
 		    this._bIsSysAdmin=false;
 		    	
 		    String sUsername = ap.fixUsername(asLogin);
-		    Logger.trace("Username fixed to: " + sUsername);
+		    Logger.trace("Username fixed to: + sUsername" );
 
 		    Messages msg = StringUtils.isNotEmpty(cookieLang) ? 
 		        Messages.getInstance(cookieLang) : Messages.getInstance();
@@ -725,7 +725,7 @@ public class UserInfo implements Serializable, UserInfoInterface {
 		      this.updatePrivileges();
 
 		    } catch (Throwable e) {
-		      Logger.error(sUsername, this, "login", "Exception: " + e.getMessage(), e);
+		      Logger.error(sUsername, this, "login", "Exception: + e.getMessage()" , e);
 		      this._sError = msg.getString("login.error.generic.sso");
 			  this._bLogged = false;
 		    }	  	  

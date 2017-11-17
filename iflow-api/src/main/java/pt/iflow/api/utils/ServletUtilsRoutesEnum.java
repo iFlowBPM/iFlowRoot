@@ -26,7 +26,6 @@ public enum ServletUtilsRoutesEnum {
 	NODEPLOYEDFLOW("nodeployedflow.jsp"),
 	NOINITPROC("noinitproc.jsp"),
 	ADMINLOGIN("Admin/login.jsp"),
-	
 	;
 
 	private String url;

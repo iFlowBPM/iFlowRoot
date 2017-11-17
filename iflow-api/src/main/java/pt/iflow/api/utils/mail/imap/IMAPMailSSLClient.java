@@ -17,7 +17,7 @@ import pt.iflow.api.utils.mail.MailConfig;
 
 import com.sun.mail.imap.IMAPSSLStore;
 import com.sun.mail.imap.IMAPStore;
-import com.sun.mail.util.MailSSLSocketFactory;
+//import com.sun.mail.util.MailSSLSocketFactory;
 
 public class IMAPMailSSLClient extends IMAPMailClient {
   
@@ -67,16 +67,9 @@ public class IMAPMailSSLClient extends IMAPMailClient {
 		props.put("mail.imap.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 		props.put("mail.imap.socketFactory.fallback", "false");
         
-        MailSSLSocketFactory sf;
-		try {
-			sf = new MailSSLSocketFactory();
-			sf.setTrustAllHosts(true); 
-		} catch (GeneralSecurityException e) {
-			sf=null;
-			Logger.adminError("IMAPMailSSLClient", "init", "Exception caught: ", e);
-		}        
+      
         props.put("mail.imaps.ssl.trust", "*");
-        props.put("mail.imaps.ssl.socketFactory", sf);
+       
         props.put("mail.imaps.auth.plain.disable", "true");
   }
   

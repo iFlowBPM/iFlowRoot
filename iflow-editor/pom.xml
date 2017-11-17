@@ -41,6 +41,7 @@
 			<groupId>pt.iknow</groupId>
 			<artifactId>iutils</artifactId>
 			<type>jar</type>
+			<scope>compile</scope>
 		</dependency>
 
 		<!-- OEM -->
@@ -52,11 +53,6 @@
 			<groupId>com.simontuffs</groupId>
 			<artifactId>one-jar</artifactId>
 			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>castor</groupId>
-			<artifactId>castor</artifactId>
-			<type>jar</type>
 		</dependency>
 		<dependency>
 			<groupId>commons-discovery</groupId>
@@ -77,6 +73,7 @@
 			<groupId>axis</groupId>
 			<artifactId>axis</artifactId>
 			<type>jar</type>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>axis</groupId>
@@ -114,6 +111,7 @@
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
+			<scope>compile</scope>
 			<type>jar</type>
 		</dependency>
 		<dependency>
@@ -145,6 +143,7 @@
 		<dependency>
 			<groupId>net.sourceforge.collections</groupId>
 			<artifactId>collections-generic</artifactId>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.twolattes</groupId>
@@ -238,7 +237,8 @@
 						</manifestEntries>
 					</archive>
 					<descriptors>
-						<descriptor>src/main/assembly/src-linux.xml</descriptor>
+						<descriptor>src/main/assembly/src-linux32.xml</descriptor>
+						<descriptor>src/main/assembly/src-linux64.xml</descriptor>
 						<descriptor>src/main/assembly/src-win32.xml</descriptor>
 						<descriptor>src/main/assembly/src-macosx.xml</descriptor>
 					</descriptors>
@@ -265,7 +265,32 @@
 
 		<!-- 'linux' profile will be activated when building on a linux machine. -->
 		<profile>
-			<id>linux</id>
+			<id>linux32</id>
+			<activation>
+				<os>
+					<family>unix</family>
+					<name>Linux</name>
+				</os>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>org.eclipse</groupId>
+					<artifactId>swt</artifactId>
+					<version>3.4.1</version>
+					<classifier>gtk-linux-x86</classifier>
+					<scope>provided</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.mozilla</groupId>
+					<artifactId>xulrunner</artifactId>
+					<version>1.9.0.3</version>
+					<classifier>linux</classifier>
+					<scope>provided</scope>
+				</dependency>
+			</dependencies>
+		</profile>
+		<profile>
+			<id>linux64</id>
 			<activation>
 				<os>
 					<family>unix</family>
@@ -365,6 +390,13 @@
 					<artifactId>xulrunner</artifactId>
 					<version>1.9.0.3</version>
 					<classifier>win32</classifier>
+					<scope>provided</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.eclipse</groupId>
+					<artifactId>swt</artifactId>
+					<version>3.4.1</version>
+					<classifier>gtk-linux-x86</classifier>
 					<scope>provided</scope>
 				</dependency>
 				<dependency>

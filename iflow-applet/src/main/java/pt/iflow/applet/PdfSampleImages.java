@@ -33,13 +33,13 @@ import com.lowagie.text.pdf.PdfReader;
 //      private static int larguraPag = 297;
       
       public static void main(String[] args) throws IOException{
-    	  PDDocument document = PDDocument.load(new File("C:\\Users\\pussman\\Downloads\\inf_05.pdf"));
+    	  PDDocument document = PDDocument.load(new File(""));
     	  PDFRenderer pdfRenderer = new PDFRenderer(document);
     	  int p =document.getNumberOfPages();
     	  PDPageTree pdpt = document.getPages();
     	  int c = pdpt.getCount();
     	  BufferedImage bim = pdfRenderer.renderImageWithDPI(2, 150, ImageType.RGB);
-    	  ImageIO.write(bim, "PNG", new File( "C:\\Users\\pussman\\Downloads\\inf_05.png" ));
+    	  ImageIO.write(bim, "PNG", new File( "" ));
       }
 	  
   public static BufferedImage getImageFromPdf(String filepath,int pag){

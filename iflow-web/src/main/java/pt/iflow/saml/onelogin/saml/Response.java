@@ -44,6 +44,7 @@ public class Response {
 		fty.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ""); 
 		fty.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, ""); 	
 		fty.setNamespaceAware(true);
+		fty.setExpandEntityReferences(false);
 		DocumentBuilder builder = fty.newDocumentBuilder();
 		ByteArrayInputStream bais = new ByteArrayInputStream(xml.getBytes());
 		xmlDoc = builder.parse(bais);

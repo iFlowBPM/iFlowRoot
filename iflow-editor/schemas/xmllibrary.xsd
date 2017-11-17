@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema 
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
-	targetNamespace="http://www.iknow.pt/XmlLibrary"
-	xmlns="http://www.iknow.pt/XmlLibrary"
+	targetNamespace="http://www.iflow.pt/XmlLibrary"
+	xmlns="http://www.iflow.pt/XmlLibrary"
 	elementFormDefault="qualified">
 
   <xsd:annotation >

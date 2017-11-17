@@ -86,6 +86,6 @@
 <% } %>
 
 <div class="button_box">
-   	<input class="regular_button_02" type="button" name="add" value="Adicionar" onClick="javascript:tabber_right(4, '<c:url value="Admin/Resources/uploadform.jsp"></c:url>','type=${param.type}');"></input>
+   	<input class="regular_button_02" type="button" name="add" value="Adicionar" onClick="javascript:tabber_right(4, '<c:url value="Admin/Resources/uploadform.jsp"></c:url>','type=${fn:escapeXml(param.type)}');"></input>
 	<if:generateHelpBox context="dolist"/>
 </div>

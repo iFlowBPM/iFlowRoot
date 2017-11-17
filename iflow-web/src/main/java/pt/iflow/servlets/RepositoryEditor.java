@@ -119,8 +119,8 @@ public class RepositoryEditor {
           retObj.append(line + "\r");
         }
       } else {
-        Logger.warning(userInfo.getUtilizador(), "RepositoryEditor", "retrieveFile", "Unable to edit file (file=\"" + file
-            + "\", type=\"" + type + "\").");
+        Logger.warning(userInfo.getUtilizador(), "RepositoryEditor", "retrieveFile", "Unable to edit file (file +"
+        		+"type).");
       }
     } catch (Exception e) {
       Logger.error(userInfo.getUtilizador(), "RepositoryEditor", "retrieveFile", "Unable to retrieve file information.", e);

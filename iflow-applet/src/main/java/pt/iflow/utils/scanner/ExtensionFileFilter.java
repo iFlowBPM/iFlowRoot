@@ -3,6 +3,7 @@ package pt.iflow.utils.scanner;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.swing.filechooser.FileFilter;
 
@@ -27,7 +28,7 @@ public class ExtensionFileFilter extends FileFilter {
     if (file.isDirectory()) {
       return true;
     } else {
-      String path = file.getAbsolutePath().toLowerCase();
+      String path = file.getAbsolutePath().toLowerCase(Locale.ENGLISH);
       for(int i = 0; i < extensions.length; i++) {
         String extension = extensions[i];
         if(path.endsWith(extension) && (path.charAt(path.length() - extension.length() - 1)) == '.')

@@ -82,7 +82,7 @@ public class UpdateOrganization extends HttpServlet {
 
     byte[] data = file.getData();
 
-    String name = file.getFileName().toLowerCase();
+    String name = file.getFileName().toLowerCase(Locale.ENGLISH);
 
     if (null == data || data.length == 0)
       return;

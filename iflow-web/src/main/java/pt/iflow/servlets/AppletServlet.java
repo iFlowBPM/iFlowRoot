@@ -340,7 +340,7 @@ public class AppletServlet extends HttpServlet {
     String dir = tokens[tokens.length-2];
     String file = tokens[tokens.length-1];
     
-    Logger.adminInfo("AppletServlet", "sendHeader", "Requesting resource: "+file);
+    Logger.adminInfo("AppletServlet", "sendHeader", "Requesting resource (file): ");
     
     // check if we have the correct resource
     if("applet.js".equals(file) && !"javascript".equals(dir)) {

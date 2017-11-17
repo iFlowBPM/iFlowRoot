@@ -16,8 +16,17 @@ if (nField == -1) {
   
   // 10: print stylesheet attribute
   String sPrintStyleSheet = (String)bBlock.execute(10,null);
+  String sAppendDocsId = bBlock.getAttribute("append_docs");
+  
+  String sEndSuffix="";
+  if(sPrintStyleSheet.length() > sTEMPLATE_SUFFIX.length() )
+  {
+  	sEndSuffix = sPrintStyleSheet.substring(sPrintStyleSheet.length() - sTEMPLATE_SUFFIX.length(),sPrintStyleSheet.length());
+  }
+    
   if (StringUtils.isNotEmpty(sPrintStyleSheet)) {
-    if (sPrintStyleSheet.toLowerCase().endsWith(sTEMPLATE_SUFFIX)) {
+    if (sPrintStyleSheet.equalsIgnoreCase(sEndSuffix) )
+    		{
 %><%@ include file = "printFOP.jspf" %><%
 	}
     else {

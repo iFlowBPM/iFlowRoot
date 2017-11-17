@@ -118,12 +118,9 @@ public class PdfSampleImages {
 
   public void insertImage(int x, int y,int pagina, int docid, boolean rubricar, UserInfoInterface userInfo){
 
-    String tempfile = Const.fUPLOAD_TEMP_DIR+"\\"+getGuidName()+".pdf";
+    File file2 = new File(Const.fUPLOAD_TEMP_DIR + File.separator + getGuidName()+".pdf");
 
-    File file2 = new File(tempfile);
-
-
-    if(x == 0 && y == 0){
+     if(x == 0 && y == 0){
       x = larguraPag;          //caso nao seja selecionada nenhuma posição
       y = 0;                   //meter no canto inferior direito
     }else{
@@ -176,7 +173,9 @@ public class PdfSampleImages {
       sap.close(dic2);
 
     } catch (Exception e) {log.error("Erro na assinatura do pdf", e);} 
-
+    
+    String tempfile=  "";
+    
     if(rubricar) {                                                         //rubricar, gravar na BD e apagar temp             
       String temprub = rubricarTodas(tempfile, userInfo);
 
@@ -202,7 +201,7 @@ public class PdfSampleImages {
   }
 
   public String rubricarTodas(String filePath, UserInfoInterface userInfo){
-    File file = new File(filePath);
+    File file = new File(filePath + File.separator);
     int pageCount = 0;
     try {
       FileInputStream fileInput = new FileInputStream(file);	
@@ -214,8 +213,8 @@ public class PdfSampleImages {
 
 
     String fileOriginal = filePath;
-    String fileAux = Const.fUPLOAD_TEMP_DIR  +"\\"+getGuidName()+".pdf";;
-    String fileAux2 = Const.fUPLOAD_TEMP_DIR +"\\"+getGuidName()+".pdf";;
+    String fileAux = Const.fUPLOAD_TEMP_DIR + File.separator + getGuidName()+".pdf";;
+    String fileAux2 = Const.fUPLOAD_TEMP_DIR + File.separator +getGuidName()+".pdf";;
     String lixoaux = "";
 
     //Primeira vez, Rubrica na 1ª pagina ou se é só uma pagina rubricar a unica
@@ -240,8 +239,8 @@ public class PdfSampleImages {
 
   public void insertImageRubrica(String fileRead, int pag, String fileWrite, UserInfoInterface userInfo){	 
 
-    File file = new File(fileRead);
-    File file2 = new File(fileWrite);
+    File file = new File("");
+    File file2 = new File("");
 
     try {
       FileInputStream fileInput = new FileInputStream(file);

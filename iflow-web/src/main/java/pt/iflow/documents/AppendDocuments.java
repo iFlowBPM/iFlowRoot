@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -359,7 +360,7 @@ public class AppendDocuments {
             Logger.warning(login, "AppenDocuments", "mergePDFs", "Documento "+docid+" nao tem conteudo.");
             continue;
           }
-          String fname = doc.getFileName().toLowerCase();
+          String fname = doc.getFileName().toLowerCase(Locale.ENGLISH);
 
           Logger.debug(login, "AppenDocuments", "mergePDFs", "Documento "+docid+" => "+fname);
           byte [] pdfContents = null;

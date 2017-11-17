@@ -22,6 +22,7 @@ import pt.iflow.api.core.Repository;
 import pt.iflow.api.msg.IMessages;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.UserInfoInterface;
+import pt.iflow.core.PathNormalizer;
 
 /**
 * 
@@ -49,7 +50,8 @@ public class RepositoryReset extends HttpServlet {
   public void init() throws ServletException {  }
 
   protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String file = request.getParameter("file");
+	  	  
+    String file = PathNormalizer.cleanString(request.getParameter("file"));
     String type = request.getParameter("type");
     
     UserInfoInterface userInfo = (UserInfoInterface)request.getSession().getAttribute(Const.USER_INFO);

@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
+
+import org.apache.commons.io.serialization.ValidatingObjectInputStream;
+
 import pt.iflow.api.db.DatabaseInterface;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.UserInfoInterface;
@@ -38,9 +41,12 @@ public class PersistSession {
 			}
 
 			if (buf != null) {
-				ByteArrayInputStream bais = new ByteArrayInputStream(buf);
-				ObjectInputStream objectIn = new ObjectInputStream(bais);
-				valores = ((SessionObject) objectIn.readObject()).getValores();
+				ValidatingObjectInputStream validator = new ValidatingObjectInputStream(new ByteArrayInputStream(buf));
+				validator.accept(SessionObject.class);
+				//ByteArrayInputStream bais = new ByteArrayInputStream(buf);
+				//ObjectInputStream objectIn = new ObjectInputStream(bais);
+				valores = ((SessionObject) validator.readObject()).getValores();
+				validator.close();
 			}
 
 			rs.close();

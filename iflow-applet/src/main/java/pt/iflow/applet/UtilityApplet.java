@@ -173,7 +173,7 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
    * @return <code>true</code> if can scan, <code>false</code> otherwise.
    */
   public boolean canScan(final String fileFormat) {
-    log.info("canScan started"); //$NON-NLS-1$
+//    log.info("canScan started"); //$NON-NLS-1$
     boolean result = false;
     try {
       result = AccessController.doPrivileged(new PrivilegedExceptionAction<Boolean>() {
@@ -195,7 +195,7 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
    * @return <code>true</code> if can sign, <code>false</code> otherwise.
    */
   public boolean canSign(final String signatureType) {
-    log.info("canSign started"); //$NON-NLS-1$
+   // log.info("canSign started"); //$NON-NLS-1$
     boolean result = false;
     try {
       result = AccessController.doPrivileged(new PrivilegedExceptionAction<Boolean>() {
@@ -217,7 +217,7 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
    * @return <code>true</code> if can encrypt, <code>false</code> otherwise.
    */
   public boolean canEncrypt(final String encryptType) {
-    log.info("canEncrypt started"); //$NON-NLS-1$
+//    log.info("canEncrypt started"); //$NON-NLS-1$
     boolean result = false;
     try {
       result = AccessController.doPrivileged(new PrivilegedExceptionAction<Boolean>() {
@@ -249,7 +249,7 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
    * @return Identificador do ficheiro carregado
    */
   public String uploadFile(final String cookie, final String jsonRequest, final String sig_pos_style_java) {
-    log.debug("uploadFile called: "+jsonRequest); //$NON-NLS-1$
+  //  log.debug("uploadFile called: "+jsonRequest); //$NON-NLS-1$
     String result = null;
     log.info("Signature_Position_style from javascript, value: "+sig_pos_style_java);
     LoadImageAction.setSignature_position_style(sig_pos_style_java);
@@ -274,7 +274,7 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
 
   public String uploadFileFromDisk(final String cookie, final String jsonRequest, final byte[] byteArr, final String filename, final String sig_pos_style_java) {
     String result = null;
-    LoadImageAction.setSignature_position_style(sig_pos_style_java);
+  //  LoadImageAction.setSignature_position_style(sig_pos_style_java);
     try {
       result = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
         public String run() {
@@ -306,7 +306,7 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
    * @return Identificador do ficheiro carregado
    */
   public String previewFile(final String cookie, final String jsonRequest) {
-    log.debug("previewFile called: "+jsonRequest); //$NON-NLS-1$
+//    log.debug("previewFile called: "+jsonRequest); //$NON-NLS-1$
     String result = null;
     try {
       result = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
@@ -340,7 +340,7 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
    * @return Identificador do ficheiro carregado
    */
   public String modifyFile(final String cookie, final String jsonRequest, final String sig_pos_style_java) {
-    log.debug("modifyFile called: "+jsonRequest); //$NON-NLS-1$
+//    log.debug("modifyFile called: "+jsonRequest); //$NON-NLS-1$
     String result = null;
     
     log.info("Signature_Position_style from javascript, value: "+sig_pos_style_java);
@@ -373,7 +373,7 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
    * @return Identificador do ficheiro carregado
    */
   public String replaceFile(final String cookie, final String jsonRequest, final String sig_pos_style_java) {
-    log.debug("replaceFile called: "+jsonRequest); //$NON-NLS-1$
+    //log.debug("replaceFile called: "+jsonRequest); //$NON-NLS-1$
     String result = null;
     
     log.info("Signature_Position_style from javascript, value: "+sig_pos_style_java);
@@ -406,7 +406,7 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
    * @return Identificador do ficheiro carregado
    */
   public String downloadFile(final String cookie, final String jsonRequest) {
-    log.debug("downloadFile called: "+jsonRequest); //$NON-NLS-1$
+//    log.debug("downloadFile called: "+jsonRequest); //$NON-NLS-1$
     String result = null;
     try {
       result = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
@@ -433,7 +433,7 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
    * @return Mensagem com resultado da validação
    */
   public String verifiyFile(final String cookie, final String jsonRequest) {
-    log.debug("verifiyFile called: "+jsonRequest); //$NON-NLS-1$
+//    log.debug("verifiyFile called: "+jsonRequest); //$NON-NLS-1$
     String result = null;
     try {
       result = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
@@ -460,7 +460,7 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
    * @return Mensagem com resultado da operação
    */
   public String removeFile(final String cookie, final String jsonRequest) {
-    log.debug("removeFile called: "+jsonRequest); //$NON-NLS-1$
+//    log.debug("removeFile called: "+jsonRequest); //$NON-NLS-1$
     String result = null;
     try {
       result = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
@@ -490,7 +490,7 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
    * @return Identificador do ficheiro carregado
    */
   public String scanFile(final String cookie, final String jsonRequest) {
-    log.debug("scanFile called: "+jsonRequest); //$NON-NLS-1$
+    //log.debug("scanFile called: "+jsonRequest); //$NON-NLS-1$
     String result = null;
     try {
       result = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
@@ -517,7 +517,7 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
    * @return 
    */
   public JSONObject setCertificate(final String cookie, final String jsonRequest) {
-    log.debug("setCertificate called: "+jsonRequest); //$NON-NLS-1$
+    //log.debug("setCertificate called: "+jsonRequest); //$NON-NLS-1$
     JSONObject result = null;
     try {
       result = AccessController.doPrivileged(new PrivilegedExceptionAction<JSONObject>() {
@@ -534,9 +534,9 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
 
   
   public String getTaskStatus(String taskId) {
-    log.debug("getTaskStatus called for task: "+taskId); //$NON-NLS-1$
+    //log.debug("getTaskStatus called for task: "+taskId); //$NON-NLS-1$
     String result = doGetTaskStatus(taskId);
-    log.debug("getTaskStatus result: "+result); //$NON-NLS-1$
+    //log.debug("getTaskStatus result: "+result); //$NON-NLS-1$
     return result;
   }
   

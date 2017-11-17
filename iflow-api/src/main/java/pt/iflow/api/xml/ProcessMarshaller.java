@@ -24,7 +24,7 @@ public class ProcessMarshaller {
 		ByteArrayOutputStream bout = new ByteArrayOutputStream();
 		try {
 			Writer writer = new OutputStreamWriter(bout, "UTF-8");
-			JAXBContext context = JAXBContext.newInstance(XmlLibrary.class);
+			JAXBContext context = JAXBContext.newInstance(Processdata.class);
 			Marshaller marshaller = context.createMarshaller();
 			marshaller.marshal(process, writer);
 			writer.close();

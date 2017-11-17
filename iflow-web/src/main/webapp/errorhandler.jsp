@@ -9,7 +9,7 @@ String _login = null;
 UserInfoInterface _userInfo = (UserInfoInterface) session.getAttribute(Const.USER_INFO);
 if(null != _userInfo) _login = _userInfo.getUtilizador();
 // Log Error
-Logger.errorJsp(_login, request.getPathInfo(), "Uncaptured exception in JSP", exception);
+//Logger.errorJsp(_login, request.getPathInfo(), "Uncaptured exception in JSP", exception);
 
 // TODO option to show/hide page header (to include somewhere)
 // TODO Error reporting facility

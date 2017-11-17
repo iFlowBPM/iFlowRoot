@@ -24,6 +24,7 @@ import pt.iflow.api.core.RepositoryFile;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.UserInfoInterface;
+import pt.iflow.core.PathNormalizer;
 
 /**
  * 
@@ -58,7 +59,7 @@ public class PublicFiles extends HttpServlet {
     Logger.debug("", this, "", "If-Modified-Since="+modifiedSince);
     
     
-    String name = request.getPathInfo();
+    String name = PathNormalizer.cleanString(request.getPathInfo());
 
     if (name == null || name.equals(""))
       return null;

@@ -748,24 +748,7 @@
     }
   }
   
-  function reloadPerfChart(paramflow, paramunit, paramtime, audittype , audituserperf , serverparamflowid, serverparamunit, serverparamtime, showOffline, ts) {
-    var selobj = document.getElementById(paramflow); 
-    var flowid = selobj.options[selobj.selectedIndex].value;
-
-    var unitselobj = document.getElementById(paramunit); 
-    var unitsel = unitselobj.options[unitselobj.selectedIndex].value;
-    
-    var timeselobj = document.getElementById(paramtime); 
-    var timesel = timeselobj.options[timeselobj.selectedIndex].value;
-    
-    var f_date_a = document.getElementById('f_date_a');
-    var f_date_c = document.getElementById('f_date_c');
-    var timesel = f_date_a.value + ',' + f_date_c.value;
-    
-    var image = document.getElementById('chart');
-    var imgsrc = auditChartServlet+'?' + audittype + '=' + audituserperf + '&' + serverparamflowid+ '=' + flowid + '&' + serverparamunit + '=' + unitsel + '&' + serverparamtime+ '=' + timesel + '&show_offline='+showOffline+'&ts=' + ts; 
-    image.src = imgsrc;
-  }
+  
   
   function toggleSpan(cspan) {
     customize_span = document.getElementById(cspan);
@@ -781,48 +764,8 @@
   }
   
   
-  function reloadSLAChart(paramflow, paramunit, paramtime, audittype , audituserperf , serverparamflowid, serverparamunit, serverparamtime, includeOpen,showOffline, ts) {
-    var selobj = document.getElementById(paramflow); 
-    var flowid = selobj.options[selobj.selectedIndex].value;
-
-    var unitselobj = document.getElementById(paramunit); 
-    var unitsel = unitselobj.options[unitselobj.selectedIndex].value;
-    
-    var timeselobj = document.getElementById(paramtime); 
-    var timesel = timeselobj.options[timeselobj.selectedIndex].value;
-    
-    var f_date_a = document.getElementById('f_date_a');
-    var f_date_c = document.getElementById('f_date_c');
-    var timesel = f_date_a.value + ',' + f_date_c.value;
   
-    
-    var image = document.getElementById('chart');
-    var imgsrc = auditChartServlet+'?' + audittype + '=' + audituserperf + '&'+ serverparamflowid+ '=' + flowid + '&' + serverparamunit + '=' + unitsel + '&' + serverparamtime+ '=' + timesel 
-    + '&include_open=' + includeOpen + '&second_graph=false&show_offline='+showOffline + '&ts=' + ts; 
-    image.src = imgsrc;
-    
-    if(flowid && flowid > 0) {
-      var image2 = document.getElementById('chart2');
-      var imgsrc2 = auditChartServlet+'?' + audittype + '=' + audituserperf + '&'+ serverparamflowid+ '=' + flowid + '&' + serverparamunit + '=' + unitsel + '&' + serverparamtime+ '=' + timesel
-      + '&include_open=' + includeOpen + '&second_graph=true&show_offline='+showOffline + '&ts=' + ts;
-      image2.src = imgsrc2;
-    }
-  }
 
-  function reloadStatsChart(paramflowid, audittype, auditstyle, paramtime, paramdate, showOffline, ts) {
-    var selobj = document.getElementById(paramflowid); 
-    var flowid = selobj.options[selobj.selectedIndex].value;
-
-    var f_date_a = document.getElementById('f_date_a');
-    var f_date_c = document.getElementById('f_date_c');
-    var timesel = f_date_a.value + ',' + f_date_c.value;
-
-    var image = document.getElementById('chart');
-    var imgsrc = auditChartServlet + '?' + audittype + '=' + auditstyle + '&'
-        + paramflowid + '=' + flowid + '&' + paramtime + '=' + timesel
-        + '&show_offline='+showOffline + '&ts=' + ts;
-    image.src = imgsrc;
-  }
   
   function toggleContents(el) {
     document.getElementById('display_time').disabled=true;
@@ -884,23 +827,7 @@
     }
   }
   
-  function proc_perf_execute(ts) {
-    ts=new Date().getTime();
-    document.getElementById('chart').src='images/loading.gif';
-    reloadPerfChart('flowid','display_units','display_time','audit_type','USER_PERFORMANCE','flowid','display_units','display_time',document.getElementById('perf_offline').checked,ts);
-  }
 
-  function proc_stats_execute(ts) {
-    ts=new Date().getTime();
-    document.getElementById('chart').src='images/loading.gif';
-    reloadStatsChart('flowid','audit_type','PROC_STATISTICS','display_time','display_date',document.getElementById('stats_offline').checked,ts);
-  }
-
-  function proc_sla_execute(ts) {
-    ts=new Date().getTime();
-    document.getElementById('chart').src='images/loading.gif';
-    reloadSLAChart('flowid','display_units','display_time','audit_type','PROC_SLA','flowid','display_units','display_time',document.getElementById('sla_include').checked,document.getElementById('sla_offline').checked,ts);
-  }
   
   function show_help (topic) {
     var spansi = new Array(

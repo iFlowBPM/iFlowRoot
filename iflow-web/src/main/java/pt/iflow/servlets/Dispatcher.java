@@ -142,7 +142,7 @@ public class Dispatcher extends HttpServlet {
       if (!isAdmin(userInfo))
         userInfo = null; // must be admin
     } catch (Throwable t) {
-      Logger.error("ADMIN", this, "doLogin", "could not authenticate user " + login, t);
+      Logger.error("ADMIN", this, "doLogin", "could not authenticate user ", t);
     }
 
     return userInfo;

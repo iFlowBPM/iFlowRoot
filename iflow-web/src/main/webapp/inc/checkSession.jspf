@@ -91,7 +91,7 @@ if(null == session.getAttribute(Const.USER_INFO)) {
   </head>
   <body onload="doParentLogin()">
 	<div id="autoSaveMessage" style="display:none">
-		<form name="loginform" method="post">
+		<form name="loginform" method="post" autocomplete="off">
 			<div style="margin:auto;align:center;height:200px;background-image:url('../images/login_bg.gif');background-repeat:no-repeat;padding-top:1px;">
 			  <div style="position: relative; top: 60px;">
 				<div style="margin: 5px 0px; padding: 0px; position: relative; text-align: center; height: 2em;" class="error_msg">
@@ -107,7 +107,7 @@ if(null == session.getAttribute(Const.USER_INFO)) {
 				   <if:message string="login.field.password"/>
 				</div>
 				<div style="margin: 2px 0pt; padding: 0pt; width: 140px; height: 18px; position: relative; text-align: left; float: right;" class="item">
-				    <input id="idpassword" type="password" name="password" size="15" maxlength="40" onblur="document.getElementById('idpassword').value=this.value;"/>
+				    <input id="idpassword" type="password" name="password" size="15" maxlength="40" autocomplete="off" onblur="document.getElementById('idpassword').value=this.value;"/>
 				</div>
 		        <div style="position: relative; width: 280px; float: left; text-align: right;" class="item">
 			     	<input style="" id="link_search_span" class="regular_button_01" type="button" name="filter" value="Login" 

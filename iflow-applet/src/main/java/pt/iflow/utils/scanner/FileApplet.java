@@ -39,7 +39,7 @@ public class FileApplet extends JApplet {
   private Set<String> _toSign;
 
   public void init() {
-    JFrame.setDefaultLookAndFeelDecorated(true);
+   // JFrame.setDefaultLookAndFeelDecorated(true);
     try {
       super.init();
       _files = new HashMap<String,File>();
@@ -74,7 +74,7 @@ public class FileApplet extends JApplet {
   }
 
   public synchronized boolean canScan() {
-    System.out.println("canScan start"); //$NON-NLS-1$
+    //System.out.println("canScan start"); //$NON-NLS-1$
     boolean canScan = false;
     try {
       canScan = AccessController.doPrivileged(new PrivilegedExceptionAction<Boolean>() {
@@ -90,7 +90,7 @@ public class FileApplet extends JApplet {
   }
 
   public synchronized boolean canSign() {
-    System.out.println("canSign start"); //$NON-NLS-1$
+   // System.out.println("canSign start"); //$NON-NLS-1$
     boolean canSign = false;
     try {
       canSign = AccessController.doPrivileged(new PrivilegedExceptionAction<Boolean>() {
@@ -106,7 +106,7 @@ public class FileApplet extends JApplet {
   }
 
   public synchronized String load(final String variableName) {
-    System.out.println("load start"); //$NON-NLS-1$
+//    System.out.println("load start"); //$NON-NLS-1$
     String result = null;
     try {
       result = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
@@ -123,34 +123,35 @@ public class FileApplet extends JApplet {
   }
 
   public synchronized String loadAndSign(final String variableName) {
-    System.out.println("loadAndSign start"); //$NON-NLS-1$
+    //System.out.println("loadAndSign start"); //$NON-NLS-1$
+	
     String result = null;
-    try {
-      result = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
-        public String run() {
-          return doLoadAndSign(variableName);
-        }
-      });
-    } catch (PrivilegedActionException e) {
-      e.printStackTrace();
-    }
-    System.out.println("loadAndSign complete"); //$NON-NLS-1$
+//    try {
+//      result = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
+//        public String run() {
+//          return doLoadAndSign(variableName);
+//        }
+//      });
+//    } catch (PrivilegedActionException e) {
+//      e.printStackTrace();
+//    }
+//    System.out.println("loadAndSign complete"); //$NON-NLS-1$
     return result;
   }
 
   public synchronized String scan(final String variableName) {
-    System.out.println("scan start"); //$NON-NLS-1$
+   // System.out.println("scan start"); //$NON-NLS-1$
     String result = null;
-    try {
-      result = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
-        public String run() {
-          return doScan(variableName);
-        }
-      });
-    } catch (PrivilegedActionException e) {
-      e.printStackTrace();
-    }
-    System.out.println("scan complete"); //$NON-NLS-1$
+//    try {
+//      result = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
+//        public String run() {
+//          return doScan(variableName);
+//        }
+//      });
+//    } catch (PrivilegedActionException e) {
+//      e.printStackTrace();
+//    }
+//    System.out.println("scan complete"); //$NON-NLS-1$
     return result;
   }
 
@@ -159,18 +160,18 @@ public class FileApplet extends JApplet {
   }
 
   public synchronized String sendAll(final String urlString, final String flowid, final String pid, final String subpid, final String cookies) {
-    System.out.println("sendAll start"); //$NON-NLS-1$
+    //System.out.println("sendAll start"); //$NON-NLS-1$
     String result = null;
-    try {
-      result = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
-        public String run() {
-          return doSendAll(new ClientRequestInfo(urlString, flowid, pid, subpid, cookies));
-        }
-      });
-    } catch (PrivilegedActionException e) {
-      e.printStackTrace();
-    }
-    System.out.println("sendAll complete"); //$NON-NLS-1$
+//    try {
+//      result = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
+//        public String run() {
+//          return doSendAll(new ClientRequestInfo(urlString, flowid, pid, subpid, cookies));
+//        }
+//      });
+//    } catch (PrivilegedActionException e) {
+//      e.printStackTrace();
+//    }
+//    System.out.println("sendAll complete"); //$NON-NLS-1$
     return result;
   }
 
@@ -187,35 +188,35 @@ public class FileApplet extends JApplet {
 
 
   public String signLoadedFile(final String fileId, final String downloadUrl, final String uploadUrl, final String flowid, final String pid, final String subpid, final String cookies) {
-    System.out.println("signLoadedFile start"); //$NON-NLS-1$
+//    System.out.println("signLoadedFile start"); //$NON-NLS-1$
     String result = null;
-    try {
-      result = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
-        public String run() {
-          ClientRequestInfo cli = new ClientRequestInfo(uploadUrl, flowid, pid, subpid, cookies);
-          return doSignLoadedFile(cli, fileId, downloadUrl);
-        }
-      });
-    } catch (PrivilegedActionException e) {
-      e.printStackTrace();
-    }
-    System.out.println("signLoadedFile complete"); //$NON-NLS-1$
+//    try {
+//      result = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
+//        public String run() {
+//          ClientRequestInfo cli = new ClientRequestInfo(uploadUrl, flowid, pid, subpid, cookies);
+//          return doSignLoadedFile(cli, fileId, downloadUrl);
+//        }
+//      });
+//    } catch (PrivilegedActionException e) {
+//      e.printStackTrace();
+//    }
+//    System.out.println("signLoadedFile complete"); //$NON-NLS-1$
     return result;
   }
 
   public String verify(final String downloadUrl, final String cookies) {
-    System.out.println("signLoadedFile start"); //$NON-NLS-1$
+    //System.out.println("signLoadedFile start"); //$NON-NLS-1$
     String result = null;
-    try {
-      result = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
-        public String run() {
-          return doVerify(downloadUrl, cookies);
-        }
-      });
-    } catch (PrivilegedActionException e) {
-      e.printStackTrace();
-    }
-    System.out.println("signLoadedFile complete"); //$NON-NLS-1$
+//    try {
+//      result = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
+//        public String run() {
+//          return doVerify(downloadUrl, cookies);
+//        }
+//      });
+//    } catch (PrivilegedActionException e) {
+//      e.printStackTrace();
+//    }
+//    System.out.println("signLoadedFile complete"); //$NON-NLS-1$
     return result;
   }
 

@@ -11,8 +11,10 @@ import pt.iflow.api.sch.InstructionCompilerConstants;
 import pt.iflow.api.utils.Logger;
 
 public class InstructionCompiler implements InstructionCompilerConstants {
-  static java.util.Stack argStack = new java.util.Stack();
-  static java.util.HashSet varset = new java.util.HashSet();
+  @SuppressWarnings("rawtypes")
+static java.util.Stack argStack = new java.util.Stack();
+  @SuppressWarnings("rawtypes")
+static java.util.HashSet varset = new java.util.HashSet();
   static boolean javascript = false;
   static boolean javascriptNS = false;
   static boolean compile = false;

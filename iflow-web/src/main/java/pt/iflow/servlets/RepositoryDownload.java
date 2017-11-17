@@ -24,6 +24,7 @@ import pt.iflow.api.core.RepositoryFile;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.UserInfoInterface;
+import pt.iflow.core.PathNormalizer;
 
 /**
 * 
@@ -52,7 +53,7 @@ public class RepositoryDownload extends HttpServlet {
 
   protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     Logger.trace("Memory before: "+Runtime.getRuntime().freeMemory()+" ("+Runtime.getRuntime().totalMemory()+")");
-    String name = request.getParameter("file");
+    String name = PathNormalizer.cleanString(request.getParameter("file"));
     String type = request.getParameter("type");
     
     UserInfoInterface userInfo = (UserInfoInterface)request.getSession().getAttribute(Const.USER_INFO);
@@ -80,7 +81,7 @@ public class RepositoryDownload extends HttpServlet {
       if (repFile == null || !repFile.exists()) {
         response.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found");
       } else {
-        response.setHeader("Content-Disposition","attachment;filename=" + name);
+        //response.setHeader("Content-Disposition","attachment;filename=" + name);
         OutputStream out = response.getOutputStream();
         response.setContentLength(repFile.getSize());
         repFile.writeToStream(out);

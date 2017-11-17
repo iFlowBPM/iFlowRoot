@@ -1,6 +1,7 @@
 package pt.iflow.servlets;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -32,8 +33,8 @@ public abstract class IFlowFilter implements Filter {
   }
 
   protected String[] getCredentials(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String authHeader = request.getHeader("Authorization");
-    if (StringUtils.isNotEmpty(authHeader) && authHeader.toLowerCase().startsWith(AUTHENTICATION_METHOD)) {
+     String authHeader = request.getHeader("Authorization");
+    if (StringUtils.isNotEmpty(authHeader) && authHeader.toLowerCase(Locale.ENGLISH).startsWith(AUTHENTICATION_METHOD)) {
       String credentials = authHeader.substring(AUTHENTICATION_METHOD.length());
       String decodedCredentials = new String(Base64.decode(credentials));
       int pos = decodedCredentials.indexOf(USERNAME_SEPARATOR);

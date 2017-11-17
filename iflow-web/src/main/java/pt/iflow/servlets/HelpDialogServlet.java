@@ -21,6 +21,7 @@ import pt.iflow.api.userdata.Tutorial;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.UserInfoInterface;
+import pt.iflow.core.PathNormalizer;
 import pt.iflow.core.Version;
 import pt.iknow.utils.VelocityUtils;
 
@@ -64,10 +65,10 @@ public class HelpDialogServlet extends javax.servlet.http.HttpServlet implements
 
     Hashtable<String,Object> htSubst = null;
     
-    String file = request.getParameter("id");
+    String file = PathNormalizer.cleanString(request.getParameter("id"));
     
     // find what to do
-    String method = request.getPathInfo();
+    String method = PathNormalizer.cleanString(request.getPathInfo());
     if (method == null) {
       method = "";
     }
