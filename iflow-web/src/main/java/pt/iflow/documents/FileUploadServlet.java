@@ -123,10 +123,10 @@ public class FileUploadServlet extends HttpServlet {
         if(null != savedDocument) {
           String id = String.valueOf(savedDocument.getDocId());
 
-          Logger.debug("<unknown>", this, "fileUpload", "STORED ID=" + id);
+          Logger.debug("<unknown>", this, "fileUpload", "STORED ID=");
           outStream.write(id.getBytes("UTF-8"));
         } else {
-          Logger.warning("<unknown>", this, "fileUpload", "Could not save file " + fileName);
+          Logger.warning("<unknown>", this, "fileUpload", "Could not save file ");
         }
       }
 

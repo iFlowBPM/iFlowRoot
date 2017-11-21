@@ -50,7 +50,7 @@
         }
         paramsOk = true;
     } catch (NumberFormatException e) {
-      Logger.warningJsp(login,request.getPathInfo(), "Error parsing process parameters: ");
+      Logger.warningJsp(login,"", "Error parsing process parameters: ");
     }
     
     if (paramsOk) {

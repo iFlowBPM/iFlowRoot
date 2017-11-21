@@ -2148,7 +2148,7 @@ public class BlockFormulario extends Block implements FormOperations {
       } catch (Exception e) {
         Logger.error(sLogin, this, "processForm", 
             retObj.getSignature() + "caught exception processing links in field "
-            + fi.getDescription() + ": " + e.getMessage(), e);
+            + fi.getDescription() + ": ", e);
         continue;
       }
     }
@@ -2677,8 +2677,7 @@ public class BlockFormulario extends Block implements FormOperations {
 
         } // for vars
       } catch (Exception e) {
-        Logger.error(sLogin, this, "processForm", retObj.getSignature() + "caught exception in field " + fi.getDescription() + ": "
-            + e.getMessage(), e);
+        Logger.error(sLogin, this, "processForm", retObj.getSignature() + "caught exception in field " + fi.getDescription() + ": ", e);
         alErrors.add("Erro ao processar campo " + fi.getDescription());
 
         continue;

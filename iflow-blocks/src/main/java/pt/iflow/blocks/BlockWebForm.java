@@ -326,7 +326,7 @@ public class BlockWebForm extends Block implements FormOperations {
     // usar o valor recebido no URL
     // String sUrl = Const.APP_PROTOCOL + "://" + Const.APP_HOST + ":" + Const.APP_PORT + Const.APP_URL_PREFIX ;
     String sUrl = servletContext.getRequestURL();
-    Logger.debug(sLogin, "BlockWebForm", "generateForm", "Requested base URL: "+sUrl);
+    Logger.debug(sLogin, "BlockWebForm", "generateForm", "Requested base URL: ");
     Locale userLocale = userInfo.getUserSettings().getLocale();
     utility.setParameter("lang_string", userLocale.getLanguage());
     utility.setParameter("country_string", userLocale.getCountry());

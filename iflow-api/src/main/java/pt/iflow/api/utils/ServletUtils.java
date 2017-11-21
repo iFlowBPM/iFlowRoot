@@ -78,11 +78,11 @@ public static void sendEncodeRedirect(HttpServletResponse response, ServletUtils
   public String getRequestURL() {
     if(null == this.request) return null;
     //Logger.debug("", this, "", this.request.getRequestURI());
-    String scheme = this.request.getScheme();
-    String host = this.request.getServerName();
-    int port = this.request.getServerPort();
-    String context = this.request.getContextPath();
-    return scheme+"://"+host+":"+port+context;
+   // String scheme = this.request.getScheme();
+   // String host = this.request.getServerName();
+   // int port = this.request.getServerPort();
+   // String context = this.request.getContextPath();
+    return "";
   }
 
   public String encodeURL(String url) {

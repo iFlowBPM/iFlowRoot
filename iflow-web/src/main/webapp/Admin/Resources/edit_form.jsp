@@ -44,7 +44,7 @@
 		  </li>
 		</c:if>
   		<li style="width: 100%;">
-		  <textarea id="editor" name="editor" class="textarea" wrap="off"><%=RepositoryEditor.retrieveFile(userInfo, PathNormalizer.cleanString(request.getParameter("file")), request.getParameter("type")) %></textarea>
+		 
   		</li>
 	  </ol>
 	</fieldset>

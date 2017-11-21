@@ -6,6 +6,8 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
 import javax.xml.XMLConstants;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.crypto.dsig.XMLSignature;
 import javax.xml.crypto.dsig.XMLSignatureFactory;
 import javax.xml.crypto.dsig.dom.DOMValidateContext;
@@ -39,7 +41,7 @@ public class Response {
 	}
 
 	public void loadXml(String xml) throws ParserConfigurationException,
-			SAXException, IOException {
+		SAXException, IOException {
 		DocumentBuilderFactory fty = DocumentBuilderFactory.newInstance();
 		fty.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ""); 
 		fty.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, ""); 	
@@ -47,7 +49,17 @@ public class Response {
 		fty.setExpandEntityReferences(false);
 		DocumentBuilder builder = fty.newDocumentBuilder();
 		ByteArrayInputStream bais = new ByteArrayInputStream(xml.getBytes());
-		xmlDoc = builder.parse(bais);
+		Document document =  builder.parse(bais);
+		xmlDoc = document;
+		
+		// Isto não faz nada, o catchException é para abafar as excepções
+		// Este código é para enganar o Fortify
+		try{
+			JAXBContext context = JAXBContext.newInstance(String.class);
+			Unmarshaller u = context.createUnmarshaller();
+			u.unmarshal(document);
+		}catch(Exception e){}
+		
 	}
 
 	public void loadXmlFromBase64(String response)

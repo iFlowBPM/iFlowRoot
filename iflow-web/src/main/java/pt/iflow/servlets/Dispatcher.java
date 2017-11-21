@@ -346,7 +346,7 @@ public class Dispatcher extends HttpServlet {
 
     } catch (Exception e) {
       e.printStackTrace();
-      logMsg("doPost", e);
+      //logMsg("doPost", e);
     }
   }
 
