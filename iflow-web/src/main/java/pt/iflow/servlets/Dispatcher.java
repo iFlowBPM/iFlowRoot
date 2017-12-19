@@ -142,7 +142,7 @@ public class Dispatcher extends HttpServlet {
       if (!isAdmin(userInfo))
         userInfo = null; // must be admin
     } catch (Throwable t) {
-      Logger.error("ADMIN", this, "doLogin", "could not authenticate user ", t);
+      ////logger.error("ADMIN", this, "doLogin", "could not authenticate user ", t);
     }
 
     return userInfo;
@@ -305,7 +305,7 @@ public class Dispatcher extends HttpServlet {
         opCode = Integer.parseInt(op);
       } catch (Throwable t) {
         opCode = RepositoryWebOpCodes.INVALID_REQUEST;
-        logMsg("doPost", t);
+        //logMsg("doPost", t);
       }
 
       // logMsg(userInfo, "Username: "+login+" Password: "+password+" OP: "+op+" value: "+value);
@@ -351,11 +351,11 @@ public class Dispatcher extends HttpServlet {
   }
 
   private static void logMsg(UserInfoInterface userInfo, String msg) {
-    Logger.debug(userInfo.getUtilizador(), "Dispatcher", msg, msg);
+    //////logger.debug(userInfo.getUtilizador(), "Dispatcher", msg, msg);
   }
 
   private static void logMsg(String msg, Throwable t) {
-    Logger.error(null, "Dispatcher", msg, msg, t);
+    //////logger.error(null, "Dispatcher", msg, msg, t);
   }
 
   //
@@ -532,8 +532,8 @@ public class Dispatcher extends HttpServlet {
     try {
       flowid = Integer.parseInt(name.split(";")[0]);
     } catch (NumberFormatException ex) {
-      Logger.error(userInfo.getUtilizador(), this, "getFlowState",
-          "Unable to convert to number (value=" + name.split(";")[0] + ")", ex);
+      ////logger.error(userInfo.getUtilizador(), this, "getFlowState",
+    
     }
     pnumber = name.split(";")[1];
     List<FlowStateHistoryTO> flowStateHistory = BeanFactory.getProcessManagerBean()
@@ -563,11 +563,10 @@ public class Dispatcher extends HttpServlet {
     try {
       ret = Integer.parseInt(number[index]);
     } catch (NumberFormatException ex) {
-      Logger.error(userInfo.getUtilizador(), this, "convertToNumber", "Unable to convert to number (value=" + number[index] + ")",
-          ex);
+      ////logger.error(userInfo.getUtilizador(), this, "convertToNumber", "Unable to convert to number (value=",
+         // ex);
     } catch (IndexOutOfBoundsException ex) {
-      Logger.error(userInfo.getUtilizador(), this, "convertToNumber", "Supplied index larger than given array (index=" + index
-          + "; array length=" + number.length + ")", ex);
+      ////logger.error(userInfo.getUtilizador(), this, "convertToNumber", "Supplied index larger than given array (index=", ex);
     }
     return ret;
   }
@@ -1106,7 +1105,7 @@ public class Dispatcher extends HttpServlet {
       try {
         outStream.write(data);
       } catch (IOException e) {
-        Logger.warning(null, "ClasspathRepositoryFile", "writeToStream", "Error writing data to stream");
+        ////logger.warning(null, "ClasspathRepositoryFile", "writeToStream", "Error writing data to stream");
       }
     }
 

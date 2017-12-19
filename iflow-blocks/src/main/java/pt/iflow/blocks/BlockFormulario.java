@@ -185,8 +185,8 @@ public class BlockFormulario extends Block implements FormOperations {
       pm.updateActivity(userInfo, activity);
 
     } catch (Exception e) {
-      Logger.error(login, this, "before", procData.getSignature() + "Caught an unexpected exception scheduling activities: "
-          + e.getMessage(), e);
+      Logger.error(login, this, "before", "Caught an unexpected exception scheduling activities: "
+    		  , e);
     }
 
     stmp = procData.getAppData(DataSetVariables.PROCESS_NOT_IN_CREATOR);
@@ -1494,7 +1494,7 @@ public class BlockFormulario extends Block implements FormOperations {
       if (hmExtraProps != null) {
         // macro title
         String mtep = (String)hmExtraProps.get(FormProps.sROW_MACROTITLE_EXTRAPROP);
-        if (mtep != null && mtep.toLowerCase().equals(FormProps.sTITLE_EXTRAPROP_VAR)) {
+        if (mtep != null && mtep.toLowerCase(Locale.ENGLISH).equals(FormProps.sTITLE_EXTRAPROP_VAR)) {
           // fetch var's value
           sMacroTitle = procData.getFormatted(sMacroTitle);
           // update props entry
@@ -1506,7 +1506,7 @@ public class BlockFormulario extends Block implements FormOperations {
 
         // title
         String tep = (String)hmExtraProps.get(FormProps.sROW_TITLE_EXTRAPROP);
-        if (tep != null && tep.toLowerCase().equals(FormProps.sTITLE_EXTRAPROP_VAR)) {
+        if (tep != null && tep.toLowerCase(Locale.ENGLISH).equals(FormProps.sTITLE_EXTRAPROP_VAR)) {
           // fetch var's value
           sTitle = procData.getFormatted(sTitle);
           // update props entry
@@ -1849,8 +1849,7 @@ public class BlockFormulario extends Block implements FormOperations {
       // process.resetEvaluator();
       result = process.query(userInfo, disableExpr);
     } catch (Exception e) {
-      Logger.warning(null, this, "isFieldDisabled", "Condicao Disable caught exception evaluation beanshell (assuming false): "
-          + e.getMessage(), e);
+      Logger.warning(null, this, "isFieldDisabled", "Condicao Disable caught exception evaluation beanshell (assuming false): ", e);
       result = false;
     }
 
@@ -2146,9 +2145,7 @@ public class BlockFormulario extends Block implements FormOperations {
           }
         }
       } catch (Exception e) {
-        Logger.error(sLogin, this, "processForm", 
-            retObj.getSignature() + "caught exception processing links in field "
-            + fi.getDescription() + ": ", e);
+        Logger.error(sLogin, this, "processForm", "caught exception processing links in field ", e);
         continue;
       }
     }
@@ -2787,7 +2784,7 @@ public class BlockFormulario extends Block implements FormOperations {
           } catch (ParseException e) {
             Logger.error(user, this, "resetFormButtons", 
                 procData.getSignature() + "caught exception in button with var " + customVar
-                + " and value " + value + ": " + e.getMessage(), e);
+                + " and value " + value + ": ", e);
             continue;
           }
         }

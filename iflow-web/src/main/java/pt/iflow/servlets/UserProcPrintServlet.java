@@ -82,7 +82,7 @@ public class UserProcPrintServlet extends javax.servlet.http.HttpServlet impleme
       pid = Integer.parseInt(spid);
       subpid = Integer.parseInt(ssubpid);
     } catch (Exception e) {
-      Logger.error(userInfo.getUtilizador(), this, "service", "Error parsing request", e);
+      //logger.error(userInfo.getUtilizador(), this, "service", "Error parsing request", e);
       response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
       return;
     }
@@ -91,7 +91,7 @@ public class UserProcPrintServlet extends javax.servlet.http.HttpServlet impleme
       procData = BeanFactory.getProcessManagerBean().getProcessData(userInfo, new ProcessHeader(flowid, pid, subpid), Const.nALL_PROCS);
     } 
     catch (Exception e) {
-      Logger.error(userInfo.getUtilizador(), this, "service", "Error fetching process data", e);
+      //logger.error(userInfo.getUtilizador(), this, "service", "Error fetching process data", e);
       response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
       return;
     }
@@ -108,7 +108,7 @@ public class UserProcPrintServlet extends javax.servlet.http.HttpServlet impleme
 
     FlowSetting setting = BeanFactory.getFlowSettingsBean().getFlowSetting(flowid, Const.sDETAIL_PRINT_STYLESHEET);
     if(null == setting || StringUtils.isEmpty(setting.getValue())) {
-      Logger.info(userInfo.getUtilizador(), this, "service", "No print template defined");
+      //logger.info(userInfo.getUtilizador(), this, "service", "No print template defined");
       Map<String, Object> env = new HashMap<String, Object>();
       env.put("flowid", flowid);
       env.put("pid", pid);
@@ -191,7 +191,7 @@ public class UserProcPrintServlet extends javax.servlet.http.HttpServlet impleme
       generator.getContents(engine, pdfOut);
 
     } catch (Throwable t) {
-      Logger.error(userInfo.getUtilizador(), this, "service", "Ocorreu excepcao a gerar o PDF", t);
+      //logger.error(userInfo.getUtilizador(), this, "service", "Ocorreu excepcao a gerar o PDF", t);
       response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Could not generate PDF. Cause: "+t.getMessage());
       return;
     } finally {

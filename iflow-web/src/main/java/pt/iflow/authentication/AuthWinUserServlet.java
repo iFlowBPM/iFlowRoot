@@ -182,7 +182,9 @@ public class AuthWinUserServlet extends javax.servlet.http.HttpServlet implement
     response.addCookie(sessionPassword);
 
     if (result.isAuth && StringUtils.equals(keepSession, "on")) {
-     sessionUsername = ServletUtils.newCookie(Const.SESSION_COOKIE_USERNAME, login);
+    	login = login.replaceAll("\\n", "");
+    	login = login.replaceAll("\\r", ""); 
+    sessionUsername = ServletUtils.newCookie(Const.SESSION_COOKIE_USERNAME, login);
     sessionPassword = ServletUtils.newCookie(Const.SESSION_COOKIE_PASSWORD, Utils.encrypt(psd));
     response.addCookie(sessionUsername);
     response.addCookie(sessionPassword);

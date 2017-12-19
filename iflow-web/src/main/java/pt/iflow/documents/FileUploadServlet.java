@@ -52,7 +52,7 @@ public class FileUploadServlet extends HttpServlet {
     try {
       FormData fdFormData = FormUtils.parseRequest(req, Const.nUPLOAD_THRESHOLD_SIZE, Const.nUPLOAD_MAX_SIZE,
           Const.fUPLOAD_TEMP_DIR);
-
+      
       HttpSession session = req.getSession();
       UserInfoInterface userInfo = (UserInfoInterface) session.getAttribute(Const.USER_INFO);
       if (userInfo == null) throw new NullPointerException();
@@ -63,6 +63,7 @@ public class FileUploadServlet extends HttpServlet {
       ProcessData procData = null;
       // use of fdFormData defined in /inc/defs.jsp
       flowid = Integer.parseInt(fdFormData.getParameter("flowid"));
+      //flowid = Integer.parseInt(req.getParameter("flowid"));
       pid = Integer.parseInt(fdFormData.getParameter("pid"));
       String sSubPid = fdFormData.getParameter("subpid");
 
@@ -123,17 +124,17 @@ public class FileUploadServlet extends HttpServlet {
         if(null != savedDocument) {
           String id = String.valueOf(savedDocument.getDocId());
 
-          Logger.debug("<unknown>", this, "fileUpload", "STORED ID=");
+          //logger.debug("<unknown>", this, "fileUpload", "STORED ID=");
           outStream.write(id.getBytes("UTF-8"));
         } else {
-          Logger.warning("<unknown>", this, "fileUpload", "Could not save file ");
+          //logger.warning("<unknown>", this, "fileUpload", "Could not save file ");
         }
       }
 
       outStream.flush();
       outStream.close();
     } catch (Throwable e) {
-      Logger.error("<unknown>", this, "fileUpload", "Error uploading files.", e);
+      //logger.error("<unknown>", this, "fileUpload", "Error uploading files.", e);
       throw new ServletException(e);
     }
   }

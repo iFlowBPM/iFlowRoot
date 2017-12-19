@@ -214,7 +214,7 @@ public class UpdateOrganization extends HttpServlet {
       
     } catch (Exception e) {
       e.printStackTrace();
-      Logger.error(userInfo.getUtilizador(), this, "service", "Error parsing request");
+      //logger.error(userInfo.getUtilizador(), this, "service", "Error parsing request");
       response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
       return;
     }

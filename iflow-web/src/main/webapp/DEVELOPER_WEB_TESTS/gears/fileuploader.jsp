@@ -16,11 +16,11 @@ FormData fdFormData = FormUtils.parseRequest(request, Const.nUPLOAD_THRESHOLD_SI
 String filename = fdFormData.getParameter("filename");
 String filePath = OfflineManager.getOfflineFilePath(application.getRealPath("/"), filename); 
 
-Logger.debugJsp("", "fileuploader.jsp", "Creating file " + filePath + "...");
+//logger.debugJsp("", "fileuploader.jsp", "Creating file ");
 
 OfflineManager.uploadFile(request.getInputStream(), filePath);
 
-Logger.debugJsp("", "fileuploader.jsp", "..DONE!");
+//logger.debugJsp("", "fileuploader.jsp", "..DONE!");
 
 %>
 

@@ -79,13 +79,13 @@ public class UpdateLicense extends HttpServlet {
       
     } catch (Exception e) {
       e.printStackTrace();
-      Logger.error(userInfo.getUtilizador(), this, "service", "Error parsing request");
+      //logger.error(userInfo.getUtilizador(), this, "service", "Error parsing request");
       response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
       return;
     }
     
     if(file != null) {
-      Logger.warning(userInfo.getUtilizador(), this, "service", "Setting new license file...");
+      //logger.warning(userInfo.getUtilizador(), this, "service", "Setting new license file...");
       LicenseServiceFactory.getLicenseService().load(userInfo, file.getData());
     }
     

@@ -84,7 +84,7 @@ public class SubFlowDataExpander {
         
         String prefix = getSubFlowPrefix(subFlowBlock);
         if(StringUtils.isBlank(prefix))
-        	prefix = "" + subFlowBlock.getId();
+        	prefix = "" + xmlAttribute.getValue();
         for(XmlBlockType block:xmlSubFlow.getXmlBlock())
         	setSubFlowPrefix(block, prefix+"_"+ block.getId());
         
