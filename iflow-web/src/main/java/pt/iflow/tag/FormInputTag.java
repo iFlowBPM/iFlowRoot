@@ -136,9 +136,9 @@ public class FormInputTag extends IknowTag {
         sb.append("\" id=\"");
         sb.append(asName);
         sb.append("\" value=\"");
-        sb.append("<c:out value=\"");
-        sb.append(asValue);
-        sb.append("\" escapeXML=true ");
+        //sb.append("<c:out value=\"");
+        sb.append(ESAPI.encoder().encodeForHTML(asValue));
+        //sb.append("\" escapeXML=true ");
         if(("text".equals(asType) || "password".equals(asType))&&!StringUtils.isEmpty(maxlength)) {
           sb.append("\" maxlength=\"");
           sb.append(maxlength);
@@ -157,7 +157,8 @@ public class FormInputTag extends IknowTag {
         sb.append("/>");
       }
       else {
-        sb.append("${fn:escapeXml("+asValue+")}"); 
+        //sb.append("${fn:escapeXml("+asValue+")}");
+    	  sb.append(ESAPI.encoder().encodeForHTML(asValue));
       }
     }
     sb.append("</li>");
@@ -175,16 +176,16 @@ public class FormInputTag extends IknowTag {
   public int doEndTag() throws JspException {
 
     String result = generateInputField();
-    
-    String clean = result.replace( '\n', '_' ).replace( '\r', '_' );
-    
-    clean = ESAPI.encoder().encodeForHTML(result);
-    if (!result.equals(clean)) {
-        clean += " (Encoded)";
-    }
-        
+//    
+//    String clean = result.replace( '\n', '_' ).replace( '\r', '_' );
+//    
+//    clean = ESAPI.encoder().encodeForHTML(result);
+//    if (!result.equals(clean)) {
+//        clean += " (Encoded)";
+//    }
+//        
     try {
-      pageContext.getOut().write(clean);
+      pageContext.getOut().write(result);
     }
     catch (IOException e) {
       throw new JspException(e);
