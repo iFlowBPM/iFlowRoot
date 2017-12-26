@@ -120,7 +120,7 @@ public class SubFlowDataExpander {
 	  for (int i=0; i< allAttributes.size(); i++)
 		  if(StringUtils.equals(allAttributes.get(i).getName(),SUBFLOW_PREFIX)){
 			  allAttributes.set(i, result);
-			  block.withXmlAttribute(allAttributes);
+			  block.getXmlAttribute().clear(); block.withXmlAttribute(allAttributes);
 			  return;
 		  }
 	  	  
@@ -404,8 +404,8 @@ public class SubFlowDataExpander {
       endCopyAttr.add(endOrig);
       endCopyAttr.add(endDest);
     }
-    rawSubFlow.get(0).withXmlAttribute(startCopyAttr.toArray(new XmlAttributeType[startCopyAttr.size()]));
-    blockEnd.withXmlAttribute(endCopyAttr.toArray(new XmlAttributeType[endCopyAttr.size()]));
+    rawSubFlow.get(0).getXmlAttribute().clear(); rawSubFlow.get(0).withXmlAttribute(startCopyAttr.toArray(new XmlAttributeType[startCopyAttr.size()]));
+    blockEnd.getXmlAttribute().clear(); blockEnd.withXmlAttribute(endCopyAttr.toArray(new XmlAttributeType[endCopyAttr.size()]));
   }
 
   /**
@@ -527,8 +527,8 @@ public class SubFlowDataExpander {
       startPorts[0] = rawSubFlow.get(0).getXmlPort().get(0); // se for do tipo form block nao tem entrada
     }
 
-    subFlowBlockStart.withXmlPort(startPorts);
-    subFlowBlockStart.withXmlAttribute(new XmlAttributeType[0]);
+    subFlowBlockStart.getXmlPort().clear(); subFlowBlockStart.withXmlPort(startPorts);
+    subFlowBlockStart.getXmlAttribute().clear(); subFlowBlockStart.withXmlAttribute(new XmlAttributeType[0]);
 
     return subFlowBlockStart;
   }
@@ -623,7 +623,7 @@ public class SubFlowDataExpander {
           portSuccess.setName("portSuccess");
           portIn.setName("portIn");
           XmlPortType[] ports = { portIn, portSuccess };
-          block.withXmlPort(ports);
+          block.getXmlPort().clear(); block.withXmlPort(ports);
         } else if (block.getXmlPort().size() == 1) {
           XmlPortType blankPort = new XmlPortType();
           if (block.getXmlPort().get(0).getName().equals("portIn")) {
