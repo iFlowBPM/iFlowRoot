@@ -142,7 +142,7 @@ public class Dispatcher extends HttpServlet {
       if (!isAdmin(userInfo))
         userInfo = null; // must be admin
     } catch (Throwable t) {
-      ////logger.error("ADMIN", this, "doLogin", "could not authenticate user ", t);
+      //logger.error("ADMIN", this, "doLogin", "could not authenticate user ", t);
     }
 
     return userInfo;
@@ -351,11 +351,11 @@ public class Dispatcher extends HttpServlet {
   }
 
   private static void logMsg(UserInfoInterface userInfo, String msg) {
-    //////logger.debug(userInfo.getUtilizador(), "Dispatcher", msg, msg);
+    //logger.debug(userInfo.getUtilizador(), "Dispatcher", msg, msg);
   }
 
   private static void logMsg(String msg, Throwable t) {
-    //////logger.error(null, "Dispatcher", msg, msg, t);
+    //logger.error(null, "Dispatcher", msg, msg, t);
   }
 
   //
@@ -532,7 +532,7 @@ public class Dispatcher extends HttpServlet {
     try {
       flowid = Integer.parseInt(name.split(";")[0]);
     } catch (NumberFormatException ex) {
-      ////logger.error(userInfo.getUtilizador(), this, "getFlowState",
+      //logger.error(userInfo.getUtilizador(), this, "getFlowState",
     
     }
     pnumber = name.split(";")[1];
@@ -563,10 +563,10 @@ public class Dispatcher extends HttpServlet {
     try {
       ret = Integer.parseInt(number[index]);
     } catch (NumberFormatException ex) {
-      ////logger.error(userInfo.getUtilizador(), this, "convertToNumber", "Unable to convert to number (value=",
+      //logger.error(userInfo.getUtilizador(), this, "convertToNumber", "Unable to convert to number (value=",
          // ex);
     } catch (IndexOutOfBoundsException ex) {
-      ////logger.error(userInfo.getUtilizador(), this, "convertToNumber", "Supplied index larger than given array (index=", ex);
+      //logger.error(userInfo.getUtilizador(), this, "convertToNumber", "Supplied index larger than given array (index=", ex);
     }
     return ret;
   }
@@ -1105,7 +1105,7 @@ public class Dispatcher extends HttpServlet {
       try {
         outStream.write(data);
       } catch (IOException e) {
-        ////logger.warning(null, "ClasspathRepositoryFile", "writeToStream", "Error writing data to stream");
+        //logger.warning(null, "ClasspathRepositoryFile", "writeToStream", "Error writing data to stream");
       }
     }
 

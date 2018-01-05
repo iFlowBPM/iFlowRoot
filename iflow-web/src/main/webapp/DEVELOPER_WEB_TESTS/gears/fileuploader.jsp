@@ -1,5 +1,4 @@
 
-<%@page import="pt.iflow.api.utils.Logger"%>
 <%@page import="pt.iflow.offline.OfflineManager"%>
 <%@page import="java.io.InputStream"%>
 <%@page import="java.io.FileReader"%>

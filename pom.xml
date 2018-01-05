@@ -84,6 +84,7 @@
 				<version>${crypto-api.version}</version> <!-- replicated in iflow-applet -->
 				<scope>provided</scope>
 			</dependency>
+			
 
 			<!-- APP.external -->
 			<dependency>
@@ -267,6 +268,12 @@
 				<groupId>net.sourceforge.collections</groupId>
 				<artifactId>collections-generic</artifactId>
 				<version>4.01</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.infosistema</groupId>
+				<artifactId>PariPersiLargeDataReader</artifactId>
+  				<version>0.0.1-SNAPSHOT</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
@@ -539,8 +546,8 @@
 				<scope>system</scope>
 				<systemPath>C:\webserver\www\iFlow\iFlowRootPariPersi\iFlowRoot\libs_bombadas\collections-generic-4.01.jar</systemPath>
 			</dependency>
-
-
+			
+			
 		</dependencies>
 	</dependencyManagement>
 

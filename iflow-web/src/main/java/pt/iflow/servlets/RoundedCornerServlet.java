@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -56,7 +57,7 @@ import org.apache.commons.lang.StringUtils;
        
        for (int i=0; i < names.length; i++)
        {
-           if (names[i].toLowerCase().equals("gif"))
+           if (names[i].toLowerCase(Locale.ENGLISH).equals("gif"))
            {
                supportsGif = true;
                break;

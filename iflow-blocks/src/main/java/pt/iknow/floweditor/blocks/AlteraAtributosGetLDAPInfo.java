@@ -103,10 +103,10 @@ public class AlteraAtributosGetLDAPInfo extends AlteraAtributos {
 
       stmp = stmp.toLowerCase();
 
-      if (stmp.equals(sTRUE) || stmp.equals("1") || stmp.equals(adapter.getString("Common.yes"))) { //$NON-NLS-1$ //$NON-NLS-2$
-        newdata[data.length][1] = data2[i];
-        break;
-      }
+     // if (stmp.equals(sTRUE) || stmp.equals("1") || stmp.equals(adapter.getString("Common.yes"))) { //$NON-NLS-1$ //$NON-NLS-2$
+       // newdata[data.length][1] = data2[i];
+       // break;
+     // }
     }
 
     // now description and result

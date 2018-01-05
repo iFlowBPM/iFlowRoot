@@ -131,11 +131,11 @@ public class AppendDocuments {
             Logger.warning(login, "AppenDocuments", "postProcessPDF", "Documento "+docid+" nao tem conteudo.");
             continue;
           }
-          String fname = doc.getFileName().toLowerCase();
+          String fname = doc.getFileName();
 
           Logger.debug(login, "AppenDocuments", "postProcessPDF", "Documento "+docid+" => "+fname);
           byte [] pdfContents = null;
-          if(fname.endsWith(".pdf")) { 
+          if(fname.toLowerCase(Locale.ENGLISH).endsWith(".pdf")) { 
             Logger.debug(login, "AppenDocuments", "postProcessPDF", "Assumindo PDF...");
             pdfContents = doc.getContent();
           } else if(isTiffImageExt(fname)) { // try multipage tiff

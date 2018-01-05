@@ -18,6 +18,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Properties;
 import java.util.Stack;
 import java.util.StringTokenizer;
@@ -473,17 +474,7 @@ public class RepositoryAccessOracleImpl implements RepositoryAccess {
       while ((entry = zis.getNextEntry()) != null) {
         if (!entry.isDirectory()) {
           String name = entry.getName();
-          if (!name.toUpperCase().startsWith("META-INF")) {
-            byte[] buffer = new byte[CHUNK_SIZE];
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            int read = -1;
-            while ((read = zis.read(buffer)) != -1) {
-              bos.write(buffer, 0, read);
-            }
-            bos.close();
-            byte[] bytes = bos.toByteArray();
-            setFile( path + "/" + name, bytes);
-          }
+          
         }
       }
       retObj = true;
