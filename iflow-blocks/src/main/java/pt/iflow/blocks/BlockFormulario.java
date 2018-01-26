@@ -1870,7 +1870,8 @@ public class BlockFormulario extends Block implements FormOperations {
         || !ArrayUtils.contains(new String[] { "true", "yes" }, Const.DEBUG_FORM.toLowerCase()))
       return;
     OutputStream tmpOut = null;
-    String iflowHome = System.getProperty("iflow.home");
+    //String iflowHome = System.getProperty("iflow.home");
+    String iflowHome = Const.sIFLOW_HOME;
     try {
       // This will output the generated form and HTML
       tmpOut = new FileOutputStream(new File(iflowHome, "form.xml"));

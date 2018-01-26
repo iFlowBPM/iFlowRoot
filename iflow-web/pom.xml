@@ -340,6 +340,11 @@
 		</dependency>
 
 	</dependencies>
+	
+	<properties>
+     <name>${project.name></name>
+     <version>${project.version}</version>
+    </properties>
 
 	<build>
 		<plugins>
@@ -385,7 +390,6 @@
 							</resources>
 						</configuration>
 					</execution>
-				<!-- Cópia da pasta Libs bombadas para a pasta Lib de modo a ser incluido no War -->
 					<execution>
 						<id>copy-libs-bombadas</id>
 						<phase>process-resources</phase>
@@ -404,7 +408,7 @@
 							</resources>
 						</configuration>
 					</execution>
-
+					
 				</executions>
 			</plugin>
 			<plugin>
@@ -435,6 +439,24 @@
 					<wtpContextName>iFlow</wtpContextName>
 				</configuration>
 			</plugin>
+			<plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>properties-maven-plugin</artifactId>
+            <version>1.0-alpha-2</version>
+            <executions>
+                <execution>
+                    <phase>generate-resources</phase>
+                    <goals>
+                        <goal>write-project-properties</goal>
+                    </goals>
+                    <configuration>
+                        <outputFile>${basedir}/src/main/webapp/WEB-INF/classes/path.properties</outputFile>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+			
+			
 		</plugins>
 	</build>
 </project>

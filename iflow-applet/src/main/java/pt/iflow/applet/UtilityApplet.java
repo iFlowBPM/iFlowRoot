@@ -248,10 +248,10 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
    * 
    * @return Identificador do ficheiro carregado
    */
-  public String uploadFile(final String cookie, final String jsonRequest, final String sig_pos_style_java) {
+  public final String uploadFile(final String cookie, final String jsonRequest, final String sig_pos_style_java) {
   //  log.debug("uploadFile called: "+jsonRequest); //$NON-NLS-1$
     String result = "";
-    log.info("Signature_Position_style from javascript, value: "+sig_pos_style_java);
+   /* log.info("Signature_Position_style from javascript, value: "+sig_pos_style_java);
     LoadImageAction.setSignature_position_style(sig_pos_style_java);
     
     try {
@@ -268,14 +268,14 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
     } catch (PrivilegedActionException e) {
       log.error("Privilegios insuficientes para executar a operacao pretendida", e); //$NON-NLS-1$
     }
-    log.info("uploadFile complete"); //$NON-NLS-1$
+    log.info("uploadFile complete"); //$NON-NLS-1$*/
     return result; 
   }
 
-  public String uploadFileFromDisk(final String cookie, final String jsonRequest, final byte[] byteArr, final String filename, final String sig_pos_style_java) {
+  public final String uploadFileFromDisk(final String cookie, final String jsonRequest, final byte[] byteArr, final String filename, final String sig_pos_style_java) {
     String result = "";
   //  LoadImageAction.setSignature_position_style(sig_pos_style_java);
-    try {
+   /* try {
       result = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
         public String run() {
           try {
@@ -288,7 +288,7 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
       });
     } catch (PrivilegedActionException e) {
       log.error("Privilegios insuficientes para executar a operacao pretendida", e); //$NON-NLS-1$
-    }
+    }*/
     return result; 
   }
 
@@ -305,10 +305,10 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
    * 
    * @return Identificador do ficheiro carregado
    */
-  public String previewFile(final String cookie, final String jsonRequest) {
+  public final String previewFile(final String cookie, final String jsonRequest) {
 //    log.debug("previewFile called: "+jsonRequest); //$NON-NLS-1$
     String result = "";
-    try {
+   /* try {
       result = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
         public String run() {
           try {
@@ -322,7 +322,7 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
     } catch (PrivilegedActionException e) {
       log.error("Privilegios insuficientes para executar a operacao pretendida", e); //$NON-NLS-1$
     }
-    log.info("previewFile complete"); //$NON-NLS-1$
+    log.info("previewFile complete"); //$NON-NLS-1$*/
     return result; 
   }
 
@@ -339,11 +339,11 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
    * 
    * @return Identificador do ficheiro carregado
    */
-  public String modifyFile(final String cookie, final String jsonRequest, final String sig_pos_style_java) {
+  public final String modifyFile(final String cookie, final String jsonRequest, final String sig_pos_style_java) {
 //    log.debug("modifyFile called: "+jsonRequest); //$NON-NLS-1$
     String result = "";
     
-    log.info("Signature_Position_style from javascript, value: "+sig_pos_style_java);
+   /* log.info("Signature_Position_style from javascript, value: "+sig_pos_style_java);
     LoadImageAction.setSignature_position_style(sig_pos_style_java);
     
     try {
@@ -355,7 +355,7 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
     } catch (PrivilegedActionException e) {
       log.error("Privilegios insuficientes para executar a operacao pretendida", e); //$NON-NLS-1$
     }
-    log.info("modifyFile complete"); //$NON-NLS-1$
+    log.info("modifyFile complete"); //$NON-NLS-1$*/
     return result; 
   }
 
@@ -372,10 +372,10 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
    * 
    * @return Identificador do ficheiro carregado
    */
-  public String replaceFile(final String cookie, final String jsonRequest, final String sig_pos_style_java) {
+  public final String replaceFile(final String cookie, final String jsonRequest, final String sig_pos_style_java) {
     //log.debug("replaceFile called: "+jsonRequest); //$NON-NLS-1$
     String result = "";
-    
+   /* 
     log.info("Signature_Position_style from javascript, value: "+sig_pos_style_java);
     LoadImageAction.setSignature_position_style(sig_pos_style_java);
     
@@ -388,7 +388,7 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
     } catch (PrivilegedActionException e) {
       log.error("Privilegios insuficientes para executar a operacao pretendida", e); //$NON-NLS-1$
     }
-    log.info("replaceFile complete"); //$NON-NLS-1$
+    log.info("replaceFile complete"); //$NON-NLS-1$*/
     return result; 
   }
 
@@ -405,10 +405,10 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
    * 
    * @return Identificador do ficheiro carregado
    */
-  public String downloadFile(final String cookie, final String jsonRequest) {
+  public final String downloadFile(final String cookie, final String jsonRequest) {
 //    log.debug("downloadFile called: "+jsonRequest); //$NON-NLS-1$
     String result = "";
-    try {
+/*    try {
       result = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
         public String run() {
           return doDownloadFile(createWebClient(cookie, jsonRequest)); 
@@ -417,7 +417,7 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
     } catch (PrivilegedActionException e) {
       log.error("Privilegios insuficientes para executar a operacao pretendida", e); //$NON-NLS-1$
     }
-    log.info("downloadFile complete"); //$NON-NLS-1$
+    log.info("downloadFile complete"); //$NON-NLS-1$*/
     return result;
   }
 
@@ -432,10 +432,10 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
    * 
    * @return Mensagem com resultado da validação
    */
-  public String verifiyFile(final String cookie, final String jsonRequest) {
+  public final String verifiyFile(final String cookie, final String jsonRequest) {
 //    log.debug("verifiyFile called: "+jsonRequest); //$NON-NLS-1$
     String result = "";
-    try {
+/*    try {
       result = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
         public String run() {
           return doVerifiyFile(createWebClient(cookie, jsonRequest)); 
@@ -444,7 +444,7 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
     } catch (PrivilegedActionException e) {
       log.error("Privilegios insuficientes para executar a operacao pretendida", e); //$NON-NLS-1$
     }
-    log.info("verifiyFile complete"); //$NON-NLS-1$
+    log.info("verifiyFile complete"); //$NON-NLS-1$*/
     return result; 
   }
 
@@ -462,7 +462,7 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
   public String removeFile(final String cookie, final String jsonRequest) {
 //    log.debug("removeFile called: "+jsonRequest); //$NON-NLS-1$
     String result = "";
-    try {
+   /* try {
       result = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
         public String run() {
           return doRemoveFile(createWebClient(cookie, jsonRequest)); 
@@ -471,7 +471,7 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
     } catch (PrivilegedActionException e) {
       log.error("Privilegios insuficientes para executar a operacao pretendida", e); //$NON-NLS-1$
     }
-    log.info("removeFile complete"); //$NON-NLS-1$
+    log.info("removeFile complete"); //$NON-NLS-1$*/
     return result; 
   }
 
@@ -489,10 +489,10 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
    * 
    * @return Identificador do ficheiro carregado
    */
-  public String scanFile(final String cookie, final String jsonRequest) {
+  public final String scanFile(final String cookie, final String jsonRequest) {
     //log.debug("scanFile called: "+jsonRequest); //$NON-NLS-1$
     String result = "";
-    try {
+   /* try {
       result = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
         public String run() {
           return doScanFile(createWebClient(cookie, jsonRequest)); 
@@ -501,7 +501,7 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
     } catch (PrivilegedActionException e) {
       log.error("Privilegios insuficientes para executar a operacao pretendida", e); //$NON-NLS-1$
     }
-    log.info("scanFile complete"); //$NON-NLS-1$
+    log.info("scanFile complete"); //$NON-NLS-1$ */
     return result; 
   }
 

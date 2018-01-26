@@ -21,7 +21,7 @@ private File[] sortFiles(File[] files) {
 %>
 <%
 List<NameValuePair<String, File>> logs = new ArrayList<NameValuePair<String, File>>();
-File logDir = new File((Const.IFLOW_HOME + "/log").replace("//", "/"));
+File logDir = new File((Const.sIFLOW_HOME + "/log").replace("//", "/"));
 if (logDir.isDirectory()) {
   for (File item : sortFiles(logDir.listFiles())) {
     if (item.isFile()) {

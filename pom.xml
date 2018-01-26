@@ -39,6 +39,7 @@
 		<alfresco-connector.version>0.0.7-R20100908</alfresco-connector.version>
 
 		<iflow.home>${basedir}/iflow-home</iflow.home>
+		
 		<maven.test.skip>true</maven.test.skip>
 
 		<!-- NOTE: don't forget to change in iflow-applet -->
@@ -611,9 +612,29 @@
 					</execution>
 				</executions>
 			</plugin>
-
+			
+			<plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>properties-maven-plugin</artifactId>
+            <version>1.0-alpha-2</version>
+            <executions>
+                <execution>
+                    <phase>generate-resources</phase>
+                    <goals>
+                        <goal>write-project-properties</goal>
+                    </goals>
+                    <configuration>
+                        <outputFile>${basedir}/src/main/webapp/WEB-INF/classes/path.properties</outputFile>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
 		</plugins>
+		
 	</build>
+	
+	
+	
 
 	<reporting>
 		<plugins>

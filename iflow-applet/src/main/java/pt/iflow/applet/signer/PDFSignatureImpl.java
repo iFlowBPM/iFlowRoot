@@ -185,11 +185,11 @@ public class PDFSignatureImpl implements FileSigner {
   
   private String saveToFile(IVFile pdfFile){
     
-    File f = new File(System.getProperty("java.io.tmpdir"), "iFlow");  
-      if(!f.exists()) 
-          f.mkdir();  
-    String fileAux = f.getAbsolutePath()+"\\"+getGuidName()+".pdf";
-    
+  //  File f = new File(System.getProperty("java.io.tmpdir"), "iFlow");  
+     // if(!f.exists()) 
+       //   f.mkdir();  
+    //String fileAux = f.getAbsolutePath()+"\\"+getGuidName()+".pdf";
+    String fileAux = "";
 
     int r;
     byte[] buffer = new byte[8192];
@@ -358,11 +358,12 @@ public class PDFSignatureImpl implements FileSigner {
  private String copy(String fileSource) throws IOException {
    File source = new File("");
    
-   File f = new File(System.getProperty("java.io.tmpdir"), "iFlow");  
-   if(!f.exists()) 
-       f.mkdir();  
-   String fileAux = f.getAbsolutePath()+"\\"+getGuidName()+".pdf";
+   //File f = new File(System.getProperty("java.io.tmpdir"), "iFlow");  
+   //if(!f.exists()) 
+     //  f.mkdir();  
+   //String fileAux = f.getAbsolutePath()+"\\"+getGuidName()+".pdf";
    
+   String fileAux = "";
    File dest = new File("");
    
     InputStream in = new FileInputStream(source);

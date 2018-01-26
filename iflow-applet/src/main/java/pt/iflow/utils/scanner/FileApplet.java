@@ -105,10 +105,10 @@ public class FileApplet extends JApplet {
     return canSign;
   }*/
 
-  public synchronized String load(final String variableName) {
+  public final synchronized String load(final String variableName) {
 //    System.out.println("load start"); //$NON-NLS-1$
     String result = "";
-    try {
+  /*  try {
       result = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
         public String run() {
           return doLoad(variableName);
@@ -118,7 +118,7 @@ public class FileApplet extends JApplet {
       e.printStackTrace();
     }
 
-    System.out.println("load complete"); //$NON-NLS-1$
+    System.out.println("load complete"); //$NON-NLS-1$*/
     return result;
   }
 
@@ -221,19 +221,19 @@ public class FileApplet extends JApplet {
   }
 
   private String doLoad(String variableName) {
-    JFileChooser fd = new JFileChooser();
+    /*JFileChooser fd = new JFileChooser();
 
     fd.showOpenDialog(this);
 
-    File theFile = fd.getSelectedFile();
+    File theFile = fd.getSelectedFile(); */
     String fileName = null;
 
-    if(theFile != null && theFile.canRead() && theFile.isFile()) {
+    /* if(theFile != null && theFile.canRead() && theFile.isFile()) {
       fileName = theFile.getName();
       _files.put(fileName, theFile);
       _varNames.put(fileName, variableName);
     }
-
+*/
     return fileName;
   }
 

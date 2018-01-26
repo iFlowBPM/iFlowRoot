@@ -611,7 +611,7 @@ public class BlockPesquisaProcesso extends Block implements PesquisaProcesso {
                 saData[i][nMODE].equals(YES_CLOSED) || 
                 saData[i][nMODE].equals(YES_ALL))) {
 
-          if (stmp.toLowerCase().equals(DataSetVariables.FLOWID.toLowerCase())) {
+          if (stmp.toLowerCase(Locale.ENGLISH).equals(DataSetVariables.FLOWID.toLowerCase(Locale.ENGLISH))) {
 
             if (saData[i][nOP].equalsIgnoreCase(sOP_GROUP)) {
               alValues = Utils.tokenize(saData[i][nVALUE], sOP_GROUP_SEPARATOR);
@@ -656,7 +656,7 @@ public class BlockPesquisaProcesso extends Block implements PesquisaProcesso {
               }
             }
           }
-          else if (stmp.toLowerCase().equals(DataSetVariables.PID.toLowerCase())) {
+          else if (stmp.toLowerCase(Locale.ENGLISH).equals(DataSetVariables.PID.toLowerCase(Locale.ENGLISH))) {
 
             if (saData[i][nOP].equalsIgnoreCase(sOP_GROUP)) {
               alValues = Utils.tokenize(saData[i][nVALUE], sOP_GROUP_SEPARATOR);
@@ -700,7 +700,7 @@ public class BlockPesquisaProcesso extends Block implements PesquisaProcesso {
               }
             }
           }
-          else if (stmp.toLowerCase().equals(DataSetVariables.SUBPID.toLowerCase())) {
+          else if (stmp.toLowerCase(Locale.ENGLISH).equals(DataSetVariables.SUBPID.toLowerCase(Locale.ENGLISH))) {
 
             if (saData[i][nOP].equalsIgnoreCase(sOP_GROUP)) {
               alValues = Utils.tokenize(saData[i][nVALUE], sOP_GROUP_SEPARATOR);

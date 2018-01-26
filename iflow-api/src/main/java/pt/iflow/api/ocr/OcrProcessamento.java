@@ -184,15 +184,15 @@ return cortes;
 
 public static void main(String[] args) {
 	System.setProperty("com.sun.media.jai.disableMediaLib", "true");
-	String modPath = "C:\\ocr\\modelo.bmp";
-	String recPath = "C:\\ocr\\recebida.tif";
-	String newModPath = "C:\\ocr\\zmodelo.jpg";
+	String modPath = "C:" + File.separator + "ocr" + File.separator + "modelo.bmp";
+	String recPath = "C:" + File.separator + "ocr" + File.separator + "recebida.tif";
+	String newModPath = "C:" + File.separator + "ocr" + File.separator + "zmodelo.jpg";
 
 	float[][] pontos = new float[][] {{2085, 226, 267, 314},
 									{182, 1749, 528, 184}};
 	
 	gerarModelo(modPath, newModPath);
-	String[] cortes = alinharCortar(newModPath, recPath, pontos, "C:\\ocr\\", true, true);
+	String[] cortes = alinharCortar(newModPath, recPath, pontos, "C:" + File.separator + "ocr" + File.separator, true, true);
 }
 
 public static void gerarModelo(String modPath, String newPath){

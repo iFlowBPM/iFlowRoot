@@ -21,8 +21,12 @@ import org.apache.commons.lang.StringUtils;
  */
 public class Setup {
     
-    private static final String IFLOW_HOME = System.getProperty("iflow.home");
-    
+    //private static final String IFLOW_HOME = System.getProperty("iflow.home");
+	
+	
+	private static String IFLOW_HOME = "/userdata/iFlowHome";
+	
+	
     private static final String MAIN_PROP_FILE = "iflow.properties";
     private static final String AUTH_PROP_FILE = "authentication.properties";
     private static final String FEED_PROP_FILE = "feed.properties";
@@ -40,9 +44,15 @@ public class Setup {
     
     static {
         loadProperties();
+     /*   File file = new File(Setup.loadIflowHome());
+        if(file != null && file.isDirectory()){
+        	IFLOW_HOME = file.getAbsolutePath();
+        }*/
     }
     
     public static Properties readPropertiesFile(String fileName) {
+    	
+    	
         String sFile = FilenameUtils.concat(_configHome, fileName);
         Properties properties = new Properties();
         
@@ -364,5 +374,26 @@ public class Setup {
       }
     }
 
+  }
+  
+  public static String loadIflowHome(){
+	  String path="";
+	 
+	  try {
+		  
+	String filename = "path.properties";
+	java.io.InputStream is = Setup.class.getClassLoader().getResourceAsStream(filename);
+	  
+	  Properties p = new Properties();
+	  p.load(is);
+	  path = p.getProperty("iflow.home");	  
+	  Logger.info("System", "Setup.java", "loadIflowHome()", "Path iFlow-home: " + path);
+	    } catch (Exception e) {
+	    	e.printStackTrace();
+	    	Logger.error("", "Setup", "loadProperties", "Path: " + path, e);
+	    }
+	  	  
+		return path;
+	    
   }
 }
