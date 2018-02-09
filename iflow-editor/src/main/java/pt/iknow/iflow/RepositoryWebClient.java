@@ -45,14 +45,14 @@ public class RepositoryWebClient implements RepositoryClient {
 	private static final String URL_TEMPLATE = "{0}/dispatcher"; //$NON-NLS-1$
 
 	protected static final String sDEF_USER = "guest"; //$NON-NLS-1$
-	protected static final String sDEF_PASS = "guest"; //$NON-NLS-1$
+	protected static final String sDEF_P = "guest"; //$NON-NLS-1$
 
 	private String _url = null;
 	private String baseURL = null;
 
 	private HttpClient client = null;
 	private String _login = sDEF_USER;
-	private String _password = sDEF_PASS;
+	private String _pd = sDEF_P;
 	private RepositoryClassLoader _classLoader = null;
 	private ClassLoader _parentLoader = null;
 	private Boolean extendedAPI = null;
@@ -148,7 +148,7 @@ public class RepositoryWebClient implements RepositoryClient {
 	public boolean checkConnection() {
 		if (offline)
 			return false;
-		return doCheck(RepositoryWebOpCodes.CHECK_CONNECTION, _login, _password);
+		return doCheck(RepositoryWebOpCodes.CHECK_CONNECTION, _login, _pd);
 	}
 
 	/*
@@ -179,7 +179,7 @@ public class RepositoryWebClient implements RepositoryClient {
 		if (retObj) {
 			// set local vars
 			this._login = asLogin;
-			this._password = pass;
+			this._pd = pass;
 		}
 
 		return retObj;
@@ -244,7 +244,7 @@ public class RepositoryWebClient implements RepositoryClient {
 			name = null == name ? "NONE" : name; //$NON-NLS-1$
 			PostMethod method = new PostMethod(_url);
 			Part[] parts = { new StringPart("login", _login, RepositoryWebOpCodes.DEFAULT_ENCODING), //$NON-NLS-1$
-					new StringPart("password", _password, RepositoryWebOpCodes.DEFAULT_ENCODING), //$NON-NLS-1$
+					new StringPart("password", _pd, RepositoryWebOpCodes.DEFAULT_ENCODING), //$NON-NLS-1$
 					new StringPart("op", String.valueOf(op), RepositoryWebOpCodes.DEFAULT_ENCODING), //$NON-NLS-1$
 					new StringPart("name", name, RepositoryWebOpCodes.DEFAULT_ENCODING), //$NON-NLS-1$
 					new FilePart("file", name, (File) null) //$NON-NLS-1$
@@ -292,7 +292,7 @@ public class RepositoryWebClient implements RepositoryClient {
 			desc = null == desc ? name : desc;
 			comment = null == comment ? "" : comment;
 			Part[] parts = { new StringPart("login", _login, RepositoryWebOpCodes.DEFAULT_ENCODING), //$NON-NLS-1$
-					new StringPart("password", _password, RepositoryWebOpCodes.DEFAULT_ENCODING), //$NON-NLS-1$
+					new StringPart("password", _pd, RepositoryWebOpCodes.DEFAULT_ENCODING), //$NON-NLS-1$
 					new StringPart("op", String.valueOf(op), RepositoryWebOpCodes.DEFAULT_ENCODING), //$NON-NLS-1$
 					new StringPart("name", name, RepositoryWebOpCodes.DEFAULT_ENCODING), //$NON-NLS-1$
 					new StringPart("desc", desc, RepositoryWebOpCodes.DEFAULT_ENCODING), //$NON-NLS-1$
