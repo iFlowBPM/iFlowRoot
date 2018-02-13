@@ -137,30 +137,30 @@ public class Logger {
     switch (logLevel) {
     case DEBUG:
       if (logger.isDebugEnabled()) {
-        logger.debug(clean, t);
+        logger.debug("", t);
       }
       break;
     case INFO:
       if (logger.isInfoEnabled()) {
-        logger.info(clean, t);
+        logger.info("", t);
       }
       break;
     case WARNING:
-      logger.warn(clean, t);
+      logger.warn("", t);
       break;
     case ERROR:
-      logger.error(clean, t);
+      logger.error("", t);
       break;
     case FATAL:
-      logger.fatal(clean, t);
+      logger.fatal("", t);
       break;
     case TRACE:
     case TRACE_JSP:
       if (logger.isInfoEnabled()) {
-        logger.info("TRACE " + clean, t);
+        logger.info("TRACE " + "", t);
       } // also log with other
       if (_trace_logger.isInfoEnabled()) {
-        _trace_logger.info("TRACE " + clean, t);
+        _trace_logger.info("TRACE " + "", t);
       }
       break;
     default:
