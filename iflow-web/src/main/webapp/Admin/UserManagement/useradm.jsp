@@ -41,6 +41,16 @@ if ("del".equals(sOper)) {
   } else {
   	actionMsg = messages.getString("useradm.info.password_not_reset");
   }
+} else if("inactivate".equals(sOper)){
+	if(manager.changeActiveState(userInfo, userId, false))
+		actionMsg = messages.getString("useradm.info.active.changed");
+	else
+		actionMsg = messages.getString("useradm.info.active.not_changed");
+} else if("activate".equals(sOper)){
+	if(manager.changeActiveState(userInfo, userId, true))
+		actionMsg = messages.getString("useradm.info.active.changed");
+	else
+		actionMsg = messages.getString("useradm.info.active.not_changed");
 }
 
 // Get users;

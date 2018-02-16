@@ -3048,4 +3048,43 @@ public class UserManagerBean implements UserManager {
       return new Integer(EventManager.READY_TO_PROCESS);
     }
   }
+
+@Override
+public boolean changeActiveState(UserInfoInterface userInfo, String userid, Boolean active) {
+    Boolean result = false;
+
+    DataSource ds = null;
+    Connection db = null;
+    PreparedStatement pst = null;
+    ResultSet rs = null;
+
+    Logger.info("ADMIN", this, "changeActiveState", "userid:" + userid + " to status " + active);
+
+    try {
+      ds = Utils.getDataSource();
+      db = ds.getConnection();
+      db.setAutoCommit(false);
+
+		pst = db.prepareStatement("update users set activated=? where userid=?");
+		if(active)
+			pst.setInt(1, 1);
+		else
+			pst.setInt(1, 0);
+		pst.setInt(2, Integer.parseInt(userid));
+		pst.executeUpdate();
+		pst.close();
+		db.commit();
+		Logger.info("ADMIN", this, "changeActiveState", "User activate changed successfully");
+		result = true;
+    }
+    catch (SQLException e) {
+      result = false;
+      Logger.warning("ADMIN", this, "confirmAccount", "User activate NOT changed", e);
+    }
+    finally {
+      DatabaseInterface.closeResources(db, pst, rs);
+    }
+
+    return result;
+  }
 }
