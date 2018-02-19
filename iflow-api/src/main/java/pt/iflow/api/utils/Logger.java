@@ -3,9 +3,13 @@ package pt.iflow.api.utils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Date;
+
+import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -28,9 +32,13 @@ public class Logger {
   private static boolean loggerLoaded = false;
 
   private final static String sJSP = "JSP";
+  
+  public final static String sQuery = "INSERT INTO application_log (date,type,value) VALUES (NOW(), ?,?)";
+  
 
   static {
     initLogger();
+    purgeOldLogs();  
   }
   
   public static synchronized void initLogger() {
@@ -46,6 +54,34 @@ public class Logger {
     if (_admin_logger == null)
       _admin_logger = _logger;
   }
+  
+  public static void purgeOldLogs() {
+	    Calendar cal = Calendar.getInstance();
+	    cal.add(Calendar.DATE, -2);
+	    final String query = "delete from iflow.application_log where date < ?";
+
+	    // apaga Logs antigos
+	    Connection db = null;
+	    PreparedStatement st = null;
+	    DataSource ds = null;
+	    try {
+	      ds = Utils.getDataSource();
+	      db = ds.getConnection();
+	      db.setAutoCommit(true);
+	      st = db.prepareStatement(query);
+	      st.setTimestamp(1, new Timestamp(cal.getTimeInMillis()));
+
+	      int n = st.executeUpdate();
+
+	      st.close();
+	      st = null;
+	      Logger.adminInfo("Logger", "purgeOldLogs", "Removed old Logs.");
+	    } catch (SQLException e) {
+	      Logger.adminWarning("Logger", "purgeOldLogs", "Error old logs.",e);
+	    } finally {
+	      DatabaseInterface.closeResources(db, st);
+	    }
+	  }
 
   
   public static boolean isInfoEnabled() {
@@ -82,90 +118,199 @@ public class Logger {
   }
   
   private static void log(org.apache.log4j.Logger logger,
-             LogLevel logLevel,
+          LogLevel logLevel,
 			 String asUser,
 			 String asCallerObject,
 			 String asMethodName,
 			 String asMessage,
 			 Throwable t) {
+	  
+	
+	
+	  
+ if(!loggerLoaded) initLogger();
+ String sMessage = asMessage;
+ String sClass = asCallerObject;
+ String sMethod = asMethodName;
+ String sUser = "";
 
-    if(!loggerLoaded) initLogger();
-    String sMessage = asMessage;
-    String sClass = asCallerObject;
-    String sMethod = asMethodName;
-    String sUser = "";
+ if (StringUtils.isEmpty(asMethodName)) {
+   sMethod = "none";
+ }
 
-    if (StringUtils.isEmpty(asMethodName)) {
-      sMethod = "none";
-    }
+ if (logLevel != LogLevel.TRACE && logLevel != LogLevel.TRACE_JSP) {
+   if (StringUtils.isEmpty(asUser)) {
+     sUser = "ADMIN";
+   }
+   else {
+     sUser = asUser;
+   }
+   sUser = sUser + " in ";
+ }
 
-    if (logLevel != LogLevel.TRACE && logLevel != LogLevel.TRACE_JSP) {
-      if (StringUtils.isEmpty(asUser)) {
-        sUser = "ADMIN";
-      }
-      else {
-        sUser = asUser;
-      }
-      sUser = sUser + " in ";
-    }
+ if (sClass != null) {
+   sMessage = "[" + sUser 
+   + sMethod + "@" + sClass + "] - "
+   + asMessage;
+ }
 
-    if (sClass != null) {
-      sMessage = "[" + sUser 
-      + sMethod + "@" + sClass + "] - "
-      + asMessage;
-    }
+ if(!loggerAvailable) {
+   System.out.println(logLevel+" "+sMessage);
+   return;
+ }
+ 
 
-    if(!loggerAvailable) {
-      System.out.println(logLevel+" "+sMessage);
-      return;
-    }
+ String clean = sMessage.replace( '\n', '_' ).replace( '\r', '_' );
+ 
+ clean = ESAPI.encoder().encodeForHTML(sMessage);
+ if (!sMessage.equals(clean)) {
+     clean += " (Encoded)";
+ }
+ 
+ Connection db = null;
+ Statement st = null;
+ PreparedStatement pst = null;
+ ResultSet rs = null;
     
-   
-    String clean = sMessage.replace( '\n', '_' ).replace( '\r', '_' );
      
-    
-    
-    
-    
-    
-    clean = ESAPI.encoder().encodeForHTML(sMessage);
-    if (!sMessage.equals(clean)) {
-        clean += " (Encoded)";
-    }
-    
-    
-    switch (logLevel) {
-    case DEBUG:
-      if (logger.isDebugEnabled()) {
-        logger.debug("", t);
-      }
-      break;
-    case INFO:
-      if (logger.isInfoEnabled()) {
-        logger.info("", t);
-      }
-      break;
-    case WARNING:
-      logger.warn("", t);
-      break;
-    case ERROR:
-      logger.error("", t);
-      break;
-    case FATAL:
-      logger.fatal("", t);
-      break;
-    case TRACE:
-    case TRACE_JSP:
-      if (logger.isInfoEnabled()) {
-        logger.info("TRACE " + "", t);
-      } // also log with other
-      if (_trace_logger.isInfoEnabled()) {
-        _trace_logger.info("TRACE " + "", t);
-      }
-      break;
-    default:
-    }
-  }
+ 
+ switch (logLevel) {
+ case DEBUG:
+   if (logger.isDebugEnabled()) {
+     logger.debug("", t);
+     
+     try {
+     	db = Utils.getDataSource().getConnection();
+     	
+     	st = db.createStatement();
+     	
+			pst = db.prepareStatement(sQuery);
+			
+			pst.setString(1, "Debug");
+			pst.setString(2, sMessage);
+			
+			
+			pst.executeUpdate();
+			
+			DatabaseInterface.closeResources(db, pst, st, rs);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+     
+   }
+   break;
+ case INFO:
+   if (logger.isInfoEnabled()) {
+     logger.info("", t);
+     try {
+     	db = Utils.getDataSource().getConnection();
+     	
+     	st = db.createStatement();
+     	
+			pst = db.prepareStatement(sQuery);
+			
+			pst.setString(1, "Info");
+			pst.setString(2, sMessage);
+			
+			pst.executeUpdate();
+			
+			DatabaseInterface.closeResources(db, pst, st, rs);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+   }
+   break;
+ case WARNING:
+   logger.warn("", t);
+   try {
+   	db = Utils.getDataSource().getConnection();
+   	
+   	st = db.createStatement();
+   	
+			pst = db.prepareStatement(sQuery);
+			
+			pst.setString(1, "Warning");
+			pst.setString(2, sMessage);
+			
+			pst.executeUpdate();
+			
+			DatabaseInterface.closeResources(db, pst, st, rs);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+   break;
+ case ERROR:
+   logger.error("", t);
+   try {
+   	db = Utils.getDataSource().getConnection();
+   	
+   	st = db.createStatement();
+   	
+			pst = db.prepareStatement(sQuery);
+			
+			pst.setString(1, "Error");
+			pst.setString(2, sMessage);
+			
+			pst.executeUpdate();
+			
+			DatabaseInterface.closeResources(db, pst, st, rs);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+   break;
+ case FATAL:
+   logger.fatal("", t);
+   try {
+   	db = Utils.getDataSource().getConnection();
+   	
+   	st = db.createStatement();
+   	
+			pst = db.prepareStatement(sQuery);
+			
+			pst.setString(1, "Fatal");
+			pst.setString(2, sMessage);
+			
+			pst.executeUpdate();
+			
+			DatabaseInterface.closeResources(db, pst, st, rs);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+   break;
+ case TRACE:
+ case TRACE_JSP:
+   if (logger.isInfoEnabled()) {
+     logger.info("TRACE " + "", t);
+     try {
+     	db = Utils.getDataSource().getConnection();
+     	
+     	st = db.createStatement();
+     	
+			pst = db.prepareStatement(sQuery);
+			
+			pst.setString(1, "Trace");
+			pst.setString(2, sMessage);
+			
+			pst.executeUpdate();
+			
+			DatabaseInterface.closeResources(db, pst, st, rs);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+   } // also log with other
+   if (_trace_logger.isInfoEnabled()) {
+     _trace_logger.info("TRACE " + "", t);
+   }
+   break;
+ default:
+ }
+}
   
   /**
    * @see {@link #logFlowState(ProcessData, int, String, String, String, String)}
