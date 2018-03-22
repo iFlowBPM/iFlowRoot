@@ -26,6 +26,7 @@ import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.UserInfoInterface;
 import pt.iflow.api.utils.Utils;
 import pt.iflow.notification.NotificationImpl;
+import pt.iflow.api.utils.Const;
 
 public class NotificationManagerBean implements NotificationManager {
   private static NotificationManagerBean instance = null;
@@ -72,7 +73,10 @@ public class NotificationManagerBean implements NotificationManager {
   
   public void purgeOldMessages() {
     Calendar cal = Calendar.getInstance();
-    cal.add(Calendar.DATE, -15);
+    
+    int notifications_keep_days = Const.nNotifications_keep_days * -1;
+        
+    cal.add(Calendar.DATE, notifications_keep_days);
     final String query = "delete from notifications where created < ?";
 
     // apaga mensagens antigas

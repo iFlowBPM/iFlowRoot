@@ -336,6 +336,8 @@ public class Const {
   public static final String SAVE_PROCESSHISTORY_WHEN_NEVER = "NEVER";
   public static String SAVE_PROCESSHISTORY_WHEN = SAVE_PROCESSHISTORY_WHEN_ALLWAYS;
   
+  public static int nNotifications_keep_days = 15;
+  
   public static final String sEXTRA_PROP = "EXTRA.";
   
   // hotfolder
@@ -668,6 +670,10 @@ public class Const {
       MAX_DOUBLE_DECIMAL_DIGITS = aux_MAX_DOUBLE_DECIMAL_DIGITS;
     }
     nUPLOAD_MAX_SIZE = MAX_FILE_SIZE *1024*1024; // 10 MB
+    
+    
+    // Notifications Keep Days
+    nNotifications_keep_days = Setup.getPropertyInt("NOTIFICATIONS_KEEP_DAYS");
     
     String sEXCEL_LIBRARY = Setup.getProperty("EXCEL_LIBRARY");
     if(sEXCEL_LIBRARY != null && sEXCEL_LIBRARY.equals("JXL"))
