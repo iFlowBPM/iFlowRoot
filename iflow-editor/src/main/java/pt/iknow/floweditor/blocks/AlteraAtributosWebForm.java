@@ -870,9 +870,9 @@ public class AlteraAtributosWebForm extends AbstractAlteraAtributos implements A
 	  		else
 	  	    {	  				 
 	  		    writer.write(entityName);
-  		    }
-        }
+  		    }}
    }
+
 
 	@WebFormAction(EventName = JS_DO_PROMOTE, ActionType = WebFileType.JSON)
 	public void executeDoPromote(HttpServletRequest request, HttpServletResponse response) throws Exception {
