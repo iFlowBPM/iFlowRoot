@@ -119,9 +119,9 @@ public class DSLoader {
       return usernameAttr;
     }
     
-    public String getPasswordAttr() {
-      return passwordAttr;
-    }
+    //public String getPasswordAttr() {
+    //  return passwordAttr;
+    //}
 
   }
 

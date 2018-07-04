@@ -879,8 +879,9 @@ String sFlowHtml = Utils.genHtmlSelect("flowSelect",
 			<td><%=prefix + messages.getString(DMSConnectorUtils.configMessageKey(DMSConnectorUtils.CONFIG_DMS_PASS)) %></td>
 			<td>Simple</td>
 			<td width="50%" class="txt" align="left">&nbsp;&nbsp;&nbsp;&nbsp;
-	  			<input type="password" class="txt" name="<%=DMSConnectorUtils.CONFIG_DMS_PASS %>"
+	  			<%-- <input type="password" class="txt" name="<%=DMSConnectorUtils.CONFIG_DMS_PASS %>"
 	  				value="<%=dmsUtils.getPassForHtml() %>" size="30" maxlength="100">
+	  			--%>	
 			</td>
 		</tr>
 	<% } %>

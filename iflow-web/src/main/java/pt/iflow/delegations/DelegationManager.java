@@ -741,11 +741,15 @@ public class DelegationManager extends Thread {
       final StringBuilder sbQueryDelegation = new StringBuilder();
       /* If the userid is delegating a flow to delegateduser
            becoming a circular delegation */
-      sbQueryDelegation.append("select * from activity_hierarchy where flowid=");
-      sbQueryDelegation.append(flowid).append(" and userid='").append(owner);
-      sbQueryDelegation.append("' and ownerid='").append(delegated);
-      sbQueryDelegation.append("'");
-      rs = st.executeQuery(sbQueryDelegation.toString());
+      sbQueryDelegation.append("select * from activity_hierarchy where flowid = ? and userid = ? and ownerid = ?");
+      
+      PreparedStatement stm = db.prepareStatement( sbQueryDelegation.toString() );
+ 
+      stm.setString(1, flowid);
+      stm.setString(2, owner);
+      stm.setString(3, delegated);
+      
+      rs = stm.executeQuery();
 
       return rs.next();
     }
@@ -958,11 +962,19 @@ public class DelegationManager extends Thread {
 
           final StringBuilder sbQueryUserDelegation = new StringBuilder();
           /* If the userid is delegating a flow that was delegated to him */
-          sbQueryUserDelegation.append("select * from activity_hierarchy where flowid = ");
-          sbQueryUserDelegation.append(flowid).append(" and userid='");
-          sbQueryUserDelegation.append(StringEscapeUtils.escapeSql(user)).append("' and ownerid='");
-          sbQueryUserDelegation.append(StringEscapeUtils.escapeSql(owner)).append("'");
-          rs = st.executeQuery(sbQueryUserDelegation.toString());
+          //sbQueryUserDelegation.append("select * from activity_hierarchy where flowid = ");
+          //sbQueryUserDelegation.append(flowid).append(" and userid='");
+          //sbQueryUserDelegation.append(StringEscapeUtils.escapeSql(user)).append("' and ownerid='");
+          //sbQueryUserDelegation.append(StringEscapeUtils.escapeSql(owner)).append("'");
+          
+          sbQueryUserDelegation.append("select * from activity_hierarchy where flowid = ? and userid = ? and ownerid = ?");
+       
+          PreparedStatement stm = db.prepareStatement( sbQueryUserDelegation.toString() );
+          stm.setString(1, flowid);
+          stm.setString(2, user);
+          stm.setString(3, owner);
+          
+          rs = stm.executeQuery();
 
           if (rs.next()) {
             fatherid = rs.getInt("hierarchyid");

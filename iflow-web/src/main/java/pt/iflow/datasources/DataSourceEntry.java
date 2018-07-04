@@ -11,7 +11,7 @@ public interface DataSourceEntry {
   
   String getUsernameAttr();
 
-  String getPasswordAttr();
+  //String getPasswordAttr();
 
   String getUrlAttr();
   
