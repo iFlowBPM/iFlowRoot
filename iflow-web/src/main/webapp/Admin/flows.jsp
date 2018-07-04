@@ -198,12 +198,12 @@ sbHtmlSub.append("</select>");
 <% if (alDeployed.size() > 0) { %>
 
       <div class="info_msg">
-        <%=messages.getString("admin-flows.msg.flowsDeployed")%>
+        <%= //messages.getString("admin-flows.msg.flowsDeployed")%>
 <%
 if (sCache == null) {
    	for (int i=0; i < alDeployed.size(); i++) {
 		if (i > 0) out.print(", ");
-			out.print(alDeployed.get(i));	
+			//out.print(alDeployed.get(i));	
   		}	
   	}
 %>
@@ -211,7 +211,7 @@ if (sCache == null) {
 
 <% } else if (bReloaded) { %>
       <div class="info_msg">
-        <%=messages.getString("admin-flows.msg.cacheReloaded")%>
+        <%=//messages.getString("admin-flows.msg.cacheReloaded")%>
 	  </div>
 <% } %>
 

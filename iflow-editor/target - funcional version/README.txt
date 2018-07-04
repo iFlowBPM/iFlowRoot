@@ -13,7 +13,7 @@ Unmarshaller unmarshaller = context.createUnmarshaller();
 return (XmlLibrary) unmarshaller.unmarshal(inStream);
 
 
-De modo ao editor não funcionar alterar para o seguinte código no ficheiro - LibraryMarshaller
+ficheiro - LibraryMarshaller
 
 	public static XmlLibrary unmarshal(InputStream inStream) throws Exception 
 	{

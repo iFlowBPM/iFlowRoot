@@ -360,16 +360,16 @@ return;
 %>
 
 <form name="flowForm" method="post">
-  <input type="hidden" name="action" value="<%=sAction%>"/>
-  <input type="hidden" name="flowid" value="<%=flowid%>"/>
-  <input type="hidden" name="flowname" value="<%= sflowname %>"/>
-  <input type="hidden" name="ownerid" value="<%=sownerid%>" />
-  <input type="hidden" name="cb_request" value="<%=cbRequest%>" />
+  <input type="hidden" name="action" value=${fn:escapeXml(sAction)} />
+  <input type="hidden" name="flowid" value=${fn:escapeXml(flowid)} />
+  <input type="hidden" name="flowname" value=${fn:escapeXml(sflowname)} />
+  <input type="hidden" name="ownerid" value=${fn:escapeXml(sownerid)} />
+  <input type="hidden" name="cb_request" value=${fn:escapeXml(cbRequest)} />
   <input type="hidden" name="<%=DUMMY %>" value="<%=StringUtils.isNotEmpty(sownerid) ? DUMMY : "" %>"/>
   <% if(cbRequest) {
     for(String cbFlowid: cbFlowids) {
     %>
-    <input type="hidden" name="cb_flowid" value="<%=cbFlowid%>" />
+    <input type="hidden" name="cb_flowid" value=${fn:escapeXml(cbFlowid)} />
   <% 
     }
     } %>

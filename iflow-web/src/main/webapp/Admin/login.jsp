@@ -100,7 +100,14 @@ String maintenance = Const.isInMaintenance() ? "maintenance" : "";
     <link rel="shortcut icon" href="../images/favicon.ico" />
 
     <script type="text/javascript" src="../javascript/messages.js"> </script><!-- default messages -->
-    <script type="text/javascript" src="../javascript/messages_<%=lang%>.js"> </script><!-- default messages -->
+    <%
+    	if(lang.equals("pt_PT")){
+    	   %> <script type="text/javascript" src="../javascript/messages_pt_PT.js"> </script><!-- default messages -->
+    	<%}else { %>
+    		<script type="text/javascript" src="../javascript/messages_en_US.js"> </script><!-- default messages -->
+    	<% }
+    %>
+
     <script type="text/javascript" src="../javascript/mootools.js"></script>
     <script type="text/javascript" src="../javascript/ajax_processing.js"></script>
     <script type="text/javascript" src="../javascript/iflow_main.js"></script>
