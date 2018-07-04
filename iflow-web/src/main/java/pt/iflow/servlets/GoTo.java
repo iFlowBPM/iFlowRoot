@@ -1,6 +1,7 @@
 package pt.iflow.servlets;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -48,11 +49,14 @@ import pt.iflow.api.utils.ServletUtilsRoutesEnum;
 		// http://localhost:8085/iFlow/GoTo?goto=confirmar_agendamento.jsp&id=81&owner=jcosta&dkey=8841dffbe014e9ddf18c96e4eec6b179
 		String sGoTo = request.getParameter(PageMapper.PARAM_GOTO);
 		PageMapper mapper = null;
+		Map<String,String> map = null;
+		
 		if (sGoTo != null && !sGoTo.equals("")) {
 			mapper = new PageMapper(request.getParameterMap());
+			map = request.getParameterMap();
 		}
-		
-      ServletUtils.sendEncodeRedirect(response, ServletUtilsRoutesEnum.MAIN,request.getParameterMap());
+				
+        ServletUtils.sendEncodeRedirect(response, ServletUtilsRoutesEnum.MAIN,map);
 
 		
 		return;

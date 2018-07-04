@@ -20,8 +20,13 @@ import org.apache.commons.lang.StringUtils;
 
 public class Const {
   
-  public static final String IFLOW_HOME = System.getProperty("iflow.home");
+  //public static final String IFLOW_HOME = System.getProperty("iflow.home");
   
+  public static final String sIFLOW_HOME = "/userdata/iFlowHome";
+  public static final String IFLOW_HOME = "/userdata/iFlowHome";
+ // public static String IFLOW_HOME = Setup.getProperty("IFLOW_HOME");
+  
+	
   public static final String ENCODING = "UTF-8";
   
   public static int nMODE = Const.nDEVELOPMENT;
@@ -39,7 +44,6 @@ public class Const {
   
   public static int nEXCEL_LIBRARY = nEXCEL_LIBRARY_POI;
   
-   
   public static boolean bUSE_SCANNER = false;
 
   public static String APP_PROTOCOL = null;
@@ -278,7 +282,8 @@ public class Const {
 
   public static String SIDEBAR_GEN_IMPLEMENTATION = "pt.iknow.sidebar.DesktopSidebarGenerator";
 
-  public static final File fUPLOAD_TEMP_DIR = new File(System.getProperty("iflow.home"), "temp");
+  
+  public static final File fUPLOAD_TEMP_DIR = new File(sIFLOW_HOME, "temp");
   public static final int nUPLOAD_THRESHOLD_SIZE = 10*1024;  // 10 KB
   
   private static int  MAX_FILE_SIZE = -1;
@@ -443,6 +448,9 @@ public class Const {
 
     String stmp = null;
 
+    //sIFLOW_HOME = Setup.getProperty("IFLOW_HOME");
+    //sIFLOW_HOME = "/userdata/iFlowHome";
+    
     // direct setting constants
     APP_PROTOCOL = Setup.getProperty("APP_PROTOCOL");
     APP_HOST = Setup.getProperty("APP_HOST");
@@ -655,7 +663,7 @@ public class Const {
     HOT_FOLDER_SEARCH_INTERVAL = HOT_FOLDER_SEARCH_INTERVAL * 60000;  // interval in miliseconds
     HOT_FOLDER_PROCESSED_FOLDER = Setup.getProperty("HOT_FOLDER_PROCESSED_FOLDER");
     if (StringUtils.isEmpty(HOT_FOLDER_PROCESSED_FOLDER)) {
-      HOT_FOLDER_PROCESSED_FOLDER = FilenameUtils.concat(IFLOW_HOME, "hot_folder_processed");
+      HOT_FOLDER_PROCESSED_FOLDER = FilenameUtils.concat(sIFLOW_HOME, "hot_folder_processed");
       try {
         FileUtils.forceMkdir(new File(HOT_FOLDER_PROCESSED_FOLDER));
       } catch (Exception e) {

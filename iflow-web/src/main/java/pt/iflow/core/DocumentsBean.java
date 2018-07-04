@@ -87,7 +87,7 @@ public class DocumentsBean implements Documents {
 	      File f = new File(docsBaseUrl);
 	      if (!f.isDirectory()) {
 	        //Verifica se existe URL relativo
-	        docsBaseUrl = FilenameUtils.concat(Const.IFLOW_HOME, Const.DOCS_BASE_URL);
+	        docsBaseUrl = FilenameUtils.concat(Const.sIFLOW_HOME, Const.DOCS_BASE_URL);
 	        f = new File(docsBaseUrl);
 	        if (!f.isDirectory()) {
 	          //tenta criar URL relativo

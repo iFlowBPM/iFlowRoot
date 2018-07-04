@@ -329,5 +329,10 @@
   <input class="regular_button_01" type="button" name="clear" value='<%=messages.getString("button.clear")%>' onClick="javascript:document.formulario.reset();" />
 <% } %>
   <input class="regular_button_01" type="button" name="add" value="<%=botao%>" onClick="javascript:tabber_right(4, '<%=response.encodeURL("Admin/UserManagement/userform.jsp")%>', get_params(document.formulario));" />
+<% if(userView.getActivated().equals("1")) {%>	 
+ 	<input class="regular_button_01" type="button" name="inactivate" value='<%=messages.getString("button.inactivate")%>' onClick="javascript:tabber_right(4, '<%=response.encodeURL("Admin/UserManagement/useradm.jsp")%>','oper=inactivate&userid=<%=userId%>');" />
+<%} else { %>
+	<input class="regular_button_01" type="button" name="activate" value='<%=messages.getString("button.activate")%>' onClick="javascript:tabber_right(4, '<%=response.encodeURL("Admin/UserManagement/useradm.jsp")%>','oper=activate&userid=<%=userId%>');" />
+<%} %>
 </fieldset>
 </form>

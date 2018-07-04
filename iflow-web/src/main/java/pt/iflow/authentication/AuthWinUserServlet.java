@@ -176,16 +176,18 @@ public class AuthWinUserServlet extends javax.servlet.http.HttpServlet implement
     AuthenticationResult result = authenticate(request, response, login, psd, nextUrl);
 
     // keep session in cookie
-    Cookie sessionUsername = ServletUtils.newCookie(Const.SESSION_COOKIE_USERNAME, "");
-    Cookie sessionPassword = ServletUtils.newCookie(Const.SESSION_COOKIE_PASSWORD, "");
-    response.addCookie(sessionUsername);
-    response.addCookie(sessionPassword);
+   // Cookie sessionUsername = ServletUtils.newCookie(Const.SESSION_COOKIE_USERNAME, "");
+   // Cookie sessionPassword = ServletUtils.newCookie(Const.SESSION_COOKIE_PASSWORD, "");
+   // response.addCookie(sessionUsername);
+   // response.addCookie(sessionPassword);
 
     if (result.isAuth && StringUtils.equals(keepSession, "on")) {
-     sessionUsername = ServletUtils.newCookie(Const.SESSION_COOKIE_USERNAME, login);
-    sessionPassword = ServletUtils.newCookie(Const.SESSION_COOKIE_PASSWORD, Utils.encrypt(psd));
-    response.addCookie(sessionUsername);
-    response.addCookie(sessionPassword);
+    	login = login.replaceAll("\\n", "");
+    	login = login.replaceAll("\\r", ""); 
+    //sessionUsername = ServletUtils.newCookie(Const.SESSION_COOKIE_USERNAME, login);
+    //sessionPassword = ServletUtils.newCookie(Const.SESSION_COOKIE_PASSWORD, Utils.encrypt(psd));
+ //   response.addCookie(sessionUsername);
+   // response.addCookie(sessionPassword);
     }
 
     // used in ibox login

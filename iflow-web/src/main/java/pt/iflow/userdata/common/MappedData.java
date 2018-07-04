@@ -9,6 +9,8 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.commons.lang.SystemUtils;
+
 import pt.iflow.api.userdata.IMappedData;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Setup;
@@ -55,7 +57,16 @@ public abstract class MappedData implements IMappedData,Serializable {
   }
 
   public String toString() {
-    final String lineSep = System.getProperty("line.separator");
+    //final String lineSep = System.getProperty("line.separator");
+	  String lineSep="";
+	  if(SystemUtils.IS_OS_WINDOWS){
+		  lineSep = "\r\n";
+	  }
+	  else{
+		  lineSep = "\n";
+	  }
+	  
+	
     StringBuilder result = new StringBuilder(lineSep).append(getClass().getSimpleName()).append(lineSep);
     Set<String> keys = new TreeSet<String>();
     if(this._mapping == null) keys.addAll(this._data.keySet());

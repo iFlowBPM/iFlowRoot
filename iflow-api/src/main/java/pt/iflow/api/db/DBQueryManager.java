@@ -18,7 +18,8 @@ public class DBQueryManager {
   private static long _lastModification = 0;
 
   static {
-    _queriesFileLocation = System.getProperty("iflow.home") + File.separator + "dbqueries";
+    //_queriesFileLocation = System.getProperty("iflow.home") + File.separator + "dbqueries";
+	  _queriesFileLocation = Const.sIFLOW_HOME + File.separator + "dbqueries";
     String dbType = Const.DB_TYPE;
     _queriesFileLocation = _queriesFileLocation + File.separator + "queries_" + dbType + ".properties";
     File queriesFile = new File(_queriesFileLocation);
@@ -27,7 +28,7 @@ public class DBQueryManager {
   }
 
   private static void reloadQueries() {
-    Logger.debug("", "DBQueryManager", "", "LOADING QUERIES FILE " + _queriesFileLocation);
+    Logger.debug("", "DBQueryManager", "", "LOADING QUERIES FILE");
     try {
       _queries.load(new FileInputStream(_queriesFileLocation));
       Logger.adminInfo("DBQueryManager", "reloadQueries", "queries reloaded");
@@ -46,7 +47,7 @@ public class DBQueryManager {
 
   public static String getQuery(String queryName){
     checkFile();
-    Logger.adminDebug("DBQueryManager","getQuery", "RETURNING QUERY = " + _queries.getProperty(queryName));
+    Logger.adminDebug("DBQueryManager","getQuery", "RETURNING QUERY = ");
     return _queries.getProperty(queryName);
   }
 
@@ -61,7 +62,7 @@ public class DBQueryManager {
       query = MessageFormat.format(query, arguments);
     }
     if(Logger.isAdminDebugEnabled()) {
-      Logger.adminDebug("DBQueryManager", "processQuery", "RETURNING QUERY = " + query);
+      Logger.adminDebug("DBQueryManager", "processQuery", "RETURNING QUERY = ");
     }
     return query;
   }

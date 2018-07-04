@@ -40,7 +40,7 @@ public class FileApplet extends JApplet {
 
   public void init() {
    // JFrame.setDefaultLookAndFeelDecorated(true);
-    try {
+    /*try {
       super.init();
       _files = new HashMap<String,File>();
       _varNames = new HashMap<String, String>();
@@ -60,7 +60,7 @@ public class FileApplet extends JApplet {
     } catch (PrivilegedActionException e) {
       e.printStackTrace();
     }
-    System.out.println("Init complete"); //$NON-NLS-1$
+    System.out.println("Init complete"); //$NON-NLS-1$*/
   }
 
   public void start() {
@@ -73,7 +73,7 @@ public class FileApplet extends JApplet {
     System.out.println("Stop complete"); //$NON-NLS-1$
   }
 
-  public synchronized boolean canScan() {
+ /* public synchronized boolean canScan() {
     //System.out.println("canScan start"); //$NON-NLS-1$
     boolean canScan = false;
     try {
@@ -87,9 +87,9 @@ public class FileApplet extends JApplet {
     }
     System.out.println("canScan complete"); //$NON-NLS-1$
     return canScan;
-  }
+  }*/
 
-  public synchronized boolean canSign() {
+ /* public synchronized boolean canSign() {
    // System.out.println("canSign start"); //$NON-NLS-1$
     boolean canSign = false;
     try {
@@ -103,12 +103,12 @@ public class FileApplet extends JApplet {
     }
     System.out.println("canSign complete"); //$NON-NLS-1$
     return canSign;
-  }
+  }*/
 
-  public synchronized String load(final String variableName) {
+  public final synchronized String load(final String variableName) {
 //    System.out.println("load start"); //$NON-NLS-1$
-    String result = null;
-    try {
+    String result = "";
+  /*  try {
       result = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
         public String run() {
           return doLoad(variableName);
@@ -118,7 +118,7 @@ public class FileApplet extends JApplet {
       e.printStackTrace();
     }
 
-    System.out.println("load complete"); //$NON-NLS-1$
+    System.out.println("load complete"); //$NON-NLS-1$*/
     return result;
   }
 
@@ -221,23 +221,23 @@ public class FileApplet extends JApplet {
   }
 
   private String doLoad(String variableName) {
-    JFileChooser fd = new JFileChooser();
+    /*JFileChooser fd = new JFileChooser();
 
     fd.showOpenDialog(this);
 
-    File theFile = fd.getSelectedFile();
+    File theFile = fd.getSelectedFile(); */
     String fileName = null;
 
-    if(theFile != null && theFile.canRead() && theFile.isFile()) {
+    /* if(theFile != null && theFile.canRead() && theFile.isFile()) {
       fileName = theFile.getName();
       _files.put(fileName, theFile);
       _varNames.put(fileName, variableName);
     }
-
+*/
     return fileName;
   }
 
-  private String doScan(String variableName) {
+ /* private String doScan(String variableName) {
     String name = null;
 
     if(this.canScan()) {
@@ -253,8 +253,8 @@ public class FileApplet extends JApplet {
 
     return name;
   }
-
-  private String doSendAll(ClientRequestInfo clientId) {
+*/
+  /*private String doSendAll(ClientRequestInfo clientId) {
     if(canSign() && !this._toSign.isEmpty()) {
       this._signer.loadSignature(this);
       // sign files...
@@ -285,9 +285,9 @@ public class FileApplet extends JApplet {
     }
     
     return sb.toString();
-  }
+  }*/
 
-  private String doLoadAndSign(String variableName) {
+ /* private String doLoadAndSign(String variableName) {
     if(!canSign()) return null;
 
     JFileChooser jfc = new JFileChooser();
@@ -381,7 +381,7 @@ public class FileApplet extends JApplet {
 
     return retObj;
   }
-
+*/
   private Map<String,String> postFiles(ClientRequestInfo clientId,  Map<String,File> files, boolean update) {
     Map<String,String> retObj = new HashMap<String, String>(files.size());
 

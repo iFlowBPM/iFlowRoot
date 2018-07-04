@@ -20,7 +20,8 @@ static java.util.HashSet varset = new java.util.HashSet();
   static boolean compile = false;
   static boolean dynamic = false;
   static boolean array = false;
-  static Connection dbNS;
+  //static Connection dbNS;
+  static String dbNS;
   static int interfaceidNS;
   static String nome_campoNS;
 
@@ -161,7 +162,7 @@ static java.util.HashSet varset = new java.util.HashSet();
     }
   }
 
-  public static String compileJavascriptConditionNS (Connection db, int interfaceid, String nome_campo, String s)
+  public static String compileJavascriptConditionNS (String db, int interfaceid, String nome_campo, String s)
   {
     dbNS = db;
     interfaceidNS = interfaceid;
@@ -553,25 +554,23 @@ static java.util.HashSet varset = new java.util.HashSet();
     try {
       Double.valueOf(token.image);
       if (javascript && javascriptNS) {
-        try{
-          int objectid = 0;
-          Statement st = dbNS.createStatement();
-          ResultSet rs =  st.executeQuery("select * from campos where variable='" + nome_campoNS + "' AND interfaceid = " + interfaceidNS + " ");
-          if (rs.next()) {
-            objectid = rs.getInt("objectid");
-          }
-          rs =  st.executeQuery("select * from valores where objectid="+ objectid + " AND value = " + token.image +" AND interfaceid = " + interfaceidNS + " ");
-          if (rs.next()) {
-           argStack.push("" + (rs.getInt("value_pos")-1));
-          }
-        }
-        catch(SQLException sqle){
-          Logger.error("", "", "", sqle.getMessage(), sqle);
-        }
-      }
+       // try{
+        //  int objectid = 0;
+          //Statement st = dbNS.createStatement();
+         // ResultSet rs =  st.executeQuery("select * from campos where variable='" + nome_campoNS + "' AND interfaceid = " + interfaceidNS + " ");
+          //if (rs.next()) {
+           // objectid = rs.getInt("objectid");
+          //}
+          //rs =  st.executeQuery("select * from valores where objectid="+ objectid + " AND value = " + token.image +" AND interfaceid = " + interfaceidNS + " ");
+          //if (rs.next()) {
+          // argStack.push("" + (rs.getInt("value_pos")-1));
+         // }
+        }//
+        
+     /* }
       else{
         argStack.push(token.image);
-      }
+      }*/
     }
     catch (NumberFormatException ee) {
       argStack.push("Double.NaN");

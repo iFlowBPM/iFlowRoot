@@ -54,7 +54,7 @@ public class RubricServiceServlet extends HttpServlet {
     // User must be authenticated
     UserInfoInterface userInfo = (UserInfoInterface) session.getAttribute(Const.USER_INFO);
     if (null == userInfo) {
-      Logger.error("<unknown>", this, "doHead", "Invalid user/user not authenticated.");
+      //logger.error("<unknown>", this, "doHead", "Invalid user/user not authenticated.");
       response.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found");
       return;
     }
@@ -67,7 +67,7 @@ public class RubricServiceServlet extends HttpServlet {
 	    // User must be authenticated
 	    UserInfoInterface userInfo = (UserInfoInterface) session.getAttribute(Const.USER_INFO);
 	    if (null == userInfo) {
-	      Logger.error("<unknown>", this, "doGet", "Invalid user/user not authenticated.");
+	      //logger.error("<unknown>", this, "doGet", "Invalid user/user not authenticated.");
 	      response.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found");
 	      return;
 	    }
@@ -78,11 +78,11 @@ public class RubricServiceServlet extends HttpServlet {
 	    ba = pi.getRubricImage(userInfo);
 	        
 	    if (ba == null) {
-	      Logger.debug(userInfo.getUtilizador(), this, "doGet", "file not retrieved from db");
+	      //logger.debug(userInfo.getUtilizador(), this, "doGet", "file not retrieved from db");
 	      response.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found");
 	      return;
 	    }
-	    Logger.debug(userInfo.getUtilizador(), this, "doGet", "sending file to client...");
+	    //logger.debug(userInfo.getUtilizador(), this, "doGet", "sending file to client...");
 	    setHeaders(ba, response);
    
 	    OutputStream out = response.getOutputStream();
@@ -96,12 +96,12 @@ public class RubricServiceServlet extends HttpServlet {
 	  HttpSession session = DocumentServiceServlet.getSessionFixedForJNLP(request);
     UserInfoInterface userInfo = (UserInfoInterface) session.getAttribute(Const.USER_INFO);
     if (null == userInfo) {
-      Logger.error("<unknown>", this, "doPost", "Invalid user/user not authenticated.");
+      //logger.error("<unknown>", this, "doPost", "Invalid user/user not authenticated.");
       response.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found");
       return;
     }
     
-    Logger.debug(userInfo.getUtilizador(), this, "doPost", "Post called");
+    //logger.debug(userInfo.getUtilizador(), this, "doPost", "Post called");
     byte[] ba = new byte[0];
     ServletOutputStream outStream = null;
     try {
@@ -116,7 +116,7 @@ public class RubricServiceServlet extends HttpServlet {
       outStream = response.getOutputStream();
       outStream.write(ba);
     } catch (Exception e) {
-      Logger.error(userInfo.getUtilizador(), this, "doPost", "Error uploading files.", e);
+      //logger.error(userInfo.getUtilizador(), this, "doPost", "Error uploading files.", e);
       throw new ServletException(e);
     } finally {
       if(null != outStream)outStream.close();

@@ -57,10 +57,10 @@ public class CheckRequestForApplet extends AppletWebstart {
 			byte [] ba = appletArgument.getBytes();
 		    resp.setHeader("Content-Disposition","attachment;filename=\"" + "appletArgument" +"\";");
 		    resp.setContentLength(ba.length);
-		    OutputStream out = resp.getOutputStream();
-		    out.write(ba);
-		    out.flush();
-		    out.close();
+		    //OutputStream out = resp.getOutputStream();
+		    //out.write(ba);
+		   // out.flush();
+		   // out.close();
 		    
 		} catch(Exception e){
 			Logger.error("<unknown>", this, "doGet", "Could not generate applet argument response",e);

@@ -255,7 +255,7 @@ class FileBasedLicenseService implements LicenseService {
 
   private void saveState() {
     String xml = createXMLSnapshot();
-    File licenseState = new File(Const.IFLOW_HOME, "licenseState.dat");
+    File licenseState = new File(Const.sIFLOW_HOME, "licenseState.dat");
     FileOutputStream fout = null;
     try {
       fout = new FileOutputStream(licenseState);
@@ -276,7 +276,7 @@ class FileBasedLicenseService implements LicenseService {
     
     FileInputStream fin = null;
     try {
-      File licenseState = new File(Const.IFLOW_HOME, "licenseState.dat");
+      File licenseState = new File(Const.sIFLOW_HOME, "licenseState.dat");
       int size = (int)licenseState.length();
       if(size == 0) return;
       byte [] licData = new byte[size];

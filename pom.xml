@@ -33,12 +33,14 @@
 
 	<properties>
 		<iflow.baseversion>4.2.6</iflow.baseversion>
-		<iflow.buildnumber>20151214</iflow.buildnumber>
+		<iflow.buildnumber>20180223</iflow.buildnumber>
+		<!-- <iflow.buildnumber>20151214</iflow.buildnumber> -->
 		<iflow.version>${iflow.baseversion}-R${iflow.buildnumber}</iflow.version>
 		<dms-connector.version>0.0.7-R20100908</dms-connector.version>
 		<alfresco-connector.version>0.0.7-R20100908</alfresco-connector.version>
 
 		<iflow.home>${basedir}/iflow-home</iflow.home>
+		
 		<maven.test.skip>true</maven.test.skip>
 
 		<!-- NOTE: don't forget to change in iflow-applet -->
@@ -62,6 +64,7 @@
 				<groupId>pt.iknow</groupId>
 				<artifactId>parsers</artifactId>
 				<version>1.2.2</version>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>pt.iknow</groupId>
@@ -77,6 +80,7 @@
 				<groupId>pt.iknow</groupId>
 				<artifactId>sql-parser</artifactId>
 				<version>1.0.0</version>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.infosistema</groupId>
@@ -84,6 +88,7 @@
 				<version>${crypto-api.version}</version> <!-- replicated in iflow-applet -->
 				<scope>provided</scope>
 			</dependency>
+			
 
 			<!-- APP.external -->
 			<dependency>
@@ -267,6 +272,12 @@
 				<groupId>net.sourceforge.collections</groupId>
 				<artifactId>collections-generic</artifactId>
 				<version>4.01</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.infosistema</groupId>
+				<artifactId>PariPersiLargeDataReader</artifactId>
+  				<version>0.0.1-SNAPSHOT</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
@@ -539,8 +550,8 @@
 				<scope>system</scope>
 				<systemPath>C:\webserver\www\iFlow\iFlowRootPariPersi\iFlowRoot\libs_bombadas\collections-generic-4.01.jar</systemPath>
 			</dependency>
-
-
+			
+			
 		</dependencies>
 	</dependencyManagement>
 
@@ -604,9 +615,29 @@
 					</execution>
 				</executions>
 			</plugin>
-
+			
+			<plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>properties-maven-plugin</artifactId>
+            <version>1.0-alpha-2</version>
+            <executions>
+                <execution>
+                    <phase>generate-resources</phase>
+                    <goals>
+                        <goal>write-project-properties</goal>
+                    </goals>
+                    <configuration>
+                        <outputFile>${basedir}/src/main/webapp/WEB-INF/classes/path.properties</outputFile>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
 		</plugins>
+		
 	</build>
+	
+	
+	
 
 	<reporting>
 		<plugins>

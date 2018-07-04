@@ -472,4 +472,6 @@ public interface UserManager {
    public List<String> getSystemUsers(UserInfoInterface userInfo);
    
    public int changePasswordAdmin(String username, String oldPassword, String password); 
+   
+   public boolean changeActiveState(UserInfoInterface userInfo, String userid, Boolean active); 
 }

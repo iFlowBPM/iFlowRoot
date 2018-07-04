@@ -164,10 +164,13 @@ public static void sendEncodeRedirect(HttpServletResponse response, ServletUtils
   public static Cookie newCookie(String name, String value) {
 	  
     // guardar lang actual
+	// Remove CR 
+	value = value.replaceAll("\\n", "");
+	value = value.replaceAll("\\r", "");  
     Cookie cookie = new Cookie(name, value);
     cookie.setMaxAge(15*DAY);
     cookie.setSecure(true);
-    cookie.setPath("/");
+    cookie.setPath("/main.jsp");
     return cookie;
   }
   

@@ -94,7 +94,7 @@ public class RepositoryBean implements Repository {
 	private static final File REPOSITORY_ROOT;
 
 	static {
-		REPOSITORY_ROOT = new File(Const.IFLOW_HOME + "/repository_data");
+		REPOSITORY_ROOT = new File(Const.sIFLOW_HOME + "/repository_data");
 	}
 
 	protected RepositoryBean() {
@@ -161,7 +161,7 @@ public class RepositoryBean implements Repository {
 		if (null != sysFileName) {
 			sysFile = new File(REPOSITORY_ROOT, PathNormalizer.cleanString(sysFileName));
 			if (sysFile == null || !sysFile.exists() || !sysFile.isFile()) {
-				sysFile = new File(Const.IFLOW_HOME, sysFileName);
+				sysFile = new File(Const.sIFLOW_HOME, sysFileName);
 			}
 		}
 

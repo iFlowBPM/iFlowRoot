@@ -212,7 +212,7 @@ public class FlowEditor implements Runnable {
   }
 
   public static void log(String msg) {
-    logger.info(msg);
+    //logger.info(msg);
   }
 
   public static void log(String msg, Throwable t) {

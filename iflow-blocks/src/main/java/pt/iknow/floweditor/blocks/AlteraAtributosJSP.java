@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -452,7 +453,7 @@ public class AlteraAtributosJSP extends AbstractAlteraAtributos implements Alter
       this._jcbPrintStyleSheet.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             String value = (String) _jcbPrintStyleSheet.getSelectedItem();
-            _jtfAppendDocs.setEditable(value != null && value.toLowerCase().endsWith(sFO_EXT));
+            _jtfAppendDocs.setEditable(value != null && value.toLowerCase(Locale.ENGLISH).endsWith(sFO_EXT));
           }
         });
       

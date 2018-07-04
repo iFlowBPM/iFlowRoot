@@ -31,7 +31,7 @@ public class RepositoryUpdateHandler extends UpdateHandler {
   }
 
   public static void execute() {
-    RepositoryUpdateHandler.getInstance().run(new File(Const.IFLOW_HOME + "/repository_data"));
+    RepositoryUpdateHandler.getInstance().run(new File(Const.sIFLOW_HOME + "/repository_data"));
   }
 
   @SuppressWarnings("unchecked")

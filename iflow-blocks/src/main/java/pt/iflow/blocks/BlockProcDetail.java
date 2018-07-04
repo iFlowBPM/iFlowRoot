@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -301,7 +302,7 @@ public class BlockProcDetail extends BlockFormulario {
       // 10: print stylesheet attribute
       String sPrintStyleSheet = (String)block.execute(10,null);
       if (StringUtils.isNotEmpty(sPrintStyleSheet)) {
-        if (sPrintStyleSheet.toLowerCase().endsWith(sTEMPLATE_SUFFIX)) {
+        if (sPrintStyleSheet.toLowerCase(Locale.ENGLISH).endsWith(sTEMPLATE_SUFFIX)) {
           int nDSFlowId = processo.getFlowId();
           int nDSPid = processo.getPid();
           int nDSSubPid = processo.getSubPid();

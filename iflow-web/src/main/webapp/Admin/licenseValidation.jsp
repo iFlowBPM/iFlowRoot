@@ -10,7 +10,6 @@
 <%
 	boolean isLoaded = LibraryLoader.isLoaded();
 int status = SecurityWrapper.getLicenseStatus();
-String libpath = System.getProperty("iflow.home");
 String fileName = LibraryLoader.getLibraryFileName();
 UserInfoInterface admin = (UserInfoInterface)session.getAttribute(Const.USER_INFO);
 if(null == admin) {
@@ -116,7 +115,7 @@ if(isLoaded) {
 <% if(isLoaded) { %>
 						<p><if:message string="licenseValidation.version.dll" param="<%= LibraryLoader.getDLLVersion() %>"/></p>
 <% } %>
-						<p>iflow.home: <span class="mono"><%=libpath %></span></p>
+					
 					</fieldset>
 					<fieldset class="submit rp_background">
 						<input class="regular_button_01" type="submit" name="admin" value="<if:message string="licenseValidation.button.admin"/>"/>

@@ -2,6 +2,7 @@ package pt.iflow.blocks;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 
 import pt.iflow.api.blocks.Block;
 import pt.iflow.api.blocks.Port;
@@ -170,7 +171,7 @@ public abstract class BlockSQL extends Block {
 
       stmp = (String)retObj.get(i);
       stmp = stmp.trim();
-      stmp2 = stmp.toUpperCase();
+      stmp2 = stmp.toUpperCase(Locale.ENGLISH);
 
       if (stmp2.startsWith(BlockSQL.sFUNC_PREFIX)) {
 

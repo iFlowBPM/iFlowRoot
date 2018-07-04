@@ -60,7 +60,7 @@ public class DocumentServiceServlet extends HttpServlet implements AppletDocPara
   protected void setHeaders(DocumentData doc, HttpServletResponse response) throws ServletException, IOException {
     response.setHeader("Content-Disposition", "attachment;filename=\"" + doc.getFileName().replace(' ', '_') + "\";");
     String mimeType = getServletContext().getMimeType(doc.getFileName());
-    Logger.debug("", this, "", "file: "+doc.getFileName()+"; mime-type: "+mimeType);
+   // //logger.debug("", this, "", "file: "+doc.getFileName()+"; mime-type: "+mimeType);
   response.setContentLength(doc.getLength());
     response.setHeader("X-iFlow-DocId", String.valueOf(doc.getDocId()));
     response.setDateHeader("Last-Modified", doc.getUpdated().getTime());
@@ -73,7 +73,7 @@ public class DocumentServiceServlet extends HttpServlet implements AppletDocPara
     // User must be authenticated
     UserInfoInterface userInfo = (UserInfoInterface) session.getAttribute(Const.USER_INFO);
     if (null == userInfo) {
-      Logger.error("<unknown>", this, "doHead", "Invalid user/user not authenticated.");
+      
       response.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found");
       return;
     }
@@ -127,7 +127,7 @@ public class DocumentServiceServlet extends HttpServlet implements AppletDocPara
     // User must be authenticated
     UserInfoInterface userInfo = (UserInfoInterface) session.getAttribute(Const.USER_INFO);
     if (null == userInfo) {
-      Logger.error("<unknown>", this, "doGet", "Invalid user/user not authenticated. ->" + session.getId());
+     
       response.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found");
       return;
     }
@@ -180,17 +180,17 @@ public class DocumentServiceServlet extends HttpServlet implements AppletDocPara
     byte[] ba = new byte[0];
     if("true".equalsIgnoreCase(remove)) {
       boolean result = removeDocument(helper, docid, userInfo, procData, varName);
-      Logger.debug(userInfo.getUtilizador(), this, "doGet", "Remover documento "+docid+" => "+result);
+      
       ba = String.valueOf(result).getBytes("UTF-8");
     } else if("true".equalsIgnoreCase(maxsize)) {
       ba = String.valueOf(Const.nUPLOAD_MAX_SIZE).getBytes("UTF-8");
-      Logger.debug(userInfo.getUtilizador(), this, "doGet", "Max length: "+Const.nUPLOAD_MAX_SIZE);
+      
     } else {
-      Logger.debug(userInfo.getUtilizador(), this, "doGet", "Document requested: "+docid+"@"+varName);
+      //logger.debug(userInfo.getUtilizador(), this, "doGet", "Document requested: ");
       DocumentData doc = getDocument(helper, docid, userInfo, procData, varName, true);
 
       if (doc == null) {
-        Logger.debug(userInfo.getUtilizador(), this, "doGet", "file not retrieved from db");
+       
         response.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found");
         return;
       }
@@ -199,7 +199,7 @@ public class DocumentServiceServlet extends HttpServlet implements AppletDocPara
       PassImage pi = BeanFactory.getPassImageManagerBean();
       response.setHeader("NUMASS", ""+pi.getNumAss(userInfo, docid));
       
-      Logger.debug(userInfo.getUtilizador(), this, "doGet", "sending file to client...");
+     
       setHeaders(doc, response);
       ba = doc.getContent();
     }
@@ -244,7 +244,7 @@ public class DocumentServiceServlet extends HttpServlet implements AppletDocPara
     boolean found = helper.hasDocument(varName, docid) || isInProcess(listVar, docid)!=-1;
     
     if(!found) {
-      Logger.error(userInfo.getUtilizador(), this, "getDocument", "O documento com ID "+docid+" não foi encontrado no processo.");
+      
       return null;
     }
     
@@ -265,7 +265,7 @@ public class DocumentServiceServlet extends HttpServlet implements AppletDocPara
     boolean found = helper.hasDocument(varName, docid) || pos != -1;
 
     if(!found) {
-      Logger.error(userInfo.getUtilizador(), this, "getDocument", "O documento com ID "+docid+" não foi encontrado no processo.");
+      
       return false;
     }
     
@@ -287,12 +287,12 @@ public class DocumentServiceServlet extends HttpServlet implements AppletDocPara
 	  HttpSession session = getSessionFixedForJNLP(request);
     UserInfoInterface userInfo = (UserInfoInterface) session.getAttribute(Const.USER_INFO);
     if (null == userInfo) {
-      Logger.error("<unknown>", this, "doPost", "Invalid user/user not authenticated.");
+     
       response.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found");
       return;
     }
 
-    Logger.debug(userInfo.getUtilizador(), this, "doPost", "Post called");
+    //logger.debug(userInfo.getUtilizador(), this, "doPost", "Post called");
     byte[] ba = new byte[0];
     ServletOutputStream outStream = null;
     try {
@@ -329,7 +329,7 @@ public class DocumentServiceServlet extends HttpServlet implements AppletDocPara
         session.removeAttribute(Const.SESSION_PROCESS + flowExecType);
       }
       if (procData == null) {
-        Logger.error(userInfo.getUtilizador(), this, "doPost", "Processo nao encontrado");
+        
         response.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found");
         return;
       }
@@ -342,7 +342,7 @@ public class DocumentServiceServlet extends HttpServlet implements AppletDocPara
       if(null == update) update = "false";
       boolean isUpdate = "true".equalsIgnoreCase(update);
 
-      Logger.debug(userInfo.getUtilizador(), this, "doPost", "Is this an update? "+isUpdate);
+     
 
       DocumentSessionHelper helper = getHelper(session, flowid, pid, subpid);
       
@@ -360,7 +360,7 @@ public class DocumentServiceServlet extends HttpServlet implements AppletDocPara
       }
 
       if (doc == null) {
-        Logger.error(userInfo.getUtilizador(), this, "doPost", "Documento nao foi encontrado");
+        
         response.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found");
         return;
       }
@@ -374,7 +374,7 @@ public class DocumentServiceServlet extends HttpServlet implements AppletDocPara
         // check if list exists
         ProcessListVariable list = procData.getList(varName);
         if(list == null) {
-          Logger.error(userInfo.getUtilizador(), this, "doPost", "Process variable not found: "+varName);
+         
           response.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found");
           return;
         }
@@ -388,16 +388,16 @@ public class DocumentServiceServlet extends HttpServlet implements AppletDocPara
 
       if (null != savedDocument) {
         id = String.valueOf(savedDocument.getDocId());
-        Logger.debug(userInfo.getUtilizador(), this, "doPost", "STORED ID=" + id);
+        
         ba = id.getBytes("UTF-8");
       } else {
-        Logger.warning(userInfo.getUtilizador(), this, "doPost", "Could not save file " + URLDecoder.decode(file.getFileName(), "UTF-8"));
+        
       }
 
       outStream = response.getOutputStream();
       outStream.write(ba);
     } catch (Exception e) {
-      Logger.error(userInfo.getUtilizador(), this, "doPost", "Error uploading files.", e);
+     
       throw new ServletException(e);
     } finally {
       if(null != outStream)outStream.close();
@@ -419,7 +419,7 @@ public class DocumentServiceServlet extends HttpServlet implements AppletDocPara
 //	    if(idDoc > 0)
 //	    	rd.insertImage(idDoc, userInfo);
 //	    else
-//	    	Logger.error(userInfo.getUtilizador(), this, "doPost", "Impossivel rubricar o documento.");
+//	    	//logger.error(userInfo.getUtilizador(), this, "doPost", "Impossivel rubricar o documento.");
 //    }
   }
 

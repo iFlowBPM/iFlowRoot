@@ -52,6 +52,7 @@ public class AppletWebstart extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		/*
 		try{
 			HttpSession session = DocumentServiceServlet.getSessionFixedForJNLP(req);
 			UserInfoInterface userInfo = (UserInfoInterface)session.getAttribute(Const.USER_INFO);
@@ -69,7 +70,7 @@ public class AppletWebstart extends HttpServlet {
 				resources.add(name);
 			}			
 			
-			Enumeration enp = req.getParameterNames();
+		 Enumeration enp = req.getParameterNames();
 			Hashtable htp = new Hashtable();
 			htp.put("DOCUMENTBASEURL", documentBaseURL);
 			htp.put("CHECKREQUESTFORAPPLET", checkRequestForAppletURL);
@@ -97,17 +98,19 @@ public class AppletWebstart extends HttpServlet {
 			    out.flush();
 			    out.close();
 			}
+			
 			//save request for applet
 			else{				
 				session.setAttribute(REQUEST_FOR_APPLET, new RequestForApplet(htp));
 				return;
 			}
+			
 		} catch(Exception e){
 			Logger.error("<unknown>", this, "doGet", "Could not generate applet jnlp file",e);
 			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal server error");
 		    return;
 		}
-		
+		*/
 	}
 	
 }

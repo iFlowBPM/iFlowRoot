@@ -6,6 +6,8 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.tagext.Tag;
 
+import org.owasp.esapi.ESAPI;
+
 import pt.iflow.api.msg.IMessages;
 
 /**
@@ -89,7 +91,7 @@ public class FormOptionTag extends IknowTag {
     if(parent.isEdit()) {
       StringBuffer sb = new StringBuffer();
 
-      sb.append("<option value=\"").append("${fn:escapeXml("+value+")}").append("\"");
+      sb.append("<option value=\"").append(ESAPI.encoder().encodeForHTML(value)).append("\"");
 
       // check if selected value is good
       if(parentValueMatch) {
