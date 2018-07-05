@@ -166,8 +166,8 @@ public class Logger {
 
 		switch (logLevel) {
 		case DEBUG:
-			if(false)
-			//if (logger.isDebugEnabled()) 
+			
+			if (logger.isDebugEnabled()) 
 			{
 				logger.debug("", t);
 
