@@ -120,9 +120,7 @@ public class Logger {
 
 	private static void log(org.apache.log4j.Logger logger, LogLevel logLevel, String asUser, String asCallerObject,
 			String asMethodName, String asMessage, Throwable t) {
-		if(true)
-			return;
-		
+				
 		if (!loggerLoaded)
 			initLogger();
 		String sMessage = asMessage;
