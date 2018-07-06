@@ -20,6 +20,7 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -31,6 +32,9 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import javax.crypto.Cipher;
+import javax.crypto.CipherOutputStream;
+import javax.crypto.NoSuchPaddingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -173,7 +177,19 @@ public class Dispatcher extends HttpServlet {
   private void sendData(HttpServletResponse response, byte[] data) throws IOException {
     if (null == response || null == data)
       return;
-    OutputStream out = response.getOutputStream();
+    Cipher cipherOut = null;
+    
+    	try {
+			cipherOut = Cipher.getInstance("AES/CBC/PKCS5Padding");
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			
+		} catch (NoSuchPaddingException e) {
+			// TODO Auto-generated catch block
+			
+		}  
+    
+    CipherOutputStream out = new CipherOutputStream(response.getOutputStream(), cipherOut);
     response.setContentLength(data.length);
     out.write(data);
     out.flush();

@@ -12,6 +12,7 @@ import java.security.PrivilegedExceptionAction;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -584,6 +585,16 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
     this.tasks.put(task.getTaskId(), task);
     return task.getTaskId();
   }
+  
+  public static void safeClose(FileOutputStream fis) {
+	  if (fis != null) {
+	  try {
+	  fis.close();
+	  } catch (IOException e) {
+	  
+	  }
+	  }
+	  }
 
   private String doUploadFileFromDisk(final WebClient webClient, String fileName, byte[] byteArr) {
     FileSigner signer = SignatureType.getFileSigner(webClient);
@@ -594,15 +605,22 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
     String fileExt = fileNameAux.length > 1 ? "." + fileNameAux[1] : "";  
 
     File theFile = null;
+    
+    FileOutputStream stream = null;
     try {
       theFile = File.createTempFile(fileName, fileExt);
-      FileOutputStream stream = new FileOutputStream(theFile);
+      stream =  new FileOutputStream(theFile);
       stream.write(byteArr);
       stream.close();
     } catch (IOException e) {
-      e.printStackTrace();
-    }
+      e.printStackTrace();}
     
+      finally {
+    	  if (stream != null) {
+    	  safeClose(stream);
+    	  }
+    	  }
+    	  
     
     if (theFile != null && theFile.canRead() && theFile.isFile())
       ivFile = new FileVFile(theFile, webClient.getVariable());

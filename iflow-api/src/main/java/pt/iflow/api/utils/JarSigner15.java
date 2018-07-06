@@ -444,7 +444,9 @@ public class JarSigner15 {
   }
 
   public static File sign(File jar, String newName, String keystoreLocation, String alias, char[] passwd, char[] keypasswd) {
-
+	  
+	  return null;
+/*
     try {
       FileInputStream fileIn = new FileInputStream(keystoreLocation);
       KeyStore keyStore = KeyStore.getInstance("JKS");
@@ -475,6 +477,8 @@ public class JarSigner15 {
       ex.printStackTrace();
     }
     return null;
+    
+          */
   }
 
   public static File sign(File jar, String keystoreLocation, String alias, char[] passwd, char[] keypasswd) {

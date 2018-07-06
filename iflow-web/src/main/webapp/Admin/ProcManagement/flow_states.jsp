@@ -99,7 +99,23 @@ if (flow != null) {
       catch (Exception e) {
       }
       finally {
-	Utils.closeDB(db,st,rs);
+		try{
+			db.close();
+		}catch(Exception e){
+			
+		}
+		try{
+			st.close();
+		}catch(Exception e){
+			
+		}
+		try{
+			rs.close();
+		}catch(Exception e){
+			
+		}
+    	 // Utils.closeDB(db,st,rs);
+		
       }
 
       if (hmStates == null) {

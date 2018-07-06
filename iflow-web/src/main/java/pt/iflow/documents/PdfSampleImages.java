@@ -218,11 +218,11 @@ public class PdfSampleImages {
     String lixoaux = "";
 
     //Primeira vez, Rubrica na 1ª pagina ou se é só uma pagina rubricar a unica
-    insertImageRubrica(fileOriginal, 1, fileAux, userInfo);
+   // insertImageRubrica(fileOriginal, 1, fileAux, userInfo);
 
     //Rubricar resto das paginas menos a ultima
     for(int i = 2; i < pageCount;i++){
-      insertImageRubrica(fileAux,i, fileAux2, userInfo);
+     // insertImageRubrica(fileAux,i, fileAux2, userInfo);
       lixoaux = fileAux;
       fileAux = fileAux2;
       fileAux2 = lixoaux;		
@@ -236,12 +236,12 @@ public class PdfSampleImages {
 
     return fileAux;
   }
-
+/*
   public void insertImageRubrica(String fileRead, int pag, String fileWrite, UserInfoInterface userInfo){	 
-
+	  
     File file = new File("");
     File file2 = new File("");
-
+    
     try {
       FileInputStream fileInput = new FileInputStream(file);
       FileOutputStream fileOutput = new FileOutputStream(file2);
@@ -284,7 +284,7 @@ public class PdfSampleImages {
 
     } catch (Exception e) {log.error("Erro a rubricar pdf", e);} 
   }
-
+*/
 
   public String getGuidName(){
     UUID uuid = UUID.randomUUID();

@@ -687,7 +687,7 @@ public class EmailManager extends Thread {
 
       
       // Assume HTML template by default.
-      boolean isHTML = (StringUtils.isEmpty(html) || !ArrayUtils.contains(new String[]{"false","no","0"}, html.toLowerCase()));
+      boolean isHTML = html != null && (StringUtils.isEmpty(html) || !ArrayUtils.contains(new String[]{"false","no","0"}, html.toLowerCase()));
       
       // Assume app email by default
       if(StringUtils.isEmpty(from)) from = Const.sAPP_EMAIL;
