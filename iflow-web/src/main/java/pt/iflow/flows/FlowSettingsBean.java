@@ -96,18 +96,25 @@ public class FlowSettingsBean implements FlowSettings {
       } else {
         rs = st.executeQuery(DBQueryManager.getQuery("FlowSettings.getNextMid"));
       }
-      if (rs!=null && rs.next()) {
-        nMid = rs.getInt(1);
-      } else {
-        // oops..
-        // throw new Exception("Unable to get next flow setting mid");
-        nMid = 33;
-        Logger.warning(userInfo.getUtilizador(), this,
-            "saveFlowSettings",
-        "Unable to get next flow setting mid");
-      }
+      try {
+    	  if (rs!=null && rs.next()) {
+    	        nMid = rs.getInt(1);
+    	      } else {
+    	        // oops..
+    	        // throw new Exception("Unable to get next flow setting mid");
+    	        nMid = 33;
+    	        Logger.warning(userInfo.getUtilizador(), this,
+    	            "saveFlowSettings",
+    	        "Unable to get next flow setting mid");
+    	      }
+      } catch (Exception e) {
+    	  Logger.error(userInfo.getUtilizador(), this,
+  	            "Erro saveFlowSettings", "FlowSettingsBean.java:109");
+    	  }
+    
+      finally{
       rs.close();
-
+      }
       for (int set = 0; set < afsaSettings.length; set++) {
 
         fs = afsaSettings[set];

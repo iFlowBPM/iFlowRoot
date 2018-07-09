@@ -46,7 +46,7 @@ public class Logger {
 		}
 
 		initLogger();
-		//purgeOldLogs();
+		// purgeOldLogs();
 	}
 
 	public static synchronized void initLogger() {
@@ -70,20 +70,20 @@ public class Logger {
 		final String query = "delete from iflow.application_log where date < ?";
 
 		// apaga Logs antigos
-		//Connection db = null;
+		// Connection db = null;
 		PreparedStatement st = null;
-		//DataSource ds = null;
+		// DataSource ds = null;
 		try {
-			//ds = Utils.getDataSource();
-			//db = ds.getConnection();
+			// ds = Utils.getDataSource();
+			// db = ds.getConnection();
 			db.setAutoCommit(true);
 			st = db.prepareStatement(query);
 			st.setTimestamp(1, new Timestamp(cal.getTimeInMillis()));
 
 			int n = st.executeUpdate();
 
-			//st.close();
-			//st = null;
+			// st.close();
+			// st = null;
 			Logger.adminInfo("Logger", "purgeOldLogs", "Removed old Logs.");
 		} catch (SQLException e) {
 			Logger.adminWarning("Logger", "purgeOldLogs", "Error old logs.", e);
@@ -120,7 +120,7 @@ public class Logger {
 
 	private static void log(org.apache.log4j.Logger logger, LogLevel logLevel, String asUser, String asCallerObject,
 			String asMethodName, String asMessage, Throwable t) {
-				
+
 		if (!loggerLoaded)
 			initLogger();
 		String sMessage = asMessage;
@@ -158,51 +158,49 @@ public class Logger {
 		}
 
 		// Connection db = null;
-		//Statement st = null;
+		// Statement st = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 
 		switch (logLevel) {
 		case DEBUG:
-			
-			if (logger.isDebugEnabled()) 
-			{
+
+			if (logger.isDebugEnabled()) {
 				logger.debug("", t);
 
-				
+				try {
+					// db = Utils.getDataSource().getConnection();
+
+					// st = db.createStatement();
+
+					pst = db.prepareStatement(sQuery);
+
+					pst.setString(1, "DEBUG");
+					pst.setString(2, sMessage);
+
+					pst.executeUpdate();
+
+					// DatabaseInterface.closeResources(db, pst, st, rs);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+
+					DatabaseInterface.closeResources(db);
 					try {
-						//db = Utils.getDataSource().getConnection();
-
-						//st = db.createStatement();
-
-						pst = db.prepareStatement(sQuery);
-
-						pst.setString(1, "DEBUG");
-						pst.setString(2, sMessage);
-
-						pst.executeUpdate();
-
-						//DatabaseInterface.closeResources(db, pst, st, rs);
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-						
-						DatabaseInterface.closeResources(db);
-						try {
-							db = ds.getConnection();
-						} catch (SQLException f) {
-							f.printStackTrace();
-						}
+						db = ds.getConnection();
+					} catch (SQLException f) {
+						f.printStackTrace();
 					}
+				}
 			}
 			break;
 		case INFO:
 			if (logger.isInfoEnabled()) {
 				logger.info("", t);
 				try {
-					//db = Utils.getDataSource().getConnection();
+					// db = Utils.getDataSource().getConnection();
 
-					//st = db.createStatement();
+					// st = db.createStatement();
 
 					pst = db.prepareStatement(sQuery);
 
@@ -211,7 +209,7 @@ public class Logger {
 
 					pst.executeUpdate();
 
-					//DatabaseInterface.closeResources(db, pst, st, rs);
+					// DatabaseInterface.closeResources(db, pst, st, rs);
 
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -227,9 +225,9 @@ public class Logger {
 		case WARNING:
 			logger.warn("", t);
 			try {
-				//db = Utils.getDataSource().getConnection();
+				// db = Utils.getDataSource().getConnection();
 
-				//st = db.createStatement();
+				// st = db.createStatement();
 
 				pst = db.prepareStatement(sQuery);
 
@@ -238,11 +236,11 @@ public class Logger {
 
 				pst.executeUpdate();
 
-				//DatabaseInterface.closeResources(db, pst, st, rs);
+				// DatabaseInterface.closeResources(db, pst, st, rs);
 
 			} catch (Exception e) {
 				e.printStackTrace();
-				
+
 				DatabaseInterface.closeResources(db);
 				try {
 					db = ds.getConnection();
@@ -250,15 +248,14 @@ public class Logger {
 					f.printStackTrace();
 				}
 			}
-			
-			
+
 			break;
 		case ERROR:
 			logger.error("", t);
 			try {
-				//db = Utils.getDataSource().getConnection();
+				// db = Utils.getDataSource().getConnection();
 
-				//st = db.createStatement();
+				// st = db.createStatement();
 
 				pst = db.prepareStatement(sQuery);
 
@@ -267,11 +264,11 @@ public class Logger {
 
 				pst.executeUpdate();
 
-				//DatabaseInterface.closeResources(db, pst, st, rs);
+				// DatabaseInterface.closeResources(db, pst, st, rs);
 
 			} catch (Exception e) {
 				e.printStackTrace();
-				
+
 				DatabaseInterface.closeResources(db);
 				try {
 					db = ds.getConnection();
@@ -283,9 +280,9 @@ public class Logger {
 		case FATAL:
 			logger.fatal("", t);
 			try {
-				//db = Utils.getDataSource().getConnection();
+				// db = Utils.getDataSource().getConnection();
 
-				//st = db.createStatement();
+				// st = db.createStatement();
 
 				pst = db.prepareStatement(sQuery);
 
@@ -294,11 +291,11 @@ public class Logger {
 
 				pst.executeUpdate();
 
-				//DatabaseInterface.closeResources(db, pst, st, rs);
+				// DatabaseInterface.closeResources(db, pst, st, rs);
 
 			} catch (Exception e) {
 				e.printStackTrace();
-				
+
 				DatabaseInterface.closeResources(db);
 				try {
 					db = ds.getConnection();
@@ -312,9 +309,9 @@ public class Logger {
 			if (logger.isInfoEnabled()) {
 				logger.info("TRACE " + "", t);
 				try {
-					//db = Utils.getDataSource().getConnection();
+					// db = Utils.getDataSource().getConnection();
 
-					//st = db.createStatement();
+					// st = db.createStatement();
 
 					pst = db.prepareStatement(sQuery);
 
@@ -323,11 +320,11 @@ public class Logger {
 
 					pst.executeUpdate();
 
-					//DatabaseInterface.closeResources(db, pst, st, rs);
+					// DatabaseInterface.closeResources(db, pst, st, rs);
 
 				} catch (Exception e) {
 					e.printStackTrace();
-					
+
 					DatabaseInterface.closeResources(db);
 					try {
 						db = ds.getConnection();
@@ -376,6 +373,7 @@ public class Logger {
 	 * @param method
 	 *            [Optional] Calling method.
 	 */
+	@SuppressWarnings("unused")
 	public static void logFlowState(ProcessData procData, int state, String username, String message, String caller,
 			String method) {
 		if (!Const.DONT_LOG_IN_DB && procData.isInDB()) {
@@ -394,17 +392,31 @@ public class Logger {
 
 				String logIdQuery = DBQueryManager.getQuery("Logger.GET_FLOW_STATE_LOG_ID");
 				st = db.createStatement();
-				if (Const.DB_TYPE.equalsIgnoreCase("SQLSERVER")) {
-					st.execute(DBQueryManager.getQuery("FlowSettings.getNextMid"));
-					if (st.getMoreResults())
-						rs = st.getResultSet();
-				} else
-					rs = st.executeQuery(logIdQuery);
-				if (rs.next()) {
-					logId = rs.getInt(1);
+				try {
+					if (Const.DB_TYPE.equalsIgnoreCase("SQLSERVER")) {
+						st.execute(DBQueryManager.getQuery("FlowSettings.getNextMid"));
+						
+							
+						
+						
+						
+							if (rs != null && st.getMoreResults())
+								rs = st.getResultSet();
+							 else 
+								rs = st.executeQuery(logIdQuery);
+							
+							
+							if (rs.next()) {
+								logId = rs.getInt(1);
+							}
+							
+						}
+					
+				} catch (Exception e) {
+
+				} finally {
+					rs.close();
 				}
-				rs.close();
-				rs = null;
 
 				FlowStateLogTO flowStateLog = new FlowStateLogTO(flowid, pid, subpid, state,
 						new LogTO(logId, username, caller, method, message, new Timestamp(new Date().getTime())));

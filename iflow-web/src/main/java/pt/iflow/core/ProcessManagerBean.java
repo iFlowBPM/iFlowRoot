@@ -785,8 +785,14 @@ public class ProcessManagerBean implements ProcessManager {
 
       st.executeUpdate("update process set mid=" + newMid + " where flowid=" + flowid + " and pid=" + pid + " and subpid="
               + subpid);
-
-      previousProcess.setMid(newMid);
+    try {
+    	 previousProcess.setMid(newMid);
+		
+	} catch (Exception e) {
+		Logger.error(userid, this, "UndoProcessData", " previousProcess.setMid(newMid);");
+	}
+     
+      
       modifyProcessData(userInfo, previousProcess, true);
 
       Logger.info(userid, this, "undoProcessData", previousProcess.getSignature() + "process undone to mid " + previousProcess.getMid());

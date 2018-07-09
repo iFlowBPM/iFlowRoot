@@ -255,10 +255,11 @@ public class ChartServlet extends HttpServlet {
         ctx.put(Const.USER_INFO, userInfo);
         ctx.put(Const.SESSION_PROCESS, procData);
         ctx.put(DataConverter.PROPERTIES, props);
-
+        
+        if(sTemplate != null){
         IChart chart = instantiate(ctx, userInfo, sTemplate, props);
-
-        chart.draw(ctx, procData, nWidth, nHeight, bout);//response.getOutputStream());
+        
+        chart.draw(ctx, procData, nWidth, nHeight, bout);} //response.getOutputStream());
       } catch (Throwable t) {
         Logger.error(userInfo.getUtilizador(), this, "generateChart", "Error generating chart image", t);
         bout = new ByteArrayOutputStream(); // clear eventual data generated

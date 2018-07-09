@@ -188,9 +188,9 @@ public class Selection implements FieldInterface {
     for (int i=0; prop.getProperty(i + "_text") != null; i++) {
       String sName = prop.getProperty(i + "_text");
       String sValue = prop.getProperty(i + "_value");
-
-      String [] asNames = null;
-      String [] asValues = null;
+      // String [] asNames = null | String [] asValues = null
+      String [] asNames = new String[0];
+      String [] asValues = new String[0];
 
       if(null == sName || null == sValue) continue;
 
@@ -222,16 +222,23 @@ public class Selection implements FieldInterface {
         }
       }
 
-      if(sValueArray && sNameArray) {
-        int size = asNames.length > asValues.length? asValues.length: asNames.length;
-        for(int j = 0; j < size; j++) {
-          names.add(asNames[j]);
-          descs.add(asValues[j]);
-        }
-      } else {
-        names.add(sName);
-        descs.add(sValue);
-      }
+      try {
+    	  if(sValueArray && sNameArray) {
+    	        int size = asNames.length > asValues.length ? asValues.length: asNames.length;
+    	        for(int j = 0; j < size; j++) {
+    	          names.add(asNames[j]);
+    	          descs.add(asValues[j]);
+    	        }
+    	      } else {
+    	        names.add(sName);
+    	        descs.add(sValue);
+    	      }
+		
+      	} catch (Exception e) {
+		
+      	}
+      
+     
     }
 
     // cleanup

@@ -235,7 +235,7 @@ public class FixedTable implements FieldInterface {
           if (StringUtils.isEmpty(sValue)) sValue = " ";
           
           String sAlign = "center";
-          if (StringUtils.isNotEmpty(ce.sAlign))
+          if (ce != null && StringUtils.isNotEmpty(ce.sAlign))
             sAlign = ce.sAlign;
 
           String sBgColor = "";

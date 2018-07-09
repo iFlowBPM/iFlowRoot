@@ -313,24 +313,18 @@ public class RepositoryBean implements Repository {
 		}
 
 		if (ok) {
-			FileOutputStream fout = null;
-
 			try {
-				fout = new FileOutputStream(file);
+			
+				FileOutputStream fout = new FileOutputStream(file);
+
 				fout.write(data);
 				ok = true;
+				fout.close();
+				
 			} catch (IOException e) {
 				e.printStackTrace();
 				ok = false;
-			} finally {
-				if (null != fout) {
-					try {
-						fout.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-			}
+			} 
 
 			// fire event
 			if (null != evt)

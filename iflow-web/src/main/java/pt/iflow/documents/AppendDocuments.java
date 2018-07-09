@@ -134,7 +134,7 @@ public class AppendDocuments {
           String fname = doc.getFileName();
 
           Logger.debug(login, "AppenDocuments", "postProcessPDF", "Documento "+docid+" => "+fname);
-          byte [] pdfContents = null;
+          byte [] pdfContents = "".getBytes();
           if(fname.toLowerCase(Locale.ENGLISH).endsWith(".pdf")) { 
             Logger.debug(login, "AppenDocuments", "postProcessPDF", "Assumindo PDF...");
             pdfContents = doc.getContent();
@@ -146,7 +146,7 @@ public class AppendDocuments {
             pdfContents = convertImageSingle(pSize, doc.getContent());
           }
 
-          if(null != pdfContents) {
+          if("".getBytes() != pdfContents) {
             file = new PdfReader(pdfContents);
             file.consolidateNamedDestinations();
             int nPag = file.getNumberOfPages();
@@ -162,7 +162,7 @@ public class AppendDocuments {
         } catch(Throwable t) {
           Logger.error(login, "AppenDocuments", "postProcessPDF", "Page ignored", t);
         } finally {
-          if(null != file) file.close();
+          file.close();
         }
       }
       // step 5: we close the document
@@ -363,7 +363,7 @@ public class AppendDocuments {
           String fname = doc.getFileName().toLowerCase(Locale.ENGLISH);
 
           Logger.debug(login, "AppenDocuments", "mergePDFs", "Documento "+docid+" => "+fname);
-          byte [] pdfContents = null;
+          byte [] pdfContents = "".getBytes();
           if(fname.endsWith(".pdf")) { 
             Logger.debug(login, "AppenDocuments", "mergePDFs", "Assumindo PDF...");
             pdfContents = doc.getContent();
@@ -375,7 +375,7 @@ public class AppendDocuments {
             pdfContents = convertImageSingle(pSize, doc.getContent());
           }
 
-          if(null != pdfContents) {
+          if("".getBytes() != pdfContents) {
             file = new PdfReader(pdfContents);
             file.consolidateNamedDestinations();
             int nPag = file.getNumberOfPages();
@@ -391,7 +391,7 @@ public class AppendDocuments {
         } catch(Throwable t) {
           Logger.error(login, "AppenDocuments", "mergePDFs", "Page ignored", t);
         } finally {
-          if(null != file) file.close();
+          file.close();
         }
       }
       // step 5: we close the document

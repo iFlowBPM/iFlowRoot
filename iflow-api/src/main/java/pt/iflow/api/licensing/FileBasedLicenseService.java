@@ -53,7 +53,12 @@ class FileBasedLicenseService implements LicenseService {
   private Timer syncTimer = new Timer(true);
   private TimerTask syncTask = new TimerTask() {
     public void run() {
-      saveState();
+      try {
+		saveState();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
     }
   };
   
@@ -69,7 +74,12 @@ class FileBasedLicenseService implements LicenseService {
   public void instanceShutdown() {
     if(--instanceCount == 0) {
       syncTimer.cancel();
-      saveState();
+      try {
+		saveState();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
     }
   }
   
@@ -253,22 +263,23 @@ class FileBasedLicenseService implements LicenseService {
     return cipher.doFinal(data);
   }
 
-  private void saveState() {
+  private void saveState() throws IOException {
     String xml = createXMLSnapshot();
     File licenseState = new File(Const.sIFLOW_HOME, "licenseState.dat");
     FileOutputStream fout = null;
     try {
       fout = new FileOutputStream(licenseState);
-      fout.write(encryptSnapShot(xml.getBytes("UTF-8")));
+      
+      if(fout != null){
+    	  fout.write(encryptSnapShot(xml.getBytes("UTF-8")));
+    	  
+      }     
+      
     } catch(Exception e) {
       Logger.error(null, this, "saveState", "Error saving license state.", e);
-    } finally {
-      if(null != fout) {
-        try {
-          fout.close();
-        } catch (IOException e) {
-        }
-      }
+    }
+    finally{
+    	fout.close();
     }
   }
   

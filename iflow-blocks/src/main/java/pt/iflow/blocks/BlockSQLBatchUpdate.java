@@ -252,7 +252,7 @@ public class BlockSQLBatchUpdate extends BlockSQL {
 	    					  val);
 	      			}
 	      			else if (dataTypeClass == int.class) {
-	      				Integer val = null;
+	      				Integer val = 0;
 	      				if (var.size() > row) {
 	      					val = (Integer)var.getItemValue(row);
 	      				}
@@ -371,7 +371,7 @@ public class BlockSQLBatchUpdate extends BlockSQL {
 	      			}
 	      			else if (dataTypeClass == int.class) {
 	      			
-	      				Integer val = null;
+	      				Integer val = 0;
 	      				if (var.size() > row) {
 	      					val = (Integer)var.getItemValue(row);
 	      				}
@@ -382,7 +382,7 @@ public class BlockSQLBatchUpdate extends BlockSQL {
 	      			}
 	      			else if (dataTypeClass == double.class) {
 	      			
-	      				Float val = null;
+	      				Float val = 0F;
 	      				if (var.size() > row) {
 	    				  val = (Float)var.getItemValue(row);
 	      				}

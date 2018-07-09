@@ -549,7 +549,7 @@ public class FlowBean implements Flow {
    * @return {subflow name, blockid in subflow}, null if the blockid is not in a subflow
    */
   private String checkSubFlowMapping(Integer flowid, Integer blockid) {
-    String[] ret = null;
+    String[] ret = new String[0]; // Deixou de ser null
     String result = "";
     Connection db = null;
     PreparedStatement pst = null;

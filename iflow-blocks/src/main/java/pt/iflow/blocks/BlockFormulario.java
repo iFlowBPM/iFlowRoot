@@ -1634,21 +1634,36 @@ public class BlockFormulario extends Block implements FormOperations {
           if (listVar != null && ii < listVar.size()) {
             value = listVar.getItem(ii);
           }
-          values.add(value != null ? value : null);
-
-          String formattedValue = value != null ? value.format() : null; 
-
+           try {
+        	  if(value != null){
+        	  values.add(value);
+        	  }else{
+        		  values.add(null);
+        	  }
+			
+          	} catch (Exception e) {
+          		Logger.error(login,block,"", "values.add - 1637 ");
+          }{
+        	  
+          }
+          
+          String formattedValue = "";
+          formattedValue = value != null ? value.format() : "";
+               
           // Tratar das cores e o resto
           double redBlueRes = Double.NaN;
           if(value != null && StringUtils.isNotEmpty(formattedValue) && StringUtils.isNotEmpty(redBlueVar)) {
             Logger.debug(login,block,"preProcessMultipleVars", "Temos redBlue");
 
-            String redBlueVal = procData.getListItemFormatted(redBlueVar,ii);
-            if(null != redBlueVal) {
+            String redBlueVal ="";
+            redBlueVal = procData.getListItemFormatted(redBlueVar,ii);
+            if(redBlueVal != "") {
               try {
                 Double aVal = new Double(formattedValue);
                 Double rbVal = new Double(redBlueVal);
                 // é numero
+                
+                
                 redBlueRes = aVal.compareTo(rbVal);
               } catch (Throwable t) {
                 try {
@@ -1659,7 +1674,8 @@ public class BlockFormulario extends Block implements FormOperations {
               }
             }
           }
-
+          
+       
           if(Double.isInfinite(redBlueRes) || Double.isNaN(redBlueRes)) 
             redBlueCtrl.add(null); // ignore
           else if( redBlueRes > 0)
@@ -1877,16 +1893,16 @@ public class BlockFormulario extends Block implements FormOperations {
       tmpOut = new FileOutputStream(new File(iflowHome, "form.xml"));
       tmpOut.write(xml);
       tmpOut.close();
-      tmpOut = null;
-
+      
       tmpOut = new FileOutputStream(new File(iflowHome, "form.html"));
       tmpOut.write(html);
       tmpOut.close();
-      tmpOut = null;
+     
     } catch (IOException e) {
       e.printStackTrace();
     } finally {
-      if (null != tmpOut) {
+     
+    	if (tmpOut != null) {
         try {
           tmpOut.close();
         } catch (IOException e) {

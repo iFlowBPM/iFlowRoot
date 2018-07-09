@@ -2615,7 +2615,13 @@ public class JSPFieldData {
       hmtmp.put(jValue, jLabel);
 
       sGridbag.setConstraints(jLabel,sC);
-      sMainPanel.add(jLabel);
+      try {
+        	if(jValue != null)
+        		sMainPanel.add(jLabel);
+		} catch (Exception e) {
+			logger.error("jValue == null - 2618" + e);
+		}
+      
       // separator
       sizer = new JPanel();
       sizer.setSize(5,1);
@@ -2656,10 +2662,15 @@ public class JSPFieldData {
             jctmp.setEnabled(!btmp);
           }
           altmp.add(jctmp);
-
-          jLabel = hmtmp.get(jctmp);
-          jLabel.setEnabled(jctmp.isEnabled());
-          altmp2.add(jLabel);
+          try {
+          	if(jValue != null)
+          		 jLabel = hmtmp.get(jctmp);
+          		 jLabel.setEnabled(jctmp.isEnabled());
+          		 altmp2.add(jLabel);
+  		} catch (Exception e) {
+  			logger.error("jValue == null - 2660" + e);
+  		}
+         
         }
 
         switch (nProp) {
@@ -2900,7 +2911,12 @@ public class JSPFieldData {
           jLabel.setHorizontalAlignment(JLabel.CENTER);
           jLabel.setSize(1,1);
           mGridbag.setConstraints(jLabel,mC);
-          mMainPanel.add(jLabel);
+          try {
+            	if(jValue != null)
+            		mMainPanel.add(jLabel);
+    		} catch (Exception e) {
+    			logger.error("jValue == null" + e);
+    		}
 
           for (int j=0; j < this._alEditMultipleProps.size(); j++) {
             // separator
@@ -2939,7 +2955,13 @@ public class JSPFieldData {
           jLabel.setHorizontalAlignment(JLabel.RIGHT);
           jLabel.setSize(1,1);
           mGridbag.setConstraints(jLabel,mC);
-          mMainPanel.add(jLabel);
+          try {
+          	if(jValue != null)
+          		mMainPanel.add(jLabel);
+  		} catch (Exception e) {
+  			logger.error("jValue == null" + e);
+  		}
+         
           // separator
           sizer = new JPanel();
           sizer.setSize(5,1);
@@ -2948,7 +2970,13 @@ public class JSPFieldData {
         }
 
         mGridbag.setConstraints(jValue,mC);
-        mMainPanel.add(jValue);
+        try {
+        	if(jValue != null)
+        	 mMainPanel.add(jValue);
+		} catch (Exception e) {
+			logger.error("jValue == null" + e);
+		}
+       
 
         // separator
         sizer = new JPanel();
@@ -3193,7 +3221,12 @@ public class JSPFieldData {
           stmp = String.valueOf(((JCheckBox)jValue).isSelected());
           break;
         case JSPFieldData.nPROP_TEXT_AREA:
-          stmp = ((JTextArea)jValue).getText();
+        	 try {
+             	if(jValue != null)
+             		stmp = ((JTextArea)jValue).getText();
+     		} catch (Exception e) {
+     			logger.error("jValue == null" + e);
+     		}
           break;
         default:
           // DEFAULT IS TEXT...
@@ -3284,7 +3317,13 @@ public class JSPFieldData {
             stmp = String.valueOf(((JCheckBox)jValue).isSelected());
             break;
           case JSPFieldData.nPROP_TEXT_AREA:
-            stmp = ((JTextArea)jValue).getText();
+        	  try {
+                	if(jValue != null)
+                		stmp = ((JTextArea)jValue).getText();
+        		} catch (Exception e) {
+        			logger.error("jValue == null" + e);
+        		}
+            
             break;
           default:
             // DEFAULT IS TEXT...

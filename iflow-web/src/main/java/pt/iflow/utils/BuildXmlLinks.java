@@ -237,7 +237,7 @@ public class BuildXmlLinks
 							 }
 						 }
 						 rs.close();
-						 rs = null;
+						 
 						 if (!hasSomeDeployed) continue;
 					 }
 				 } else {
@@ -256,8 +256,18 @@ public class BuildXmlLinks
 			 sqle.printStackTrace();
 		 } catch (Exception e) { }
 		 finally {
-			 try { rs.close(); rs = null; } catch (Exception ers) { }
-			 try { st.close(); st = null; } catch (Exception est) { }
+			 try {
+				rs.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			 try {
+				st.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		 }
 		 return sbtmp.toString();
 	 }

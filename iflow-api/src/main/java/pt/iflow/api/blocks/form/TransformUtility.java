@@ -166,16 +166,26 @@ public abstract class TransformUtility {
       Templates template = getTemplates(formReader);
 
       XMLReader rdr = formReader;
-      if (debugOutput != null)
-        rdr = new FormDebugXMLReader(formReader, new StreamResult(debugOutput));
+      
+      try{
+    	  
+    	  
+    	  if (debugOutput != null)
+    	        rdr = new FormDebugXMLReader(formReader, new StreamResult(debugOutput));
 
-      SAXSource inputSource = new SAXSource(rdr, XMLSource);
+    	      SAXSource inputSource = new SAXSource(rdr, XMLSource);
 
-      Transformer transformer = template.newTransformer();
-      // set properties here...
-      for(String key:parameters.keySet())
-        transformer.setParameter(key, parameters.get(key));
-      transformer.transform(inputSource, result);
+    	      Transformer transformer = template.newTransformer();
+    	      // set properties here...
+    	      for(String key:parameters.keySet())
+    	        transformer.setParameter(key, parameters.get(key));
+    	      transformer.transform(inputSource, result);
+    	  
+    	 
+      } catch (Exception e) {
+    	  Logger.error("", "TransformUtility", "transform", "Null deference - TransformUtility - 174", e);
+      }
+          
     }
 
   }

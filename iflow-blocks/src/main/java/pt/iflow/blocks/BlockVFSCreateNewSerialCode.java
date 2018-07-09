@@ -92,14 +92,14 @@ public class BlockVFSCreateNewSerialCode extends Block {
         try {
           
           CodeTemplateManager ctm = BeanFactory.getCodeTemplateManagerBean();
-          serial.setValue(ctm.createNewSerialCode(userInfo, template.getRawValue()));
+         if(serial != null) serial.setValue(ctm.createNewSerialCode(userInfo, template.getRawValue()));
           Logger.debug(login, this, "after", " Generate Serial Code successfully!");
         } catch (Exception ei) {
           Logger.error(login, this, "after", procData.getSignature() + "caught exception, Generate Serial Code", ei);
         }
       }
       
-      if (StringUtils.isNotBlank(serial.getRawValue())) {
+      if (serial != null && StringUtils.isNotBlank(serial.getRawValue())) {
         outPort = portTrue;
       } else {
         outPort = portFalse;

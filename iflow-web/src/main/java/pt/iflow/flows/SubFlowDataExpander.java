@@ -85,8 +85,14 @@ public class SubFlowDataExpander {
         String prefix = getSubFlowPrefix(subFlowBlock);
         if(StringUtils.isBlank(prefix))
         	prefix = "" + xmlAttribute.getValue();
-        for(XmlBlockType block:xmlSubFlow.getXmlBlock())
-        	setSubFlowPrefix(block, prefix+"_"+ block.getId());
+        try {
+        	if(xmlSubFlow != null){
+        	 for(XmlBlockType block:xmlSubFlow.getXmlBlock())
+             	setSubFlowPrefix(block, prefix+"_"+ block.getId());
+        	}
+		} catch (Exception e) {
+		}
+       
         
         subFlowData = new SubFlowDataSuportClass();
         subFlowData.setPrimaryBlock(subFlowBlock);
@@ -539,14 +545,20 @@ public class SubFlowDataExpander {
 
     XmlBlockType subFlowBlockEnd = null;
     ArrayList<Integer> endId = new ArrayList<Integer>();
-
-    for (XmlBlockType block : rawSubFlow){
-      if (block.getType().equals(BLOCK_END_TYPE)){
-        subFlowBlockEnd = block;
-        endId.add(block.getId());
-      }
-    }
-
+    
+    try {
+    	if(rawSubFlow != null){
+    	  for (XmlBlockType block : rawSubFlow){
+    	      if (block.getType().equals(BLOCK_END_TYPE)){
+    	        subFlowBlockEnd = block;
+    	        endId.add(block.getId());
+    	      }
+    	    }
+    	}
+	} catch (Exception e) {
+		
+	}
+  
     subFlowBlockEnd.setType(BLOCK_COPY_TYPE);
     XmlPortType[] endPorts = new XmlPortType[2];
     endPorts[0] = subFlowBlockEnd.getXmlPort().get(0);
@@ -723,8 +735,12 @@ public class SubFlowDataExpander {
             popupFormFieldsPositions.add(currentFieldId);
           }
         }
-
-        formField.add(formAttribute);
+        try {
+        	if(formAttribute != null) formField.add(formAttribute);
+        } catch (Exception e) {
+			Logger.error(userInfo.getUtilizador(), this, "getPopupFormFields", "formAttribute - 727");
+		}
+        
       }
     }
     if (formField != null){

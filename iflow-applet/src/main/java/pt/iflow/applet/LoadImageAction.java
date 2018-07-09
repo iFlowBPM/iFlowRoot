@@ -117,12 +117,12 @@ public class LoadImageAction implements ActionListener {
 	  
 	  if(janelafich.getFile() != null){
 		  String path = janelafich.getDirectory()+janelafich.getFile(); 
-		  readImageFromFile(path);
+		  // readImageFromFile(path);
 		  }
   	}
 
   	//Ler imagens
-	private void readImageFromFile(String imagePath) {
+	/*private void readImageFromFile(String imagePath) {
 		File file = new File(imagePath); 
 		Image original = null;
 		ImageIconRep o = null;
@@ -156,7 +156,7 @@ public class LoadImageAction implements ActionListener {
 	    //Reload jFrame
 		cont.getParent().setVisible(false);
 		cont.getParent().setVisible(true);	
-	}
+	}*/
 
 	public static void setImageFromBD(ImageIconRep img){	
 		imageBD = null; 					//meter imagemBD = null porque nao vamos gravar outra x a mesma

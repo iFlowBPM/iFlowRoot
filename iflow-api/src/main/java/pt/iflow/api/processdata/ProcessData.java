@@ -548,7 +548,7 @@ public class ProcessData {
 
   public String getListItemFormatted(String name, int position) {
     ProcessListItem item = getListItem(name, position);
-    return item == null ? null : item.format();
+    return item == null ? "" : item.format();
   }
 
   public ProcessListVariable parseAndSetListItem(String name, String value, int position) throws ParseException {

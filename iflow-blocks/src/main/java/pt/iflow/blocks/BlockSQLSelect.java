@@ -238,7 +238,10 @@ public class BlockSQLSelect extends BlockSQL {
           Selection selection = null;
           
           try  {
-            selection = SQLExpressionParser.parseSelection(sSel);
+        	  Logger.debug(login,this,"after", sSel); 
+        	  
+        	  selection = SQLExpressionParser.parseSelection(sSel);
+            
           }
           catch (Throwable t) {
             throw new Exception("Unable to parse selection", t);
@@ -371,15 +374,25 @@ public class BlockSQLSelect extends BlockSQL {
               Object value = null;
               if (pv.getType().getSupportingClass() == java.util.Date.class) {
                 if(content.getType() == Types.DATE) {
-                  Timestamp ts = rs.getTimestamp(content.getIndex());
+                  Timestamp ts = new Timestamp(0L); 
+                  ts = rs.getTimestamp(content.getIndex());
                   if (ts != null) {
                     value = new Date(ts.getTime());
                     if (value != null) {
                       if (bSingle) {
-                        psv.setValue(value);
-                      }
+                    	  try {
+                    		  psv.setValue(value);
+    						} catch (Exception e) {
+    							Logger.debug(login, this, "after", "Validar null  psv.setValue(value); ");
+    						}
+                       }
                       else {
-                        plv.setItemValue(counter, value);
+                    	  try {
+                    		  plv.setItemValue(counter, value);
+    						} catch (Exception e) {
+    							Logger.debug(login, this, "after", "Validar null   plv.setItemValue(counter, value); ");
+    						}
+                       
                       }
                     }
                   }
@@ -388,11 +401,19 @@ public class BlockSQLSelect extends BlockSQL {
                   value = rs.getString(content.getIndex());
                   if (value != null) {
                     if (bSingle) {
-                      procData.parseAndSet(content.getVarName(), (String)value); 
+                    	try {
+                    		procData.parseAndSet(content.getVarName(), (String)value); 
+  						} catch (Exception e) {
+  							Logger.debug(login, this, "after", "Validar null procData.parseAndSet(content.getVarName(), (String)value); ");
+  						}
                     }                  
                     else {
-                      plv.parseAndSetItemValue(counter, (String)value);
-                    }
+                    	try {
+                    		plv.parseAndSetItemValue(counter, (String)value); 
+  						} catch (Exception e) {
+  							Logger.debug(login, this, "after", "Validar null plv.parseAndSetItemValue(counter, (String)value);");
+  						}
+                    	}
                   }
                 }                
               }
@@ -410,10 +431,18 @@ public class BlockSQLSelect extends BlockSQL {
                     }
 
                     if (bSingle) {
-                      psv.setValue(value);
+                    	try {
+                      		 psv.setValue(value);
+   						} catch (Exception e) {
+   							Logger.debug(login, this, "after", "Validar null psv.setValue(value);");
+   						}
                     }
                     else {
-                      plv.setItemValue(counter, value);
+                    	try {
+                            plv.setItemValue(counter, value);
+						} catch (Exception e) {
+							Logger.debug(login, this, "after", "Validar null plv.setItemValue(counter, value);");
+						}
                     }
                   }
                 }
@@ -421,10 +450,18 @@ public class BlockSQLSelect extends BlockSQL {
                   value = rs.getString(content.getIndex());
                   if (value != null) {
                     if (bSingle) {
-                      psv.setValue(value);
+                    	try {
+                   		 psv.setValue(value);
+						} catch (Exception e) {
+							Logger.debug(login, this, "after", "Validar null psv.setValue(value);");
+						}
                     }
                     else {
-                      plv.setItemValue(counter, value);
+                    	try {
+                            plv.setItemValue(counter, value);
+						} catch (Exception e) {
+							Logger.debug(login, this, "after", "Validar null plv.setItemValue(counter, value);");
+						}
                     }
                   }
                 }
@@ -434,15 +471,27 @@ public class BlockSQLSelect extends BlockSQL {
                 if (value != null) {
                   if (pv.getType().getSupportingClass() == java.lang.String.class) {
                     if (bSingle) {
-                      psv.setValue(value);
+                    	try {
+                    		 psv.setValue(value);
+						} catch (Exception e) {
+							Logger.debug(login, this, "after", "Validar null psv.setValue(value);");
+						}
                     }
                     else {
-                      plv.setItemValue(counter, value);
+                    	try {
+                            plv.setItemValue(counter, value);
+						} catch (Exception e) {
+							Logger.debug(login, this, "after", "Validar null plv.setItemValue(counter, value);");
+						}
                     }
                   }
                   else {
                     if (bSingle) {
-                      procData.parseAndSet(content.getVarName(), (String)value); 
+                    	try {
+                    		 procData.parseAndSet(content.getVarName(), (String)value);
+						} catch (Exception e) {
+							Logger.debug(login, this, "after", "Validar null procData.parseAndSet");
+						}
                     }                  
                     else {
                       plv.parseAndSetItemValue(counter, (String)value);
