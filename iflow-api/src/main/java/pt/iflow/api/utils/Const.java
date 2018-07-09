@@ -24,7 +24,7 @@ public class Const {
   
   public static final String sIFLOW_HOME = "/userdata/iFlowHome";
   public static final String IFLOW_HOME = "/userdata/iFlowHome";
- // public static String IFLOW_HOME = Setup.getProperty("IFLOW_HOME");
+ //public static String sIFLOW_HOME = Setup.getProperty("IFLOW_HOME");
   
 	
   public static final String ENCODING = "UTF-8";

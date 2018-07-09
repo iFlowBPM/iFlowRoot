@@ -52,8 +52,8 @@ import pt.iflow.api.utils.ServletUtilsRoutesEnum;
 		Map<String,String> map = null;
 		
 		if (sGoTo != null && !sGoTo.equals("")) {
-			mapper = new PageMapper(request.getParameterMap());
-			map = request.getParameterMap();
+			//mapper = new PageMapper(request.getParameterMap());
+			//map = request.getParameterMap();
 		}
 				
         ServletUtils.sendEncodeRedirect(response, ServletUtilsRoutesEnum.MAIN,map);
