@@ -147,6 +147,7 @@ public class BlockAdminMigrateDocumentToFilesystem extends Block {
 		ArrayList<Integer> result = new ArrayList<Integer>();
 		Connection db = null;
 		PreparedStatement pst = null;
+		ResultSet rs = null;
 		try {
 			db = Utils.getDataSource().getConnection();
 			db.setAutoCommit(true);
@@ -154,7 +155,7 @@ public class BlockAdminMigrateDocumentToFilesystem extends Block {
 			pst.setInt(1, startDocId);
 			pst.setInt(2, limit);
 			
-			ResultSet rs = pst.executeQuery();
+			rs = pst.executeQuery();
 			while(rs.next())
 				result.add(rs.getInt(1));
 			
@@ -163,7 +164,10 @@ public class BlockAdminMigrateDocumentToFilesystem extends Block {
 			Logger.error(userInfo.getUtilizador(),this,	"fetchDocumentsToMigrate",procData.getSignature() + " error getting docid, "+ e.getMessage(), e);
 			throw e;
 		} finally {
-			DatabaseInterface.closeResources(db, pst);
+			//DatabaseInterface.closeResources(db, pst);
+			db.close();
+			pst.close();
+			rs.close();
 		}
 		
 		return result;

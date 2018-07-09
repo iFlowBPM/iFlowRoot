@@ -408,7 +408,8 @@ public class DocumentsBean implements Documents {
       }
       adoc.setContent(new byte[] {});
     } finally {
-      DatabaseInterface.closeResources(db);
+      //DatabaseInterface.closeResources(db);
+    	try { db.close(); } catch (SQLException e) {}
     }
     return adoc;
   }
@@ -951,7 +952,8 @@ public class DocumentsBean implements Documents {
       Logger.error(userInfo.getUtilizador(), this, "removeDocument", procData.getSignature() + "Caught exception : "
           + e.getMessage(), e);
       try {
-        DatabaseInterface.rollbackConnection(db);
+        //DatabaseInterface.rollbackConnection(db);
+    	  db.close();
       } catch (Exception e2) {
         Logger.error(userInfo.getUtilizador(), this, "removeDocument", procData.getSignature() + "Exception rolling back: "
             + e2.getMessage(), e2);
@@ -1026,7 +1028,8 @@ public class DocumentsBean implements Documents {
       }
       adoc.setContent(new byte[] {});
     } finally {
-      DatabaseInterface.closeResources(db);
+      //DatabaseInterface.closeResources(db);
+    	try { db.close(); } catch (SQLException e) {}
     }
     return adoc;
   }
@@ -1180,7 +1183,9 @@ public class DocumentsBean implements Documents {
           
           result = filePath;
 	  } finally {
-          DatabaseInterface.closeResources(db, pst);
+          //DatabaseInterface.closeResources(db, pst);
+		  db.close();
+		  pst.close();
 	  }
 	  return result;
   }
