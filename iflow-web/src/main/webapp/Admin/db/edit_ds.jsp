@@ -75,8 +75,8 @@ if(StringUtils.equals(request.getParameter("oper"),"add")) {
           String dbUsername = request.getParameter(dbUsernameAttr);
           if(StringUtils.isBlank(dbUsername)) dbUsername="";
           String dbPasswordAttr = dsEntry.getPasswordAttr();
-          String dbPassword = request.getParameter(dbPasswordAttr);
-          if(StringUtils.isBlank(dbPassword)) dbPassword="";
+          String dbPalavrapasse = request.getParameter(dbPasswordAttr);
+          if(StringUtils.isBlank(dbPalavrapasse)) dbPalavrapasse="";
           
           String jndiName = request.getParameter(DSLoader.POOL_JNDI_NAME);
           if(StringUtils.isBlank(jndiName)) jndiName="";
@@ -94,7 +94,7 @@ if(StringUtils.equals(request.getParameter("oper"),"add")) {
          <if:formInput name='<%=urlAttr %>' label="DB Url" type="text" value='' edit="true" required="true" maxlength="1000" />
          <li><label>Sample URL</label><c:out value='<%= jdbcUrlTemplate %>'></c:out></li>
          <if:formInput name='<%=dbUsernameAttr %>' label="Username" type="text" value='<%=dbUsername %>' edit="true" required="false" maxlength="1000" />
-         <if:formInput name='<%=dbPasswordAttr %>' label="Password" type="text" value='<%=dbPassword %>' edit="true" required="false" maxlength="1000" />
+         <if:formInput name='<%=dbPasswordAttr %>' label="Password" type="text" value='<%=dbPalavrapasse %>' edit="true" required="false" maxlength="1000" />
        </ol>
        <ol>
        <li><label>&nbsp;</label>

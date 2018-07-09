@@ -3,6 +3,7 @@ package pt.iflow.api.utils.series;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Calendar;
@@ -151,7 +152,11 @@ public class NumericSeriesProcessor extends SeriesProcessor {
         }
       }
 
-      DatabaseInterface.closeResources(db, pstUpd, pstGet, rs);
+      //DatabaseInterface.closeResources(db, pstUpd, pstGet, rs);
+	    try { db.close(); } catch (SQLException e) {}
+	    try { pstUpd.close(); } catch (SQLException e) {}
+	    try { pstGet.close(); } catch (SQLException e) {}
+	    try { rs.close(); } catch (SQLException e) {}
     }
 
     return getCurrentValue();

@@ -62,7 +62,7 @@
   String orgadmProcesses = "";
   String orgadmResources = "";
   String orgadmOrg = "";
-  String password = "";
+  String palavrapasse = "";
   String repeatPass = "";
 
   List<String> lst = AccessControlManager.getUserDataAccess().getListExtraProperties();
@@ -84,7 +84,7 @@
   orgadmProcesses = fdFormData.getParameter("orgadmProcesses");
   orgadmResources = fdFormData.getParameter("orgadmResources");
   orgadmOrg = fdFormData.getParameter("orgadmOrg");
-  password = fdFormData.getParameter("password");
+  palavrapasse = fdFormData.getParameter("password");
   repeatPass = fdFormData.getParameter("repeatPassword");
   String[] listExtraValues = new String[listExtraProperties.length];
   for (int i = 0; i < listExtraValues.length; i++) {
@@ -106,7 +106,7 @@
   if (orgadmProcesses == null) orgadmProcesses = "";
   if (orgadmResources == null) orgadmResources = "";
   if (orgadmOrg == null) orgadmOrg = "";
-  if (password == null) password = "";
+  if (palavrapasse == null) palavrapasse = "";
   if (repeatPass == null) repeatPass = "";
   for (int i = 0; i < listExtraValues.length; i++) {
     if (listExtraValues[i] == null) listExtraValues[i] = "";
@@ -128,10 +128,10 @@
   
     if (StringUtils.isEmpty(username) || StringUtils.isEmpty(firstName) || StringUtils.isEmpty(lastName) || 
         (Const.bUSE_EMAIL && StringUtils.isEmpty(emailAddress)) ||
-        (!Const.bUSE_EMAIL && !sendInvite && StringUtils.isEmpty(password))) {
+        (!Const.bUSE_EMAIL && !sendInvite && StringUtils.isEmpty(palavrapasse))) {
       sErrorMsg = messages.getString("userform.error.mandatoryFields");
     }
-    else if (!Const.bUSE_EMAIL && !sendInvite && !repeatPass.equals(password)){
+    else if (!Const.bUSE_EMAIL && !sendInvite && !repeatPass.equals(palavrapasse)){
       sErrorMsg = messages.getString("userform.error.mistypedPassword");
     }
     else {
@@ -141,7 +141,7 @@
       }
       else { 
         errorHandler = manager.createUser(ui, username, gender, unitId, emailAddress, firstName, lastName, phoneNumber,
-            faxNumber, mobileNumber, companyPhone, orgID, orgadm, password, listExtraProperties, listExtraValues);
+            faxNumber, mobileNumber, companyPhone, orgID, orgadm, palavrapasse, listExtraProperties, listExtraValues);
       }
     }
    
@@ -157,12 +157,12 @@
     if (StringUtils.isEmpty(firstName) || StringUtils.isEmpty(lastName) || (Const.bUSE_EMAIL && StringUtils.isEmpty(emailAddress))) {
       sErrorMsg = messages.getString("userform.error.mandatoryFields");
     }
-    else if(!Const.bUSE_EMAIL && StringUtils.isNotEmpty(password) && !StringUtils.equals(password,repeatPass)) {
+    else if(!Const.bUSE_EMAIL && StringUtils.isNotEmpty(palavrapasse) && !StringUtils.equals(palavrapasse,repeatPass)) {
       sErrorMsg = messages.getString("userform.error.mistypedPassword");
     }
     else { 
       errorHandler = manager.modifyUserAsAdmin(ui, userId, gender, unitId, emailAddress, firstName, lastName, phoneNumber,
-          faxNumber, mobileNumber, companyPhone, orgadm, orgadmUsers, orgadmFlows, orgadmProcesses, orgadmResources, orgadmOrg, password, listExtraProperties, listExtraValues);
+          faxNumber, mobileNumber, companyPhone, orgadm, orgadmUsers, orgadmFlows, orgadmProcesses, orgadmResources, orgadmOrg, palavrapasse, listExtraProperties, listExtraValues);
       ErrorCode errCode = (errorHandler != null)?errorHandler.getErrorCode():null;
       
       if (UserErrorCode.SUCCESS.equals(errCode)) {

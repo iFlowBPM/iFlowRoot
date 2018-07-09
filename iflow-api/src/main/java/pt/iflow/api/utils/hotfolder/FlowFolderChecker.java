@@ -3,6 +3,7 @@ package pt.iflow.api.utils.hotfolder;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -279,7 +280,9 @@ public class FlowFolderChecker implements Runnable {
         }
       }
       finally {
-        DatabaseInterface.closeResources(conn,pst);
+        //DatabaseInterface.closeResources(conn,pst);
+        try { conn.close(); } catch (SQLException e) {}
+        try { pst.close(); } catch (SQLException e) {}
       }
     }
   }
