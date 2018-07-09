@@ -36,7 +36,7 @@ import pt.iflow.core.UserManagerBean;
  * 
  * @web.servlet-mapping url-pattern="/AuthenticationServlet"
  */
-public class AuthenticationServlet extends javax.servlet.http.HttpServlet implements javax.servlet.Servlet {
+public class AuthenticationServlet extends javax.servlet.http.HttpServlet implements javax.servlet.Servlet, java.io.Serializable {
 
   public static final String ADMIN_SESSION_NAME = "is_admin";
 
@@ -50,7 +50,7 @@ public class AuthenticationServlet extends javax.servlet.http.HttpServlet implem
   }   	
 
   static AuthenticationResult authenticate(final HttpServletRequest request, final HttpServletResponse response, final String username, final String password, final String nextUrl)
-  throws ServletException, IOException {
+  throws ServletException, IOException  {
     AuthenticationResult result = new AuthenticationResult();
     result.nextUrl = nextUrl;    
 
