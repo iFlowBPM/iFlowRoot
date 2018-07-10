@@ -265,14 +265,17 @@ public class ProcessXml {
     return validateXml(new InputSource(xmlStream));
   }
 
-  private static boolean validateXml(InputSource xmlSource) {
+  private static boolean validateXml(InputSource xmlSource) 
+  {
+	  InputStream inputStream = null;
     try {
       // get validation driver:
       SchemaFactory factory = SchemaFactory.newInstance(NS_SCHEMA);
 
       // create schema by reading it from an XSD file:
       // XXX - xsd location !!
-      Schema schema = factory.newSchema(new StreamSource(ProcessXml.class.getResourceAsStream("/processdata.xsd")));
+      inputStream = ProcessXml.class.getResourceAsStream("/processdata.xsd");
+      Schema schema = factory.newSchema(new StreamSource(inputStream));
       // Schema schema = factory.newSchema(new StreamSource(new FileInputStream("schemas/processdata.xsd")));
       Validator validator = schema.newValidator();
 
@@ -286,6 +289,12 @@ public class ProcessXml {
       ex.printStackTrace();
       return false;
     }
+    finally {
+		if(inputStream != null)
+			try {
+				inputStream.close();
+			} catch (IOException e) {}
+	}
     return true;
   }
 

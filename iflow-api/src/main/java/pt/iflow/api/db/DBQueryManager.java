@@ -28,13 +28,23 @@ public class DBQueryManager {
   }
 
   private static void reloadQueries() {
+	  FileInputStream fileInputStream = null;  
     Logger.debug("", "DBQueryManager", "", "LOADING QUERIES FILE");
     try {
-      _queries.load(new FileInputStream(_queriesFileLocation));
+    	fileInputStream = new FileInputStream(_queriesFileLocation);
+      _queries.load(fileInputStream);
       Logger.adminInfo("DBQueryManager", "reloadQueries", "queries reloaded");
     } catch (IOException e) {
       Logger.adminError("DBQueryManager", "reloadQueries", "Error reading queries.", e);
     }
+    finally {
+    	if( fileInputStream != null)
+    	{
+    		try {
+				fileInputStream.close();
+			} catch (IOException e) {}
+    	}
+	}
   }
 
   private static void checkFile() {

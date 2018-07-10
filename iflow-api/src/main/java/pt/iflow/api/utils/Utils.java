@@ -3,6 +3,7 @@ package pt.iflow.api.utils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -1190,8 +1191,11 @@ public class Utils {
   private static List<Class> getClasseNamesInPackage(String jarName, String packageName) {
     List<Class> classes = new ArrayList<Class>();
     packageName = packageName.replaceAll("\\.", "/");
+    InputStream inputStream = null;
+    JarInputStream jarFile = null;
     try {
-      JarInputStream jarFile = new JarInputStream(new FileInputStream(jarName));
+    	inputStream = new FileInputStream(jarName);
+    	 jarFile= new JarInputStream( inputStream);
       JarEntry jarEntry;
 
       while (true) {
@@ -1211,6 +1215,17 @@ public class Utils {
     } catch (Exception e) {
       e.printStackTrace();
     }
+    finally {
+    	if( inputStream != null )
+			try {
+				inputStream.close();
+			} catch (IOException e) {}
+    	
+		if( jarFile != null )
+			try {
+				jarFile.close();
+			} catch (IOException e) {}
+	}
     return classes;
   }
 

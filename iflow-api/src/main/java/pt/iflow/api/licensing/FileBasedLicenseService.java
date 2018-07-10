@@ -279,7 +279,8 @@ class FileBasedLicenseService implements LicenseService {
       Logger.error(null, this, "saveState", "Error saving license state.", e);
     }
     finally{
-    	fout.close();
+    	if(fout != null)
+    		fout.close();
     }
   }
   
