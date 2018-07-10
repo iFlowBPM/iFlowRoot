@@ -80,26 +80,26 @@ public class BlockVFSCreateNewSerialCode extends Block {
       sTemplate = this.getAttribute(sATTR_SLIST);
       sSerial = this.getAttribute(sATTR_TLIST);
       
-      if (!StringUtils.isEmpty(sTemplate) && !StringUtils.isEmpty(sSerial)) {
+      if (null != sSerial && null != sTemplate && (!StringUtils.isEmpty(sTemplate) && !StringUtils.isEmpty(sSerial))) {
         template = procData.get(sTemplate);
         serial = procData.get(sSerial);
       }
       
-      if (StringUtils.isEmpty(sTemplate) || StringUtils.isEmpty(sSerial)) {
+      if (null == sSerial && null == sTemplate && StringUtils.isEmpty(sTemplate) || StringUtils.isEmpty(sSerial)) {
         Logger.warning(login, this, "after", procData.getSignature() + "empty attribute!!");
       }
       else {
         try {
           
           CodeTemplateManager ctm = BeanFactory.getCodeTemplateManagerBean();
-         if(serial != null) serial.setValue(ctm.createNewSerialCode(userInfo, template.getRawValue()));
+         if(null != serial && null != template) serial.setValue(ctm.createNewSerialCode(userInfo, template.getRawValue()));
           Logger.debug(login, this, "after", " Generate Serial Code successfully!");
         } catch (Exception ei) {
           Logger.error(login, this, "after", procData.getSignature() + "caught exception, Generate Serial Code", ei);
         }
       }
       
-      if (serial != null && StringUtils.isNotBlank(serial.getRawValue())) {
+      if (null != serial && StringUtils.isNotBlank(serial.getRawValue())) {
         outPort = portTrue;
       } else {
         outPort = portFalse;
@@ -108,6 +108,7 @@ public class BlockVFSCreateNewSerialCode extends Block {
     }
     catch (Exception e) {
       Logger.error(login,this,"after", procData.getSignature() + "caught exception: " + e.getMessage(), e);
+     
       outPort = portFalse;
     }
     

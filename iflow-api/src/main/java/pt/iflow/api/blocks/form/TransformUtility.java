@@ -184,7 +184,15 @@ public abstract class TransformUtility {
     	 
       } catch (Exception e) {
     	  Logger.error("", "TransformUtility", "transform", "Null deference - TransformUtility - 174", e);
-      }
+      } finally {
+          if(null != debugOutput) {
+              try {
+            	  debugOutput.close();
+              } catch (IOException e) {
+            	  Logger.error("", "TransformUtility", "transform", "Null deference - TransformUtility - 174", e);
+              }
+            }
+          }
           
     }
 

@@ -81,19 +81,21 @@ public class BlockToSignDocs extends Block {
       sDocs = this.getAttribute(sATTR_DOCS);
       sValues = this.getAttribute(sATTR_TOSIGN);
       
-      if(!StringUtils.isEmpty(sDocs) && !StringUtils.isEmpty(sValues)){
+      if(null != sDocs && !StringUtils.isEmpty(sDocs) && !StringUtils.isEmpty(sValues) && null != sValues){
           doclist = procData.getList(sDocs);
           valueslist = procData.getList(sValues);
       }
       
-      if (sDocs == null && (StringUtils.isEmpty(sDocs) || StringUtils.isEmpty(sValues) || doclist.size() != valueslist.size())) {
+      if (null == sDocs && (StringUtils.isEmpty(sDocs) || StringUtils.isEmpty(sValues) || doclist.size() != valueslist.size() && null == sValues)) {
         Logger.warning(login,this,"after", procData.getSignature() + "empty attribute!!");
+        
         bEvalResult = false;
       }
       else {
         try {
           
-          Documents docBean = BeanFactory.getDocumentsBean();       
+          Documents docBean = BeanFactory.getDocumentsBean();
+          if(null != doclist && null != valueslist)
           bEvalResult = docBean.markDocsToSign(userInfo, doclist, valueslist);
                     
           Logger.debug(login,this,"after", " Documents mark to Sign successfully!");
@@ -117,6 +119,8 @@ public class BlockToSignDocs extends Block {
     
     this.addToLog("Using '" + outPort.getName() + "';");
     this.saveLogs(userInfo, procData, this);
+    
+    
     
     return outPort;
   }

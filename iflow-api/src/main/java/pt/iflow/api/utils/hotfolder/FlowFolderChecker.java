@@ -1,6 +1,7 @@
 package pt.iflow.api.utils.hotfolder;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -181,7 +182,7 @@ public class FlowFolderChecker implements Runnable {
     return new ArrayList<String>();
   }
   
-  private void processFile(File file) {
+  private void processFile(File file) throws SQLException {
     Logger.adminDebug(signature, "processFolder", 
         getId() + "processing file " + file.getAbsolutePath());
 
@@ -279,13 +280,23 @@ public class FlowFolderChecker implements Runnable {
           }
         }
       }
-      finally {
-        //DatabaseInterface.closeResources(conn,pst);
-        try { conn.close(); } catch (SQLException e) {}
-        try { pst.close(); } catch (SQLException e) {}
+    	  finally {
+    		  try {
+    			  if(null != conn) {
+    	    	        conn.close();
+    	    	      }
+    		  		} catch (Exception e2) {}
+    		  try {
+    			  if(null != pst) {
+    	    	        pst.close();
+    	    	      }
+    		  		} catch (Exception e2) {}
+    	      
+    	    }
+        
       }
     }
-  }
+  
   
   private String genHash(File f, Date dt) {
     String hash = "";

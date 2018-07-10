@@ -68,10 +68,13 @@ public class PdfSampleImages {
 
 
     try {
+      
       ByteBuffer buf = ByteBuffer.wrap(getDocument(docid));
+      if(null != pdffile)
       pdffile = new PDFFile(buf);
+      
     } catch (Exception e) { log.error("Erro a adquirir imagens do pdf", e); } 
-
+    
     PDFPage page = pdffile.getPage(pag);
     try {
     	  rect = new Rectangle(0,0,(int)page.getBBox().getWidth(),(int)page.getBBox().getHeight());

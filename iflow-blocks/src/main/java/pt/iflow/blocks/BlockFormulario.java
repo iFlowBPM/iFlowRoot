@@ -1648,8 +1648,9 @@ public class BlockFormulario extends Block implements FormOperations {
           }
           
           String formattedValue = "";
-          formattedValue = value != null ? value.format() : "";
-               
+          if(null != value){ 
+          formattedValue = value.format();
+          }
           // Tratar das cores e o resto
           double redBlueRes = Double.NaN;
           if(value != null && StringUtils.isNotEmpty(formattedValue) && StringUtils.isNotEmpty(redBlueVar)) {
@@ -1892,22 +1893,22 @@ public class BlockFormulario extends Block implements FormOperations {
       // This will output the generated form and HTML
       tmpOut = new FileOutputStream(new File(iflowHome, "form.xml"));
       tmpOut.write(xml);
-      tmpOut.close();
-      
+            
       tmpOut = new FileOutputStream(new File(iflowHome, "form.html"));
       tmpOut.write(html);
-      tmpOut.close();
+      
      
     } catch (IOException e) {
       e.printStackTrace();
     } finally {
      
-    	if (tmpOut != null) {
+    	if (null != tmpOut) {
         try {
           tmpOut.close();
         } catch (IOException e) {
           e.printStackTrace();
         }
+        
       }
     }
   }

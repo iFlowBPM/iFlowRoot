@@ -786,6 +786,7 @@ public class ProcessManagerBean implements ProcessManager {
       st.executeUpdate("update process set mid=" + newMid + " where flowid=" + flowid + " and pid=" + pid + " and subpid="
               + subpid);
     try {
+    	
     	 previousProcess.setMid(newMid);
 		
 	} catch (Exception e) {
@@ -799,7 +800,10 @@ public class ProcessManagerBean implements ProcessManager {
       
     }
     finally {
-      DatabaseInterface.closeResources(db, st, rs);
+      // DatabaseInterface.closeResources(db, st, rs);
+    	if (db != null) db.close();
+    	if (st != null) st.close();
+    	if (rs != null) rs.close();
     }
 
     return previousProcess;

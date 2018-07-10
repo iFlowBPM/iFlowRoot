@@ -265,8 +265,8 @@ public class UserManagerBean implements UserManager {
     }
     finally {
       //DatabaseInterface.closeResources(db, pst);
-    	try { db.close(); } catch (SQLException e) {}
-    	try { pst.close(); } catch (SQLException e) {}
+    	try { if (db != null) db.close(); } catch (SQLException e) {}
+    	try { if (pst != null) pst.close(); } catch (SQLException e) {}
     }
 
 
@@ -342,8 +342,8 @@ public class UserManagerBean implements UserManager {
     }
     finally {
       //DatabaseInterface.closeResources(db, pst);
-    	try { db.close(); } catch (SQLException e) {}
-    	try { pst.close(); } catch (SQLException e) {}
+    	try { if (db != null) db.close(); } catch (SQLException e) {}
+    	try { if (pst != null) pst.close(); } catch (SQLException e) {}
     }
 
     return result;
@@ -430,8 +430,8 @@ public class UserManagerBean implements UserManager {
     }
     finally {
       //DatabaseInterface.closeResources(db, pst);
-    	try { db.close(); } catch (SQLException e) {}
-    	try { pst.close(); } catch (SQLException e) {}
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (pst != null) pst.close(); } catch (SQLException e) {}
     }
 
     return result;
@@ -504,9 +504,9 @@ public class UserManagerBean implements UserManager {
     }
     finally {
       //DatabaseInterface.closeResources(db, pst, rs);
-    	try { db.close(); } catch (SQLException e) {}
-    	try { pst.close(); } catch (SQLException e) {}
-    	try { rs.close(); } catch (SQLException e) {}
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (pst != null) pst.close(); } catch (SQLException e) {}
+    	try {if (rs != null) rs.close(); } catch (SQLException e) {}
     	
     }
 
@@ -677,8 +677,8 @@ public class UserManagerBean implements UserManager {
     }
     finally {
       //DatabaseInterface.closeResources(db, pst);
-    	try { db.close(); } catch (SQLException e) {}
-    	try { pst.close(); } catch (SQLException e) {}
+    	try { if (db != null) db.close(); } catch (SQLException e) {}
+    	try { if (pst != null) pst.close(); } catch (SQLException e) {}
     }
 
     if(Const.bUSE_EMAIL && isWebAdmin && !newEmail.equals(oldEmail)) {
@@ -826,8 +826,8 @@ public class UserManagerBean implements UserManager {
     }
     finally {
       //DatabaseInterface.closeResources(db, pst);
-    	try { db.close(); } catch (SQLException e) {}
-    	try { pst.close(); } catch (SQLException e) {}
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (pst != null) pst.close(); } catch (SQLException e) {}
     }
 
     if(Const.bUSE_EMAIL && isWebAdmin && !newEmail.equals(oldEmail)) {
@@ -915,8 +915,8 @@ public class UserManagerBean implements UserManager {
     }
     finally {
       //DatabaseInterface.closeResources(db, pst);
-    	try { db.close(); } catch (SQLException e) {}
-    	try { pst.close(); } catch (SQLException e) {}
+    	try { if (db != null) db.close(); } catch (SQLException e) {}
+    	try { if (pst != null) pst.close(); } catch (SQLException e) {}
     }
 
     return result;
@@ -1065,9 +1065,9 @@ public class UserManagerBean implements UserManager {
       Logger.warning(userInfo.getUtilizador(), this, "modifyProfile", "Profile not updated!", e);
       } finally {
         //DatabaseInterface.closeResources(db, st, rs);
-      	try { db.close(); } catch (SQLException e) {}
-      	try { st.close(); } catch (SQLException e) {}
-    	try { rs.close(); } catch (SQLException e) {}
+      	try { if (db != null) db.close(); } catch (SQLException e) {}
+      	try { if (st != null) st.close(); } catch (SQLException e) {}
+    	try { if (rs != null) rs.close(); } catch (SQLException e) {}
     	
       }
     }
@@ -1108,9 +1108,9 @@ public class UserManagerBean implements UserManager {
       Logger.error(userInfo.getUtilizador(), this, "profileExists", "Unable to perform verification.", e);
     } finally {
       //DatabaseInterface.closeResources(db, st, rs);
-    	try { db.close(); } catch (SQLException e) {}
-    	try { st.close(); } catch (SQLException e) {}
-    	try { rs.close(); } catch (SQLException e) {}
+    	try { if (db != null) db.close(); } catch (SQLException e) {}
+    	try { if (st != null) st.close(); } catch (SQLException e) {}
+    	try { if (rs != null) rs.close(); } catch (SQLException e) {}
     	
     }
     return result;
@@ -1160,8 +1160,8 @@ public class UserManagerBean implements UserManager {
     }
     finally {
       //DatabaseInterface.closeResources(db, pst);
-    	try { db.close(); } catch (SQLException e) {}
-    	try { pst.close(); } catch (SQLException e) {}
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (pst != null) pst.close(); } catch (SQLException e) {}
     }
 
     return result;
@@ -1264,8 +1264,8 @@ public class UserManagerBean implements UserManager {
     }
     finally {
       //DatabaseInterface.closeResources(db, pst);
-    	try { db.close(); } catch (SQLException e) {}
-    	try { pst.close(); } catch (SQLException e) {}
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (pst != null) pst.close(); } catch (SQLException e) {}
     }
 
     return result;
@@ -1439,9 +1439,9 @@ public class UserManagerBean implements UserManager {
       Logger.error(userInfo.getUtilizador(), this, "removeOrganization", "Unable to delete organization!", e);
     } finally {
       //DatabaseInterface.closeResources(db, pst, rs);    	
-    	try { db.close(); } catch (SQLException e) {}
-    	try { pst.close(); } catch (SQLException e) {}
-    	try { rs.close(); } catch (SQLException e) {}
+    	try { if (db != null) db.close(); } catch (SQLException e) {}
+    	try { if (pst != null) pst.close(); } catch (SQLException e) {}
+    	try { if (rs != null) rs.close(); } catch (SQLException e) {}
     	
     }
 
@@ -1497,8 +1497,8 @@ public class UserManagerBean implements UserManager {
     }
     finally {
       //DatabaseInterface.closeResources(db, pst);
-    	try { db.close(); } catch (SQLException e) {}
-    	try { pst.close(); } catch (SQLException e) {}
+    	try { if (db != null) db.close(); } catch (SQLException e) {}
+    	try { if (pst != null) pst.close(); } catch (SQLException e) {}
     }
 
     return result;
@@ -1558,8 +1558,8 @@ public class UserManagerBean implements UserManager {
     }
     finally {
       //DatabaseInterface.closeResources(db, pst);
-    	try { db.close(); } catch (SQLException e) {}
-    	try { pst.close(); } catch (SQLException e) {}
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (pst != null) pst.close(); } catch (SQLException e) {}
     }
 
     return result;
@@ -1622,9 +1622,9 @@ public class UserManagerBean implements UserManager {
     }
     finally {
       //DatabaseInterface.closeResources(db, pst, rs);
-    	try { db.close(); } catch (SQLException e) {}
-    	try { pst.close(); } catch (SQLException e) {}
-    	try { rs.close(); } catch (SQLException e) {}
+    	try { if (db != null) db.close(); } catch (SQLException e) {}
+    	try { if (pst != null) pst.close(); } catch (SQLException e) {}
+    	try { if (rs != null) rs.close(); } catch (SQLException e) {}
     	
     }
 
@@ -2409,9 +2409,9 @@ public class UserManagerBean implements UserManager {
     }
     finally {
       //DatabaseInterface.closeResources(db, pst, rs);
-    	try { db.close(); } catch (SQLException e) {}
-    	try { pst.close(); } catch (SQLException e) {}
-    	try { rs.close(); } catch (SQLException e) {}
+    	try { if (db != null) db.close(); } catch (SQLException e) {}
+    	try { if (pst != null) pst.close(); } catch (SQLException e) {}
+    	try { if (rs != null) rs.close(); } catch (SQLException e) {}
     }
 
     // Notify users
@@ -2484,9 +2484,9 @@ public class UserManagerBean implements UserManager {
     }
     finally {
       //DatabaseInterface.closeResources(db, pst, rs);
-    	try { db.close(); } catch (SQLException e) {}
-    	try { pst.close(); } catch (SQLException e) {}
-    	try { rs.close(); } catch (SQLException e) {}
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (pst != null) pst.close(); } catch (SQLException e) {}
+    	try {if (rs != null) rs.close(); } catch (SQLException e) {}
     }
     return result;
   }
@@ -2558,9 +2558,9 @@ public class UserManagerBean implements UserManager {
     }
     finally {
       //DatabaseInterface.closeResources(db, pst, rs);
-    	try { db.close(); } catch (SQLException e) {}
-    	try { pst.close(); } catch (SQLException e) {}
-    	try { rs.close(); } catch (SQLException e) {}
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (pst != null) pst.close(); } catch (SQLException e) {}
+    	try {if (rs != null) rs.close(); } catch (SQLException e) {}
     }
 
     return result;
@@ -2662,9 +2662,9 @@ public class UserManagerBean implements UserManager {
     }
     finally {
       //DatabaseInterface.closeResources(db, pst, rs);
-    	try { db.close(); } catch (SQLException e) {}
-    	try { pst.close(); } catch (SQLException e) {}
-    	try { rs.close(); } catch (SQLException e) {}
+    	try { if (db != null) db.close(); } catch (SQLException e) {}
+    	try { if (pst != null) pst.close(); } catch (SQLException e) {}
+    	try { if (rs != null) rs.close(); } catch (SQLException e) {}
     }
 
 
@@ -2722,9 +2722,9 @@ public class UserManagerBean implements UserManager {
     }
     finally {
       //DatabaseInterface.closeResources(db, pst, rs);
-    	try { db.close(); } catch (SQLException e) {}
-    	try { pst.close(); } catch (SQLException e) {}
-    	try { rs.close(); } catch (SQLException e) {}
+    	try { if (db != null) db.close(); } catch (SQLException e) {}
+    	try { if (pst != null) pst.close(); } catch (SQLException e) {}
+    	try { if (rs != null) rs.close(); } catch (SQLException e) {}
     }
 
 
@@ -2764,9 +2764,9 @@ public class UserManagerBean implements UserManager {
     }
     finally {
       //DatabaseInterface.closeResources(db, pst, rs);
-    	try { db.close(); } catch (SQLException e) {}
-    	try { pst.close(); } catch (SQLException e) {}
-    	try { rs.close(); } catch (SQLException e) {}
+    	try { if (db != null) db.close(); } catch (SQLException e) {}
+    	try { if (pst != null) pst.close(); } catch (SQLException e) {}
+    	try { if (rs != null) rs.close(); } catch (SQLException e) {}
     }
 
 
@@ -2844,9 +2844,9 @@ public class UserManagerBean implements UserManager {
     }
     finally {
       //DatabaseInterface.closeResources(db, pst, rs);
-    	try { db.close(); } catch (SQLException e) {}
-    	try { pst.close(); } catch (SQLException e) {}
-    	try { rs.close(); } catch (SQLException e) {}
+    	try { if (db != null) db.close(); } catch (SQLException e) {}
+    	try { if (pst != null) pst.close(); } catch (SQLException e) {}
+    	try { if (rs != null) rs.close(); } catch (SQLException e) {}
     }
 
 
@@ -2882,9 +2882,9 @@ public class UserManagerBean implements UserManager {
 	  }
 	  finally {
 		  //DatabaseInterface.closeResources(db, pst, rs);
-	    	try { db.close(); } catch (SQLException e) {}
-	    	try { pst.close(); } catch (SQLException e) {}
-	    	try { rs.close(); } catch (SQLException e) {}
+	    	try {if (db != null) db.close(); } catch (SQLException e) {}
+	    	try {if (pst != null) pst.close(); } catch (SQLException e) {}
+	    	try {if (rs != null) rs.close(); } catch (SQLException e) {}
 	    	
 	  }
   }
@@ -3166,9 +3166,9 @@ public boolean changeActiveState(UserInfoInterface userInfo, String userid, Bool
     }
     finally {
       //DatabaseInterface.closeResources(db, pst, rs);
-    	try { db.close(); } catch (SQLException e) {}
-    	try { pst.close(); } catch (SQLException e) {}
-    	try { rs.close(); } catch (SQLException e) {}
+    	try { if (db != null) db.close(); } catch (SQLException e) {}
+    	try { if (pst != null) pst.close(); } catch (SQLException e) {}
+    	try { if (rs != null) rs.close(); } catch (SQLException e) {}
     }
 
     return result;

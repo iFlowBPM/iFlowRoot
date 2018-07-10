@@ -1,5 +1,6 @@
 package pt.iflow.api.utils;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -400,7 +401,7 @@ public class Logger {
 						
 						
 						
-							if (rs != null && st.getMoreResults())
+							if (null != rs && st.getMoreResults())
 								rs = st.getResultSet();
 							 else 
 								rs = st.executeQuery(logIdQuery);
@@ -415,7 +416,13 @@ public class Logger {
 				} catch (Exception e) {
 
 				} finally {
-					rs.close();
+					 if(null != rs) {
+					        try {
+					          rs.close();
+					        } catch (Exception e) {
+					        	Logger.error(username, "Logger", "saveFlowStateLog", "caught exception: ", e);
+					        }
+					      }
 				}
 
 				FlowStateLogTO flowStateLog = new FlowStateLogTO(flowid, pid, subpid, state,

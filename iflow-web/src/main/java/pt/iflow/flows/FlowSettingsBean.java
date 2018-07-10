@@ -113,6 +113,7 @@ public class FlowSettingsBean implements FlowSettings {
     	  }
     
       finally{
+    	 if(null != rs)
       rs.close();
       }
       for (int set = 0; set < afsaSettings.length; set++) {
