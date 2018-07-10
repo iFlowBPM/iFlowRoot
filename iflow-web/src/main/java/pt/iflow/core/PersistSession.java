@@ -39,7 +39,7 @@ public class PersistSession {
 			if (rs.next()) {
 				buf = rs.getBytes("session");
 			}
-
+			/* TODO - Validar com a nova interface
 			if (buf != null) {
 				ValidatingObjectInputStream validator = new ValidatingObjectInputStream(new ByteArrayInputStream(buf));
 				validator.accept(SessionObject.class);
@@ -48,7 +48,7 @@ public class PersistSession {
 				valores = ((SessionObject) validator.readObject()).getValores();
 				validator.close();
 			}
-
+			 */
 			rs.close();
 			rs = null;
 		} catch (SQLException sqle) {
