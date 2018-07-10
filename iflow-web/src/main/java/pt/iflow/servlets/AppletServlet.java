@@ -93,15 +93,14 @@ public class AppletServlet extends HttpServlet {
   public AppletServlet() {
   }
 
- /* public void init() throws ServletException {
-    /*resourceDir = new File(Const.fUPLOAD_TEMP_DIR,"appletData");
+  public void init() throws ServletException {
+    resourceDir = new File(Const.fUPLOAD_TEMP_DIR,"appletData");
     resourceDir.mkdirs();
-    
-    /*if(initComplete) return null;
-    /*
+
+    if(initComplete) return;
+
     // Para evitar que o servidor aplicacional (tomcat) de timeout no boot, fazemos uma thread.
     new Thread(new Runnable() {
-    	
       public void run() {
 
         File keyStoreFile = null;
@@ -112,14 +111,14 @@ public class AppletServlet extends HttpServlet {
           PrivateKey privateKey;
           Certificate [] certChain;
           final String alias = "infosistema.com";
-          final char [] password = "iknow256".toCharArray();
+          final char [] pas = "iknow256".toCharArray();
           try {
             //cpStoreIn = AppletServlet.class.getResourceAsStream("store");
         	cpStoreIn = Setup.getResource("store");
             KeyStore store = KeyStore.getInstance("JKS");
-            store.load(cpStoreIn, password);
+            store.load(cpStoreIn, pas);
             certChain = store.getCertificateChain(alias);
-            privateKey = (PrivateKey) store.getKey(alias, password);
+            privateKey = (PrivateKey) store.getKey(alias, pas);
           } catch (Exception e) {
             // notificate que a coisa nao correu bem
             Logger.adminError("AppletServlet", "init", "Could not load signature key.", e);
@@ -248,7 +247,7 @@ public class AppletServlet extends HttpServlet {
                 // must sign if there is no hash or hashes are different
                 mustSign = (null == b64Hash || !MessageDigest.isEqual(hash, Base64.decode(b64Hash))); 
               }
-              /*
+
               if(mustSign) {
                 Logger.adminInfo("AppletServlet", "init", "Signing file: "+meta.name);
                 jarFile = new JarFile(tmpFile);
@@ -264,7 +263,7 @@ public class AppletServlet extends HttpServlet {
               } else {
                 Logger.adminInfo("AppletServlet", "init", "File not changed... No signing required.");
               }
-              *//*
+              
               // Insert metadata entry
               meta.contentType = getServletContext().getMimeType(meta.name);
               meta.lastModified = signedFile.lastModified();
@@ -324,7 +323,7 @@ public class AppletServlet extends HttpServlet {
     }).start();
 
   }
-  */
+  
   protected MetaInfo sendHeader(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String name = request.getRequestURI();
     if(null == name) {

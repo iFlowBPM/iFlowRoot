@@ -180,6 +180,7 @@ public class Dispatcher extends HttpServlet {
     Cipher cipherOut = null;
     
     	try {
+    		
 			cipherOut = Cipher.getInstance("AES/CBC/PKCS5Padding");
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
