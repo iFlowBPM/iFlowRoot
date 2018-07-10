@@ -1184,8 +1184,8 @@ public class DocumentsBean implements Documents {
           result = filePath;
 	  } finally {
           //DatabaseInterface.closeResources(db, pst);
-		  db.close();
-		  pst.close();
+		  if (db != null) db.close();
+		  if (pst != null) pst.close();
 	  }
 	  return result;
   }

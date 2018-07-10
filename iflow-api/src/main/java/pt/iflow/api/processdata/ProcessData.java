@@ -1,6 +1,7 @@
 package pt.iflow.api.processdata;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -173,8 +174,16 @@ public class ProcessData {
   }
 
   Collection<String> getListOrigRawValues(String var) {
-    ListVarOrigValues ov = _listVarsOrigRawVal.containsKey(var) ? _listVarsOrigRawVal.get(var) : null;
-    return ov != null ? ov.values() : null;
+	  ListVarOrigValues ov = null;
+	  try {
+		  	ov = _listVarsOrigRawVal.containsKey(var) ? _listVarsOrigRawVal.get(var) : null;
+		  	if(null != ov)
+		    return ov.values();
+		 } catch (Exception e) {
+			 Logger.adminError("ProcessData", "getListOrigRawValues", "Caught exception: " + e.getMessage(), e);
+		 }
+	return null;
+   
   }
 
   void setListOrigRawValue(ProcessListVariable var) {
@@ -601,18 +610,35 @@ public class ProcessData {
   }
 
   private boolean isListVarModified(ProcessListVariable var) {
-    Collection<String> origValues = getListOrigRawValues(var.getName());
-    if(null == origValues) return true;
-    if(var.size() != origValues.size()) return true;
-    Iterator<String> iterOrigValues = origValues.iterator();
-    Iterator<ProcessListItem> iterItems = var.getItemIterator();
-    while(iterItems.hasNext() && iterOrigValues.hasNext()) {
-      ProcessListItem li = iterItems.next();
-      String rawValue = null;
-      if(li!=null) rawValue = li.getRawValue();
-      String origRawValue = iterOrigValues.next();
-      if(!StringUtils.equals(rawValue, origRawValue)) return true;
-    }
+	  Collection<String> origValues = null;
+	  
+	  try {
+		origValues =  getListOrigRawValues(var.getName());
+		
+		if(null == origValues) return true;
+	    
+		if(var.size() != origValues.size()) return true;
+	    Iterator<String> iterOrigValues = origValues.iterator();
+	    Iterator<ProcessListItem> iterItems = var.getItemIterator();
+	    while(iterItems.hasNext() && iterOrigValues.hasNext()) {
+	      ProcessListItem li = iterItems.next();
+	      String rawValue = null;
+	      if(li!=null) rawValue = li.getRawValue();
+	      String origRawValue = iterOrigValues.next();
+	      if(!StringUtils.equals(rawValue, origRawValue)) return true;
+	    }
+		
+	} catch (Exception e) {
+		}finally {
+	      if(null != origValues) {
+	          try {
+	        	origValues.clear();
+	          } catch (Exception e) {
+	            Logger.adminError("EmailManager", "buildEmailTemplate", "Caught exception: " + e.getMessage(), e);
+	          }
+	        }
+	      }
+    
     return false;
   }
 

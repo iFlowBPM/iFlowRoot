@@ -2616,7 +2616,7 @@ public class JSPFieldData {
 
       sGridbag.setConstraints(jLabel,sC);
       try {
-        	if(jValue != null)
+        	if(null != jValue)
         		sMainPanel.add(jLabel);
 		} catch (Exception e) {
 			logger.error("jValue == null - 2618" + e);
@@ -2626,6 +2626,7 @@ public class JSPFieldData {
       sizer = new JPanel();
       sizer.setSize(5,1);
       sGridbag.setConstraints(sizer,sC);
+      if(null != sizer)
       sMainPanel.add(sizer);
       sC.gridwidth = GridBagConstraints.REMAINDER;
       sGridbag.setConstraints(jValue,sC);
@@ -2663,7 +2664,7 @@ public class JSPFieldData {
           }
           altmp.add(jctmp);
           try {
-          	if(jValue != null)
+          	if(null != jValue)
           		 jLabel = hmtmp.get(jctmp);
           		 jLabel.setEnabled(jctmp.isEnabled());
           		 altmp2.add(jLabel);
@@ -2912,7 +2913,7 @@ public class JSPFieldData {
           jLabel.setSize(1,1);
           mGridbag.setConstraints(jLabel,mC);
           try {
-            	if(jValue != null)
+            	if(null != jValue)
             		mMainPanel.add(jLabel);
     		} catch (Exception e) {
     			logger.error("jValue == null" + e);
@@ -2923,6 +2924,7 @@ public class JSPFieldData {
             sizer = new JPanel();
             sizer.setSize(5,1);
             mGridbag.setConstraints(sizer,mC);
+            if(null != sizer)
             mMainPanel.add(sizer);
 
             stmp = JSPFieldData.getPropLabel(this._alEditMultipleProps.get(j));
@@ -2937,6 +2939,7 @@ public class JSPFieldData {
           sizer.setSize(5,1);
           mC.gridwidth = GridBagConstraints.REMAINDER;
           mGridbag.setConstraints(sizer,mC);
+          if(null != sizer)
           mMainPanel.add(sizer);
 
           // separator row
@@ -2956,7 +2959,7 @@ public class JSPFieldData {
           jLabel.setSize(1,1);
           mGridbag.setConstraints(jLabel,mC);
           try {
-          	if(jValue != null)
+        	  if(null != jValue)
           		mMainPanel.add(jLabel);
   		} catch (Exception e) {
   			logger.error("jValue == null" + e);
@@ -2971,7 +2974,7 @@ public class JSPFieldData {
 
         mGridbag.setConstraints(jValue,mC);
         try {
-        	if(jValue != null)
+        	if(null != jValue)
         	 mMainPanel.add(jValue);
 		} catch (Exception e) {
 			logger.error("jValue == null" + e);
@@ -2993,12 +2996,12 @@ public class JSPFieldData {
               adapter.getString("AlteraAtributosJSP.button.move_line_down"), //$NON-NLS-1$
               new ReorderActionListener(REORDER_DOWN, row),
               dimButton);
-
+          if(null != sizer){
           sizer.add(upBtn);
           sizer.add(dnBtn);
           upBtn.setEnabled(row != 0);
           dnBtn.setEnabled(row != this._alPropsList.size()-1);
-
+          }
           mC.gridwidth = GridBagConstraints.REMAINDER;
         }
         mGridbag.setConstraints(sizer,mC);
@@ -3240,6 +3243,7 @@ public class JSPFieldData {
       catch (FieldDataException fdexc) {
         if (!bError) {
           // first time
+        	if(null != fdexc)
           fde = fdexc;
         }
         else {
@@ -3337,6 +3341,7 @@ public class JSPFieldData {
         catch (FieldDataException fdexc) {
           if (!bError) {
             // first time
+        	  if(null != fdexc)
             fde = fdexc;
           }
           else {

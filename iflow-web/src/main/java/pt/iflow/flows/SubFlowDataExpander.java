@@ -558,10 +558,12 @@ public class SubFlowDataExpander {
 	} catch (Exception e) {
 		
 	}
-  
+    if(null != subFlowBlockEnd)
     subFlowBlockEnd.setType(BLOCK_COPY_TYPE);
+    
     XmlPortType[] endPorts = new XmlPortType[2];
     endPorts[0] = subFlowBlockEnd.getXmlPort().get(0);
+    
 
     XmlPortType outPort = new XmlPortType();
 
@@ -736,7 +738,7 @@ public class SubFlowDataExpander {
           }
         }
         try {
-        	if(formAttribute != null) formField.add(formAttribute);
+        	if(null != formField) formField.add(formAttribute);
         } catch (Exception e) {
 			Logger.error(userInfo.getUtilizador(), this, "getPopupFormFields", "formAttribute - 727");
 		}

@@ -270,18 +270,23 @@ class FileBasedLicenseService implements LicenseService {
     try {
       fout = new FileOutputStream(licenseState);
       
-      if(fout != null){
+      if(null != fout){
     	  fout.write(encryptSnapShot(xml.getBytes("UTF-8")));
-    	  
       }     
       
     } catch(Exception e) {
       Logger.error(null, this, "saveState", "Error saving license state.", e);
     }
-    finally{
-    	if(fout != null)
-    		fout.close();
-    }
+    finally {
+        if(null != fout) {
+          try {
+            fout.close();
+          } catch (IOException e) {
+            Logger.adminError("FileBasedLicenseService", "saveState", "Caught exception: " + e.getMessage(), e);
+          }
+        }
+      }
+
   }
   
   private synchronized void loadState() {

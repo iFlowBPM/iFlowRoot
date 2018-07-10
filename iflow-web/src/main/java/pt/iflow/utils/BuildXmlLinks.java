@@ -257,12 +257,14 @@ public class BuildXmlLinks
 		 } catch (Exception e) { }
 		 finally {
 			 try {
+				 if(null != rs)
 				rs.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			 try {
+				 if(null != st)
 				st.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block

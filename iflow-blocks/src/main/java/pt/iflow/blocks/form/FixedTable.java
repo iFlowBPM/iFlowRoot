@@ -199,11 +199,13 @@ public class FixedTable implements FieldInterface {
         for (int col=1; col <= nCols; col++) {
           
           CellElement ce = null;
-          String sValue = null; 
+          String sValue = ""; 
           
           if (hm.containsKey(col)) ce = (CellElement)hm.get(col);
           
-          
+          try {
+			
+		
           if (ce != null) {
             sValue = ce.sContent;
             
@@ -229,7 +231,9 @@ public class FixedTable implements FieldInterface {
               }
             }
           }
-          
+          } catch (Exception e) {
+        	 
+  		}
           
           
           if (StringUtils.isEmpty(sValue)) sValue = " ";

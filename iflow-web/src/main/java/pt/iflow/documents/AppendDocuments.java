@@ -162,12 +162,24 @@ public class AppendDocuments {
         } catch(Throwable t) {
           Logger.error(login, "AppenDocuments", "postProcessPDF", "Page ignored", t);
         } finally {
-          file.close();
+        try {
+        	if(null != file)
+        	file.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+          
         }
       }
       // step 5: we close the document
-      document.close();
-      document = null;
+      try {
+    	  if(null != document)
+    	      document.close();
+	} catch (Exception e) {
+		// TODO: handle exception
+	}
+      	
+      
 
       Logger.debug(login, "AppenDocuments", "postProcessPDF", "fim");
 
@@ -391,7 +403,13 @@ public class AppendDocuments {
         } catch(Throwable t) {
           Logger.error(login, "AppenDocuments", "mergePDFs", "Page ignored", t);
         } finally {
-          file.close();
+          try {
+        	  if (file != null)
+                  file.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+        	
         }
       }
       // step 5: we close the document
