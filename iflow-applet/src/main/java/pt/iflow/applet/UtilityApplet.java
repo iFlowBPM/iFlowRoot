@@ -616,8 +616,12 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
       e.printStackTrace();}
     
       finally {
-    	  if (stream != null) {
-    	  safeClose(stream);
+    	  if (stream != null) 
+    	  {
+    	  //safeClose(stream);
+    		 try {
+				stream.close();
+			} catch (IOException e) {}
     	  }
     	  }
     	  

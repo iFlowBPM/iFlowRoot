@@ -179,14 +179,25 @@ public class XslTransformerFactory {
 
     public Source resolve(String href, String base) throws TransformerException {
       Source result = null;
+      InputStream inputStream = null;
       try {
         URI uri = new URI(href);
         String path = uri.getPath();
         RepositoryFile repFile = BeanFactory.getRepBean().getStyleSheet(userInfo, path);
+        inputStream = repFile.getResourceAsStream();
         if(null != repFile && repFile.exists())
-          result = new StreamSource(repFile.getResourceAsStream());
+          result = new StreamSource(inputStream);
       } catch (URISyntaxException e) {
       }
+      finally {
+    	  if( inputStream != null )
+			try {
+				inputStream.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
       
       if(null != parent)
         result = parent.resolve(href, base);

@@ -1,7 +1,6 @@
 package pt.iflow.api.utils;
 
 import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +28,9 @@ public class WSDLUtilsV2  extends WSDLUtils{
 	public WSDLUtilsV2(RepositoryFile aisWsdl, String asUrl) throws Exception {
 		super(aisWsdl.getResourceAsStream(), asUrl);
 		
-		 org.w3c.dom.Document doc = XMLUtils.newDocument(aisWsdl.getResourceAsStream());
+		InputStream inputStream = aisWsdl.getResourceAsStream();
+		 org.w3c.dom.Document doc = XMLUtils.newDocument( inputStream);
+		 inputStream.close();
          String _sRealUrl = asUrl;
          parser.run(_sRealUrl, doc);
 	}
@@ -105,9 +106,7 @@ public class WSDLUtilsV2  extends WSDLUtils{
             }
             
             call = null;
-        } catch (Exception e) {
-           int i=0;
-        }
+        } catch (Exception e) {}
         classLoader.destroy();
         classLoader = null;
         

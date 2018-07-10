@@ -1,5 +1,8 @@
 package pt.iflow.api.repository;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.URIResolver;
@@ -71,9 +74,18 @@ public class RepositoryURIResolver implements URIResolver {
       file = repos.getWebFile(userInfo, base + "/" + href);
     }
     
-    if (null != file && file.exists()) {
-      return new StreamSource(file.getResourceAsStream(), href);
-    }
+    if (null != file && file.exists()) 
+	{
+    	StreamSource streamSource = null;
+		try {
+			InputStream inputStream = file.getResourceAsStream();
+			streamSource = new StreamSource(inputStream, href);
+			inputStream.close();
+			
+		} 
+		catch (IOException e) {}
+		return streamSource;
+	}
 
     return null;
   }

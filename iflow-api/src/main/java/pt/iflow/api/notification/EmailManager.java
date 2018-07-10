@@ -204,7 +204,7 @@ public class EmailManager extends Thread {
 	
 	          sError = null;
 	          email = null;
-	
+	          InputStream inStream = null;
 	          try {
 	
 	            query = DBQueryManager.processQuery(EmailManager.EMAIL_DATA, new Object[]{sId});
@@ -228,12 +228,14 @@ public class EmailManager extends Thread {
 	              sError = "TO set";
 	
 	              // TO
-	              stmp = parseBlobStream(rs.getBinaryStream("eto"));
+	              inStream = rs.getBinaryStream("eto");
+	              stmp = parseBlobStream(inStream);
 	              email.setTo(Utils.tokenize(stmp, sSEPARATOR));
 	
 	              // CC
 	              try {
-	                stmp = parseBlobStream(rs.getBinaryStream("ecc"));
+	            	  inStream=rs.getBinaryStream("ecc");
+	                stmp = parseBlobStream(inStream);
 	                if (stmp != null && !stmp.equals("")) {
 	                  email.setCc(Utils.tokenize(stmp, sSEPARATOR));
 	                }
@@ -241,6 +243,10 @@ public class EmailManager extends Thread {
 	              catch (Exception e3) {
 	                Logger.adminError("EmailManager", "run", "Exception3: EMAIL " + sId + ": CC set FAILED: " + e3.getMessage(), e3);
 	              }
+	              finally {
+					if( inStream != null )
+						inStream.close();
+				}
 	
 	              sError = "SUBJECT set";
 	
@@ -251,7 +257,8 @@ public class EmailManager extends Thread {
 	              sError = "BODY set";
 	
 	              // BODY
-	              stmp = parseBlobStream(rs.getBinaryStream("ebody"));
+	              inStream = rs.getBinaryStream("ebody");
+	              stmp = parseBlobStream(inStream);
 	              email.setMsgText(stmp);
 	
 	              // HTML
@@ -331,6 +338,10 @@ public class EmailManager extends Thread {
 	            Logger.adminError("EmailManager", "run", "Exception2: EMAIL " + sId + " FAILED (" + sError + "): " + e2.getMessage(), e2);
 	            processErroneousEmail(sId, email, lCurrTimestamp, db, st, tries, lastSent, nextSend);
 	          }
+	          finally {
+	        	  if(inStream != null)
+	        		  inStream.close();
+			}
 	        }
 	      }
 	      catch (Exception e) {

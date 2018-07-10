@@ -26,14 +26,16 @@ public abstract class AbstractMessageParser implements MessageParser {
   public List<File> parseFiles(Message message) throws MessageParseException {
     List<File> files = new ArrayList<File>();
 
+    InputStream inputStream = null;
     try {
       if (message.isMimeType("multipart/*")) {
         Multipart mp = (Multipart)message.getContent();
         for (int i = 0; i < mp.getCount(); i++) {
           Part bp = mp.getBodyPart(i);
           String disposition = bp.getDisposition();
+          inputStream = bp.getInputStream();
           if (StringUtils.equalsIgnoreCase(disposition, Part.ATTACHMENT)) {
-            files.add(saveFile(bp.getFileName(), bp.getInputStream()));          
+            files.add(saveFile(bp.getFileName(), inputStream));          
           }
         }
       }  
@@ -41,6 +43,12 @@ public abstract class AbstractMessageParser implements MessageParser {
     catch (Exception e) {
       throw new MessageParseException(e);
     }
+    finally {
+    	if( inputStream != null )
+			try {
+				inputStream.close();
+			} catch (IOException e) {}
+	}
     return files;
   }
 

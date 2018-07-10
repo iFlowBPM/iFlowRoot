@@ -295,10 +295,11 @@ public class Setup {
             }
         }
         
+        FileOutputStream propertiesFile = null;
         try {
             String sFile = stmp + MAIN_PROP_FILE;
             
-            FileOutputStream propertiesFile = new FileOutputStream(sFile);
+            propertiesFile = new FileOutputStream(sFile);
             
             stmp = "iFlow Properties modified in " + new java.util.Date();
             
@@ -306,6 +307,15 @@ public class Setup {
         } catch (Exception e) {
           Logger.error("", "Setup", "loadProperties", "Unable to write properties: " + e.getMessage(), e);
         }
+        finally {
+        	if( propertiesFile != null )
+				try {
+					propertiesFile.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
     }
     
     private static Properties cloneProperties() {
@@ -376,24 +386,28 @@ public class Setup {
 
   }
   
-  public static String loadIflowHome(){
-	  String path="";
-	 
-	  try {
-		  
-	String filename = "path.properties";
-	java.io.InputStream is = Setup.class.getClassLoader().getResourceAsStream(filename);
-	  
-	  Properties p = new Properties();
-	  p.load(is);
-	  path = p.getProperty("iflow.home");	  
-	  Logger.info("System", "Setup.java", "loadIflowHome()", "Path iFlow-home: " + path);
-	    } catch (Exception e) {
-	    	e.printStackTrace();
-	    	Logger.error("", "Setup", "loadProperties", "Path: " + path, e);
-	    }
-	  	  
+	public static String loadIflowHome() 
+	{
+		String path = "";
+		java.io.InputStream is = null;
+		try {
+
+			String filename = "path.properties";
+			is = Setup.class.getClassLoader().getResourceAsStream(filename);
+
+			Properties p = new Properties();
+			p.load(is);
+			path = p.getProperty("iflow.home");
+			Logger.info("System", "Setup.java", "loadIflowHome()", "Path iFlow-home: " + path);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Logger.error("", "Setup", "loadProperties", "Path: " + path, e);
+		} finally {
+			if (is != null)
+				try { is.close(); } catch (IOException e) {}
+		}
+
 		return path;
-	    
-  }
+
+	}
 }
