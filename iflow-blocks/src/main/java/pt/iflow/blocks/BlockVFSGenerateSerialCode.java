@@ -80,16 +80,17 @@ public class BlockVFSGenerateSerialCode extends Block {
       sTemplate = this.getAttribute(sATTR_SLIST);
       sSerial = this.getAttribute(sATTR_TLIST);
       
-      if (!StringUtils.isEmpty(sTemplate) && !StringUtils.isEmpty(sSerial)) {
+      if (!StringUtils.isEmpty(sTemplate) && !StringUtils.isEmpty(sSerial) && null != sSerial && null != sTemplate) {
         template = procData.get(sTemplate);
         serial = procData.get(sSerial);
       }
       
-      if (StringUtils.isEmpty(sTemplate) || StringUtils.isEmpty(sSerial)) {
+      if (StringUtils.isEmpty(sTemplate) || StringUtils.isEmpty(sSerial) && null == sSerial && null == sTemplate) {
         Logger.warning(login, this, "after", procData.getSignature() + "empty attribute!!");
       }
       else {
-        try {
+        if(null != serial){
+    	 try {
           
           CodeTemplateManager ctm = BeanFactory.getCodeTemplateManagerBean();
           serial.setValue(ctm.generateSerialCode(userInfo, template.getRawValue()));
@@ -97,9 +98,10 @@ public class BlockVFSGenerateSerialCode extends Block {
         } catch (Exception ei) {
           Logger.error(login, this, "after", procData.getSignature() + "caught exception, Generate Serial Code", ei);
         }
+    	 }
       }
       
-      if (StringUtils.isNotBlank(serial.getRawValue())) {
+      if (null != serial && StringUtils.isNotBlank(serial.getRawValue())) {
         outPort = portTrue;
       } else {
         outPort = portFalse;

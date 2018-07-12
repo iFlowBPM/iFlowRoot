@@ -217,6 +217,14 @@ public class FlowFolderChecker implements Runnable {
         Logger.adminError(signature, "processFile","ERROR creating process data for flow "+getId()+" with user " + ui.getUtilizador());
         throw e;
       }
+      finally
+      {
+    	  try {
+			  if(null != conn) {
+	    	        conn.close();
+	    	      }
+		  		} catch (Exception e2) {}
+      }
       
       String docVarName = hfconfig.getDocVar();
       Set<File> errors = procData.addDocuments(ui, docVarName, Arrays.asList(file));

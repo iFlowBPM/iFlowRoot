@@ -190,13 +190,9 @@ public class XslTransformerFactory {
       } catch (URISyntaxException e) {
       }
       finally {
-    	  if( inputStream != null )
-			try {
-				inputStream.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+    	  try {
+    	  if( inputStream != null ) inputStream.close();
+			} catch (IOException e) {}
 	}
       
       if(null != parent)

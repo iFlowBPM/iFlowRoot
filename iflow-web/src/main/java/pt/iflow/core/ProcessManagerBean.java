@@ -786,7 +786,7 @@ public class ProcessManagerBean implements ProcessManager {
       st.executeUpdate("update process set mid=" + newMid + " where flowid=" + flowid + " and pid=" + pid + " and subpid="
               + subpid);
     try {
-    	
+    	if(null != previousProcess)
     	 previousProcess.setMid(newMid);
 		
 	} catch (Exception e) {

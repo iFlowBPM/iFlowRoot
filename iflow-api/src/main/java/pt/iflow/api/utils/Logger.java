@@ -396,33 +396,32 @@ public class Logger {
 				try {
 					if (Const.DB_TYPE.equalsIgnoreCase("SQLSERVER")) {
 						st.execute(DBQueryManager.getQuery("FlowSettings.getNextMid"));
-						
-							
-						
-						
-						
-							if (null != rs && st.getMoreResults())
-								rs = st.getResultSet();
-							 else 
-								rs = st.executeQuery(logIdQuery);
-							
-							
-							if (rs.next()) {
-								logId = rs.getInt(1);
-							}
-							
+
+						if (null != rs && st.getMoreResults())
+							rs = st.getResultSet();
+						else
+							rs = st.executeQuery(logIdQuery);
+
+						if (rs.next()) {
+							logId = rs.getInt(1);
 						}
-					
+
+					}
+
 				} catch (Exception e) {
 
 				} finally {
-					 if(null != rs) {
-					        try {
-					          rs.close();
-					        } catch (Exception e) {
-					        	Logger.error(username, "Logger", "saveFlowStateLog", "caught exception: ", e);
-					        }
-					      }
+					try {
+						if (null != rs)
+							rs.close();
+						if (null != st)
+							st.close();
+						if(null != db)
+							db.close();
+						
+					} catch (Exception e) {
+						Logger.error(username, "Logger", "saveFlowStateLog", "caught exception: ", e);
+					}
 				}
 
 				FlowStateLogTO flowStateLog = new FlowStateLogTO(flowid, pid, subpid, state,

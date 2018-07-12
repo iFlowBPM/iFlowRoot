@@ -258,7 +258,7 @@ public class ChartServlet extends HttpServlet {
         
         if(sTemplate != null){
         IChart chart = instantiate(ctx, userInfo, sTemplate, props);
-        if(null != procData)
+        if(null != chart)
         chart.draw(ctx, procData, nWidth, nHeight, bout);} //response.getOutputStream());
       } catch (Throwable t) {
         Logger.error(userInfo.getUtilizador(), this, "generateChart", "Error generating chart image", t);

@@ -562,6 +562,7 @@ public class SubFlowDataExpander {
     subFlowBlockEnd.setType(BLOCK_COPY_TYPE);
     
     XmlPortType[] endPorts = new XmlPortType[2];
+    if(null != endPorts)
     endPorts[0] = subFlowBlockEnd.getXmlPort().get(0);
     
 

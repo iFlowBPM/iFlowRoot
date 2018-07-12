@@ -308,9 +308,8 @@ public class Setup {
           Logger.error("", "Setup", "loadProperties", "Unable to write properties: " + e.getMessage(), e);
         }
         finally {
-        	if( propertiesFile != null )
-				try {
-					propertiesFile.close();
+        	try {
+        	if( propertiesFile != null ) propertiesFile.close();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

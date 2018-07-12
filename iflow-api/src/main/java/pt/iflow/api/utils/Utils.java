@@ -1216,15 +1216,13 @@ public class Utils {
       e.printStackTrace();
     }
     finally {
-    	if( inputStream != null )
-			try {
-				inputStream.close();
-			} catch (IOException e) {}
-    	
-		if( jarFile != null )
-			try {
-				jarFile.close();
-			} catch (IOException e) {}
+    	try{
+    	if( inputStream != null ) inputStream.close();
+		
+    	} catch (IOException e) {}
+    	try {
+		if( jarFile != null ) jarFile.close();
+		} catch (IOException e) {}
 	}
     return classes;
   }

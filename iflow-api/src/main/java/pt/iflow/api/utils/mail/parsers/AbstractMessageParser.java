@@ -44,9 +44,8 @@ public abstract class AbstractMessageParser implements MessageParser {
       throw new MessageParseException(e);
     }
     finally {
-    	if( inputStream != null )
-			try {
-				inputStream.close();
+    	try {
+    	if( inputStream != null ) inputStream.close();
 			} catch (IOException e) {}
 	}
     return files;

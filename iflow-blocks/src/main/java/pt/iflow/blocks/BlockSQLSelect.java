@@ -382,7 +382,7 @@ public class BlockSQLSelect extends BlockSQL {
                       if (bSingle) {
                     	  try {
                     		  
-                          		if(null != value)
+                          		if(null != psv)
                     		  psv.setValue(value);
     						} catch (Exception e) {
     							Logger.debug(login, this, "after", "Validar null  psv.setValue(value); ");
@@ -390,7 +390,7 @@ public class BlockSQLSelect extends BlockSQL {
                        }
                       else {
                     	  try {
-                    		  if(null != value)
+                    		  if(null != psv)
                     		  plv.setItemValue(counter, value);
     						} catch (Exception e) {
     							Logger.debug(login, this, "after", "Validar null   plv.setItemValue(counter, value); ");
@@ -412,7 +412,7 @@ public class BlockSQLSelect extends BlockSQL {
                     }                  
                     else {
                     	try {
-                    		if(null != value)
+                    		if(null != psv)
                     		plv.parseAndSetItemValue(counter, (String)value); 
   						} catch (Exception e) {
   							Logger.debug(login, this, "after", "Validar null plv.parseAndSetItemValue(counter, (String)value);");
@@ -436,7 +436,7 @@ public class BlockSQLSelect extends BlockSQL {
                     
                     if (bSingle) {
                     	try {
-                    		if(null != value)
+                    		if(null != psv)
                       		 psv.setValue(value);
    						} catch (Exception e) {
    							Logger.debug(login, this, "after", "Validar null psv.setValue(value);");
@@ -444,7 +444,7 @@ public class BlockSQLSelect extends BlockSQL {
                     }
                     else {
                     	try {
-                    		if(null != value)
+                    		if(null != psv)
                             plv.setItemValue(counter, value);
 						} catch (Exception e) {
 							Logger.debug(login, this, "after", "Validar null plv.setItemValue(counter, value);");
@@ -454,7 +454,7 @@ public class BlockSQLSelect extends BlockSQL {
                 }
                 else {                  
                   value = rs.getString(content.getIndex());
-                  if (null != value) {
+                  if (null != psv) {
                     if (bSingle) {
                     	try {
                    		 psv.setValue(value);
@@ -464,7 +464,7 @@ public class BlockSQLSelect extends BlockSQL {
                     }
                     else {
                     	try {
-                    		if(null != value)
+                    		if(null != psv)
                             plv.setItemValue(counter, value);
 						} catch (Exception e) {
 							Logger.debug(login, this, "after", "Validar null plv.setItemValue(counter, value);");
@@ -475,7 +475,7 @@ public class BlockSQLSelect extends BlockSQL {
               }
               else {
                 value = rs.getString(content.getIndex());
-                if (null != value) {
+                if (null != psv) {
                   if (pv.getType().getSupportingClass() == java.lang.String.class) {
                     if (bSingle) {
                     	try {
@@ -486,7 +486,7 @@ public class BlockSQLSelect extends BlockSQL {
                     }
                     else {
                     	try {
-                    		if(null != value)
+                    		if(null != psv)
                             plv.setItemValue(counter, value);
 						} catch (Exception e) {
 							Logger.debug(login, this, "after", "Validar null plv.setItemValue(counter, value);");
@@ -496,14 +496,14 @@ public class BlockSQLSelect extends BlockSQL {
                   else {
                     if (bSingle) {
                     	try {
-                    		if(null != value)
+                    		if(null != psv)
                     		 procData.parseAndSet(content.getVarName(), (String)value);
 						} catch (Exception e) {
 							Logger.debug(login, this, "after", "Validar null procData.parseAndSet");
 						}
                     }                  
                     else {
-                      if(null != value)
+                      if(null != psv)
                       plv.parseAndSetItemValue(counter, (String)value);
                     }
                   }
@@ -516,6 +516,9 @@ public class BlockSQLSelect extends BlockSQL {
             }
           }
 
+		  if(null != rs){
+			rs.close();}
+			
           
           if (counter == -1) {
             outPort = portEmpty;

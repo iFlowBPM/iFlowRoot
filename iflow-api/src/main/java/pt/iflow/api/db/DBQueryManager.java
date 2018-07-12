@@ -38,14 +38,14 @@ public class DBQueryManager {
       Logger.adminError("DBQueryManager", "reloadQueries", "Error reading queries.", e);
     }
     finally {
-    	if( fileInputStream != null)
-    	{
-    		try {
-				fileInputStream.close();
-			} catch (IOException e) {}
+    	try {
+    	if( fileInputStream != null) fileInputStream.close();
+			} catch (IOException e) {
+			}
+		
     	}
 	}
-  }
+  
 
   private static void checkFile() {
     File queriesFile = new File(_queriesFileLocation);

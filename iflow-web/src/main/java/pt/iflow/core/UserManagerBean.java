@@ -1372,8 +1372,8 @@ public class UserManagerBean implements UserManager {
     }
     finally {
       //DatabaseInterface.closeResources(db, pst);
-    	try { db.close(); } catch (SQLException e) {}
-    	try { pst.close(); } catch (SQLException e) {}
+    	try { if(null != db) db.close(); } catch (SQLException e) {}
+    	try { if(null != pst) pst.close(); } catch (SQLException e) {}
     }
 
     return result;

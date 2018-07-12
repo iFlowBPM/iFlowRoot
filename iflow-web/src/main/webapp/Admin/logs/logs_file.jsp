@@ -46,13 +46,13 @@ if (logDir.isDirectory()) {
 		    String sModified = formatter.format(dModified);
 		    %>
 		    <tr class="<%=((i % 2) == 0) ? "tab_row_even" : "tab_row_odd"%>">
-				<td><c:out value='<%=sName %>'></c:out></td>
-				<td><c:out value='<%=sModified %>'></c:out></td>
+				<!--  <td><c:out value='<%=sName %>'></c:out></td>
+				<td><c:out value='<%=sModified %>'></c:out></td> 
 				<td class="itemlist_icon">
 					<a href="<%=log.getName() %>">
 						<img border="0" width="16" height="16" alt="Download" src="images/icon_download.png" class="toolTipImg">
 					</a>
-				</td>
+				</td>-->
 			</tr>
 		<% } %>
 	</table>

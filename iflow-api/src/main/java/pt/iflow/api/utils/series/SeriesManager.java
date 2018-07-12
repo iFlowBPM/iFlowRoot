@@ -3,6 +3,7 @@ package pt.iflow.api.utils.series;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -76,7 +77,10 @@ public class SeriesManager {
       throw e;
     }
     finally {
-      DatabaseInterface.closeResources(db, pst, rs);
+      // DatabaseInterface.closeResources(db, pst, rs);
+    	try { if(null != db) db.close(); } catch (SQLException e) {}
+	    try { if(null != pst) pst.close(); } catch (SQLException e) {}
+	    try { if(null != rs) rs.close(); } catch (SQLException e) {}
     }
 
     return series;		

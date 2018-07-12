@@ -86,7 +86,7 @@ public class BlockToSignDocs extends Block {
           valueslist = procData.getList(sValues);
       }
       
-      if (null == sDocs && (StringUtils.isEmpty(sDocs) || StringUtils.isEmpty(sValues) || doclist.size() != valueslist.size() && null == sValues)) {
+      if (null == sDocs && null == doclist && null == valueslist && (StringUtils.isEmpty(sDocs) || StringUtils.isEmpty(sValues) || doclist.size() != valueslist.size() && null == sValues)) {
         Logger.warning(login,this,"after", procData.getSignature() + "empty attribute!!");
         
         bEvalResult = false;
