@@ -178,12 +178,14 @@ public class RepositoryAccessMysqlImpl implements RepositoryAccess {
       Logger.error("", this, "", "RepositoryBean:delete exception (QUERY IS: " + sbQuery.toString() + ")", sqle);
     }
     finally {
-      try {
-        if (st != null) st.close();
-      }
-      catch (Exception e) {
-      }
-      this.release(db);
+//      try {
+//        if (st != null) st.close();
+//      }
+//      catch (Exception e) {
+//      }
+//      this.release(db);
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (st != null) st.close(); } catch (SQLException e) {}
     }
 
     return retObj;
@@ -231,6 +233,7 @@ public class RepositoryAccessMysqlImpl implements RepositoryAccess {
           baos.close();
           is.close();
         }
+        if(rs != null)
         rs.close();
         rs = null;
       }
@@ -244,17 +247,21 @@ public class RepositoryAccessMysqlImpl implements RepositoryAccess {
       }
       catch (Exception e) {
       }
-      try {
-        if (rs != null) rs.close();
-      }
-      catch (Exception e) {
-      }
-      try {
-        if (st != null) st.close();
-      }
-      catch (Exception e) {
-      }
-      this.release(db);
+//      try {
+//        if (rs != null) rs.close();
+//      }
+//      catch (Exception e) {
+//      }
+//      try {
+//        if (st != null) st.close();
+//      }
+//      catch (Exception e) {
+//      }
+//      this.release(db);
+  	try {if (db != null) db.close(); } catch (SQLException e) {}
+  	try {if (st != null) st.close(); } catch (SQLException e) {}
+  	try {if (rs != null) rs.close(); } catch (SQLException e) {}
+
     }
     retObj = baos.toByteArray();
 
@@ -327,17 +334,22 @@ public class RepositoryAccessMysqlImpl implements RepositoryAccess {
       }
     }
     finally {
-      try {
-        if (rs != null) rs.close();
-      }
-      catch (Exception e) {
-      }
-      try {
-        if (st != null) st.close();
-      }
-      catch (Exception e) {
-      }
-      this.release(db);
+//      try {
+//        if (rs != null) rs.close();
+//      }
+//      catch (Exception e) {
+//      }
+//      try {
+//        if (st != null) st.close();
+//      }
+//      catch (Exception e) {
+//      }
+//      this.release(db);
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (pst != null) pst.close(); } catch (SQLException e) {}
+    	try {if (st != null) st.close(); } catch (SQLException e) {}
+    	try {if (rs != null) rs.close(); } catch (SQLException e) {}
+
     }
     return id;
   }
@@ -452,7 +464,12 @@ public class RepositoryAccessMysqlImpl implements RepositoryAccess {
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
-      this.release(db);
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (stFirst != null) stFirst.close(); } catch (SQLException e) {}
+    	try {if (st != null) st.close(); } catch (SQLException e) {}
+    	try {if (rs != null) rs.close(); } catch (SQLException e) {}
+
+      //this.release(db);
     }
 
     return foundID;
@@ -570,22 +587,27 @@ public class RepositoryAccessMysqlImpl implements RepositoryAccess {
       }
     }
     finally {
-      try {
-        if (pst != null) pst.close();
-      }
-      catch (Exception e) {
-      }
-      try {
-        if (rs != null) rs.close();
-      }
-      catch (Exception e) {
-      }
-      try {
-        if (st != null) st.close();
-      }
-      catch (Exception e) {
-      }
-      this.release(db);
+//      try {
+//        if (pst != null) pst.close();
+//      }
+//      catch (Exception e) {
+//      }
+//      try {
+//        if (rs != null) rs.close();
+//      }
+//      catch (Exception e) {
+//      }
+//      try {
+//        if (st != null) st.close();
+//      }
+//      catch (Exception e) {
+//      }
+//      this.release(db);
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (pst != null) pst.close(); } catch (SQLException e) {}
+    	try {if (st != null) st.close(); } catch (SQLException e) {}
+    	try {if (rs != null) rs.close(); } catch (SQLException e) {}
+
     }
     return retObj;
   }
@@ -625,12 +647,15 @@ public class RepositoryAccessMysqlImpl implements RepositoryAccess {
       sqle.printStackTrace();
     }
     finally {
-      try {
-        if (st != null) st.close();
-      }
-      catch (Exception e) {
-      }
-      this.release(db);
+//      try {
+//        if (st != null) st.close();
+//      }
+//      catch (Exception e) {
+//      }
+//      this.release(db);
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (st != null) st.close(); } catch (SQLException e) {}
+
     }
 
     if (alLeaves != null && alLeaves.size() > 0) {
@@ -702,17 +727,21 @@ public class RepositoryAccessMysqlImpl implements RepositoryAccess {
       sqle.printStackTrace();
     }
     finally {
-      try {
-        if (rs != null) rs.close();
-      }
-      catch (Exception e) {
-      }
-      try {
-        if (st != null) st.close();
-      }
-      catch (Exception e) {
-      }
-      this.release(db);
+//      try {
+//        if (rs != null) rs.close();
+//      }
+//      catch (Exception e) {
+//      }
+//      try {
+//        if (st != null) st.close();
+//      }
+//      catch (Exception e) {
+//      }
+//      this.release(db);
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (st != null) st.close(); } catch (SQLException e) {}
+    	try {if (rs != null) rs.close(); } catch (SQLException e) {}
+
     }
     if (fileList == null) return null;
 
@@ -792,12 +821,15 @@ public class RepositoryAccessMysqlImpl implements RepositoryAccess {
       e.printStackTrace();
     }
     finally {
-      try {
-        if (st != null) st.close();
-      }
-      catch (Exception e) {
-      }
-      this.release(db);
+//      try {
+//        if (st != null) st.close();
+//      }
+//      catch (Exception e) {
+//      }
+//      this.release(db);
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (st != null) st.close(); } catch (SQLException e) {}
+
     }
 
     return retObj;

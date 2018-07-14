@@ -532,7 +532,9 @@ public class FlowBean implements Flow {
           }
         }
       } finally {
-        DatabaseInterface.closeResources(conn);
+        // DatabaseInterface.closeResources(conn);
+      	try {if (conn != null) conn.close(); } catch (SQLException e) {}
+
       }
     }
     // Update Folder
@@ -553,14 +555,15 @@ public class FlowBean implements Flow {
     String result = "";
     Connection db = null;
     PreparedStatement pst = null;
-
+    ResultSet rs = null;
+    
     try {
       db = Utils.getDataSource().getConnection();
       pst = db
           .prepareStatement("SELECT sub_flowname, original_blockid FROM iflow.subflow_block_mapping s, iflow.flow f where f.flowfile=s.flowname and flowid=? and mapped_blockid=? order by id desc");
       pst.setInt(1, flowid);
       pst.setInt(2, blockid);
-      ResultSet rs = pst.executeQuery();
+      rs = pst.executeQuery();
 
       if (rs.next()) {
         ret = new String[4];
@@ -588,7 +591,10 @@ public class FlowBean implements Flow {
     } catch (Exception e) {
       result = "";
     } finally {
-      DatabaseInterface.closeResources(db, pst);
+      //DatabaseInterface.closeResources(db, pst);
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (pst != null) pst.close(); } catch (SQLException e) {}
+    	try {if (rs != null) rs.close(); } catch (SQLException e) {}    	
     }
 
     return result;
@@ -1023,7 +1029,12 @@ public class FlowBean implements Flow {
           }
         }
       } finally {
-        DatabaseInterface.closeResources(db, st, updateStatement, rs);
+        // DatabaseInterface.closeResources(db, st, updateStatement, rs);
+      	try {if (db != null) db.close(); } catch (SQLException e) {}
+      	try {if (st != null) st.close(); } catch (SQLException e) {}
+      	try {if (updateStatement != null) updateStatement.close(); } catch (SQLException e) {}
+      	try {if (rs != null) rs.close(); } catch (SQLException e) {}    	
+
       }
     }
 
@@ -1362,12 +1373,16 @@ public class FlowBean implements Flow {
 
       String transactionId = null;
       Connection conn = null;
-      if (!userInfo.inTransaction()) {
-        conn = Utils.getDataSource().getConnection();
-        conn.setAutoCommit(false);
-        transactionId = userInfo.registerTransaction(new DBConnectionWrapper(conn));
-      }
+      
+      
       try {
+    	  //jcosta: 20180714: moved if inside try to close conn in finally
+	      if (!userInfo.inTransaction()) {
+	        conn = Utils.getDataSource().getConnection();
+	        conn.setAutoCommit(false);
+	        transactionId = userInfo.registerTransaction(new DBConnectionWrapper(conn));
+	      }
+
         endFlow(userInfo, procData, isCancel);
 
         if (conn != null) {
@@ -1395,7 +1410,8 @@ public class FlowBean implements Flow {
             notificationManager.notifySystemError(userInfo, "checkFlowEnd@FlowBean",
                 "illegal access unregistering transaction in userInfo! " + e.getMessage());
           } finally {
-            DatabaseInterface.closeResources(conn);
+            //DatabaseInterface.closeResources(conn);
+          		try {if (conn != null) conn.close(); } catch (SQLException e) {}
           }
         }
       }
@@ -1437,7 +1453,9 @@ public class FlowBean implements Flow {
       Logger.error(login, this, "endFlow", procData.getSignature() + "Caught exception: " + sqle.getMessage(), sqle);
       throw sqle;
     } finally {
-      DatabaseInterface.closeResources(db, st);
+      //DatabaseInterface.closeResources(db, st);
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (st != null) st.close(); } catch (SQLException e) {}
     }
   }
 
@@ -1665,7 +1683,11 @@ public class FlowBean implements Flow {
       }
       Logger.error(userInfo.getUtilizador(), this, "setFlowRoles", "exception caught: " + e.getMessage(), e);
     } finally {
-      DatabaseInterface.closeResources(db, st, rs);
+      //DatabaseInterface.closeResources(db, st, rs);
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (st != null) st.close(); } catch (SQLException e) {}
+    	try {if (rs != null) rs.close(); } catch (SQLException e) {}    	
+
     }
   }
 
@@ -1957,7 +1979,11 @@ public class FlowBean implements Flow {
           }
         }
       } finally {
-        DatabaseInterface.closeResources(conn, st, rs);
+        //DatabaseInterface.closeResources(conn, st, rs);
+      	try {if (conn != null) conn.close(); } catch (SQLException e) {}
+      	try {if (st != null) st.close(); } catch (SQLException e) {}
+      	try {if (rs != null) rs.close(); } catch (SQLException e) {}    	
+
       }
     }
 
@@ -2058,7 +2084,11 @@ public class FlowBean implements Flow {
           }
         }
       } finally {
-        DatabaseInterface.closeResources(conn, st, rs);
+        //DatabaseInterface.closeResources(conn, st, rs);
+      	try {if (conn != null) conn.close(); } catch (SQLException e) {}
+      	try {if (st != null) st.close(); } catch (SQLException e) {}
+      	try {if (rs != null) rs.close(); } catch (SQLException e) {}    	
+
       }
     }
     return result;
@@ -2293,7 +2323,12 @@ public class FlowBean implements Flow {
           }
         }
       } finally {
-        DatabaseInterface.closeResources(db, st, rs, ps);
+        // DatabaseInterface.closeResources(db, st, rs, ps);
+      	try {if (db != null) db.close(); } catch (SQLException e) {}
+      	try {if (st != null) st.close(); } catch (SQLException e) {}
+      	try {if (rs != null) rs.close(); } catch (SQLException e) {}    	
+      	try {if (ps != null) ps.close(); } catch (SQLException e) {}
+
       }
     }
 
@@ -2631,7 +2666,11 @@ public class FlowBean implements Flow {
           }
         }
       } finally {
-        DatabaseInterface.closeResources(db, st, rs, ps);
+        // DatabaseInterface.closeResources(db, st, rs, ps);
+      	try {if (db != null) db.close(); } catch (SQLException e) {}
+      	try {if (st != null) st.close(); } catch (SQLException e) {}
+      	try {if (rs != null) rs.close(); } catch (SQLException e) {}    	
+      	try {if (ps != null) ps.close(); } catch (SQLException e) {}
       }
     }
 

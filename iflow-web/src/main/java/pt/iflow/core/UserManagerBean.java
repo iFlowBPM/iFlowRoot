@@ -173,8 +173,8 @@ public class UserManagerBean implements UserManager {
           return new ErrorHandler(UserErrorCode.FAILURE_DUPLICATE_USER);
         }
       }
-      rs.close();
-      pst.close();
+      //rs.close();
+      //pst.close();
 
 
 
@@ -187,8 +187,8 @@ public class UserManagerBean implements UserManager {
           if(rs.getInt(1)>0) return new ErrorHandler(UserErrorCode.FAILURE_DUPLICATE_EMAIL);
         }
 
-        rs.close();
-        pst.close();
+        //rs.close();
+        //pst.close();
       } else if(null == emailAddress) {
         emailAddress = "";
       }
@@ -241,7 +241,7 @@ public class UserManagerBean implements UserManager {
       if(rs.next()) {
         userId = rs.getInt(1);
       }
-      rs.close();
+      //rs.close();
       result = true;
 
 
@@ -581,8 +581,8 @@ public class UserManagerBean implements UserManager {
             throw new SQLException("Email already exists");
           }
         }
-        rs.close();
-        pst.close();
+        //rs.close();
+        //pst.close();
       }      
 
       if(isWebAdmin) { // check if email is the same.
@@ -593,8 +593,8 @@ public class UserManagerBean implements UserManager {
           if(rs.next()) {
             oldEmail = rs.getString(1);
           }
-          rs.close();
-          pst.close();
+          //rs.close();
+          //pst.close();
 
           // preserve email address until confirmation
           if(!newEmail.equals(oldEmail)) {
@@ -1417,7 +1417,7 @@ public class UserManagerBean implements UserManager {
         if(rs.next()) {
           failure = (rs.getInt(1) != 1);
         }
-        rs.close();
+        //rs.close();
         if(failure) {
           throw new Exception ("No organization found.");
         }
@@ -2516,8 +2516,8 @@ public class UserManagerBean implements UserManager {
         userId = rs.getInt(1);
         codeFound = true;
       }
-      rs.close();
-      pst.close();
+      //rs.close();
+      //pst.close();
 
       if(codeFound) {
         Logger.debug("ADMIN", this, "confirmAccount", "Activation code found!");
@@ -2542,8 +2542,8 @@ public class UserManagerBean implements UserManager {
           // este vai ser um caso bicudo... Existe userId, mas nao existe user??
           throw new SQLException("User does not exist?");
         }
-        rs.close();
-        pst.close();
+        //rs.close();
+        //pst.close();
 
 
         db.commit();
@@ -2814,14 +2814,14 @@ public class UserManagerBean implements UserManager {
         } else {
           throw new SQLException("Key does not exist");
         }
-        rs.close();
-        pst.close();
+        //rs.close();
+        //pst.close();
 
         pst = db.prepareStatement("update users set email_address = ? where userid=?");
         pst.setString(1, email);
         pst.setInt(2, userId);
         pst.executeUpdate();
-        pst.close();
+        //pst.close();
 
       }
 
@@ -2831,7 +2831,7 @@ public class UserManagerBean implements UserManager {
       pst = db.prepareStatement("delete from email_confirmation where code=?");
       pst.setString(1, key);
       pst.executeUpdate();
-      pst.close();
+      //pst.close();
 
       db.commit();
       result = (nAction == ACT_CONFIRM?CONFIRM_EMAIL_CONFIRMED:CONFIRM_EMAIL_REVERTED);

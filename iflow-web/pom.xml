@@ -341,11 +341,13 @@
 
 	</dependencies>
 	
+	<!-- 
 	<properties>
      <name>${project.name></name>
      <version>${project.version}</version>
     </properties>
-
+ 	-->
+ 
 	<build>
 		<plugins>
 			<plugin>

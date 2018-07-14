@@ -177,7 +177,16 @@ public class FolderManagerBean implements FolderManager {
           } catch (SQLException sqle) {
                Logger.error(userInfo.getUtilizador(), this, "setActivityToFolderByName","caught sql exception: " + sqle.getMessage(), sqle);
           } finally {
-               DatabaseInterface.closeResources(db, st, st2);
+               //DatabaseInterface.closeResources(db, st, st2);
+        	  
+        	  try { if(db != null) db.close();} catch (Exception e) {}
+        	  try { if(st != null) st.close();} catch (Exception e) {}
+        	  try { if(st2 != null) st2.close();} catch (Exception e) {}
+        	  try { if(rs != null) rs.close();} catch (Exception e) {}
+			
+        	  
+        	  
+        	  
           }
      }
 }

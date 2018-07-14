@@ -411,17 +411,9 @@ public class Logger {
 				} catch (Exception e) {
 
 				} finally {
-					try {
-						if (null != rs)
-							rs.close();
-						if (null != st)
-							st.close();
-						if(null != db)
-							db.close();
-						
-					} catch (Exception e) {
-						Logger.error(username, "Logger", "saveFlowStateLog", "caught exception: ", e);
-					}
+					try { if (null != rs) rs.close();} catch (Exception e) {}
+					try { if (null != st) st.close();} catch (Exception e) {}
+					try { if (null != db) db.close();} catch (Exception e) {}
 				}
 
 				FlowStateLogTO flowStateLog = new FlowStateLogTO(flowid, pid, subpid, state,

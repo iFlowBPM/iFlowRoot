@@ -81,7 +81,7 @@ public class NumericSeriesProcessor extends SeriesProcessor {
       int currState = rs.getInt(STATE);
 
      // rs.close();
-      rs = null;
+      //rs = null;
 
 
       int currValue = Integer.parseInt(getParamValue(NUMBER_TAG, _startWith));
@@ -142,8 +142,7 @@ public class NumericSeriesProcessor extends SeriesProcessor {
     }
     finally {
       if (rollbackNeeded) {
-    	  try {
-        if (db != null){  db.rollback(); db.close(); }
+    	  try { if (db != null){ db.rollback(); db.close(); }
     	  }catch (Exception ee) {
             throw new SeriesException(ee);
           }
@@ -154,6 +153,7 @@ public class NumericSeriesProcessor extends SeriesProcessor {
 	    try { if(null != db) db.close(); } catch (SQLException e) {}
 	    try { if(null != pstUpd) pstUpd.close(); } catch (SQLException e) {}
 	    try { if(null != pstGet) pstGet.close(); } catch (SQLException e) {}
+	    try { if(null != rs) rs.close(); } catch (SQLException e) {}
 	   
 	    
     return getCurrentValue();

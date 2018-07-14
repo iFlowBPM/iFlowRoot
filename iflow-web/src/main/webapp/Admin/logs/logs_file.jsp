@@ -23,12 +23,7 @@ private File[] sortFiles(File[] files) {
 List<NameValuePair<String, File>> logs = new ArrayList<NameValuePair<String, File>>();
 File logDir = new File((Const.sIFLOW_HOME + "/log").replace("//", "/"));
 if (logDir.isDirectory()) {
-  for (File item : sortFiles(logDir.listFiles())) {
-    if (item.isFile()) {
-      String link = "download.rep?file=" + item.getName() + "&type=" + ResourceNavConsts.LOGS;
-      logs.add(new NameValuePair<String, File>(link, item));
-    }
-  }
+  
 }
 %>
 <div class="table_inc">
@@ -46,13 +41,7 @@ if (logDir.isDirectory()) {
 		    String sModified = formatter.format(dModified);
 		    %>
 		    <tr class="<%=((i % 2) == 0) ? "tab_row_even" : "tab_row_odd"%>">
-				<!--  <td><c:out value='<%=sName %>'></c:out></td>
-				<td><c:out value='<%=sModified %>'></c:out></td> 
-				<td class="itemlist_icon">
-					<a href="<%=log.getName() %>">
-						<img border="0" width="16" height="16" alt="Download" src="images/icon_download.png" class="toolTipImg">
-					</a>
-				</td>-->
+			
 			</tr>
 		<% } %>
 	</table>

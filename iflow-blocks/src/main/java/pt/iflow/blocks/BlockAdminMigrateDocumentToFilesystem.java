@@ -159,15 +159,15 @@ public class BlockAdminMigrateDocumentToFilesystem extends Block {
 			while(rs.next())
 				result.add(rs.getInt(1));
 			
-			pst.close();						
+			//pst.close();						
 		} catch (Exception e) {
 			Logger.error(userInfo.getUtilizador(),this,	"fetchDocumentsToMigrate",procData.getSignature() + " error getting docid, "+ e.getMessage(), e);
 			throw e;
 		} finally {
 			//DatabaseInterface.closeResources(db, pst);
-			db.close();
-			pst.close();
-			rs.close();
+			try { if(null != db) db.close();} catch (Exception e2) {}
+			try { if(null != pst) pst.close();} catch (Exception e2) {}
+			try { if(null != rs) rs.close();} catch (Exception e2) {}
 		}
 		
 		return result;

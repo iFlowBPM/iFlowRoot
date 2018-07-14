@@ -159,7 +159,10 @@ public class FlowMenusServlet
       }
       finally
       {
-        Utils.closeDB(new Object[] {db, st, rs });
+//        Utils.closeDB(new Object[] {db, st, rs });
+        	try {if (db != null) db.close(); } catch (SQLException e) {}
+          	try {if (st != null) st.close(); } catch (SQLException e) {}
+          	try {if (rs != null) rs.close(); } catch (SQLException e) {}  
       }
       userInfo.setFlowPageHTML("");
     }
@@ -278,7 +281,11 @@ public class FlowMenusServlet
     }
     finally
     {
-      Utils.closeDB(new Object[] {db, st, rs });
+      // Utils.closeDB(new Object[] {db, st, rs });
+      	try {if (db != null) db.close(); } catch (SQLException e) {}
+      	try {if (st != null) st.close(); } catch (SQLException e) {}
+      	try {if (pst != null) pst.close(); } catch (SQLException e) {}
+      	try {if (rs != null) rs.close(); } catch (SQLException e) {}
     }
     return itemAdded;
   }

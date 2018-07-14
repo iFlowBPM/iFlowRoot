@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project name="iFlowRoot" basedir="." default="build-iflow-root">
 	
-	<property  name="maven-path" value="C:\Program Files\Apache\Maven\apache-maven-2.2.1\bin"></property >
+	<property  name="maven-path" value="C:\PARI PERSI\apache-maven-2.2.1\bin"></property >
 	
 	<target name="build-iflow-root" description="Build iFlowRoot project">
 	    <exec dir="${basedir}" executable="cmd">

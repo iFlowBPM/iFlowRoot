@@ -162,12 +162,7 @@ public class AppendDocuments {
         } catch(Throwable t) {
           Logger.error(login, "AppenDocuments", "postProcessPDF", "Page ignored", t);
         } finally {
-        try {
-        	if(null != file)
-        	file.close();
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
+        try { if(null != file) file.close();} catch (Exception e) {}
           
         }
       }
@@ -179,8 +174,6 @@ public class AppendDocuments {
 		// TODO: handle exception
 	}
       	
-      
-
       Logger.debug(login, "AppenDocuments", "postProcessPDF", "fim");
 
 

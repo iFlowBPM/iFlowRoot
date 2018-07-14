@@ -219,11 +219,8 @@ public class FlowFolderChecker implements Runnable {
       }
       finally
       {
-    	  try {
-			  if(null != conn) {
-	    	        conn.close();
-	    	      }
-		  		} catch (Exception e2) {}
+    	  try { if(null != conn) conn.close();	} catch (Exception e2) {}
+    	  try { if(null != pst) pst.close();	} catch (Exception e2) {}
       }
       
       String docVarName = hfconfig.getDocVar();

@@ -128,6 +128,7 @@ public class BlockSQLSelect extends BlockSQL {
     catch (Exception e) {
       sQuery = null;
     }    
+    
     try {
       sDataSource = this.getAttribute(BlockSQL.sDATASOURCE);
       if (StringUtils.isNotEmpty(sDataSource)) {
@@ -238,16 +239,16 @@ public class BlockSQLSelect extends BlockSQL {
           Selection selection = null;
           
           try  {
-        	  Logger.debug(login,this,"after", sSel); 
-        	  
-        	  selection = SQLExpressionParser.parseSelection(sSel);
-            
+            selection = SQLExpressionParser.parseSelection(sSel);
           }
           catch (Throwable t) {
             throw new Exception("Unable to parse selection", t);
           }
           Logger.debug(login,this,"after","Parsed selection: " + selection); 
-
+          
+          if(null == selection)
+        	  throw new Exception("Invalid selection");
+          
           List<SelectionElement> elems = selection.getElements();
           String aggregator = selection.getAggregator();
 
@@ -374,28 +375,17 @@ public class BlockSQLSelect extends BlockSQL {
               Object value = null;
               if (pv.getType().getSupportingClass() == java.util.Date.class) {
                 if(content.getType() == Types.DATE) {
-                  Timestamp ts = new Timestamp(0L); 
-                  ts = rs.getTimestamp(content.getIndex());
+                  Timestamp ts = rs.getTimestamp(content.getIndex());
                   if (ts != null) {
                     value = new Date(ts.getTime());
                     if (value != null) {
                       if (bSingle) {
-                    	  try {
-                    		  
-                          		if(null != psv)
-                    		  psv.setValue(value);
-    						} catch (Exception e) {
-    							Logger.debug(login, this, "after", "Validar null  psv.setValue(value); ");
-    						}
-                       }
+                    	  if(null != psv)
+                        psv.setValue(value);
+                      }
                       else {
-                    	  try {
-                    		  if(null != psv)
-                    		  plv.setItemValue(counter, value);
-    						} catch (Exception e) {
-    							Logger.debug(login, this, "after", "Validar null   plv.setItemValue(counter, value); ");
-    						}
-                       
+                    	 if(null != plv)
+                        plv.setItemValue(counter, value);
                       }
                     }
                   }
@@ -404,20 +394,12 @@ public class BlockSQLSelect extends BlockSQL {
                   value = rs.getString(content.getIndex());
                   if (value != null) {
                     if (bSingle) {
-                    	try {
-                    		procData.parseAndSet(content.getVarName(), (String)value); 
-  						} catch (Exception e) {
-  							Logger.debug(login, this, "after", "Validar null procData.parseAndSet(content.getVarName(), (String)value); ");
-  						}
+                      procData.parseAndSet(content.getVarName(), (String)value); 
                     }                  
                     else {
-                    	try {
-                    		if(null != psv)
-                    		plv.parseAndSetItemValue(counter, (String)value); 
-  						} catch (Exception e) {
-  							Logger.debug(login, this, "after", "Validar null plv.parseAndSetItemValue(counter, (String)value);");
-  						}
-                    	}
+                      if(null != plv)
+                      plv.parseAndSetItemValue(counter, (String)value);
+                    }
                   }
                 }                
               }
@@ -433,77 +415,50 @@ public class BlockSQLSelect extends BlockSQL {
                     else {
                       value = new Float(((Number)n).floatValue());                    
                     }
-                    
+
                     if (bSingle) {
-                    	try {
-                    		if(null != psv)
-                      		 psv.setValue(value);
-   						} catch (Exception e) {
-   							Logger.debug(login, this, "after", "Validar null psv.setValue(value);");
-   						}
+                      if(null != psv)
+                      psv.setValue(value);
                     }
                     else {
-                    	try {
-                    		if(null != psv)
-                            plv.setItemValue(counter, value);
-						} catch (Exception e) {
-							Logger.debug(login, this, "after", "Validar null plv.setItemValue(counter, value);");
-						}
+                      if(null != plv)
+                      plv.setItemValue(counter, value);
                     }
                   }
                 }
                 else {                  
                   value = rs.getString(content.getIndex());
-                  if (null != psv) {
+                  if (value != null) {
                     if (bSingle) {
-                    	try {
-                   		 psv.setValue(value);
-						} catch (Exception e) {
-							Logger.debug(login, this, "after", "Validar null psv.setValue(value);");
-						}
+                      if(null != psv)
+                      psv.setValue(value);
                     }
                     else {
-                    	try {
-                    		if(null != psv)
-                            plv.setItemValue(counter, value);
-						} catch (Exception e) {
-							Logger.debug(login, this, "after", "Validar null plv.setItemValue(counter, value);");
-						}
+                      if(null != plv)
+                      plv.setItemValue(counter, value);
                     }
                   }
                 }
               }
               else {
                 value = rs.getString(content.getIndex());
-                if (null != psv) {
+                if (value != null) {
                   if (pv.getType().getSupportingClass() == java.lang.String.class) {
                     if (bSingle) {
-                    	try {
-                    		 psv.setValue(value);
-						} catch (Exception e) {
-							Logger.debug(login, this, "after", "Validar null psv.setValue(value);");
-						}
+                      if(null != psv)	
+                      psv.setValue(value);
                     }
                     else {
-                    	try {
-                    		if(null != psv)
-                            plv.setItemValue(counter, value);
-						} catch (Exception e) {
-							Logger.debug(login, this, "after", "Validar null plv.setItemValue(counter, value);");
-						}
+                      if(null != plv)
+                      plv.setItemValue(counter, value);
                     }
                   }
                   else {
                     if (bSingle) {
-                    	try {
-                    		if(null != psv)
-                    		 procData.parseAndSet(content.getVarName(), (String)value);
-						} catch (Exception e) {
-							Logger.debug(login, this, "after", "Validar null procData.parseAndSet");
-						}
+                      procData.parseAndSet(content.getVarName(), (String)value); 
                     }                  
                     else {
-                      if(null != psv)
+                      if(null != plv)
                       plv.parseAndSetItemValue(counter, (String)value);
                     }
                   }
@@ -516,10 +471,9 @@ public class BlockSQLSelect extends BlockSQL {
             }
           }
 
-		  if(null != rs){
-			rs.close();}
-			
-          
+          //rs.close();
+          //rs = null;
+
           if (counter == -1) {
             outPort = portEmpty;
           }
@@ -536,9 +490,10 @@ public class BlockSQLSelect extends BlockSQL {
         outPort = portError;
       }
       finally {
-    	  try{
-    		  if(null != rs) rs.close();
-    	  }catch(Exception e){}
+        //DatabaseInterface.closeResources(db,st,rs);
+    	  try {if(null != rs) rs.close();} catch (Exception e2) {}
+    	  try {if(null != st) st.close();} catch (Exception e2) {}
+    	  try {if(null != db) db.close();} catch (Exception e2) {}
       }
 
       logMsg.append("Using '" + outPort.getName() + "';");

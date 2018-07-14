@@ -45,6 +45,11 @@ public class SearchIndexManager extends Thread {
 		while (keepRunning) {
 			// Check if it's time to update index
 			Calendar now = Calendar.getInstance();
+			Connection db = null;
+			Statement st = null;
+			PreparedStatement pst = null;
+			ResultSet rs = null;
+			
 			try {
 				if (now.get(Calendar.HOUR_OF_DAY) == 0) {
 					// get processes that ran yesterday
@@ -57,15 +62,15 @@ public class SearchIndexManager extends Thread {
 					Date yesterdayEnd = (Date) now.getTime();
 					
 					DataSource ds = Utils.getDataSource();
-					Connection db = ds.getConnection();
-					Statement st = db.createStatement();
-					PreparedStatement pst = db.prepareStatement(DBQueryManager
+					db = ds.getConnection();
+					st = db.createStatement();
+					pst = db.prepareStatement(DBQueryManager
 							.getQuery("SearchIndex.GET_ALTERED_PROCESSES"));
 					pst.setDate(1, yesterdayBegin);
 					pst.setDate(2, yesterdayEnd);
 					// get procdata from processes and organization
 					pst.execute();
-					ResultSet rs = pst.getResultSet();
+					rs = pst.getResultSet();
 					while(rs.next()){
 						
 					}
@@ -78,6 +83,11 @@ public class SearchIndexManager extends Thread {
 			} catch (SQLException e) {
 				Logger.adminInfo("SearchIndexManager", "run",
 						"Couldn't access database: ", e);
+			} finally {
+		      	try {if (db != null) db.close(); } catch (SQLException e) {}
+		      	try {if (st != null) st.close(); } catch (SQLException e) {}
+		      	try {if (pst != null) pst.close(); } catch (SQLException e) {}
+		      	try {if (rs != null) rs.close(); } catch (SQLException e) {}
 			}
 		}
 	}

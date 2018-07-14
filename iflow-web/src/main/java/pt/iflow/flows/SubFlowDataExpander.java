@@ -550,8 +550,9 @@ public class SubFlowDataExpander {
     	if(rawSubFlow != null){
     	  for (XmlBlockType block : rawSubFlow){
     	      if (block.getType().equals(BLOCK_END_TYPE)){
-    	        subFlowBlockEnd = block;
-    	        endId.add(block.getId());
+    	    	  if(subFlowBlockEnd != null){
+    	    		  subFlowBlockEnd = block;
+    	    	  		endId.add(block.getId());}
     	      }
     	    }
     	}
@@ -582,9 +583,11 @@ public class SubFlowDataExpander {
     for (XmlBlockType block : rawSubFlow)
       for (XmlPortType port : block.getXmlPort())
         if (endId.contains(port.getConnectedBlockId())) {
+          if(endId != null){
           port.setConnectedBlockId(subFlowBlockEnd.getId());
           port.setConnectedPortName("portIn");
-        }
+          }
+          }
 
     endPorts[1] = outPort;
     subFlowBlockEnd.withXmlPort(endPorts);

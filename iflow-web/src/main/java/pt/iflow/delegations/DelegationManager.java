@@ -561,7 +561,11 @@ public class DelegationManager extends Thread {
       retObj = false;
     }
     finally {
-      DatabaseInterface.closeResources(db, st, rs);
+      //DatabaseInterface.closeResources(db, st, rs);
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (st != null) st.close(); } catch (SQLException e) {}
+    	try {if (rs != null) rs.close(); } catch (SQLException e) {}
+
     }
     return retObj;
   }
@@ -871,7 +875,13 @@ public class DelegationManager extends Thread {
       try { db.rollback(); } catch (Exception e1) { }
     } 
     finally {
-      DatabaseInterface.closeResources(db, pst, st, pst2, pst3, rs);
+      //DatabaseInterface.closeResources(db, pst, st, pst2, pst3, rs);
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (pst != null) pst.close(); } catch (SQLException e) {}
+    	try {if (st != null) st.close(); } catch (SQLException e) {}
+    	try {if (pst2 != null) pst2.close(); } catch (SQLException e) {}
+    	try {if (pst3 != null) pst3.close(); } catch (SQLException e) {}
+    	try {if (rs != null) rs.close(); } catch (SQLException e) {}
     }
 
     if (recordInserted) { //xxx
@@ -1071,7 +1081,10 @@ public class DelegationManager extends Thread {
       Logger.error(userInfo.getUtilizador(), this, "requestDelegation", "Error creating a new delegation request", e);
       try { db.rollback(); } catch (Exception e1) { }
     } finally {
-      DatabaseInterface.closeResources(db, pst, st, rs);
+      //DatabaseInterface.closeResources(db, pst, st, rs);
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (pst != null) pst.close(); } catch (SQLException e) {}
+    	try {if (rs != null) rs.close(); } catch (SQLException e) {}
     }
     return recordInserted;
   }

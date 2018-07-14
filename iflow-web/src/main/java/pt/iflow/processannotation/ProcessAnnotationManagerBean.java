@@ -48,13 +48,15 @@ public class ProcessAnnotationManagerBean implements ProcessAnnotationManager {
     Statement st = null;
     String query = "";
     String datenow = now();
+    PreparedStatement stmt = null;
+    
     try {
       db = DatabaseInterface.getConnection(userInfo);
       st = db.createStatement();      
       query = "insert into process_label (labelid, flowid, pid, subpid) values (?,?,?,?)";         
        
       for(int i = 0; i < label.length; i++){
-    	  PreparedStatement stmt = db.prepareStatement(query);
+    	  stmt = db.prepareStatement(query);
     	  stmt.setString(1, label[i]); stmt.setString(2, ""+flowid); stmt.setString(3, ""+pid);  stmt.setString(4, ""+subpid);
     	  stmt.execute();
     	  stmt.close();    	  
@@ -67,7 +69,7 @@ public class ProcessAnnotationManagerBean implements ProcessAnnotationManager {
         query = "insert into process_label_history (labelid, flowid, pid, subpid, userid, date) values (?,?,?,?,?,?)";         
         
         for(int i = 0; i < label.length; i++){
-        	PreparedStatement stmt = db.prepareStatement(query);
+        	stmt = db.prepareStatement(query);
         	stmt.setString(1, label[i]); stmt.setString(2, ""+flowid); stmt.setString(3, ""+pid);  stmt.setString(4, ""+subpid); stmt.setString(5, userInfo.getUtilizador()); stmt.setString(6, datenow);
         	stmt.execute();
       	  	stmt.close();            
@@ -78,7 +80,7 @@ public class ProcessAnnotationManagerBean implements ProcessAnnotationManager {
     } catch (SQLException sqle) {
       Logger.error(userInfo.getUtilizador(), this, "addLabel","caught sql exception: " + sqle.getMessage(), sqle);
     } finally {
-      DatabaseInterface.closeResources(db, st);
+      //DatabaseInterface.closeResources(db, st);
     }
   }
 
@@ -86,13 +88,15 @@ public class ProcessAnnotationManagerBean implements ProcessAnnotationManager {
     Connection db = null;
     Statement st = null;
     String query = "";
+    PreparedStatement stmt = null;
+    
     try {
       db = DatabaseInterface.getConnection(userInfo);
       st = db.createStatement();
       query = "delete from process_label where labelid=? and flowid=? and pid=? and subpid=?";
 
       for(int i = 0; i < label.length; i++){
-    	  PreparedStatement stmt = db.prepareStatement(query);
+    	  stmt = db.prepareStatement(query);
     	  stmt.setString(1, label[i]); stmt.setString(2, ""+flowid); stmt.setString(3, ""+pid); stmt.setString(4, ""+subpid);
           stmt.execute();
           stmt.close();
@@ -118,7 +122,9 @@ public class ProcessAnnotationManagerBean implements ProcessAnnotationManager {
     } catch (SQLException sqle) {
       Logger.error(userInfo.getUtilizador(), this, "removeLabel","caught sql exception: " + sqle.getMessage(), sqle);
     } finally {
-      DatabaseInterface.closeResources(db, st);
+      // DatabaseInterface.closeResources(db, st);
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (st != null) st.close(); } catch (SQLException e) {}
     }
   }
 
@@ -149,8 +155,10 @@ public class ProcessAnnotationManagerBean implements ProcessAnnotationManager {
     } catch (Exception e) {
       Logger.error(userid, this, "getProcessLabelList","caught exception: " + e.getMessage(), e);
     } finally {
-      DatabaseInterface.closeResources(db, st, rs);
-    }
+      // DatabaseInterface.closeResources(db, st, rs);
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (st != null) st.close(); } catch (SQLException e) {}
+    	try {if (rs != null) rs.close(); } catch (SQLException e) {}    }
     return retObj;
   }
 
@@ -180,7 +188,11 @@ public class ProcessAnnotationManagerBean implements ProcessAnnotationManager {
     } catch (Exception e) {
       Logger.error(userid, this, "getLabelList","caught exception: " + e.getMessage(), e);
     } finally {
-      DatabaseInterface.closeResources(db, st, rs);
+      //DatabaseInterface.closeResources(db, st, rs);
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (st != null) st.close(); } catch (SQLException e) {}
+    	try {if (rs != null) rs.close(); } catch (SQLException e) {} 
+
     }
     return retObj;
   }
@@ -207,6 +219,7 @@ public class ProcessAnnotationManagerBean implements ProcessAnnotationManager {
     String query = "";
     String datenow = now();
     int rows = 0;
+    PreparedStatement stmt = null;
 
     try {
       deadline = convertDeadlineFormatBD(deadline);
@@ -218,7 +231,7 @@ public class ProcessAnnotationManagerBean implements ProcessAnnotationManager {
       db = DatabaseInterface.getConnection(userInfo);
       st = db.createStatement();
       query = "Update deadline set deadline=?, userid=? where flowid=? and pid=? and subpid=?";
-      PreparedStatement stmt = db.prepareStatement(query); stmt.setString(1, deadline); stmt.setString(2, userInfo.getUtilizador()); stmt.setString(3, ""+flowid); stmt.setString(4, ""+pid); stmt.setString(5, ""+subpid); 
+      stmt = db.prepareStatement(query); stmt.setString(1, deadline); stmt.setString(2, userInfo.getUtilizador()); stmt.setString(3, ""+flowid); stmt.setString(4, ""+pid); stmt.setString(5, ""+subpid); 
       rows = stmt.executeUpdate(); stmt.close();
       if(rows <= 0){
     	  query = "insert into deadline (deadline, userid, flowid, pid, subpid) values (?,?,?,?,?)";         
@@ -236,7 +249,11 @@ public class ProcessAnnotationManagerBean implements ProcessAnnotationManager {
     } catch (SQLException sqle) {
       Logger.error(userInfo.getUtilizador(), this, "addDeadline","caught sql exception: " + sqle.getMessage(), sqle);
     } finally {
-      DatabaseInterface.closeResources(db, st);
+      //DatabaseInterface.closeResources(db, st);
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (st != null) st.close(); } catch (SQLException e) {}
+    	try {if (stmt != null) stmt.close(); } catch (SQLException e) {}
+
     }
   }
 
@@ -274,7 +291,9 @@ public class ProcessAnnotationManagerBean implements ProcessAnnotationManager {
     } catch (SQLException sqle) {
       Logger.error(userInfo.getUtilizador(), this, "addDeadline","caught sql exception: " + sqle.getMessage(), sqle);
     } finally {
-      DatabaseInterface.closeResources(db, st);
+      //DatabaseInterface.closeResources(db, st);
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (st != null) st.close(); } catch (SQLException e) {}
     }
   }
 
@@ -297,7 +316,10 @@ public class ProcessAnnotationManagerBean implements ProcessAnnotationManager {
     } catch (Exception e) {
       Logger.error(userid, this, "getProcessDeadline","caught exception: " + e.getMessage(), e);
     } finally {
-      DatabaseInterface.closeResources(db, st, rs);
+      //DatabaseInterface.closeResources(db, st, rs);
+	  	try {if (db != null) db.close(); } catch (SQLException e) {}
+	  	try {if (st != null) st.close(); } catch (SQLException e) {}
+	  	try {if (rs != null) rs.close(); } catch (SQLException e) {}
     }
     return retObj;
   }
@@ -313,11 +335,12 @@ public class ProcessAnnotationManagerBean implements ProcessAnnotationManager {
     String query = "";
     String datenow = now();    
     int rows = 0;
+    PreparedStatement stmt = null;
 
     try {
       db = DatabaseInterface.getConnection(userInfo);
       query = "Update comment set date=?, userid=?, comment=? where flowid=? and pid=? and subpid=?";
-      PreparedStatement stmt = db.prepareStatement(query); 
+      stmt = db.prepareStatement(query); 
       stmt.setString(1, datenow); stmt.setString(2, userInfo.getUtilizador()); stmt.setString(3, comment); stmt.setString(4, ""+flowid); stmt.setString(5, ""+pid); stmt.setString(6, ""+subpid);
       rows = stmt.executeUpdate(); stmt.close();
 
@@ -339,7 +362,11 @@ public class ProcessAnnotationManagerBean implements ProcessAnnotationManager {
     } catch (SQLException sqle) {
       Logger.error(userInfo.getUtilizador(), this, "addComment","caught sql exception: " + sqle.getMessage(), sqle);
     } finally {
-      DatabaseInterface.closeResources(db, st);
+      // DatabaseInterface.closeResources(db, st);
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (st != null) st.close(); } catch (SQLException e) {}
+    	try {if (stmt != null) stmt.close(); } catch (SQLException e) {}
+
     }
   }
 
@@ -356,7 +383,9 @@ public class ProcessAnnotationManagerBean implements ProcessAnnotationManager {
     } catch (SQLException sqle) {
       Logger.error(userInfo.getUtilizador(), this, "removeComment","caught sql exception: " + sqle.getMessage(), sqle);
     } finally {
-      DatabaseInterface.closeResources(db, st);
+      //DatabaseInterface.closeResources(db, st);
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (st != null) st.close(); } catch (SQLException e) {}    	
     }
   }
 
@@ -373,7 +402,9 @@ public class ProcessAnnotationManagerBean implements ProcessAnnotationManager {
     } catch (SQLException sqle) {
       Logger.error(userInfo.getUtilizador(), this, "removeComment","caught sql exception: " + sqle.getMessage(), sqle);
     } finally {
-      DatabaseInterface.closeResources(db, st);
+      // DatabaseInterface.closeResources(db, st);
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (st != null) st.close(); } catch (SQLException e) {}
     }
   }
 
@@ -400,7 +431,10 @@ public class ProcessAnnotationManagerBean implements ProcessAnnotationManager {
     } catch (Exception e) {
       Logger.error(userid, this, "getProcessComment","caught exception: " + e.getMessage(), e);
     } finally {
-      DatabaseInterface.closeResources(db, st, rs);
+      // DatabaseInterface.closeResources(db, st, rs);
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (st != null) st.close(); } catch (SQLException e) {}
+    	try {if (rs != null) rs.close(); } catch (SQLException e) {}
     }
     return retObj;
   }
@@ -428,7 +462,10 @@ public class ProcessAnnotationManagerBean implements ProcessAnnotationManager {
     } catch (Exception e) {
       Logger.error(userid, this, "getProcessComment","caught exception: " + e.getMessage(), e);
     } finally {
-      DatabaseInterface.closeResources(db, st, rs);
+      // DatabaseInterface.closeResources(db, st, rs);
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (st != null) st.close(); } catch (SQLException e) {}
+    	try {if (rs != null) rs.close(); } catch (SQLException e) {}
     }
     return retObj;
   }
@@ -467,7 +504,10 @@ public class ProcessAnnotationManagerBean implements ProcessAnnotationManager {
     } catch (Exception e) {
       Logger.error(editor, this, "getLabelListToIflowEditor","caught exception: " + e.getMessage(), e);
     } finally {
-      DatabaseInterface.closeResources(db, st, rs);
+      // DatabaseInterface.closeResources(db, st, rs);
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (st != null) st.close(); } catch (SQLException e) {}
+    	try {if (rs != null) rs.close(); } catch (SQLException e) {}
     }
     return retObj;
   }

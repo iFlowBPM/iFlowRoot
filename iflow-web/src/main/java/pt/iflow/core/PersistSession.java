@@ -101,7 +101,10 @@ public class PersistSession {
 			Logger.error(userInfo.getUtilizador(), "PersistSession", "setSession",
 					"caught sql exception: " + sqle.getMessage(), sqle);
 		} finally {
-			DatabaseInterface.closeResources(db, pst);
+			// DatabaseInterface.closeResources(db, pst);
+			try { if(db != null) db.close();} catch (Exception e) {}
+      	  try { if(pst != null) pst.close();} catch (Exception e) {}
+      	 
 		}
 	}
 

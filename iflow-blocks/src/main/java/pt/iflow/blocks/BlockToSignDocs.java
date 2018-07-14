@@ -86,12 +86,12 @@ public class BlockToSignDocs extends Block {
           valueslist = procData.getList(sValues);
       }
       
-      if (null == sDocs && null == doclist && null == valueslist && (StringUtils.isEmpty(sDocs) || StringUtils.isEmpty(sValues) || doclist.size() != valueslist.size() && null == sValues)) {
-        Logger.warning(login,this,"after", procData.getSignature() + "empty attribute!!");
+    //  if (null == sDocs && null == doclist && null == valueslist && (StringUtils.isEmpty(sDocs) || StringUtils.isEmpty(sValues) || doclist.size() != valueslist.size() && null == sValues)) {
+      //  Logger.warning(login,this,"after", procData.getSignature() + "empty attribute!!");
         
-        bEvalResult = false;
-      }
-      else {
+        //bEvalResult = false;
+      //}
+      //else {
         try {
           
           Documents docBean = BeanFactory.getDocumentsBean();
@@ -103,7 +103,7 @@ public class BlockToSignDocs extends Block {
           bEvalResult = false;
           Logger.error(login,this,"after", procData.getSignature() + "caught exception, mark documents to sign", ei);
         }
-      }
+      //}
       
       if (bEvalResult) {
         outPort = portTrue;

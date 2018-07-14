@@ -111,7 +111,11 @@ public class PassImageBean implements PassImage {
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		} finally {
-			DatabaseInterface.closeResources(pst, rs, db);
+			// DatabaseInterface.closeResources(pst, rs, db);
+	      	try {if (db != null) db.close(); } catch (SQLException e) {}
+	      	try {if (pst != null) pst.close(); } catch (SQLException e) {}
+	      	try {if (rs != null) rs.close(); } catch (SQLException e) {}
+
 		}
 	}
 
@@ -148,7 +152,10 @@ public class PassImageBean implements PassImage {
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		} finally {
-			DatabaseInterface.closeResources(pst, rs, db);
+			//DatabaseInterface.closeResources(pst, rs, db);
+	      	try {if (db != null) db.close(); } catch (SQLException e) {}
+	      	try {if (pst != null) pst.close(); } catch (SQLException e) {}
+	      	try {if (rs != null) rs.close(); } catch (SQLException e) {}
 		}
 	}
 
@@ -257,7 +264,10 @@ public class PassImageBean implements PassImage {
 						Logger.warning(userInfo.getUtilizador(), this, "Version Control",
 								"Erro no Update da imagem! ID:" + passid, e);
 					} finally {
-						pt.iflow.api.db.DatabaseInterface.closeResources(pst2, rs2, db2);
+						//pt.iflow.api.db.DatabaseInterface.closeResources(pst2, rs2, db2);
+				      	try {if (db2 != null) db2.close(); } catch (SQLException e) {}
+				      	try {if (pst2 != null) pst2.close(); } catch (SQLException e) {}
+				      	try {if (rs2 != null) rs2.close(); } catch (SQLException e) {}
 					}
 
 					Logger.warning(userInfo.getUtilizador(), this, "Version Control", "Era desta versão! ID:" + passid);
@@ -271,7 +281,10 @@ public class PassImageBean implements PassImage {
 		} catch (java.sql.SQLException e) {
 			Logger.warning(userInfo.getUtilizador(), this, "Version Control", "Erro a ler da BD!", e);
 		} finally {
-			pt.iflow.api.db.DatabaseInterface.closeResources(pst, rs, db);
+			// pt.iflow.api.db.DatabaseInterface.closeResources(pst, rs, db);
+	      	try {if (db != null) db.close(); } catch (SQLException e) {}
+	      	try {if (pst != null) pst.close(); } catch (SQLException e) {}
+	      	try {if (rs != null) rs.close(); } catch (SQLException e) {}
 		}
 	}
 

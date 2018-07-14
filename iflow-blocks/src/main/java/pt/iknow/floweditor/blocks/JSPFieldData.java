@@ -2446,7 +2446,7 @@ public class JSPFieldData {
 
 			sGridbag.setConstraints(jLabel, sC);
 			try {
-				if (null != jValue)
+				if (null != sMainPanel)
 					sMainPanel.add(jLabel);
 			} catch (Exception e) {
 				logger.error("jValue == null - 2618" + e);
@@ -2456,10 +2456,11 @@ public class JSPFieldData {
 			sizer = new JPanel();
 			sizer.setSize(5, 1);
 			sGridbag.setConstraints(sizer, sC);
-			if (null != sizer)
+			if (null != sMainPanel)
 				sMainPanel.add(sizer);
 			sC.gridwidth = GridBagConstraints.REMAINDER;
 			sGridbag.setConstraints(jValue, sC);
+			if (null != sMainPanel)
 			sMainPanel.add(jValue);
 			sC.gridwidth = 1;
 		} // for single props
@@ -2494,10 +2495,10 @@ public class JSPFieldData {
 					}
 					altmp.add(jctmp);
 					try {
-						if (null != jValue)
+						if (null != jLabel){
 							jLabel = hmtmp.get(jctmp);
 						jLabel.setEnabled(jctmp.isEnabled());
-						altmp2.add(jLabel);
+						altmp2.add(jLabel);}
 					} catch (Exception e) {
 						logger.error("jValue == null - 2660" + e);
 					}
@@ -2848,6 +2849,7 @@ public class JSPFieldData {
 					mC.gridwidth = GridBagConstraints.REMAINDER;
 				}
 				mGridbag.setConstraints(sizer, mC);
+				if(mMainPanel != null)
 				mMainPanel.add(sizer);
 				mC.gridwidth = 1;
 
@@ -3082,6 +3084,7 @@ public class JSPFieldData {
 					if (null != fdexc)
 						fde = fdexc;
 				} else {
+					if(null != fde)
 					fde.append(fdexc);
 				}
 				bError = true;
@@ -3173,10 +3176,10 @@ public class JSPFieldData {
 				} catch (FieldDataException fdexc) {
 					if (!bError) {
 						// first time
-						if (null != fdexc)
+						if (null != fde)
 							fde = fdexc;
 					} else {
-						if (null != fdexc)
+						if (null != fde)
 							fde.append(fdexc);
 					}
 					bError = true;

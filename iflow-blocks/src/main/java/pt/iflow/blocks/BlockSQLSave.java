@@ -169,7 +169,10 @@ public class BlockSQLSave extends BlockSQL {
               Logger.error(login, this, "after", "caught exception: " + e.getMessage(), e);
               outPort = portError;
             } finally {
-              DatabaseInterface.closeResources(db, pst, rs);
+              // DatabaseInterface.closeResources(db, pst, rs);
+            	try { if(null != db) db.close();} catch (Exception e2) {}
+    			try { if(null != pst) pst.close();} catch (Exception e2) {}
+    			try { if(null != rs) rs.close();} catch (Exception e2) {}
             }
           }
           else {
@@ -281,7 +284,11 @@ public class BlockSQLSave extends BlockSQL {
           Logger.error(login, this, "after", "caught exception: " + e.getMessage(), e);
           outPort = portError;
         } finally {
-          DatabaseInterface.closeResources(db, pst, rs);
+          //DatabaseInterface.closeResources(db, pst, rs);
+        	
+        	try { if(null != db) db.close();} catch (Exception e2) {}
+			try { if(null != pst) pst.close();} catch (Exception e2) {}
+			try { if(null != rs) rs.close();} catch (Exception e2) {}
         }
       }
     }

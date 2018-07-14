@@ -151,6 +151,31 @@
 			<artifactId>commons-fileupload</artifactId>
 			<version>1.2</version>
 		</dependency>
+		
+		
+		
+		<!-- jcosta:2018-07-13 -->
+		<dependency>
+			<groupId>tmnSmsExpress</groupId>
+			<artifactId>tmnSmsExpress</artifactId>
+			<version>20120522</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>axis</groupId>
+			<artifactId>axis-wsdl4j</artifactId>
+			<version>1.5.1</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>axis</groupId>
+			<artifactId>axis</artifactId>
+			<version>1.4</version>
+			<scope>provided</scope>
+		</dependency>		
+		
 	</dependencies>
 
 

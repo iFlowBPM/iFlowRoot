@@ -768,7 +768,11 @@ public class FlowHolderBean implements FlowHolder {
 			e.printStackTrace();
 			result.success = false;
 		} finally {
-			DatabaseInterface.closeResources(db, pst, rs);
+			//DatabaseInterface.closeResources(db, pst, rs);
+	    	try {if (db != null) db.close(); } catch (SQLException e) {}
+	    	try {if (pst != null) pst.close(); } catch (SQLException e) {}
+	    	try {if (rs != null) rs.close(); } catch (SQLException e) {}    	
+
 		}
 
 		result.flowid = flowid;
@@ -993,7 +997,11 @@ public class FlowHolderBean implements FlowHolder {
 			e.printStackTrace();
 			result.success = false;
 		} finally {
-			DatabaseInterface.closeResources(db, pst, rs);
+			//DatabaseInterface.closeResources(db, pst, rs);
+	    	try {if (db != null) db.close(); } catch (SQLException e) {}
+	    	try {if (pst != null) pst.close(); } catch (SQLException e) {}
+	    	try {if (rs != null) rs.close(); } catch (SQLException e) {}    	
+
 		}
 
 		result.flowid = flowid;
@@ -1244,13 +1252,14 @@ public class FlowHolderBean implements FlowHolder {
 		Connection db = null;
 		PreparedStatement pst = null;
 		Flow flowBean = BeanFactory.getFlowBean();
+		ResultSet rst = null;
 
 		try {
 			db = Utils.getDataSource().getConnection();
 			pst = db.prepareStatement(
 					"SELECT created FROM subflow_block_mapping s where flowname=? group by created order by created desc");
 			pst.setString(1, subFlowBlockMappings.get(0).getMainFlowName());
-			ResultSet rst = pst.executeQuery();
+			rst = pst.executeQuery();
 
 			rst.next();
 			Timestamp lastMapping = rst.getTimestamp(1);
@@ -1275,7 +1284,11 @@ public class FlowHolderBean implements FlowHolder {
 			Logger.error(userInfo.getUtilizador(), this, "resyncDeployedFlowWithSubFlow", "exception caught", e);
 			e.printStackTrace();
 		} finally {
-			DatabaseInterface.closeResources(db, pst);
+			//DatabaseInterface.closeResources(db, pst);
+	    	try {if (db != null) db.close(); } catch (SQLException e) {}
+	    	try {if (pst != null) pst.close(); } catch (SQLException e) {}
+	    	try {if (rst != null) rst.close(); } catch (SQLException e) {}    	
+
 		}
 	}
 
@@ -1471,10 +1484,10 @@ public class FlowHolderBean implements FlowHolder {
 			retObj = "O fluxo n&atilde;o foi encontrado: \"" + e.getMessage() + "\"";
 			Logger.error(sLogin, this, "deployFlow", retObj);
 		} finally {
-			DatabaseInterface.closeResources(db, pst, rs);
-			db = null;
-			pst = null;
-			rs = null;
+			//DatabaseInterface.closeResources(db, pst, rs);
+	    	try {if (db != null) db.close(); } catch (SQLException e) {}
+	    	try {if (pst != null) pst.close(); } catch (SQLException e) {}
+	    	try {if (rs != null) rs.close(); } catch (SQLException e) {}    	
 		}
 
 		if (null != retObj)
@@ -1658,7 +1671,11 @@ public class FlowHolderBean implements FlowHolder {
 			Logger.error(userid, this, "deleteFlow", "exception caught: " + e.getMessage());
 			retObj = false;
 		} finally {
-			DatabaseInterface.closeResources(db, pst, rs);
+			//DatabaseInterface.closeResources(db, pst, rs);
+	    	try {if (db != null) db.close(); } catch (SQLException e) {}
+	    	try {if (pst != null) pst.close(); } catch (SQLException e) {}
+	    	try {if (rs != null) rs.close(); } catch (SQLException e) {}    	
+
 		}
 
 		return retObj;
@@ -2304,7 +2321,11 @@ public class FlowHolderBean implements FlowHolder {
 			Logger.error(userInfo.getUtilizador(), this, "reindexFlow", "Error reindexing process data.", e);
 		} finally {
 			// free db connections
-			DatabaseInterface.closeResources(db, st, rs);
+			// DatabaseInterface.closeResources(db, st, rs);
+	    	try {if (db != null) db.close(); } catch (SQLException e) {}
+	    	try {if (st != null) st.close(); } catch (SQLException e) {}
+	    	try {if (rs != null) rs.close(); } catch (SQLException e) {}    	
+
 		}
 	}
 
@@ -2360,7 +2381,10 @@ public class FlowHolderBean implements FlowHolder {
 			return false;
 		} finally {
 			// free db connections
-			DatabaseInterface.closeResources(db, pst);
+			//DatabaseInterface.closeResources(db, pst);
+	    	try {if (db != null) db.close(); } catch (SQLException e) {}
+	    	try {if (pst != null) pst.close(); } catch (SQLException e) {}
+
 		}
 	}
 
@@ -2550,7 +2574,10 @@ public class FlowHolderBean implements FlowHolder {
 				Logger.error(null, this, "getFlowOrganizationid", "Error retrieving organization associated with flow",
 						e);
 			} finally {
-				DatabaseInterface.closeResources(db, st, rs);
+				//DatabaseInterface.closeResources(db, st, rs);
+		    	try {if (db != null) db.close(); } catch (SQLException e) {}
+		    	try {if (st != null) st.close(); } catch (SQLException e) {}
+		    	try {if (rs != null) rs.close(); } catch (SQLException e) {}    	
 			}
 		}
 

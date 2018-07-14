@@ -110,12 +110,15 @@ public class FlowSettingsBean implements FlowSettings {
       } catch (Exception e) {
     	  Logger.error(userInfo.getUtilizador(), this,
   	            "Erro saveFlowSettings", "FlowSettingsBean.java:109");
-    	  }
+      }
     
       finally{
-    	 if(null != rs)
-      rs.close();
+	    	try {if (db != null) db.close(); } catch (SQLException e) {}
+	    	try {if (st != null) st.close(); } catch (SQLException e) {}
+	    	try {if (cst != null) cst.close(); } catch (SQLException e) {}
+	    	try {if (rs != null) rs.close(); } catch (SQLException e) {}    	
       }
+      
       for (int set = 0; set < afsaSettings.length; set++) {
 
         fs = afsaSettings[set];

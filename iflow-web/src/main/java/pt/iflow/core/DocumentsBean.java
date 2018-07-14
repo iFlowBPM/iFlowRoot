@@ -185,7 +185,10 @@ public class DocumentsBean implements Documents {
         ((DocumentData) doc).setUpdated(null);
       }
     } finally {
-      DatabaseInterface.closeResources(db, pst, rs);
+      // DatabaseInterface.closeResources(db, pst, rs);
+    	  try {if(null != rs) rs.close();} catch (Exception e2) {}
+    	  try {if(null != pst) pst.close();} catch (Exception e2) {}
+    	  try {if(null != db) db.close();} catch (Exception e2) {}
     }
     return doc;
   }
@@ -943,9 +946,6 @@ public class DocumentsBean implements Documents {
       if (!docDataInDB)
         (new File(getDocumentFilePath(adoc.getDocId(), adoc.getFileName()))).delete();
 
-      st.close();
-      st = null;
-
       DatabaseInterface.commitConnection(db);
       ret = true;
     } catch (Exception e) {
@@ -959,7 +959,10 @@ public class DocumentsBean implements Documents {
             + e2.getMessage(), e2);
       }
     } finally {
-      DatabaseInterface.closeResources(db, st);
+      // DatabaseInterface.closeResources(db, st);
+    	
+    	  try {if(null != st) st.close();} catch (Exception e2) {}
+    	  try {if(null != db) db.close();} catch (Exception e2) {}
     }
 
     return ret;
@@ -1184,8 +1187,9 @@ public class DocumentsBean implements Documents {
           result = filePath;
 	  } finally {
           //DatabaseInterface.closeResources(db, pst);
-		  if (db != null) db.close();
-		  if (pst != null) pst.close();
+    	  try {if(null != pst) pst.close();} catch (Exception e2) {}
+    	  try {if(null != db) db.close();} catch (Exception e2) {}
+		  
 	  }
 	  return result;
   }

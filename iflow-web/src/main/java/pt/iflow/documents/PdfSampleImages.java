@@ -79,6 +79,7 @@ public class PdfSampleImages {
     PDFPage page = null;
    
     try {
+    	if(pdffile != null)
     	 page = pdffile.getPage(pag);
     	 if(null != page)
     	  rect = new Rectangle(0,0,(int)page.getBBox().getWidth(),(int)page.getBBox().getHeight());
@@ -444,7 +445,12 @@ public class PdfSampleImages {
       pst.close();
       pst = null;
     } catch (Exception e) { log.error("Erro a ler caminho do ficheiro da BD", e);
-    } finally {  DatabaseInterface.closeResources(pst, rs, db);}
+    } finally {  
+    	// DatabaseInterface.closeResources(pst, rs, db);
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (pst != null) pst.close(); } catch (SQLException e) {}
+    	try {if (rs != null) rs.close(); } catch (SQLException e) {}    	
+    }
     return filepath;
   }
 
@@ -480,7 +486,12 @@ public class PdfSampleImages {
     } catch (Exception e) {
       log.error("Erro a adquirir ficheiro da BD", e);
       dbDoc = null;
-    }  finally {  DatabaseInterface.closeResources(pst, rs, db);}
+    }  finally {  
+    	// DatabaseInterface.closeResources(pst, rs, db);
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (pst != null) pst.close(); } catch (SQLException e) {}
+    	try {if (rs != null) rs.close(); } catch (SQLException e) {}
+    }
     return dbDoc;
   }
 

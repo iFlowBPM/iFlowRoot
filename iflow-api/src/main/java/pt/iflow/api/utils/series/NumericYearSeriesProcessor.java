@@ -170,17 +170,20 @@ public class NumericYearSeriesProcessor extends NumericSeriesProcessor {
     }
     finally {
       if (rollbackNeeded) {
-        if (db != null) { 
+      
           try {
-            db.rollback();
+        	  if (db != null) {  db.rollback();}
           }
           catch (Exception ee) {
             throw new SeriesException(ee);
           }
         }
-      }
-
-      DatabaseInterface.closeResources(db, pstUpd, pstGet, rs);
+      
+      	// DatabaseInterface.closeResources(db, pstUpd, pstGet, rs);
+      try{ if(db != null) db.close(); } catch(Exception e){}
+      try{ if(pstUpd != null) pstUpd.close(); } catch(Exception e){}
+      try{ if(pstGet != null) pstGet.close(); } catch(Exception e){}
+      try{ if(rs != null) rs.close(); } catch(Exception e){}
     }
 
     return getCurrentValue();
