@@ -73,7 +73,7 @@
 		<dependency>
 			<groupId>pt.iknow</groupId>
 			<artifactId>iutils</artifactId>
-			<version>2.0.6</version><!--$NO-MVN-MAN-VER$ -->
+			<version>2.0.7-PARIPERSI</version><!--$NO-MVN-MAN-VER$ -->
 		</dependency>
 		<dependency>
 			<groupId>pt.iknow</groupId>

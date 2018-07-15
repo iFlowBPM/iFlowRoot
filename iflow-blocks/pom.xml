@@ -119,7 +119,9 @@
 		<dependency>
 			<groupId>org.swinglabs</groupId>
 			<artifactId>swingx</artifactId>
+			<scope>provided</scope>
 		</dependency>
+	
 		
 		<!-- TESTS -->
 		<dependency>

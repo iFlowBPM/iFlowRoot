@@ -22,6 +22,7 @@ import pt.iflow.api.processdata.ProcessData;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.UserInfoInterface;
+import pt.iflow.applet.IOUtils;
 import pt.iflow.chart.resources.RepositoryLoader;
 import pt.iflow.chart.style.RepositoryStyleLoader;
 import pt.iknow.chart.AbstractChart;
@@ -270,7 +271,11 @@ public class ChartServlet extends HttpServlet {
     response.setDateHeader("Last-Modified", System.currentTimeMillis());
     response.setContentType("image/png");
     response.setContentLength(bout.size());
-    bout.writeTo(response.getOutputStream());
+    try {
+    	bout.writeTo(response.getOutputStream());
+    }  finally {
+  	  if( bout != null) IOUtils.safeClose(bout);
+    }
     
   }
 

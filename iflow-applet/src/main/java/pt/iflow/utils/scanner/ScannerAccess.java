@@ -55,7 +55,7 @@ public class ScannerAccess implements ScannerListener, FileAppletService {
   }
 
   private void stateChange(ScannerIOMetadata metadata) {
-    System.err.println(metadata.getStateStr());
+    //System.err.println(metadata.getStateStr());
 
     // eh mesmo assim??
 
