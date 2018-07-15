@@ -1,6 +1,5 @@
 package pt.iflow.api.utils;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +12,7 @@ import java.util.Date;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringUtils;
+import org.owasp.esapi.ESAPI;
 
 import pt.iflow.api.blocks.Block;
 import pt.iflow.api.db.DBQueryManager;
@@ -20,8 +20,6 @@ import pt.iflow.api.db.DatabaseInterface;
 import pt.iflow.api.processdata.ProcessData;
 import pt.iflow.api.transition.FlowStateLogTO;
 import pt.iflow.api.transition.LogTO;
-
-import org.owasp.esapi.ESAPI;
 
 public class Logger {
 
@@ -496,7 +494,11 @@ public class Logger {
 				} catch (Exception e) {
 				}
 			} finally {
-				DatabaseInterface.closeResources(db, pst, st, rs);
+				//DatabaseInterface.closeResources(db, pst, st, rs);
+				try { if (null != rs) rs.close();} catch (Exception e) {}
+				try { if (null != pst) pst.close();} catch (Exception e) {}
+				try { if (null != st) st.close();} catch (Exception e) {}
+				try { if (null != db) db.close();} catch (Exception e) {}
 			}
 		}
 	}

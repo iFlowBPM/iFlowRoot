@@ -16,6 +16,8 @@ import javax.mail.Part;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 
+import pt.iflow.api.utils.Utils;
+
 public abstract class AbstractMessageParser implements MessageParser {
 
 
@@ -44,9 +46,7 @@ public abstract class AbstractMessageParser implements MessageParser {
       throw new MessageParseException(e);
     }
     finally {
-    	try {
-    	if( inputStream != null ) inputStream.close();
-			} catch (IOException e) {}
+    	if( inputStream != null) Utils.safeClose(inputStream);
 	}
     return files;
   }

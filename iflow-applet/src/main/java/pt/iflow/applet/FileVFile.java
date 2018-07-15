@@ -22,11 +22,16 @@ public class FileVFile implements IVFile {
   }
   
   public InputStream getInputStream() {
+	FileInputStream fis = null;
     try {
-      return new FileInputStream(f);
+      fis = new FileInputStream(f);
+      return fis;
     } catch(FileNotFoundException e) {
       log.error("Could not open file for input", e); //$NON-NLS-1$
-    }
+    } finally {
+    	if( fis != null) IOUtils.safeClose(fis);
+	}
+
     return null;
   }
 
@@ -35,11 +40,16 @@ public class FileVFile implements IVFile {
   }
 
   public OutputStream getOutputStream() {
+	FileOutputStream fos = null; 
     try {
-      return new FileOutputStream(f);
+      fos = new FileOutputStream(f);
+      return fos;
     } catch(FileNotFoundException e) {
       log.error("Could not open file for output", e); //$NON-NLS-1$
-    }
+	} finally {
+    	if( fos != null) IOUtils.safeClose(fos);
+	}
+
     return null;
   }
 

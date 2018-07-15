@@ -46,6 +46,7 @@ public class UtilityAppletWebStart {
 			conn.setRequestProperty("Cookie", wc.getCookie());
 			conn.setRequestProperty("Cookie", "APPLET" + wc.getCookie());
 			conn.setReadTimeout(0);
+			InputStream is = null;
 			//execute if possible
 			try{
 				conn.connect();
@@ -61,7 +62,7 @@ public class UtilityAppletWebStart {
 					 ByteArrayOutputStream out = new ByteArrayOutputStream();
 				     byte [] b = new byte[8192];
 				     int r;
-				     InputStream is = conn.getInputStream();
+				     is = conn.getInputStream();
 				     while((r = is.read(b))>=0)
 				       out.write(b, 0, r);
 					
@@ -88,6 +89,7 @@ public class UtilityAppletWebStart {
 				e.printStackTrace();				
 			} finally {
 				conn.disconnect();
+				if( is != null) IOUtils.safeClose(is);
 			}
 			//sleep a while and repeat
 			Thread.sleep(750);

@@ -2495,10 +2495,12 @@ public class JSPFieldData {
 					}
 					altmp.add(jctmp);
 					try {
-						if (null != jLabel){
+						if (hmtmp != null){
 							jLabel = hmtmp.get(jctmp);
-						jLabel.setEnabled(jctmp.isEnabled());
-						altmp2.add(jLabel);}
+							if (jLabel != null)
+								jLabel.setEnabled(jctmp.isEnabled());
+							altmp2.add(jLabel);
+						}
 					} catch (Exception e) {
 						logger.error("jValue == null - 2660" + e);
 					}

@@ -243,7 +243,7 @@ public class FixedTable implements FieldInterface {
             sAlign = ce.sAlign;
 
           String sBgColor = "";
-          if (StringUtils.isNotEmpty(ce.sBgColor))
+          if (ce != null && StringUtils.isNotEmpty(ce.sBgColor))
             sBgColor = "<bgcolor>" + ce.sBgColor + "</bgcolor>";
 
           sb.append("<col>");

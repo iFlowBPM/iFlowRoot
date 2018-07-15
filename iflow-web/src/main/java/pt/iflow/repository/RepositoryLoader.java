@@ -19,6 +19,7 @@ import java.util.Properties;
 import org.apache.commons.lang.StringUtils;
 
 import pt.iflow.api.repository.RepositoryAccess;
+import pt.iflow.api.utils.Utils;
 import pt.iknow.utils.Convert;
 
 /**
@@ -101,22 +102,29 @@ public class RepositoryLoader {
       System.out.println("'.");
     }
     
-    FileInputStream fis = new FileInputStream(filePath);
-    byte[] buffer = new byte[8096];
-    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-    int read = -1;
-    while ((read = fis.read(buffer)) != -1) {
-      bos.write(buffer, 0, read);
-    }
-    bos.close();
-    byte[] data = bos.toByteArray();
+    FileInputStream fis = null;
     
-    
-    // TODO obter a organizacao
-    if(isZip)
-      this._access.setZipFile(repPath, data);
-    else
-      this._access.setFile(repPath, data);
+    try {
+    	fis = new FileInputStream(filePath);
+
+    	byte[] buffer = new byte[8096];
+    	ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    	int read = -1;
+    	while ((read = fis.read(buffer)) != -1) {
+    		bos.write(buffer, 0, read);
+    	}
+    	bos.close();
+    	byte[] data = bos.toByteArray();
+
+
+    	// TODO obter a organizacao
+    	if(isZip)
+    		this._access.setZipFile(repPath, data);
+    	else
+    		this._access.setFile(repPath, data);
+    } finally {
+    	if( fis != null) Utils.safeClose(fis);
+    }    
   }
   
   /**

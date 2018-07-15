@@ -89,7 +89,9 @@ public class PdfSampleImages {
     
     //	alturaPag  = rect.height;
     //	larguraPag = rect.width;
-    Image img = page.getImage( larguraPag/2, alturaPag/2, rect, null, true, true);	
+    Image img = null;
+    if (page != null)
+    	img = page.getImage( larguraPag/2, alturaPag/2, rect, null, true, true);	
     BufferedImage bImg = toBufferedImage( img );
     return bImg;         
   }
@@ -140,8 +142,9 @@ public class PdfSampleImages {
       x = x - (int)(larguraPag/40);              //afinar posição eliminado erro sistematico (-15)
     }
 
+     FileOutputStream fileOutput = null;
     try {
-      FileOutputStream fileOutput = new FileOutputStream(file2);
+      fileOutput = new FileOutputStream(file2);
       PdfReader reader = new PdfReader(getDocument(docid));
       PdfStamper stp = PdfStamper.createSignature(reader, fileOutput, '\0', null, true);  
       PdfSignatureAppearance sap = stp.getSignatureAppearance();  
@@ -185,28 +188,39 @@ public class PdfSampleImages {
       sap.close(dic2);
 
     } catch (Exception e) {log.error("Erro na assinatura do pdf", e);} 
+    finally {
+ 		if( fileOutput != null) Utils.safeClose(fileOutput);
+ 	}    
     
     String tempfile=  "";
     
     if(rubricar) {                                                         //rubricar, gravar na BD e apagar temp             
       String temprub = rubricarTodas(tempfile, userInfo);
-
+      InputStream input = null;
       try{
-        InputStream input = new FileInputStream(temprub);
+        input = new FileInputStream(temprub);
         byte[] buf = IOUtils.toByteArray(input); 
         saveDocument(docid, buf);
         input.close();
       } catch (Exception e) {log.error("Erro a gravar documento na BD", e);}      	  
+      finally {
+   		if( input != null) Utils.safeClose(input);
+   	  }
       File temp = new File(temprub);
       temp.delete();
 
     }else{                                                                //caso não seja, copiar para BD e apagar temp
-      try{
-        InputStream input = new FileInputStream(tempfile);
+    	InputStream input = null;
+    	try{
+        input = new FileInputStream(tempfile);
         byte[] buf = IOUtils.toByteArray(input); 
         saveDocument(docid, buf);
         input.close();
       } catch (Exception e) {log.error("Erro a gravar documento na BD", e);}
+       finally {
+    		if( input != null) Utils.safeClose(input);
+    	}
+
       File filedelete = new File(tempfile);
       filedelete.delete();
     }
@@ -215,14 +229,17 @@ public class PdfSampleImages {
   public String rubricarTodas(String filePath, UserInfoInterface userInfo){
     File file = new File(filePath + File.separator);
     int pageCount = 0;
+    FileInputStream fileInput = null;
     try {
-      FileInputStream fileInput = new FileInputStream(file);	
+      fileInput = new FileInputStream(file);	
       PdfReader reader = new PdfReader(fileInput);
       pageCount = reader.getNumberOfPages();
       fileInput.close();
       reader.close();
     } catch (Exception e) {e.printStackTrace();} 
-
+    finally {
+		if( fileInput != null) Utils.safeClose(fileInput);
+	}
 
     String fileOriginal = filePath;
     String fileAux = Const.fUPLOAD_TEMP_DIR + File.separator + getGuidName()+".pdf";;
@@ -402,6 +419,7 @@ public class PdfSampleImages {
   private static byte[] getDocument(int docid){  
     String caminho = "";
     caminho = checkDocumentBD(docid);
+    FileInputStream fileInput = null;
 
     if(caminho == null || caminho.equals("")){         //Caso esteja na Base de dados
 
@@ -411,11 +429,13 @@ public class PdfSampleImages {
       File fich = new File(caminho);    
       byte[] data = new byte[(int)fich.length()];
       try {
-
-        FileInputStream fileInput = new FileInputStream(fich);
+    	fileInput = new FileInputStream(fich);
         fileInput.read(data);
         fileInput.close();
-      } catch (IOException e) {  log.error("Erro a ler ficheiro de filesystem", e); }
+      } catch (IOException e) {  log.error("Erro a ler ficheiro de filesystem", e);
+		} finally {
+			if( fileInput != null) Utils.safeClose(fileInput);
+		}    
 
       return data;
     }
@@ -506,7 +526,8 @@ public class PdfSampleImages {
   private static void saveDocument(int docid, byte[] doc){  
     String caminho = "";
     caminho = checkDocumentBD(docid);
-
+    FileOutputStream fileOutput = null;
+    
     if(caminho == null || caminho.equals("")){         //Caso esteja na Base de dados
 
       updateDocument(docid, doc);
@@ -514,10 +535,13 @@ public class PdfSampleImages {
     }else{                                              //Caso esteja em Filesystem
       File fich = new File(caminho);    
       try {
-        FileOutputStream fileOutput = new FileOutputStream(fich);
+    	fileOutput = new FileOutputStream(fich);
         fileOutput.write(doc);
         fileOutput.close();
-      } catch (IOException e) {  log.error("Erro a ler ficheiro de filesystem", e); }
+      } catch (IOException e) {  log.error("Erro a ler ficheiro de filesystem", e);
+	} finally {
+		if( fileOutput != null) Utils.safeClose(fileOutput);
+	}    
 
 
     }

@@ -28,11 +28,20 @@ public class WSDLUtilsV2  extends WSDLUtils{
 	public WSDLUtilsV2(RepositoryFile aisWsdl, String asUrl) throws Exception {
 		super(aisWsdl.getResourceAsStream(), asUrl);
 		
-		InputStream inputStream = aisWsdl.getResourceAsStream();
-		 org.w3c.dom.Document doc = XMLUtils.newDocument( inputStream);
-		 inputStream.close();
-         String _sRealUrl = asUrl;
-         parser.run(_sRealUrl, doc);
+		InputStream inputStream = null;
+		try {
+			 inputStream = aisWsdl.getResourceAsStream();
+			 org.w3c.dom.Document doc = XMLUtils.newDocument( inputStream);
+			 inputStream.close();
+			 String _sRealUrl = asUrl;
+			 parser.run(_sRealUrl, doc);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw (e);
+		} finally {
+	    	if( inputStream != null) Utils.safeClose(inputStream);
+		}
 	}
 	
 	public HashMap < String, Object > callService(String asService,

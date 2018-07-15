@@ -150,10 +150,11 @@ public class NumericSeriesProcessor extends SeriesProcessor {
       }
 
       //DatabaseInterface.closeResources(db, pstUpd, pstGet, rs);
-	    try { if(null != db) db.close(); } catch (SQLException e) {}
-	    try { if(null != pstUpd) pstUpd.close(); } catch (SQLException e) {}
-	    try { if(null != pstGet) pstGet.close(); } catch (SQLException e) {}
-	    try { if(null != rs) rs.close(); } catch (SQLException e) {}
+        if (db != null) DatabaseInterface.safeClose(db);
+        if (pstUpd != null) DatabaseInterface.safeClose(pstUpd);      
+        if (pstGet != null) DatabaseInterface.safeClose(pstGet); 
+        if (rs != null) DatabaseInterface.safeClose(rs); 
+
 	   
 	    
     return getCurrentValue();

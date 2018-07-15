@@ -165,9 +165,9 @@ public class BlockAdminMigrateDocumentToFilesystem extends Block {
 			throw e;
 		} finally {
 			//DatabaseInterface.closeResources(db, pst);
-			try { if(null != db) db.close();} catch (Exception e2) {}
-			try { if(null != pst) pst.close();} catch (Exception e2) {}
-			try { if(null != rs) rs.close();} catch (Exception e2) {}
+	        if (db != null) DatabaseInterface.safeClose(db);
+	        if (pst != null) DatabaseInterface.safeClose(pst);      
+	        if (rs != null) DatabaseInterface.safeClose(rs);      
 		}
 		
 		return result;

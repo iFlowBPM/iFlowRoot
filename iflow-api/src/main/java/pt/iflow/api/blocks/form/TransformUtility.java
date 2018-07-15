@@ -180,6 +180,7 @@ public abstract class TransformUtility {
 				throws TransformerException, SAXException, IOException {
 			Result result = new StreamResult(output);
 			Templates template = getTemplates(formReader);
+			Transformer transformer = null;
 
 			XMLReader rdr = formReader;
 
@@ -190,11 +191,13 @@ public abstract class TransformUtility {
 
 				SAXSource inputSource = new SAXSource(rdr, XMLSource);
 
-				Transformer transformer = template.newTransformer();
+				if (null != template) transformer = template.newTransformer();
 				// set properties here...
 				for (String key : parameters.keySet())
-					transformer.setParameter(key, parameters.get(key));
-				transformer.transform(inputSource, result);
+					if (null != transformer) {
+						transformer.setParameter(key, parameters.get(key));
+						transformer.transform(inputSource, result);
+					}
 
 			} catch (Exception e) {
 				Logger.error("", "TransformUtility", "transform", "Null deference - TransformUtility - 174", e);

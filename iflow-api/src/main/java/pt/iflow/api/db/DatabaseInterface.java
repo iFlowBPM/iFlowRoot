@@ -346,4 +346,32 @@ public class DatabaseInterface
     }
     return result;
   }
+  
+  public static void safeClose(Statement stmt) {
+	  if (stmt != null) {
+		  try {
+			  stmt.close();
+		  } catch (SQLException e) {
+
+		  }
+	  }
+  }
+  public static void safeClose(Connection db) {
+	  if (db != null) {
+		  try {
+			  db.close();
+		  } catch (SQLException e) {
+
+		  }
+	  }
+  }
+  public static void safeClose(ResultSet rs) {
+	  if (rs != null) {
+		  try {
+			  rs.close();
+		  } catch (SQLException e) {
+
+		  }
+	  }
+  }
 }

@@ -10,23 +10,13 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.AccessController;
-import java.security.PrivilegedActionException;
-import java.security.PrivilegedExceptionAction;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import javax.imageio.ImageIO;
 import javax.swing.JApplet;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
 
-import pt.iflow.applet.Messages;
+import pt.iflow.applet.IOUtils;
 
 
 public class FileApplet extends JApplet {
@@ -588,7 +578,6 @@ public class FileApplet extends JApplet {
 
       File tmpFile = File.createTempFile("sign _", ".tmp"); //$NON-NLS-1$ //$NON-NLS-2$
 
-
       fout = new FileOutputStream(tmpFile);
       byte [] b = new byte[8192];
       int r = 0;
@@ -599,14 +588,9 @@ public class FileApplet extends JApplet {
       e.printStackTrace();
       file = null;
     } finally {
-      try {
-        if(null != fout) fout.close();
-      } catch (IOException e) {
-      }
-      try {
-        if (null != is) is.close();
-      } catch (IOException e) {
-      }
+    	if( fout != null) IOUtils.safeClose(fout);
+    	if( is != null) IOUtils.safeClose(is); 
+    	
       is = null;
       conn = null;
       fout = null;

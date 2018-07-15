@@ -1,5 +1,6 @@
 package pt.iflow.blocks;
 
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Hashtable;
 import java.util.Map;
@@ -19,6 +20,7 @@ import pt.iflow.api.processtype.TextDataType;
 import pt.iflow.api.repository.RepositoryURIResolver;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.UserInfoInterface;
+import pt.iflow.api.utils.Utils;
 import pt.iflow.connector.document.Document;
 import pt.iknow.pdf.PDFGenerator;
 import pt.iknow.xslfo.FoEvaluatorFactory;
@@ -104,10 +106,12 @@ public class BlockCriarDocumento extends Block {
 	        if (template == null) {
 	          Logger.error(login, this, "after", "Unable to process data into file: unknown template (found: template=" + tmpl + ")");
 	        } else {
+	        	InputStream stream = null;
 	          try {
 	        	bsh.Interpreter bsh = procData.getInterpreter(userInfo);
 	        	//1st pass get a prerendered fop because of html tags and all
-	        	FoTemplate tpl = FoTemplate.compile(template.getResourceAsStream());                       
+	        	stream = template.getResourceAsStream();
+	        	FoTemplate tpl = FoTemplate.compile(stream);                       
 	            tpl.setUseLegacyExpressions(true);
 	            PDFGenerator pdfGen = new PDFGenerator(tpl);
 	            pdfGen.addURIResolver(new RepositoryURIResolver(userInfo));
@@ -138,7 +142,10 @@ public class BlockCriarDocumento extends Block {
 	          } catch (Exception e) {
 	            Logger.error(login, this, "after", "Unable to process data into file: error processing file (found: template=" + tmpl
 	                + "; variable=" + var + "; filename=" + filename + ")", e);
-	          }
+	    
+			} finally {
+				if( stream != null) Utils.safeClose(stream);
+			}
 	        }
 	      }
 	    }

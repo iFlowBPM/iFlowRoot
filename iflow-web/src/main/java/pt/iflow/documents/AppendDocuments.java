@@ -30,6 +30,7 @@ import pt.iflow.api.documents.Documents;
 import pt.iflow.api.processdata.ProcessData;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.UserInfoInterface;
+import pt.iflow.api.utils.Utils;
 import pt.iflow.connector.document.Document;
 import pt.iknow.utils.DataSet;
 
@@ -162,8 +163,8 @@ public class AppendDocuments {
         } catch(Throwable t) {
           Logger.error(login, "AppenDocuments", "postProcessPDF", "Page ignored", t);
         } finally {
-        try { if(null != file) file.close();} catch (Exception e) {}
-          
+        	try { if(file != null) file.close();} catch (Exception e) {}
+        	try { if(reader != null) reader.close();} catch (Exception e) {}
         }
       }
       // step 5: we close the document
@@ -186,12 +187,8 @@ public class AppendDocuments {
       Logger.error(login, "AppenDocuments", "postProcessPDF", "Error creating temp file", e);
     } finally {
       if(document!=null) document.close();
-      if(null != fout) {
-        try {
-          fout.close();
-        } catch (IOException e) {
-        }
-      }
+      if( fout != null) Utils.safeClose(fout);
+      if( in != null) Utils.safeClose(in);
       fout = null;
       // remove the "unused" file
       if(tmpPdf != null) tmpPdf.delete();
@@ -277,6 +274,7 @@ public class AppendDocuments {
     File pdf = null; 
     List<Integer> fileIds = new ArrayList<Integer>();
     for (int n = 0; n < docsVars.length; n++) {
+    	FileOutputStream fos = null;
       try {
         Object o = procData.eval(userInfo, docsVars[n]);
         if(o != null) {
@@ -287,7 +285,7 @@ public class AppendDocuments {
             if (pdf == null) {
               Document doc = docBean.getDocument(userInfo, procData, docid);
               pdf = File.createTempFile("merge_", ".pdf");
-              FileOutputStream fos = new FileOutputStream(pdf);
+              fos = new FileOutputStream(pdf);
               fos.write(doc.getContent());
               fos.close();
             } else {
@@ -299,7 +297,9 @@ public class AppendDocuments {
         }
       } catch (Throwable t) {
         Logger.warning(login, "AppenDocuments", "mergePDFs", "Error retrieving document IDs", t);
-      }
+	  	} finally {
+			if( fos != null) Utils.safeClose(fos);
+		}    
     }
 
     if(fileIds.isEmpty()) return null;
@@ -421,12 +421,8 @@ public class AppendDocuments {
       Logger.error(login, "AppenDocuments", "mergePDFs", "Error creating temp file", e);
     } finally {
       if(document!=null) document.close();
-      if(null != fout) {
-        try {
-          fout.close();
-        } catch (IOException e) {
-        }
-      }
+      if( fout != null) Utils.safeClose(fout);
+      if( in != null) Utils.safeClose(in);
       fout = null;
       // remove the "unused" file
       if(tmpPdf != null) tmpPdf.delete();

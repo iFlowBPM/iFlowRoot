@@ -17,6 +17,7 @@ import pt.iflow.api.flows.FlowHolder;
 import pt.iflow.api.notification.EmailManager;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.UserInfoInterface;
+import pt.iflow.api.utils.Utils;
 import pt.iflow.api.utils.XslTransformerFactory;
 import pt.iflow.flows.FlowData;
 import pt.iknow.utils.html.FormData;
@@ -27,17 +28,16 @@ public class FormCache {
   private static CacheManager _manager;
   private static final String CACHE_NAME = "form";
   
+  static InputStream fis = null;
   static {
-    InputStream fis = FormCache.class.getResourceAsStream("ehcache.xml");
+    fis = FormCache.class.getResourceAsStream("ehcache.xml");
     try {
       CacheManager manager = new CacheManager(fis);
       _manager = manager;
     } catch(Exception e) {
-      try {
-        if(null != fis) fis.close();
-      } catch (IOException ex) {
-      }
-    }
+	} finally {
+		if( fis != null) Utils.safeClose(fis);
+	}    
     // _manager.addCache(CACHE_NAME);
     
     _manager.getCache(CACHE_NAME);

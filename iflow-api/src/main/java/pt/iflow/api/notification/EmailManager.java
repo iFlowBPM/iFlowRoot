@@ -711,13 +711,7 @@ public class EmailManager extends Thread {
     }
     catch (Exception e) {
     } finally {
-      if(null != input) {
-        try {
-          input.close();
-        } catch (IOException e) {
-          Logger.adminError("EmailManager", "buildEmailTemplate", "Caught exception: " + e.getMessage(), e);
-        }
-      }
+		if( input != null) Utils.safeClose(input);
     }
 
     return retObj;

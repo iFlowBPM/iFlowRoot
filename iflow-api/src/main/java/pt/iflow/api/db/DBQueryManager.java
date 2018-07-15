@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
+import pt.iflow.api.utils.Utils;
 
 public class DBQueryManager {
 
@@ -38,13 +39,9 @@ public class DBQueryManager {
       Logger.adminError("DBQueryManager", "reloadQueries", "Error reading queries.", e);
     }
     finally {
-    	try {
-    	if( fileInputStream != null) fileInputStream.close();
-			} catch (IOException e) {
-			}
-		
-    	}
+    	if( fileInputStream != null) Utils.safeClose(fileInputStream);
 	}
+  }
   
 
   private static void checkFile() {

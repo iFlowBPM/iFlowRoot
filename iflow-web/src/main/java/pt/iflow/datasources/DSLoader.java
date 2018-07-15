@@ -43,6 +43,7 @@ import pt.iflow.api.core.Repository;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.Setup;
+import pt.iflow.api.utils.Utils;
 
 public class DSLoader {
   private static final String POOL_ELEM = "pool";
@@ -237,10 +238,14 @@ public class DSLoader {
   public Map<String, DataSourceEntry> getRegisteredDataSources() {
     Map<String, DataSourceEntry> dsImplementations = new HashMap<String, DataSourceEntry>();
     Properties propsPoolImpl = new Properties();
+    InputStream is = null;
     try {
-      propsPoolImpl.load(Setup.getResource("pool_config.properties"));
-    } catch (IOException e) {
-    }
+        is = Setup.getResource("pool_config.properties");
+        propsPoolImpl.load(is);
+      } catch (IOException e) {
+  	} finally {
+  		if( is != null) Utils.safeClose(is);
+  	}    
 
     Set<String> toRemove = new HashSet<String>();
 
@@ -304,10 +309,14 @@ public class DSLoader {
   public Map<String, DriverEntry> getRegisteredJdbcDrivers() {
     Map<String, DriverEntry> registeredDrivers = new HashMap<String, DriverEntry>();
     Properties propsPoolImpl = new Properties();
+    InputStream is = null;
     try {
-      propsPoolImpl.load(Setup.getResource("pool_config.properties"));
+      is = Setup.getResource("pool_config.properties");
+      propsPoolImpl.load(is);
     } catch (IOException e) {
-    }
+	} finally {
+		if( is != null) Utils.safeClose(is);
+	}    
 
     Set<String> toRemove = new HashSet<String>();
 
@@ -426,7 +435,11 @@ public class DSLoader {
     SAXParser parser = factory.newSAXParser();
     DSLoaderHandler dh = new DSLoaderHandler();
 
-    parser.parse(in, dh);
+    try {
+		parser.parse(in, dh);
+	} finally {
+		if( in != null) Utils.safeClose(in);
+	}    
 
     dataSources.put(Const.SYSTEM_ORGANIZATION, dh.config);
 

@@ -25,7 +25,10 @@ public class JobSupport {
 		} catch(Exception e){
 			Logger.error("System", "JobSupport", "addBeat", "nodeKey: " + nodeKey + " , reason: "+ e.getMessage());
 		} finally {
-	        DatabaseInterface.closeResources(db, st, sql, rs);
+	        //jcosta: DatabaseInterface.closeResources(db, st, sql, rs);
+	        if (db != null) DatabaseInterface.safeClose(db);
+	        if (st != null) DatabaseInterface.safeClose(st);
+	        if (rs != null) DatabaseInterface.safeClose(rs);
 	    }				
 	}
 	

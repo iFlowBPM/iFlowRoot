@@ -45,6 +45,7 @@ import pt.iflow.api.transition.FlowRolesTO;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.UserInfoInterface;
+import pt.iflow.api.utils.Utils;
 import pt.iflow.connector.alfresco.AlfrescoDocument;
 import pt.iflow.connector.credentials.DMSCredential;
 import pt.iflow.connector.dms.DMSUtils;
@@ -165,7 +166,10 @@ public class DocumentsBean implements Documents {
             dmsid += rs.getInt("dmsid");
           }
         }
-        DatabaseInterface.closeResources(pst, rs);
+        //jcosta: DatabaseInterface.closeResources(pst, rs);
+        if (pst != null) DatabaseInterface.safeClose(pst);      
+        if (rs != null) DatabaseInterface.safeClose(rs);
+
         if (doc.getDocId() > 0) {
           this.persistData(userInfo, procData, db, doc, dmsid, found);
         }
@@ -351,7 +355,9 @@ public class DocumentsBean implements Documents {
       if (!docDataInDB && ((filePath = getDocumentFilePath(adoc.getDocId(), adoc.getFileName())) != null)) {
         try
         {
-          DatabaseInterface.closeResources(pst);
+          //jcosta: DatabaseInterface.closeResources(pst);
+          if (pst != null) DatabaseInterface.safeClose(pst);
+
           query = DBQueryManager.getQuery("Documents.UPDATE_DOCUMENT_DOCURL");
           pst = db.prepareStatement(query, generatedKeyNames);
           pst.setString(1, filePath);
@@ -450,16 +456,19 @@ public class DocumentsBean implements Documents {
           for (int i=0; fs!=null && i<fs.length; i++) fs[i].delete();
           pst.setBinaryStream(++pos, null, 0);
           pst.setString(++pos, filePath);
+          FileOutputStream fos = null;
           try
           {
-            FileOutputStream fos = new FileOutputStream(filePath);
+            fos = new FileOutputStream(filePath);
             fos.write(adoc.getContent());
             fos.close();
           } catch(FileNotFoundException ex) {
             Logger.error(userInfo.getUtilizador(), this, "addDocument", procData.getSignature() + " File not Found.", ex);
           } catch(IOException ioe) {
             Logger.error(userInfo.getUtilizador(), this, "addDocument", procData.getSignature() + " IOException.", ioe);
-          }
+	      } finally {
+	    	  if( fos != null) Utils.safeClose(fos);
+	      }
         }
       }
       pst.setTimestamp(++pos, new java.sql.Timestamp(dateNow.getTime()));
@@ -470,7 +479,8 @@ public class DocumentsBean implements Documents {
       }
       DatabaseInterface.commitConnection(db);
     } finally {
-      DatabaseInterface.closeResources(pst, rs);
+    	if (pst != null) DatabaseInterface.safeClose(pst);
+    	if (rs != null) DatabaseInterface.safeClose(rs);
     }
 
     return adoc;
@@ -742,12 +752,9 @@ public class DocumentsBean implements Documents {
     } catch (Exception e) {
       Logger.error(login, this, "getDocument", procData.getSignature() + "Error retrieving document from database.", e);
     } finally {
-      try {
-        if (dataStream != null)
-          dataStream.close();
-      } catch (Exception e) {
-      }
-      DatabaseInterface.closeResources(st, rs);
+    	if( dataStream != null) Utils.safeClose(dataStream);
+    	if (st != null) DatabaseInterface.safeClose(st);
+    	if (rs != null) DatabaseInterface.safeClose(rs);
     }
     return retObj;
   }

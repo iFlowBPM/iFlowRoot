@@ -257,13 +257,14 @@ public class ChartServlet extends HttpServlet {
         ctx.put(DataConverter.PROPERTIES, props);
         
         if(sTemplate != null){
-        IChart chart = instantiate(ctx, userInfo, sTemplate, props);
-        if(null != chart)
-        chart.draw(ctx, procData, nWidth, nHeight, bout);} //response.getOutputStream());
+        	IChart chart = instantiate(ctx, userInfo, sTemplate, props);
+        	if(null != chart)
+        		chart.draw(ctx, procData, nWidth, nHeight, bout);
+        	} //response.getOutputStream());
       } catch (Throwable t) {
-        Logger.error(userInfo.getUtilizador(), this, "generateChart", "Error generating chart image", t);
-        bout = new ByteArrayOutputStream(); // clear eventual data generated
-        AbstractChart.generateErrorMessage(msg.getString("ChartServlet.59"), 400, 300, bout); //$NON-NLS-1$
+    	  Logger.error(userInfo.getUtilizador(), this, "generateChart", "Error generating chart image", t);
+    	  bout = new ByteArrayOutputStream(); // clear eventual data generated
+    	  AbstractChart.generateErrorMessage(msg.getString("ChartServlet.59"), 400, 300, bout); //$NON-NLS-1$
       }
     }
     response.setDateHeader("Last-Modified", System.currentTimeMillis());

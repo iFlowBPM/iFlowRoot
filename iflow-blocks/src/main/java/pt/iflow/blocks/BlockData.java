@@ -1336,10 +1336,11 @@ public class BlockData extends Block {
 
 
   public static void main (String[] args) throws Throwable {
+	FileInputStream fin = null;
     try {
       ByteArrayOutputStream bous = new ByteArrayOutputStream();
 
-      FileInputStream fin = new FileInputStream("/iKnow/work/projects/iFlowRoot/iFlowHome/content.xml");
+      fin = new FileInputStream("/iKnow/work/projects/iFlowRoot/iFlowHome/content.xml");
       byte [] d = new byte[4096];
       int r = 0;
       while((r = fin.read(d)) != -1)
@@ -1350,7 +1351,9 @@ public class BlockData extends Block {
 
     } catch (Throwable t) {
       t.printStackTrace();
-    }
+	} finally {
+		if( fin != null) Utils.safeClose(fin);
+	}    
 
   }
 

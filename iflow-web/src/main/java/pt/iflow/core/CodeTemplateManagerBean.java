@@ -91,7 +91,10 @@ public class CodeTemplateManagerBean implements CodeTemplateManager {
     } catch (SQLException sqle) {
       Logger.error(userInfo.getUtilizador(), this, "addCodeTemplate", "caught sql exception: " + sqle.getMessage(), sqle);
     } finally {
-      DatabaseInterface.closeResources(db, st, rs);
+      //jcosta: DatabaseInterface.closeResources(db, st, rs);
+      if (db != null) DatabaseInterface.safeClose(db);
+      if (st != null) DatabaseInterface.safeClose(st);      
+      if (rs != null) DatabaseInterface.safeClose(rs);
     }
     return true;
   }

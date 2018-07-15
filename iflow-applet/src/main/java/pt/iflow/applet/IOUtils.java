@@ -27,12 +27,7 @@ public class IOUtils {
       log.error("Error reading resource " + resource, e); //$NON-NLS-1$
       return null;
     } finally {
-      if (null != in) {
-        try {
-          in.close();
-        } catch (IOException e) {
-        }
-      }
+    	if( in != null) IOUtils.safeClose(in);
     }
     return out.toByteArray();
   }
@@ -43,4 +38,25 @@ public class IOUtils {
     while ((r = in.read(b)) >= 0)
       out.write(b, 0, r);
   }
+  
+  public static void safeClose(InputStream is) {
+	  if (is != null) {
+		  try {
+			  is.close();
+		  } catch (IOException e) {
+			 
+		  }
+	  }
+  }
+
+  public static void safeClose(OutputStream os) {
+	  if (os != null) {
+		  try {
+			  os.close();
+		  } catch (IOException e) {
+			  
+		  }
+	  }
+  }
+
 }

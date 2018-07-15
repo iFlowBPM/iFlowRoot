@@ -35,24 +35,24 @@ public class TempVFile implements IVFile {
         int r = 0;
         while ((r = in.read(b)) != -1)
           fout.write(b, 0, r);
-      } finally {
-        if(fout != null) {
-          try {
-            fout.close();
-          } catch (IOException e) {}
-        }
-      }
+	  } finally {
+		  if( fout != null) IOUtils.safeClose(fout);
+	  }
     }
 
   }
 
   public InputStream getInputStream() {
-    try {
-      return new FileInputStream(f);
-    } catch(FileNotFoundException e) {
-      log.error("Could not open file for input", e); //$NON-NLS-1$
-    }
-    return null;
+	  FileInputStream fis = null;  
+	  try {
+		  fis = new FileInputStream(f);
+		  return fis;
+	  } catch(FileNotFoundException e) {
+		  log.error("Could not open file for input", e); //$NON-NLS-1$
+	  } finally {
+		  if( fis != null) IOUtils.safeClose(fis);
+	  }
+	  return null;
   }
 
   public String getName() {
@@ -60,12 +60,16 @@ public class TempVFile implements IVFile {
   }
 
   public OutputStream getOutputStream() {
-    try {
-      return new FileOutputStream(f);
-    } catch(FileNotFoundException e) {
-      log.error("Could not open file for output", e); //$NON-NLS-1$
-    }
-    return null;
+	  FileOutputStream fos = null;
+	  try {
+		  fos = new FileOutputStream(f);
+		  return fos;
+	  } catch(FileNotFoundException e) {
+		  log.error("Could not open file for output", e); //$NON-NLS-1$
+	  } finally {
+		  if( fos != null) IOUtils.safeClose(fos);
+	  }
+	  return null;
   }
 
   public boolean canRead() {

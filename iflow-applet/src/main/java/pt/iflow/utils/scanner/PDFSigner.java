@@ -4,7 +4,6 @@ import java.awt.Component;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.KeyStore;
@@ -18,8 +17,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import pt.iflow.applet.Messages;
-
 import com.lowagie.text.Font;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.AcroFields;
@@ -32,6 +29,9 @@ import com.lowagie.text.pdf.PdfSignature;
 import com.lowagie.text.pdf.PdfSignatureAppearance;
 import com.lowagie.text.pdf.PdfStamper;
 import com.lowagie.text.pdf.PdfString;
+
+import pt.iflow.applet.IOUtils;
+import pt.iflow.applet.Messages;
 
 
 public class PDFSigner implements FileSigner {
@@ -201,13 +201,20 @@ public class PDFSigner implements FileSigner {
 
     // Calcula o Hash do documento com SHA1
     MessageDigest md = MessageDigest.getInstance("SHA1"); //$NON-NLS-1$
-    InputStream s = sap.getRangeStream(); // obtem dados do documento excepto conteudo da assinatura
-    int read = 0;
-    byte[] buff = new byte[8192];
-    while ((read = s.read(buff)) > 0) {
-      md.update(buff, 0, read);
-    }
-    byte [] hash = md.digest();
+    InputStream s = null;
+    
+    byte[] hash;
+	try {
+		s = sap.getRangeStream(); // obtem dados do documento excepto conteudo da assinatura
+		int read = 0;
+		byte[] buff = new byte[8192];
+		while ((read = s.read(buff)) > 0) {
+		  md.update(buff, 0, read);
+		}
+		hash = md.digest();
+	} finally {
+		if( s != null) IOUtils.safeClose(s);
+	} 
 
     byte [] outc = new byte[csize];
     Arrays.fill(outc, 0, outc.length, (byte)0); // init with 0 just in case
@@ -257,15 +264,8 @@ public class PDFSigner implements FileSigner {
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
-      try {
-        if(fin != null) fin.close();
-      } catch (IOException e) {
-      }
-      try {
-        if(fout != null) fout.close();
-      } catch (IOException e) {
-      }
-      
+    	if( fin != null) IOUtils.safeClose(fin);
+    	if( fout != null) IOUtils.safeClose(fout);
     }
 
     return outFile;
@@ -323,7 +323,9 @@ public class PDFSigner implements FileSigner {
     } catch (Exception e) {
       e.printStackTrace();
       return Messages.getString("PDFSigner.27"); //$NON-NLS-1$
-    }
+	} finally {
+		if( fin != null) IOUtils.safeClose(fin);
+	}   
     return sb.toString();
   }
 

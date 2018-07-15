@@ -4,15 +4,10 @@ import java.awt.Dimension;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.AccessController;
-import java.security.PrivilegedActionException;
-import java.security.PrivilegedExceptionAction;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -26,12 +21,12 @@ import org.apache.commons.logging.LogFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.infosistema.crypto.CryptoUtils;
+
 import pt.iflow.applet.cipher.CipherType;
 import pt.iflow.applet.cipher.FileCipher;
 import pt.iflow.applet.signer.FileSigner;
 import pt.iflow.applet.signer.SignatureType;
-
-import com.infosistema.crypto.CryptoUtils;
 
 /**
  * Esta é uma applet invisível que disponibiliza um conjunto de métodos para
@@ -609,16 +604,6 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
 		return task.getTaskId();
 	}
 
-	public static void safeClose(FileOutputStream fis) {
-		if (fis != null) {
-			try {
-				fis.close();
-			} catch (IOException e) {
-
-			}
-		}
-	}
-
 	private String doUploadFileFromDisk(final WebClient webClient, String fileName, byte[] byteArr) {
 		FileSigner signer = SignatureType.getFileSigner(webClient);
 		FileCipher cipher = CipherType.getFileCipher(webClient);
@@ -638,14 +623,12 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 		finally {
-			try {if (stream != null) stream.close();} catch (IOException e) {}
+			if (stream != null) IOUtils.safeClose(stream);
 		}
 
 		if (theFile != null && theFile.canRead() && theFile.isFile())
 			ivFile = new FileVFile(theFile, webClient.getVariable());
-
 		DynamicDialog dialog = new DynamicDialog(this, webClient, signer, cipher,
 				new FileDialogProvider(webClient.getVariable(), false, ivFile));
 		TaskStatus task = dialog.openDialog();

@@ -66,11 +66,7 @@ public class Setup {
             Logger.warning(null, "Setup", "readPropertiesFile",
                     "Error reading file " + sFile, e);
         } finally {
-            try {
-                if (null != propertiesFile)
-                    propertiesFile.close();
-            } catch (IOException e) {
-            }
+        	if( propertiesFile != null) Utils.safeClose(propertiesFile);
         }
         
         return properties;
@@ -118,12 +114,7 @@ public class Setup {
             Logger.error("", "Setup", "loadProperties", "Setup: unable to load properties file (" + sFile + ").", e);
             System.exit(1);
         } finally {
-            if (null != propertiesFile) {
-                try {
-                    propertiesFile.close();
-                } catch (IOException e) {
-                }
-            }
+        	if( propertiesFile != null) Utils.safeClose(propertiesFile);
             propertiesFile = null;
         }
         
@@ -136,12 +127,7 @@ public class Setup {
           Logger.error("", "Setup", "loadProperties", "Setup: unable to load properties file ("+ sFile + ").", e);
           System.exit(1);
         } finally {
-            if (null != propertiesFile) {
-                try {
-                    propertiesFile.close();
-                } catch (IOException e) {
-                }
-            }
+        	if( propertiesFile != null) Utils.safeClose(propertiesFile);
             propertiesFile = null;
         }
         
@@ -156,12 +142,7 @@ public class Setup {
             e.printStackTrace();
             System.exit(1);
         } finally {
-            if (null != propertiesFile) {
-                try {
-                    propertiesFile.close();
-                } catch (IOException e) {
-                }
-            }
+        	if( propertiesFile != null) Utils.safeClose(propertiesFile);
             propertiesFile = null;
         }
         
@@ -174,12 +155,7 @@ public class Setup {
           Logger.error("", "Setup", "loadProperties", "Setup: unable to load properties file (" + sFile + ").", e);
           System.exit(1);
         } finally {
-            if (null != propertiesFile) {
-                try {
-                    propertiesFile.close();
-                } catch (IOException e) {
-                }
-            }
+        	if( propertiesFile != null) Utils.safeClose(propertiesFile);
             propertiesFile = null;
         }
         
@@ -192,12 +168,7 @@ public class Setup {
           Logger.error("", "Setup", "loadProperties", "Setup: unable to load properties file (" + sFile + ").", e);
           System.exit(1);
         } finally {
-            if (null != propertiesFile) {
-                try {
-                    propertiesFile.close();
-                } catch (IOException e) {
-                }
-            }
+        	if( propertiesFile != null) Utils.safeClose(propertiesFile);
             propertiesFile = null;
         }
         
@@ -210,12 +181,7 @@ public class Setup {
           Logger.error("", "Setup", "loadProperties", "Setup: unable to load properties file (" + sFile + ").", e);
           System.exit(1);
         } finally {
-            if (null != propertiesFile) {
-                try {
-                    propertiesFile.close();
-                } catch (IOException e) {
-                }
-            }
+        	if( propertiesFile != null) Utils.safeClose(propertiesFile);
             propertiesFile = null;
         }
         
@@ -228,12 +194,7 @@ public class Setup {
           Logger.error("", "Setup", "loadProperties", "Setup: unable to load properties file (" + sFile + ").", e);
           System.exit(1);
         } finally {
-            if (null != propertiesFile) {
-                try {
-                    propertiesFile.close();
-                } catch (IOException e) {
-                }
-            }
+        	if( propertiesFile != null) Utils.safeClose(propertiesFile);
             propertiesFile = null;
         }
         
@@ -308,12 +269,7 @@ public class Setup {
           Logger.error("", "Setup", "loadProperties", "Unable to write properties: " + e.getMessage(), e);
         }
         finally {
-        	try {
-        	if( propertiesFile != null ) propertiesFile.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+        	if( propertiesFile != null) Utils.safeClose(propertiesFile);
 		}
     }
     
@@ -351,11 +307,16 @@ public class Setup {
 
   public static InputStream getResource(String name) {
     File f = fixFile(name);
+    FileInputStream fis = null;
     try {
-      return new FileInputStream(f);
+      fis = new FileInputStream(f);
+      return fis;
     } catch (FileNotFoundException e) {
       return null;
     }
+    finally {
+    	if( fis != null) Utils.safeClose(fis);
+	}
   }
 
   public static void storeResource(String name, InputStream data) {
@@ -375,12 +336,7 @@ public class Setup {
     } catch (FileNotFoundException e) {
     } catch (IOException e) {
     } finally {
-      if(null != fout) {
-        try {
-          fout.close();
-        } catch (IOException e) {
-        }
-      }
+    	if( fout != null) Utils.safeClose(fout);
     }
 
   }

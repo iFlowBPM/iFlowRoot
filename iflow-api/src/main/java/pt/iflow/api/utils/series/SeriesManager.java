@@ -78,9 +78,10 @@ public class SeriesManager {
     }
     finally {
       // DatabaseInterface.closeResources(db, pst, rs);
-    	try { if(null != db) db.close(); } catch (SQLException e) {}
-	    try { if(null != pst) pst.close(); } catch (SQLException e) {}
-	    try { if(null != rs) rs.close(); } catch (SQLException e) {}
+        if (db != null) DatabaseInterface.safeClose(db);
+        if (pst != null) DatabaseInterface.safeClose(pst);      
+        if (rs != null) DatabaseInterface.safeClose(rs);      
+
     }
 
     return series;		

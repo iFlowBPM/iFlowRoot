@@ -550,21 +550,22 @@ public class SubFlowDataExpander {
     	if(rawSubFlow != null){
     	  for (XmlBlockType block : rawSubFlow){
     	      if (block.getType().equals(BLOCK_END_TYPE)){
-    	    	  if(subFlowBlockEnd != null){
-    	    		  subFlowBlockEnd = block;
-    	    	  		endId.add(block.getId());}
+    	    	    subFlowBlockEnd = block;
+    	    	    if(endId != null){
+    	    	    	endId.add(block.getId());
+    	    	    }
     	      }
-    	    }
+    	  }  
     	}
 	} catch (Exception e) {
 		
 	}
     if(null != subFlowBlockEnd)
-    subFlowBlockEnd.setType(BLOCK_COPY_TYPE);
+    	subFlowBlockEnd.setType(BLOCK_COPY_TYPE);
     
     XmlPortType[] endPorts = new XmlPortType[2];
-    if(null != endPorts)
-    endPorts[0] = subFlowBlockEnd.getXmlPort().get(0);
+    if(null != endPorts && subFlowBlockEnd != null)
+    	endPorts[0] = subFlowBlockEnd.getXmlPort().get(0);
     
 
     XmlPortType outPort = new XmlPortType();
@@ -581,17 +582,19 @@ public class SubFlowDataExpander {
 
     // merges all possible end blocks into one
     for (XmlBlockType block : rawSubFlow)
-      for (XmlPortType port : block.getXmlPort())
-        if (endId.contains(port.getConnectedBlockId())) {
-          if(endId != null){
-          port.setConnectedBlockId(subFlowBlockEnd.getId());
-          port.setConnectedPortName("portIn");
-          }
-          }
+    	for (XmlPortType port : block.getXmlPort())
+    		if (endId.contains(port.getConnectedBlockId())) {
+    			if(port != null){
+    				port.setConnectedBlockId(subFlowBlockEnd.getId());
+    				port.setConnectedPortName("portIn");
+    			}
+    		}
 
     endPorts[1] = outPort;
-    subFlowBlockEnd.withXmlPort(endPorts);
-    subFlowBlockEnd.withXmlAttribute(new XmlAttributeType[0]);
+    if (subFlowBlockEnd != null) {
+    	subFlowBlockEnd.withXmlPort(endPorts);
+    	subFlowBlockEnd.withXmlAttribute(new XmlAttributeType[0]);
+    }
 
     return subFlowBlockEnd;
   }

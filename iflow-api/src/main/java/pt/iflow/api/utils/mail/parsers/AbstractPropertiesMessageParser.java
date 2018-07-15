@@ -12,6 +12,8 @@ import javax.mail.Part;
 
 import org.apache.commons.lang.StringUtils;
 
+import pt.iflow.api.utils.Utils;
+
 public abstract class AbstractPropertiesMessageParser extends AbstractMessageParser {
 
   public Properties parseProperties(Message message) throws MessageParseException {
@@ -42,14 +44,22 @@ public abstract class AbstractPropertiesMessageParser extends AbstractMessagePar
   private void loadProperties(Properties props, Part part) throws MessageParseException, MessagingException, IOException {
     InputStream contentStream = null;
     
-    String content = getText(part);
-    if (StringUtils.isNotEmpty(content)) {
-      contentStream = new ByteArrayInputStream(content.getBytes());
-    }
+    try {
+		String content = getText(part);
+		if (StringUtils.isNotEmpty(content)) {
+		  contentStream = new ByteArrayInputStream(content.getBytes());
+		}
 
-    if (contentStream == null) {
-      contentStream = part.getInputStream();
-    }
+		if (contentStream == null) {
+		  contentStream = part.getInputStream();
+		}
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		throw (e);
+	} finally {
+    	if( contentStream != null) Utils.safeClose(contentStream);
+	}
     
     props.load(contentStream);    
   }

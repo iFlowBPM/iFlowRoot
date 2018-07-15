@@ -16,6 +16,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import pt.iflow.api.utils.Utils;
 import pt.iknow.floweditor.FlowEditorAdapter;
 import pt.iknow.utils.StringUtilities;
 
@@ -46,8 +47,9 @@ public abstract class Operation {
   public static Collection<Operation> getOperations(final FlowEditorAdapter adapter) {
     final Collection<Operation> operations = new ArrayList<Operation>(30);
     operations.add(new OpNone(adapter));
+    InputStream in = null;
     try {
-      InputStream in = Operation.class.getResourceAsStream("operations.xml");
+      in = Operation.class.getResourceAsStream("operations.xml");
       InputSource src = new InputSource(in);
       SAXParserFactory factory = SAXParserFactory.newInstance();
       factory.setNamespaceAware(true);
@@ -60,8 +62,13 @@ public abstract class Operation {
         
         public InputSource resolveEntity(String publicId, String systemId) throws IOException, SAXException {
           if(StringUtilities.isEqual(OPERATIONS_DTD_STRINGID, publicId)) {
-            return new InputSource(Operation.class.getResourceAsStream("operations.dtd"));
-          }
+        	InputStream is = null;
+        	try {
+				is = Operation.class.getResourceAsStream("operations.dtd");  
+				return new InputSource(is);
+        	} finally {
+        		if( is != null) Utils.safeClose(is);
+        	}           }
           return super.resolveEntity(publicId, systemId);
         }
 
@@ -136,7 +143,9 @@ public abstract class Operation {
       handler = null;
     } catch (Throwable t) {
       t.printStackTrace();
-    }
+	} finally {
+		if( in != null) Utils.safeClose(in);
+	} 
     
     return operations;
   }

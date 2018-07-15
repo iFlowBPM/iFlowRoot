@@ -169,7 +169,9 @@ InterfaceInfo  umaInterface = new InterfaceInfo(2,"Tarefas","Lista de tarefas qu
       Logger.warning(userInfo.getUtilizador(), this, "addinterfaceprofiles", "Interface-Profile mapping not inserted!", e);
     }
     finally {
-      DatabaseInterface.closeResources(db, pst);
+      //jcosta: DatabaseInterface.closeResources(db, pst);
+      if (db != null) DatabaseInterface.safeClose(db);
+      if (pst != null) DatabaseInterface.safeClose(pst);      
     }
 
     return result;

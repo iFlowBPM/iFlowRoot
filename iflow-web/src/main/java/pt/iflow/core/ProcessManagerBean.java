@@ -1304,6 +1304,7 @@ public class ProcessManagerBean implements ProcessManager {
 		Connection db = null;
 		Statement st = null;
 		ResultSet rs = null;
+		Reader charStream = null;
 		try {
 			db = DatabaseInterface.getConnection(userInfo);
 			st = db.createStatement();
@@ -1365,8 +1366,10 @@ public class ProcessManagerBean implements ProcessManager {
 					flowCatalogues.put(flowid, flow.getFlowCatalogue(userInfo, flowid));
 				}
 				ProcessCatalogue catalogue = flowCatalogues.get(flowid);
+				
+				charStream = rs.getCharacterStream("procdata");
 
-				ProcessXml reader = new ProcessXml(catalogue, rs.getCharacterStream("procdata"));
+				ProcessXml reader = new ProcessXml(catalogue, charStream);
 
 				ProcessData procData = reader.getProcessData();
 				procData.setReadOnly(bReadOnly);
@@ -1384,7 +1387,11 @@ public class ProcessManagerBean implements ProcessManager {
 		} catch (Exception e) {
 			Logger.error(userid, this, "getProcessesData", "exception " + e.getMessage(), e);
 		} finally {
-			DatabaseInterface.closeResources(db, st, rs);
+			//DatabaseInterface.closeResources(db, st, rs);
+			if (db != null) DatabaseInterface.safeClose(db);
+			if (st != null) DatabaseInterface.safeClose(st);
+			if (rs != null) DatabaseInterface.safeClose(rs);
+			if( charStream != null) Utils.safeClose(charStream);
 		}
 
 		retObj = new ProcessData[procs.size()];
@@ -5108,11 +5115,11 @@ public class ProcessManagerBean implements ProcessManager {
 	public ProcessHeader findProcess(UserInfoInterface userInfo, ProcessHeader proc) {
 		ProcessHeader[] pda = new ProcessHeader[] { proc };
 		pda = findProcesses(userInfo, pda);
-		if(null != pda){
-		if (pda.length == 0)
-			return null;
+		if(null != pda && pda.length > 0){
+			return pda[0];
 		}
-		return pda[0];
+		
+		return null;
 	}
 
 	public ProcessHeader[] findProcesses(UserInfoInterface userInfo, ProcessHeader[] procs) {

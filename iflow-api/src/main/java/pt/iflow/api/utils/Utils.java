@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Reader;
 import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -1216,13 +1218,8 @@ public class Utils {
       e.printStackTrace();
     }
     finally {
-    	try{
-    	if( inputStream != null ) inputStream.close();
-		
-    	} catch (IOException e) {}
-    	try {
-		if( jarFile != null ) jarFile.close();
-		} catch (IOException e) {}
+    	if( inputStream != null) Utils.safeClose(inputStream);
+    	if( jarFile != null) Utils.safeClose(jarFile);
 	}
     return classes;
   }
@@ -1337,4 +1334,34 @@ public class Utils {
 	  else
 		  return false;
   }
+  public static void safeClose(InputStream is) {
+	  if (is != null) {
+		  try {
+			  is.close();
+		  } catch (IOException e) {
+			  
+		  }
+	  }
+  }
+
+  public static void safeClose(OutputStream os) {
+	  if (os != null) {
+		  try {
+			  os.close();
+		  } catch (IOException e) {
+			  
+		  }
+	  }
+  }
+  
+  public static void safeClose(Reader reader) {
+	  if (reader != null) {
+		  try {
+			  reader.close();
+		  } catch (IOException e) {
+			  
+		  }
+	  }
+  }
+
 }

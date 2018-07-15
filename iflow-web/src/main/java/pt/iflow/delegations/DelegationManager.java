@@ -1286,7 +1286,11 @@ public class DelegationManager extends Thread {
       Logger.error(userInfo.getUtilizador(), this, "acceptDelegation", "Error acceptin delegation", e);
       result = -1;
     } finally {
-      DatabaseInterface.closeResources(db, st, st2, rs);
+      //jcosta: DatabaseInterface.closeResources(db, st, st2, rs);
+      if (db != null) DatabaseInterface.safeClose(db);
+      if (st != null) DatabaseInterface.safeClose(st);
+      if (st2 != null) DatabaseInterface.safeClose(st2);
+      if (rs != null) DatabaseInterface.safeClose(rs);
     }
 
     return result;

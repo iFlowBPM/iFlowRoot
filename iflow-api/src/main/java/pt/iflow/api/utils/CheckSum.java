@@ -150,12 +150,7 @@ public class CheckSum implements Serializable {
       return new String(Hex.encode(digest));
     } catch (Exception e) {
     } finally {
-      if(null != in) {
-        try {
-          in.close();
-        } catch (IOException e) {
-        }
-      }
+       	if( in != null) Utils.safeClose(in);
     }
     return null;
   }

@@ -13,6 +13,7 @@ import pt.iflow.api.core.Repository;
 import pt.iflow.api.core.RepositoryFile;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.UserInfoInterface;
+import pt.iflow.api.utils.Utils;
 
 import com.lowagie.text.html.HtmlEncoder;
 
@@ -92,6 +93,7 @@ public class RepositoryEditor {
    */
   public static String retrieveFile(UserInfoInterface userInfo, String file, String type) {
     StringBuffer retObj = new StringBuffer();
+    BufferedReader inputStream = null;
     try {
       if (StringUtils.isBlank(file) || StringUtils.isBlank(type) || userInfo == null) {
         Logger.warning(userInfo.getUtilizador(), "RepositoryEditor", "retrieveFile", "Unable to load file (file=\"" + file
@@ -113,7 +115,7 @@ public class RepositoryEditor {
       }
 
       if (repFile != null && repFile.exists()) {
-        BufferedReader inputStream = new BufferedReader(new InputStreamReader(repFile.getResourceAsStream()));
+        inputStream = new BufferedReader(new InputStreamReader(repFile.getResourceAsStream()));
         String line = "";
         while ((line = inputStream.readLine()) != null) {
           retObj.append(line + "\r");
@@ -124,7 +126,10 @@ public class RepositoryEditor {
       }
     } catch (Exception e) {
       Logger.error(userInfo.getUtilizador(), "RepositoryEditor", "retrieveFile", "Unable to retrieve file information.", e);
-    }
+	} finally {
+		if( inputStream != null) Utils.safeClose(inputStream);
+	}    
+
     return HtmlEncoder.encode(retObj.toString());
   }
 

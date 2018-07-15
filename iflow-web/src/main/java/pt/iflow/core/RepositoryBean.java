@@ -35,6 +35,7 @@ import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.Setup;
 import pt.iflow.api.utils.UserInfoInterface;
+import pt.iflow.api.utils.Utils;
 import pt.iflow.api.utils.XslTransformerFactory;
 
 import org.apache.commons.io.FilenameUtils;
@@ -313,9 +314,10 @@ public class RepositoryBean implements Repository {
 		}
 
 		if (ok) {
+			FileOutputStream fout = null;
 			try {
 			
-				FileOutputStream fout = new FileOutputStream(file);
+				fout = new FileOutputStream(file);
 
 				fout.write(data);
 				ok = true;
@@ -324,7 +326,10 @@ public class RepositoryBean implements Repository {
 			} catch (IOException e) {
 				e.printStackTrace();
 				ok = false;
-			} 
+			} finally {
+				if( fout != null) Utils.safeClose(fout);
+			}    
+			
 
 			// fire event
 			if (null != evt)
@@ -667,6 +672,7 @@ public class RepositoryBean implements Repository {
 			} catch (FileNotFoundException e) {
 				Logger.error(null, this, "getResourceData", "Error opening file " + file + ": " + e.getMessage(), e);
 			}
+			
 			return inStream;
 		}
 
@@ -814,22 +820,8 @@ public class RepositoryBean implements Repository {
 			Logger.error(userInfo.getUtilizador(), this, "resetResource",
 					"Error resetting file " + name + ": " + e.getMessage(), e);
 		} finally {
-			if (null != fin) {
-				try {
-					fin.close();
-				} catch (IOException e) {
-					Logger.warning(userInfo.getUtilizador(), this, "resetResource",
-							"Error closing file " + sysFile + ": " + e.getMessage(), e);
-				}
-			}
-			if (null != fin) {
-				try {
-					fout.close();
-				} catch (IOException e) {
-					Logger.warning(userInfo.getUtilizador(), this, "resetResource",
-							"Error closing file " + orgFile + ": " + e.getMessage(), e);
-				}
-			}
+			if( fin != null) Utils.safeClose(fin);
+			if( fout != null) Utils.safeClose(fout);
 		}
 
 		return ok;

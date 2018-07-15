@@ -32,6 +32,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.UserInfoInterface;
+import pt.iflow.api.utils.Utils;
 import pt.iknow.utils.security.LibraryLoader;
 import pt.iknow.utils.security.LicenseProperties;
 import pt.iknow.utils.security.SecurityWrapper;
@@ -278,12 +279,7 @@ class FileBasedLicenseService implements LicenseService {
 		} catch (Exception e) {
 			Logger.error(null, this, "saveState", "Error saving license state.", e);
 		} finally {
-			try {
-				if (null != fout)
-					fout.close();
-			} catch (IOException e) {
-				Logger.adminError("FileBasedLicenseService", "saveState", "Caught exception: " + e.getMessage(), e);
-			}
+			if( fout != null) Utils.safeClose(fout);
 		}
 
 	}

@@ -25,18 +25,6 @@ import java.util.UUID;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import pt.iflow.applet.DynamicField;
-import pt.iflow.applet.DynamicField.Type;
-import pt.iflow.applet.DynamicForm;
-import pt.iflow.applet.ExtensionFileFilter;
-import pt.iflow.applet.IDEntry;
-import pt.iflow.applet.IVFile;
-import pt.iflow.applet.LoadImageAction;
-import pt.iflow.applet.Messages;
-import pt.iflow.applet.StringUtils;
-import pt.iflow.applet.TempVFile;
-import pt.iflow.applet.WebClient;
-
 import com.lowagie.text.Cell;
 import com.lowagie.text.Image;
 import com.lowagie.text.Rectangle;
@@ -55,6 +43,19 @@ import com.lowagie.text.pdf.PdfStamper;
 import com.lowagie.text.pdf.PdfString;
 import com.lowagie.text.pdf.TSAClient;
 import com.lowagie.text.pdf.TSAClientBouncyCastle;
+
+import pt.iflow.applet.DynamicField;
+import pt.iflow.applet.DynamicField.Type;
+import pt.iflow.applet.DynamicForm;
+import pt.iflow.applet.ExtensionFileFilter;
+import pt.iflow.applet.IDEntry;
+import pt.iflow.applet.IOUtils;
+import pt.iflow.applet.IVFile;
+import pt.iflow.applet.LoadImageAction;
+import pt.iflow.applet.Messages;
+import pt.iflow.applet.StringUtils;
+import pt.iflow.applet.TempVFile;
+import pt.iflow.applet.WebClient;
 
 /**
  * No signature
@@ -194,15 +195,21 @@ public class PDFSignatureImpl implements FileSigner {
     int r;
     byte[] buffer = new byte[8192];
 
+    OutputStream out= null;
+    InputStream in = null;
     try {
-      OutputStream out= new FileOutputStream(fileAux);
-      InputStream in = pdfFile.getInputStream();
+      out= new FileOutputStream(fileAux);
+      in = pdfFile.getInputStream();
       
       while ((r = in.read(buffer)) > 0)
         out.write(buffer, 0, r);
     } catch (IOException e) {   
       e.printStackTrace();  
-      }      
+	} finally {
+		if( out != null) IOUtils.safeClose(out);
+		if( in != null) IOUtils.safeClose(in);
+	}
+    
     
     return fileAux;
   }
@@ -318,7 +325,12 @@ public class PDFSignatureImpl implements FileSigner {
     sap.preClose(exc);
 
     PdfPKCS7 sgn = new PdfPKCS7(key, chain, null, "SHA1", prov.getName(), false);
-    InputStream data = sap.getRangeStream();
+    InputStream data = null;
+    try {
+		data = sap.getRangeStream();
+	} finally {
+		if( data != null) IOUtils.safeClose(data);
+	}
     MessageDigest messageDigest = MessageDigest.getInstance("SHA1"); //$NON-NLS-1$
     byte buf[] = new byte[8192];
     int n;
@@ -381,6 +393,7 @@ public class PDFSignatureImpl implements FileSigner {
   public IVFile sign(final IVFile pdf) {
     IVFile outFile = null;
     OutputStream fout = null;
+    InputStream input = null;
     try {
       outFile = new TempVFile(pdf.getName(), pdf.getVarName());
       fout = outFile.getOutputStream();
@@ -390,7 +403,7 @@ public class PDFSignatureImpl implements FileSigner {
     	  //Verificar se � para utilizar a mesma imagem na rubrica e na assinatura
     	  if(LoadImageAction.rubimgSameass){  	    
 		      String n = rubricarTodas(pdf);
-		      InputStream input = new FileInputStream(n);
+		      input = new FileInputStream(n);
 		      byte[] buffer = new byte[8192];
 		      int r;
 		      while ((r = input.read(buffer)) > 0)
@@ -402,7 +415,7 @@ public class PDFSignatureImpl implements FileSigner {
               String write = copy(read);             
               String signFile = hashSignExternalTimestamp(read, write); 
               
-              InputStream input = new FileInputStream(signFile);
+              input = new FileInputStream(signFile);
               byte[] buffer = new byte[8192];
               int r;
               while ((r = input.read(buffer)) > 0)
@@ -412,7 +425,7 @@ public class PDFSignatureImpl implements FileSigner {
     	  }
       }else{
     	  String signFile = hashSignExternalTimestamp(pdf);
-          InputStream input = new FileInputStream(signFile);
+          input = new FileInputStream(signFile);
           byte[] buffer = new byte[8192];
           int r;
           while ((r = input.read(buffer)) > 0)
@@ -425,13 +438,10 @@ public class PDFSignatureImpl implements FileSigner {
     } catch (Exception e) {
       log.error("Error signing data", e);
       outFile = null;
-    } finally {
-      try {
-        if (fout != null)
-          fout.close();
-      } catch (IOException e) {
-      }
-    }
+	} finally {
+		if( fout != null) IOUtils.safeClose(fout);
+		if( input != null) IOUtils.safeClose(input);
+	}
 
     return outFile;
   }
@@ -478,13 +488,9 @@ public class PDFSignatureImpl implements FileSigner {
     } catch (Exception e) {
       log.error("error verifying file", e); //$NON-NLS-1$
       return Messages.getString("PDFSignatureImpl.24"); //$NON-NLS-1$
-    } finally {
-      try {
-        if(fin != null) {
-          fin.close();
-        }
-      } catch(IOException e) {}
-    }
+	} finally {
+		if( fin != null) IOUtils.safeClose(fin);
+	}
     return sb.toString();
   }
 
@@ -581,7 +587,7 @@ public String rubricarTodas(IVFile pdffile){
   public void insertImageRubrica(PdfReader reader, int pageCount, String fileWrite){	
       int iniY = 841 - 10;
       int iniX = 595 - 10;
-      
+      InputStream data = null;
 	try {
 
 		//Verificar qual � a imagem para utilizar na rubrica
@@ -656,7 +662,7 @@ public String rubricarTodas(IVFile pdffile){
 	    PrivateKey key = entry.getPrivateKey();
 	    Certificate [] chain = entry.getCertificateChain();
 		PdfPKCS7 sgn = new PdfPKCS7(key, chain, null, "SHA1", prov.getName(), false); //$NON-NLS-1$
-	    InputStream data = sap.getRangeStream();
+	    data = sap.getRangeStream();
 	    MessageDigest messageDigest = MessageDigest.getInstance("SHA1"); //$NON-NLS-1$
 	    byte buf[] = new byte[8192];
 	    int n;
@@ -690,6 +696,10 @@ public String rubricarTodas(IVFile pdffile){
 	    sap.close(dic2);
 			   
 	} catch (Exception e) {e.printStackTrace();} 
+	finally {
+		if( data != null) IOUtils.safeClose(data);
+	}
+
   }
   
   public String getGuidName(){

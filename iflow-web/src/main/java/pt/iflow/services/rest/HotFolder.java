@@ -20,6 +20,7 @@ import org.apache.commons.io.FileUtils;
 import pt.iflow.api.core.BeanFactory;
 import pt.iflow.api.flows.FlowSetting;
 import pt.iflow.api.flows.FlowSettings;
+import pt.iflow.api.utils.Utils;
 import pt.iflow.api.utils.hotfolder.HotFolderConfig;
 
 import com.sun.jersey.core.header.FormDataContentDisposition;
@@ -50,8 +51,8 @@ public class HotFolder {
 		if ("true".equals(hfOn.getValue())) {
 			File fileToStream = new File(hfFolder.getValue().split(";")[0] + File.separator
 					+ fileDetail.getFileName());
+			OutputStream out = null;
 			try {
-				OutputStream out = null;
 				int read = 0;
 				byte[] bytes = new byte[1024];
 
@@ -63,7 +64,9 @@ public class HotFolder {
 				out.close();
 			} catch (IOException e) {
 				return Response.status(500).entity(e.getMessage()).build();
-			}
+			} finally {
+				if( out != null) Utils.safeClose(out);
+			}    
 		}
 		String output = "OK";
 		return Response.status(200).entity(output).build();

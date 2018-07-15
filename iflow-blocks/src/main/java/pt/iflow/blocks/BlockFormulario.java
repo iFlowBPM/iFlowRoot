@@ -1900,16 +1900,10 @@ public class BlockFormulario extends Block implements FormOperations {
      
     } catch (IOException e) {
       e.printStackTrace();
-    } finally {
-     try{
-    	if (null != tmpOut) 
-          tmpOut.close();
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-        
-      }
-    }
+	} finally {
+		if( tmpOut != null) Utils.safeClose(tmpOut);
+	}    
+  }
   
 
   public ProcessData processForm(final UserInfoInterface userInfo, final ProcessData pdProcData, final FormData afdFormData, final ServletUtils servletContext, final boolean ignoreValidation) {

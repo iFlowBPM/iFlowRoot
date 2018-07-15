@@ -152,7 +152,11 @@ public class ProfilesSyncManager extends Thread {
     } catch (Exception e) {
       Logger.adminError("ProfilesSyncManager", "addProfile", "Error Inserting Profile from Database", e);
     } finally {
-      DatabaseInterface.closeResources(db, st, rs);
+      //jcosta: DatabaseInterface.closeResources(db, st, rs);
+      if (db != null) DatabaseInterface.safeClose(db);
+      if (st != null) DatabaseInterface.safeClose(st);      
+      if (rs != null) DatabaseInterface.safeClose(rs);
+
     }
     return retObj;
   }

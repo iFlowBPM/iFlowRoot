@@ -217,10 +217,9 @@ public class FlowFolderChecker implements Runnable {
         Logger.adminError(signature, "processFile","ERROR creating process data for flow "+getId()+" with user " + ui.getUtilizador());
         throw e;
       }
-      finally
-      {
-    	  try { if(null != conn) conn.close();	} catch (Exception e2) {}
-    	  try { if(null != pst) pst.close();	} catch (Exception e2) {}
+      finally {          
+        if (conn != null) DatabaseInterface.safeClose(conn);
+        if (pst != null) DatabaseInterface.safeClose(pst);      
       }
       
       String docVarName = hfconfig.getDocVar();
@@ -284,20 +283,10 @@ public class FlowFolderChecker implements Runnable {
                 getId() + "unregistering transaction in userinfo", e); 
           }
         }
-      }
-    	  finally {
-    		  try {
-    			  if(null != conn) {
-    	    	        conn.close();
-    	    	      }
-    		  		} catch (Exception e2) {}
-    		  try {
-    			  if(null != pst) {
-    	    	        pst.close();
-    	    	      }
-    		  		} catch (Exception e2) {}
-    	      
-    	    }
+      } catch (Exception e1) {}
+
+      try {if(null != conn) conn.close();} catch (Exception e2) {}
+      try {if(null != pst) pst.close();} catch (Exception e2) {}
         
       }
     }
