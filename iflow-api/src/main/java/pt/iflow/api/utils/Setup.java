@@ -63,7 +63,7 @@ public class Setup {
             e.printStackTrace();
             Logger.warning(null, "Setup", "readPropertiesFile",
                     "Error reading file " + sFile, e);
-        }
+        } 
         
         return properties;
     }

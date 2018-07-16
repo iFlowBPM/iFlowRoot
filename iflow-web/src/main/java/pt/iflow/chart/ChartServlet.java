@@ -86,7 +86,7 @@ public class ChartServlet extends HttpServlet {
 
     input = rep.getChartFile(userInfo, file).getResourceAsStream();
 
-    if (null == input) {
+    if (null == input && rep != null) {
       // Try to read template as a whole file name
       file = template;
       input = rep.getChartFile(userInfo, file).getResourceAsStream();
@@ -257,9 +257,9 @@ public class ChartServlet extends HttpServlet {
         ctx.put(Const.SESSION_PROCESS, procData);
         ctx.put(DataConverter.PROPERTIES, props);
         
-        if(sTemplate != null){
+        if(sTemplate != null && userInfo != null && props != null){
         	IChart chart = instantiate(ctx, userInfo, sTemplate, props);
-        	if(null != chart)
+        	if(null != chart && procData != null && bout != null)
         		chart.draw(ctx, procData, nWidth, nHeight, bout);
         	} //response.getOutputStream());
       } catch (Throwable t) {

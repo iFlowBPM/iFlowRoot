@@ -148,7 +148,7 @@ public class AppletServlet extends HttpServlet {
               Logger.adminWarning("AppletServlet", "init", "Could not load manifest", e);
             } finally {
               try {
-                mfIn.close();
+                if (mfIn != null) mfIn.close();
               } catch (IOException e) {
               }
               mfIn = null;
@@ -276,11 +276,12 @@ public class AppletServlet extends HttpServlet {
               }
               if(null != in) {
                 try {
-                  in.close();
+                  if (in!= null) in.close();
                 } catch (IOException e) {
                 }
               }
               if(null != tmpFile) tmpFile.delete();
+              try {if(null != jarFile) jarFile.close();} catch (Exception e) {}
             }
           }
           
@@ -295,7 +296,7 @@ public class AppletServlet extends HttpServlet {
               Logger.adminWarning("AppletServlet", "init", "Could not save manifest", e);
             } finally {
               try {
-                mfOut.close();
+                if (mfOut != null) mfOut.close();
               } catch (IOException e) {
               }
               mfOut = null;
