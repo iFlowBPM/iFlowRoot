@@ -660,9 +660,7 @@ public class EmailManager extends Thread {
     }
 
     Repository rep = BeanFactory.getRepBean();
-    try (
-    	InputStream input = rep.getEmailTemplate(userInfo, asTemplate).getResourceAsStream();
-    	){
+    try (InputStream input = rep.getEmailTemplate(userInfo, asTemplate).getResourceAsStream();){
    
       NamedXMLElement templateDOM = null; // this is a DOM abstraction...
       if (null != input) {

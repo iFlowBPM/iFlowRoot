@@ -376,12 +376,9 @@ public class Logger {
 	public static void logFlowState(ProcessData procData, int state, String username, String message, String caller,
 			String method) {
 		if (!Const.DONT_LOG_IN_DB && procData.isInDB()) {
-			Connection db = null;
-			Statement st = null;
-			PreparedStatement pst = null;
-			ResultSet rs = null;
-			try {
-				db = Utils.getDataSource().getConnection();
+						
+			try (Connection db = Utils.getDataSource().getConnection();){
+				
 				db.setAutoCommit(false);
 
 				int flowid = procData.getFlowId();
@@ -390,28 +387,25 @@ public class Logger {
 				int logId = 0;
 
 				String logIdQuery = DBQueryManager.getQuery("Logger.GET_FLOW_STATE_LOG_ID");
-				st = db.createStatement();
-				try {
-					if (Const.DB_TYPE.equalsIgnoreCase("SQLSERVER")) {
-						st.execute(DBQueryManager.getQuery("FlowSettings.getNextMid"));
+				
+				try (Statement st = db.createStatement(); ){
+					st.execute(DBQueryManager.getQuery("FlowSettings.getNextMid"));
 
-						if (null != rs && st.getMoreResults())
-							rs = st.getResultSet();
-						else
-							rs = st.executeQuery(logIdQuery);
-
+					//						if (null != rs && st.getMoreResults())
+					//							try (ResultSet rs = st.getResultSet();) {
+					//								if (rs.next()) {
+					//									logId = rs.getInt(1);
+					//								}
+					//							}
+					//						else
+					try (ResultSet rs = st.executeQuery(logIdQuery);) {
 						if (rs.next()) {
 							logId = rs.getInt(1);
 						}
-
-					}
+					}		
 
 				} catch (Exception e) {
 
-				} finally {
-					try { if (null != rs) rs.close();} catch (Exception e) {}
-					try { if (null != st) st.close();} catch (Exception e) {}
-					try { if (null != db) db.close();} catch (Exception e) {}
 				}
 
 				FlowStateLogTO flowStateLog = new FlowStateLogTO(flowid, pid, subpid, state,
@@ -444,27 +438,28 @@ public class Logger {
 				}
 				query.append(")");
 
-				pst = db.prepareStatement(query.toString());
-				int nextIndex = 1;
-				pst.setInt(nextIndex, flowStateLog.getLog().getLogId());
-				nextIndex++;
-				pst.setString(nextIndex, flowStateLog.getLog().getLog());
-				nextIndex++;
-				pst.setTimestamp(nextIndex, flowStateLog.getLog().getCreationDate());
-				nextIndex++;
-				if (flowStateLog.getLog().getUsername() != null) {
-					pst.setString(nextIndex, flowStateLog.getLog().getUsername());
+				try (PreparedStatement pst = db.prepareStatement(query.toString());) {
+					int nextIndex = 1;
+					pst.setInt(nextIndex, flowStateLog.getLog().getLogId());
 					nextIndex++;
-				}
-				if (flowStateLog.getLog().getCaller() != null) {
-					pst.setString(nextIndex, flowStateLog.getLog().getCaller());
+					pst.setString(nextIndex, flowStateLog.getLog().getLog());
 					nextIndex++;
-				}
-				if (flowStateLog.getLog().getMethod() != null) {
-					pst.setString(nextIndex, flowStateLog.getLog().getMethod());
-				}
+					pst.setTimestamp(nextIndex, flowStateLog.getLog().getCreationDate());
+					nextIndex++;
+					if (flowStateLog.getLog().getUsername() != null) {
+						pst.setString(nextIndex, flowStateLog.getLog().getUsername());
+						nextIndex++;
+					}
+					if (flowStateLog.getLog().getCaller() != null) {
+						pst.setString(nextIndex, flowStateLog.getLog().getCaller());
+						nextIndex++;
+					}
+					if (flowStateLog.getLog().getMethod() != null) {
+						pst.setString(nextIndex, flowStateLog.getLog().getMethod());
+					}
 
-				pst.executeUpdate();
+					pst.executeUpdate();
+				}
 
 				// FlowStateLog table
 				query = new StringBuffer();
@@ -476,13 +471,14 @@ public class Logger {
 				query.append(",").append(FlowStateLogTO.LOG_ID);
 				query.append(") VALUES (?,?,?,?,?)");
 
-				pst = db.prepareStatement(query.toString());
-				pst.setInt(1, flowStateLog.getFlowid());
-				pst.setInt(2, flowStateLog.getPid());
-				pst.setInt(3, flowStateLog.getSubpid());
-				pst.setInt(4, flowStateLog.getState());
-				pst.setInt(5, flowStateLog.getLog().getLogId());
-				pst.executeUpdate();
+				try (PreparedStatement pst = db.prepareStatement(query.toString());) {
+					pst.setInt(1, flowStateLog.getFlowid());
+					pst.setInt(2, flowStateLog.getPid());
+					pst.setInt(3, flowStateLog.getSubpid());
+					pst.setInt(4, flowStateLog.getState());
+					pst.setInt(5, flowStateLog.getLog().getLogId());
+					pst.executeUpdate();
+				}
 
 				db.commit();
 			} catch (Exception ex) {
@@ -493,13 +489,14 @@ public class Logger {
 					}
 				} catch (Exception e) {
 				}
-			} finally {
+			} 
+			// finally {
 				//DatabaseInterface.closeResources(db, pst, st, rs);
-				try { if (null != rs) rs.close();} catch (Exception e) {}
-				try { if (null != pst) pst.close();} catch (Exception e) {}
-				try { if (null != st) st.close();} catch (Exception e) {}
-				try { if (null != db) db.close();} catch (Exception e) {}
-			}
+				//try { if (null != rs) rs.close();} catch (Exception e) {}
+//				try { if (null != pst) pst.close();} catch (Exception e) {}
+//				try { if (null != st) st.close();} catch (Exception e) {}
+				// try { if (null != db) db.close();} catch (Exception e) {}
+//			}
 		}
 	}
 
