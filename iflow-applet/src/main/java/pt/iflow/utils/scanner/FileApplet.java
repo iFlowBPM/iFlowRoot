@@ -533,12 +533,9 @@ public class FileApplet extends JApplet {
   }
 
   private File getDocument(final String fileUrl, final String cookies) {
-    HttpURLConnection conn = null;
-    InputStream is = null;
+    HttpURLConnection conn = null;    
 
-
-    File file = null;
-    FileOutputStream fout = null;
+    File file = null;   
     // Read file
     try {
       // open a URL connection to the Servlet 
@@ -573,28 +570,25 @@ public class FileApplet extends JApplet {
       if(null != cookies && cookies.trim().length() > 0)
         conn.setRequestProperty("Cookie", cookies); //$NON-NLS-1$
 
-      conn.connect();
-      is = conn.getInputStream();
-
       File tmpFile = File.createTempFile("sign _", ".tmp"); //$NON-NLS-1$ //$NON-NLS-2$
 
-      fout = new FileOutputStream(tmpFile);
-      byte [] b = new byte[8192];
-      int r = 0;
-      while((r = is.read(b)) != -1) fout.write(b, 0, r);
+      conn.connect();
+      
 
-      file = tmpFile;
+
+      try (FileOutputStream fout = new FileOutputStream(tmpFile);
+    		  InputStream is = conn.getInputStream();) {
+
+    	  byte [] b = new byte[8192];
+    	  int r = 0;
+    	  while((r = is.read(b)) != -1) fout.write(b, 0, r);
+
+    	  file = tmpFile;
+      }
     } catch (IOException e) {
       e.printStackTrace();
       file = null;
-    } finally {
-    	if( fout != null) IOUtils.safeClose(fout);
-    	if( is != null) IOUtils.safeClose(is); 
-    	
-      is = null;
-      conn = null;
-      fout = null;
-    }
+    } 
 
     return file;
   }

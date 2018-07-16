@@ -584,7 +584,7 @@ public class SubFlowDataExpander {
     for (XmlBlockType block : rawSubFlow)
     	for (XmlPortType port : block.getXmlPort())
     		if (endId.contains(port.getConnectedBlockId())) {
-    			if(port != null){
+    			if(port != null && subFlowBlockEnd != null){
     				port.setConnectedBlockId(subFlowBlockEnd.getId());
     				port.setConnectedPortName("portIn");
     			}

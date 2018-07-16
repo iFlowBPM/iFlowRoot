@@ -783,10 +783,10 @@ public class ProcessManagerBean implements ProcessManager {
 			if (rs.next()) {
 				if (rs.getBytes("procdatazip") == null || rs.getBytes("procdatazip").length == 0) { // Caso
 																									// nao
-																									// esteja
+					try (Reader reader = rs.getCharacterStream("procdata"))	{																			// esteja
 																									// comprimido
-					previousProcess = new ProcessXml(procData.getCatalogue(), rs.getCharacterStream("procdata"))
-							.getProcessData();
+						previousProcess = new ProcessXml(procData.getCatalogue(), reader).getProcessData();
+					} finally {}
 				} else { // Caso esteja comprimido
 					pdatazip = uncompress(rs.getBytes("procdatazip"));
 					pdata = new StringReader(pdatazip);
@@ -1304,7 +1304,6 @@ public class ProcessManagerBean implements ProcessManager {
 		Connection db = null;
 		Statement st = null;
 		ResultSet rs = null;
-		Reader charStream = null;
 		try {
 			db = DatabaseInterface.getConnection(userInfo);
 			st = db.createStatement();
@@ -1367,18 +1366,19 @@ public class ProcessManagerBean implements ProcessManager {
 				}
 				ProcessCatalogue catalogue = flowCatalogues.get(flowid);
 				
-				charStream = rs.getCharacterStream("procdata");
+				try (Reader charStream = rs.getCharacterStream("procdata");) {
 
-				ProcessXml reader = new ProcessXml(catalogue, charStream);
+					ProcessXml reader = new ProcessXml(catalogue, charStream);
 
-				ProcessData procData = reader.getProcessData();
-				procData.setReadOnly(bReadOnly);
-				procData.setInDB(true);
-				if (!procData.isReadOnly()) {
-					// avoid error trying to set closed on readonly process
-					procData.setClosed(rs.getInt("closed") == 1);
-				}
-				procs.add(procData);
+					ProcessData procData = reader.getProcessData();
+					procData.setReadOnly(bReadOnly);
+					procData.setInDB(true);
+					if (!procData.isReadOnly()) {
+						// avoid error trying to set closed on readonly process
+						procData.setClosed(rs.getInt("closed") == 1);
+					}
+					procs.add(procData);
+				} finally {}
 			}
 			//rs.close();
 			//rs = null;
@@ -1391,7 +1391,7 @@ public class ProcessManagerBean implements ProcessManager {
 			if (db != null) DatabaseInterface.safeClose(db);
 			if (st != null) DatabaseInterface.safeClose(st);
 			if (rs != null) DatabaseInterface.safeClose(rs);
-			if( charStream != null) Utils.safeClose(charStream);
+			
 		}
 
 		retObj = new ProcessData[procs.size()];

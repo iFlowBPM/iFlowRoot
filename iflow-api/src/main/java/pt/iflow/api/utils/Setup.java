@@ -57,16 +57,12 @@ public class Setup {
         Properties properties = new Properties();
         
         // Open properties file and get contents
-        FileInputStream propertiesFile = null;
-        try {
-            propertiesFile = new FileInputStream(sFile);
+        try (FileInputStream propertiesFile = new FileInputStream(sFile);){            
             properties.load(propertiesFile);
         } catch (Exception e) {
             e.printStackTrace();
             Logger.warning(null, "Setup", "readPropertiesFile",
                     "Error reading file " + sFile, e);
-        } finally {
-        	if( propertiesFile != null) Utils.safeClose(propertiesFile);
         }
         
         return properties;
@@ -101,102 +97,74 @@ public class Setup {
         Properties newMainProperties = new Properties();
         Properties newExtraProperties = new Properties();
         
-        FileInputStream propertiesFile = null;
         _configHome = ((IFLOW_HOME == null) ? "" : IFLOW_HOME);
         _configHome = FilenameUtils.concat(_configHome, "config");
         
-        try {
-            sFile = FilenameUtils.concat(_configHome, MAIN_PROP_FILE);
+        sFile = FilenameUtils.concat(_configHome, MAIN_PROP_FILE);
+        try (FileInputStream propertiesFile = new FileInputStream(sFile);){
             // Open properties file and get contents
-            propertiesFile = new FileInputStream(sFile);
             newMainProperties.load(propertiesFile);
         } catch (Exception e) {
             Logger.error("", "Setup", "loadProperties", "Setup: unable to load properties file (" + sFile + ").", e);
             System.exit(1);
-        } finally {
-        	if( propertiesFile != null) Utils.safeClose(propertiesFile);
-            propertiesFile = null;
-        }
+        } 
         
-        try {
-            sFile = FilenameUtils.concat(_configHome, AUTH_PROP_FILE);
+        sFile = FilenameUtils.concat(_configHome, AUTH_PROP_FILE);
+        try (FileInputStream propertiesFile = new FileInputStream(sFile);){
             // Open properties file and get contents
-            propertiesFile = new FileInputStream(sFile);
             newExtraProperties.load(propertiesFile);
         } catch (Exception e) {
           Logger.error("", "Setup", "loadProperties", "Setup: unable to load properties file ("+ sFile + ").", e);
           System.exit(1);
-        } finally {
-        	if( propertiesFile != null) Utils.safeClose(propertiesFile);
-            propertiesFile = null;
-        }
+        } 
         
-        try {
-            sFile = FilenameUtils.concat(_configHome, FEED_PROP_FILE);
+        sFile = FilenameUtils.concat(_configHome, FEED_PROP_FILE);
+        try (FileInputStream propertiesFile = new FileInputStream(sFile);){
             // Open properties file and get contents
-            propertiesFile = new FileInputStream(sFile);
             newExtraProperties.load(propertiesFile);
         } catch (Exception e) {
           Logger.error("", "Setup", "loadProperties", "Setup: unable to load properties file ("
                     + sFile + ").");
             e.printStackTrace();
             System.exit(1);
-        } finally {
-        	if( propertiesFile != null) Utils.safeClose(propertiesFile);
-            propertiesFile = null;
-        }
+        } 
         
-        try {
-            sFile = FilenameUtils.concat(_configHome, DMS_PROP_FILE);
+        sFile = FilenameUtils.concat(_configHome, DMS_PROP_FILE);
+        try (FileInputStream propertiesFile = new FileInputStream(sFile);){
             // Open properties file and get contents
-            propertiesFile = new FileInputStream(sFile);
             newExtraProperties.load(propertiesFile);
         } catch (Exception e) {
           Logger.error("", "Setup", "loadProperties", "Setup: unable to load properties file (" + sFile + ").", e);
           System.exit(1);
-        } finally {
-        	if( propertiesFile != null) Utils.safeClose(propertiesFile);
-            propertiesFile = null;
-        }
+        } 
         
-        try {
-            sFile = FilenameUtils.concat(_configHome, CERT_PROP_FILE);
+        sFile = FilenameUtils.concat(_configHome, CERT_PROP_FILE);
+        try (FileInputStream propertiesFile = new FileInputStream(sFile);){
             // Open properties file and get contents
-            propertiesFile = new FileInputStream(sFile);
             newExtraProperties.load(propertiesFile);
         } catch (Exception e) {
           Logger.error("", "Setup", "loadProperties", "Setup: unable to load properties file (" + sFile + ").", e);
           System.exit(1);
-        } finally {
-        	if( propertiesFile != null) Utils.safeClose(propertiesFile);
-            propertiesFile = null;
-        }
+        } 
         
-        try {
-            sFile = FilenameUtils.concat(_configHome, SIGN_PROP_FILE);
+        sFile = FilenameUtils.concat(_configHome, SIGN_PROP_FILE);
+        try (FileInputStream propertiesFile = new FileInputStream(sFile);){
             // Open properties file and get contents
-            propertiesFile = new FileInputStream(sFile);
             newExtraProperties.load(propertiesFile);
         } catch (Exception e) {
           Logger.error("", "Setup", "loadProperties", "Setup: unable to load properties file (" + sFile + ").", e);
           System.exit(1);
-        } finally {
-        	if( propertiesFile != null) Utils.safeClose(propertiesFile);
-            propertiesFile = null;
-        }
+        } 
         
-        try {
-            sFile = FilenameUtils.concat(_configHome, SSO_PROP_FILE);
+        sFile = FilenameUtils.concat(_configHome, SSO_PROP_FILE);
+        try (FileInputStream propertiesFile = new FileInputStream(sFile);){
             // Open properties file and get contents
-            propertiesFile = new FileInputStream(sFile);
+            
             newExtraProperties.load(propertiesFile);
         } catch (Exception e) {
           Logger.error("", "Setup", "loadProperties", "Setup: unable to load properties file (" + sFile + ").", e);
           System.exit(1);
-        } finally {
-        	if( propertiesFile != null) Utils.safeClose(propertiesFile);
-            propertiesFile = null;
-        }
+        } 
         
         _pMainProperties = newMainProperties;
         _pExtraProperties = newExtraProperties;
@@ -256,21 +224,13 @@ public class Setup {
             }
         }
         
-        FileOutputStream propertiesFile = null;
-        try {
-            String sFile = stmp + MAIN_PROP_FILE;
-            
-            propertiesFile = new FileOutputStream(sFile);
-            
-            stmp = "iFlow Properties modified in " + new java.util.Date();
-            
+        String sFile = stmp + MAIN_PROP_FILE;           
+        try (FileOutputStream propertiesFile = new FileOutputStream(sFile);){                                     
+            stmp = "iFlow Properties modified in " + new java.util.Date();            
             _pMainProperties.store(propertiesFile, stmp);
         } catch (Exception e) {
           Logger.error("", "Setup", "loadProperties", "Unable to write properties: " + e.getMessage(), e);
         }
-        finally {
-        	if( propertiesFile != null) Utils.safeClose(propertiesFile);
-		}
     }
     
     private static Properties cloneProperties() {
@@ -314,19 +274,15 @@ public class Setup {
     } catch (FileNotFoundException e) {
       return null;
     }
-    finally {
-    	if( fis != null) Utils.safeClose(fis);
-	}
   }
 
   public static void storeResource(String name, InputStream data) {
-    FileOutputStream fout = null;
+    
     File f = fixFile(name);
     File fBak = fixFile(name+".bak");
-    try {
-      if(fBak.exists()) fBak.delete();
-      if(f.exists()) f.renameTo(fBak);
-      fout= new FileOutputStream(f);
+    if(fBak.exists()) fBak.delete();
+    if(f.exists()) f.renameTo(fBak);
+    try (FileOutputStream fout= new FileOutputStream(f);){
       byte [] b = new byte[4096];
       int r;
 
@@ -335,9 +291,7 @@ public class Setup {
 
     } catch (FileNotFoundException e) {
     } catch (IOException e) {
-    } finally {
-    	if( fout != null) Utils.safeClose(fout);
-    }
+    } 
 
   }
   

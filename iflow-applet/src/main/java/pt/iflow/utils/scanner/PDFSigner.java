@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.KeyStore;
@@ -250,12 +251,17 @@ public class PDFSigner implements FileSigner {
     if(!signatureLoaded) return null;
     
     File outFile = null;
-    FileInputStream fin = null;
-    FileOutputStream fout = null;
     try {
-      outFile = File.createTempFile("signed_", ".pdf"); //$NON-NLS-1$ //$NON-NLS-2$
-      fin = new FileInputStream(pdf);
-      fout = new FileOutputStream(outFile);
+		outFile = File.createTempFile("signed_", ".pdf");
+	} catch (IOException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
+    
+    try (FileInputStream fin = new FileInputStream(pdf);
+    	    FileOutputStream fout = new FileOutputStream(outFile);){
+       //$NON-NLS-1$ //$NON-NLS-2$      
+      
       if(useSHA1) {
         sha1SignEncapsulated(fin, fout, key, certificateChain);
       } else {
@@ -263,10 +269,7 @@ public class PDFSigner implements FileSigner {
       }
     } catch (Exception e) {
       e.printStackTrace();
-    } finally {
-    	if( fin != null) IOUtils.safeClose(fin);
-    	if( fout != null) IOUtils.safeClose(fout);
-    }
+    } 
 
     return outFile;
 
@@ -283,10 +286,10 @@ public class PDFSigner implements FileSigner {
 
     StringBuffer sb = new StringBuffer();
     final String nl = System.getProperty("line.separator"); //$NON-NLS-1$
-    FileInputStream fin = null;
-    try {
+    
+    try (FileInputStream fin = new FileInputStream(pdf)){
       boolean second = false;
-      PdfReader reader = new PdfReader(fin = new FileInputStream(pdf));
+      PdfReader reader = new PdfReader(fin);
       AcroFields af = reader.getAcroFields();
       ArrayList names = af.getSignatureNames();
       if(names.isEmpty()) return Messages.getString("PDFSigner.13"); //$NON-NLS-1$
@@ -323,8 +326,6 @@ public class PDFSigner implements FileSigner {
     } catch (Exception e) {
       e.printStackTrace();
       return Messages.getString("PDFSigner.27"); //$NON-NLS-1$
-	} finally {
-		if( fin != null) IOUtils.safeClose(fin);
 	}   
     return sb.toString();
   }

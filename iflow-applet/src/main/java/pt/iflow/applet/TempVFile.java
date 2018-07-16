@@ -28,16 +28,13 @@ public class TempVFile implements IVFile {
     this.varName = varName;
 
     if(null != in) {
-      FileOutputStream fout = null;
-      try {
-        fout = new FileOutputStream(this.f);
+      
+      try (FileOutputStream fout = new FileOutputStream(this.f);){        
         byte[] b = new byte[8192];
         int r = 0;
         while ((r = in.read(b)) != -1)
           fout.write(b, 0, r);
-	  } finally {
-		  if( fout != null) IOUtils.safeClose(fout);
-	  }
+	  } 
     }
 
   }
@@ -49,8 +46,6 @@ public class TempVFile implements IVFile {
 		  return fis;
 	  } catch(FileNotFoundException e) {
 		  log.error("Could not open file for input", e); //$NON-NLS-1$
-	  } finally {
-		  if( fis != null) IOUtils.safeClose(fis);
 	  }
 	  return null;
   }
@@ -66,9 +61,7 @@ public class TempVFile implements IVFile {
 		  return fos;
 	  } catch(FileNotFoundException e) {
 		  log.error("Could not open file for output", e); //$NON-NLS-1$
-	  } finally {
-		  if( fos != null) IOUtils.safeClose(fos);
-	  }
+	  } 
 	  return null;
   }
 

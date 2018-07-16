@@ -614,17 +614,13 @@ public class UtilityApplet extends JApplet implements UtilityConstants {
 
 		File theFile = null;
 
-		FileOutputStream stream = null;
-		try {
+		try (FileOutputStream stream = new FileOutputStream(theFile)){
 			theFile = File.createTempFile(fileName, fileExt);
-			stream = new FileOutputStream(theFile);
+			
 			stream.write(byteArr);
 			stream.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		finally {
-			if (stream != null) IOUtils.safeClose(stream);
 		}
 
 		if (theFile != null && theFile.canRead() && theFile.isFile())

@@ -1193,11 +1193,11 @@ public class Utils {
   private static List<Class> getClasseNamesInPackage(String jarName, String packageName) {
     List<Class> classes = new ArrayList<Class>();
     packageName = packageName.replaceAll("\\.", "/");
-    InputStream inputStream = null;
-    JarInputStream jarFile = null;
-    try {
-    	inputStream = new FileInputStream(jarName);
-    	 jarFile= new JarInputStream( inputStream);
+    
+
+    try (InputStream inputStream = new FileInputStream(jarName);
+         JarInputStream  jarFile= new JarInputStream( inputStream);){
+    	
       JarEntry jarEntry;
 
       while (true) {
@@ -1217,10 +1217,7 @@ public class Utils {
     } catch (Exception e) {
       e.printStackTrace();
     }
-    finally {
-    	if( inputStream != null) Utils.safeClose(inputStream);
-    	if( jarFile != null) Utils.safeClose(jarFile);
-	}
+    
     return classes;
   }
 

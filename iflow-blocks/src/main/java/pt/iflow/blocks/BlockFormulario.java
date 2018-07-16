@@ -1883,26 +1883,25 @@ public class BlockFormulario extends Block implements FormOperations {
    *          the generated HTML form
    */
   protected static void dumpGeneratedForm(final byte[] xml, final byte[] html) {
-    if (StringUtils.isEmpty(Const.DEBUG_FORM)
-        || !ArrayUtils.contains(new String[] { "true", "yes" }, Const.DEBUG_FORM.toLowerCase()))
-      return;
-    OutputStream tmpOut = null;
-    //String iflowHome = System.getProperty("iflow.home");
-    String iflowHome = Const.sIFLOW_HOME;
-    try {
-      // This will output the generated form and HTML
-      tmpOut = new FileOutputStream(new File(iflowHome, "form.xml"));
-      tmpOut.write(xml);
-            
-      tmpOut = new FileOutputStream(new File(iflowHome, "form.html"));
-      tmpOut.write(html);
-      
-     
-    } catch (IOException e) {
-      e.printStackTrace();
-	} finally {
-		if( tmpOut != null) Utils.safeClose(tmpOut);
-	}    
+	  if (StringUtils.isEmpty(Const.DEBUG_FORM)
+			  || !ArrayUtils.contains(new String[] { "true", "yes" }, Const.DEBUG_FORM.toLowerCase()))
+		  return;
+	  
+	  //String iflowHome = System.getProperty("iflow.home");
+	  String iflowHome = Const.sIFLOW_HOME;
+	  try (OutputStream tmpOut = new FileOutputStream(new File(iflowHome, "form.xml"));){
+		  // This will output the generated form and HTML		  
+		  tmpOut.write(xml);
+	  } catch (IOException e) {
+		  e.printStackTrace();
+	  }   
+
+	  try (OutputStream tmpOut = new FileOutputStream(new File(iflowHome, "form.html"));){		  
+		  tmpOut.write(html);     
+
+	  } catch (IOException e) {
+		  e.printStackTrace();
+	  }   
   }
   
 

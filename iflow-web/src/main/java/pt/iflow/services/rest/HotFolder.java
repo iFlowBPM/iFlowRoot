@@ -50,13 +50,11 @@ public class HotFolder {
 		
 		if ("true".equals(hfOn.getValue())) {
 			File fileToStream = new File(hfFolder.getValue().split(";")[0] + File.separator
-					+ fileDetail.getFileName());
-			OutputStream out = null;
-			try {
+					+ fileDetail.getFileName());			
+			try (OutputStream out = new FileOutputStream(fileToStream);){
 				int read = 0;
 				byte[] bytes = new byte[1024];
-
-				out = new FileOutputStream(fileToStream);
+				
 				while ((read = uploadedInputStream.read(bytes)) != -1) {
 					out.write(bytes, 0, read);
 				}
@@ -64,9 +62,7 @@ public class HotFolder {
 				out.close();
 			} catch (IOException e) {
 				return Response.status(500).entity(e.getMessage()).build();
-			} finally {
-				if( out != null) Utils.safeClose(out);
-			}    
+			}  
 		}
 		String output = "OK";
 		return Response.status(200).entity(output).build();

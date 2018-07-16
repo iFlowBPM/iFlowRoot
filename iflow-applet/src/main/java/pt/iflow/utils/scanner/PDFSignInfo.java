@@ -225,10 +225,9 @@ public class PDFSignInfo extends JPanel {
           } catch (NoSuchProviderException e1) {
             e1.printStackTrace();
           }
-
-          FileInputStream fis1 = null;
-          try {
-            fis1 = new FileInputStream(keyStore);
+          
+          try (FileInputStream fis1 = new FileInputStream(keyStore)){
+            ;
             store.load(fis1, password=new char[0]); // experimenta sem password
             fail = false;
             jtfStore.setText(keyStore.getName());
@@ -239,9 +238,8 @@ public class PDFSignInfo extends JPanel {
           } catch (FileNotFoundException e1) {
             e1.printStackTrace();
           } catch (IOException e1) {
-        	  FileInputStream fis = null;
-            try {
-              fis = new FileInputStream(keyStore);
+        	  
+            try (FileInputStream fis = new FileInputStream(keyStore);) {              
               store.load(fis, password=askPassword(Messages.getString("PDFSignInfo.20"))); //$NON-NLS-1$
               fail = false;
               jtfStore.setText(keyStore.getName());
@@ -254,10 +252,7 @@ public class PDFSignInfo extends JPanel {
             } catch (IOException e2) {
               JOptionPane.showMessageDialog(PDFSignInfo.this, Messages.getString("PDFSignInfo.21") + //$NON-NLS-1$
               		Messages.getString("PDFSignInfo.22"), Messages.getString("PDFSignInfo.23"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
-        	} finally {
-        		if( fis != null) IOUtils.safeClose(fis);
-        		if( fis1 != null) IOUtils.safeClose(fis1);
-        	}           
+        	}         
            }
         }
         

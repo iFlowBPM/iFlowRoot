@@ -93,7 +93,7 @@ public class BlockVFSGenerateSerialCode extends Block {
     	 try {
           
           CodeTemplateManager ctm = BeanFactory.getCodeTemplateManagerBean();
-          if(null != serial && null != ctm)
+          if(null != serial && null != ctm && null != template)
         	  serial.setValue(ctm.generateSerialCode(userInfo, template.getRawValue()));
           Logger.debug(login, this, "after", " Generate Serial Code successfully!");
         } catch (Exception ei) {

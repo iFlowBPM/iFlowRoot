@@ -135,11 +135,10 @@ public class CheckSum implements Serializable {
 
   public static String digest(File file) {
     if(null == file) return null;
-    InputStream in = null;
-    try {
-      MessageDigest md = MessageDigest.getInstance("SHA-1");
-      in = new FileInputStream(file);
 
+    try (InputStream in = new FileInputStream(file)){
+      MessageDigest md = MessageDigest.getInstance("SHA-1");
+      
       byte [] b = new byte[8192];
       int r;
 
@@ -148,10 +147,8 @@ public class CheckSum implements Serializable {
 
       byte [] digest = md.digest();
       return new String(Hex.encode(digest));
-    } catch (Exception e) {
-    } finally {
-       	if( in != null) Utils.safeClose(in);
-    }
+    } catch (Exception e) {}
+    
     return null;
   }
   

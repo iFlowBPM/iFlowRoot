@@ -194,22 +194,13 @@ public class PDFSignatureImpl implements FileSigner {
 
     int r;
     byte[] buffer = new byte[8192];
-
-    OutputStream out= null;
-    InputStream in = null;
-    try {
-      out= new FileOutputStream(fileAux);
-      in = pdfFile.getInputStream();
-      
+    try (InputStream in = pdfFile.getInputStream();
+    	OutputStream  out= new FileOutputStream(fileAux);){
       while ((r = in.read(buffer)) > 0)
         out.write(buffer, 0, r);
     } catch (IOException e) {   
       e.printStackTrace();  
-	} finally {
-		if( out != null) IOUtils.safeClose(out);
-		if( in != null) IOUtils.safeClose(in);
 	}
-    
     
     return fileAux;
   }
@@ -367,81 +358,80 @@ public class PDFSignatureImpl implements FileSigner {
     return write;
   }
 
- private String copy(String fileSource) throws IOException {
-   File source = new File("");
-   
-   //File f = new File(System.getProperty("java.io.tmpdir"), "iFlow");  
-   //if(!f.exists()) 
-     //  f.mkdir();  
-   //String fileAux = f.getAbsolutePath()+"\\"+getGuidName()+".pdf";
-   
-   String fileAux = "";
-   File dest = new File("");
-   
-    InputStream in = new FileInputStream(source);
-    OutputStream out = new FileOutputStream(dest);
-    byte[] buf = new byte[1024];
-    int len;
-    while ((len = in.read(buf)) > 0) {
-        out.write(buf, 0, len);
-    }
-    in.close();
-    out.close();
-    return fileAux;
-}
+  private String copy(String fileSource) throws IOException {
+	  File source = new File("");
+
+	  //File f = new File(System.getProperty("java.io.tmpdir"), "iFlow");  
+	  //if(!f.exists()) 
+	  //  f.mkdir();  
+	  //String fileAux = f.getAbsolutePath()+"\\"+getGuidName()+".pdf";
+
+	  String fileAux = "";
+	  File dest = new File("");
+
+	  try (InputStream in = new FileInputStream(source);
+			  OutputStream out = new FileOutputStream(dest);) {
+		  byte[] buf = new byte[1024];
+		  int len;
+		  while ((len = in.read(buf)) > 0) {
+			  out.write(buf, 0, len);
+		  }
+	  } finally {}
+	  return fileAux;
+  }
   
   public IVFile sign(final IVFile pdf) {
     IVFile outFile = null;
-    OutputStream fout = null;
-    InputStream input = null;
     try {
-      outFile = new TempVFile(pdf.getName(), pdf.getVarName());
-      fout = outFile.getOutputStream();
+    	outFile = new TempVFile(pdf.getName(), pdf.getVarName());
+    } catch (Exception e) {
+    	log.error("Error signing data", e);
+    	return outFile;
+    } 
+    
+    try (OutputStream fout = outFile.getOutputStream();){
    
       //Verificar se � para rubricar todas as paginas
       if(LoadImageAction.getFlagRub()){
     	  //Verificar se � para utilizar a mesma imagem na rubrica e na assinatura
     	  if(LoadImageAction.rubimgSameass){  	    
 		      String n = rubricarTodas(pdf);
-		      input = new FileInputStream(n);
-		      byte[] buffer = new byte[8192];
-		      int r;
-		      while ((r = input.read(buffer)) > 0)
-		          fout.write(buffer, 0, r);      
-		      input.close();
+		      try (InputStream input = new FileInputStream(n);) {		      
+		    	  byte[] buffer = new byte[8192];
+		    	  int r;
+		    	  while ((r = input.read(buffer)) > 0)
+		    		  fout.write(buffer, 0, r);      
+		      } finally {}
 		      deleteFile(n);
     	  }else{
               String read = rubricarTodas(pdf);                                    
               String write = copy(read);             
               String signFile = hashSignExternalTimestamp(read, write); 
               
-              input = new FileInputStream(signFile);
-              byte[] buffer = new byte[8192];
-              int r;
-              while ((r = input.read(buffer)) > 0)
-                  fout.write(buffer, 0, r);      
-              input.close();
+              try (InputStream input = new FileInputStream(signFile);) {
+            	  byte[] buffer = new byte[8192];
+            	  int r;
+            	  while ((r = input.read(buffer)) > 0)
+            		  fout.write(buffer, 0, r);      
+              } finally {}
               deleteFile(signFile);
     	  }
       }else{
     	  String signFile = hashSignExternalTimestamp(pdf);
-          input = new FileInputStream(signFile);
-          byte[] buffer = new byte[8192];
-          int r;
-          while ((r = input.read(buffer)) > 0)
-              fout.write(buffer, 0, r);      
-          input.close();
-          deleteFile(signFile);
+    	  try (InputStream input = new FileInputStream(signFile);) {
+    		  byte[] buffer = new byte[8192];
+    		  int r;
+    		  while ((r = input.read(buffer)) > 0)
+    			  fout.write(buffer, 0, r);      
+    	  } finally {}
+    	  deleteFile(signFile);
       }
               
  
     } catch (Exception e) {
       log.error("Error signing data", e);
       outFile = null;
-	} finally {
-		if( fout != null) IOUtils.safeClose(fout);
-		if( input != null) IOUtils.safeClose(input);
-	}
+	} 
 
     return outFile;
   }
@@ -457,10 +447,10 @@ public class PDFSignatureImpl implements FileSigner {
 
     StringBuffer sb = new StringBuffer();
     final String nl = System.getProperty("line.separator"); //$NON-NLS-1$
-    InputStream fin = null;
-    try {
+    
+    try (InputStream fin = pdf.getInputStream()){
       boolean second = false;
-      PdfReader reader = new PdfReader(fin = pdf.getInputStream());
+      PdfReader reader = new PdfReader(fin);
       AcroFields af = reader.getAcroFields();
       ArrayList<?> names = af.getSignatureNames();
       if (names.isEmpty())
@@ -488,9 +478,7 @@ public class PDFSignatureImpl implements FileSigner {
     } catch (Exception e) {
       log.error("error verifying file", e); //$NON-NLS-1$
       return Messages.getString("PDFSignatureImpl.24"); //$NON-NLS-1$
-	} finally {
-		if( fin != null) IOUtils.safeClose(fin);
-	}
+	} 
     return sb.toString();
   }
 

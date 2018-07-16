@@ -238,15 +238,11 @@ public class DSLoader {
   public Map<String, DataSourceEntry> getRegisteredDataSources() {
     Map<String, DataSourceEntry> dsImplementations = new HashMap<String, DataSourceEntry>();
     Properties propsPoolImpl = new Properties();
-    InputStream is = null;
-    try {
-        is = Setup.getResource("pool_config.properties");
+    
+    try (InputStream is = Setup.getResource("pool_config.properties");){
         propsPoolImpl.load(is);
-      } catch (IOException e) {
-  	} finally {
-  		if( is != null) Utils.safeClose(is);
-  	}    
-
+    } catch (IOException e) {}   
+    
     Set<String> toRemove = new HashSet<String>();
 
     for (Object key : propsPoolImpl.keySet()) {
@@ -423,25 +419,21 @@ public class DSLoader {
 
   private void parseXML() throws IOException, ParserConfigurationException, SAXException {
 
-    InputStream in = Setup.getResource("ds.xml");
-    if (null == in)
-      return; // no pool configured
+	  try (InputStream in = Setup.getResource("ds.xml");) {
+		  if (null == in)
+			  return; // no pool configured
 
-    SAXParserFactory factory = SAXParserFactory.newInstance();
-    factory.setNamespaceAware(false);
-    factory.setValidating(false);
-    factory.setXIncludeAware(false);
+		  SAXParserFactory factory = SAXParserFactory.newInstance();
+		  factory.setNamespaceAware(false);
+		  factory.setValidating(false);
+		  factory.setXIncludeAware(false);
 
-    SAXParser parser = factory.newSAXParser();
-    DSLoaderHandler dh = new DSLoaderHandler();
+		  SAXParser parser = factory.newSAXParser();
+		  DSLoaderHandler dh = new DSLoaderHandler();
 
-    try {
-		parser.parse(in, dh);
-	} finally {
-		if( in != null) Utils.safeClose(in);
-	}    
-
-    dataSources.put(Const.SYSTEM_ORGANIZATION, dh.config);
+		  parser.parse(in, dh);
+		  dataSources.put(Const.SYSTEM_ORGANIZATION, dh.config);
+	  } finally {}
 
   }
 

@@ -69,17 +69,15 @@ public class AppendDocuments {
 
     if(fileIds.isEmpty()) return pdf;
 
-    OutputStream fout = null;
+    
     File tmpPdf = null;
     PdfReader reader = null;
     int numPages = 0;
     com.lowagie.text.Document document = null;
     PdfCopy writer = null;
-    InputStream in = null;
 
-
-    try {
-      in = new BufferedInputStream(new FileInputStream(pdf));
+    try (InputStream in = new BufferedInputStream(new FileInputStream(pdf));){
+      
       // read the original PDF from memory
       reader = new PdfReader(in);
       reader.consolidateNamedDestinations();
@@ -87,15 +85,15 @@ public class AppendDocuments {
 
       // output to temp file
       tmpPdf = File.createTempFile("print_", ".pdf");
-      fout = new FileOutputStream(tmpPdf);
-      Logger.debug(login, "AppenDocuments", "postProcessPDF", "Vai duplicar");
-      // step 1: creation of a document-object
-      document = new com.lowagie.text.Document(reader.getPageSizeWithRotation(1));
-      // step 2: we create a writer that listens to the document
-      writer = new PdfCopy(document, fout);
-      // step 3: we open the document
-      document.open();
-
+      try (FileOutputStream fout = new FileOutputStream(tmpPdf);) {
+    	  Logger.debug(login, "AppenDocuments", "postProcessPDF", "Vai duplicar");
+    	  // step 1: creation of a document-object
+    	  document = new com.lowagie.text.Document(reader.getPageSizeWithRotation(1));
+    	  // step 2: we create a writer that listens to the document
+    	  writer = new PdfCopy(document, fout);
+    	  // step 3: we open the document
+    	  document.open();
+      }
       // step 4: we add content
       PdfImportedPage page = null;
       for (int i = 1; i <= numPages;i++) {
@@ -111,9 +109,6 @@ public class AppendDocuments {
       Logger.debug(login, "AppenDocuments", "postProcessPDF", "Copiou paginas impressao");
       reader.close();
       reader = null;
-
-      in.close();
-      in = null;
 
       // Retrieve and append documents
       Documents docBean = BeanFactory.getDocumentsBean();
@@ -187,9 +182,6 @@ public class AppendDocuments {
       Logger.error(login, "AppenDocuments", "postProcessPDF", "Error creating temp file", e);
     } finally {
       if(document!=null) document.close();
-      if( fout != null) Utils.safeClose(fout);
-      if( in != null) Utils.safeClose(in);
-      fout = null;
       // remove the "unused" file
       if(tmpPdf != null) tmpPdf.delete();
     }
@@ -274,7 +266,7 @@ public class AppendDocuments {
     File pdf = null; 
     List<Integer> fileIds = new ArrayList<Integer>();
     for (int n = 0; n < docsVars.length; n++) {
-    	FileOutputStream fos = null;
+    	
       try {
         Object o = procData.eval(userInfo, docsVars[n]);
         if(o != null) {
@@ -285,9 +277,9 @@ public class AppendDocuments {
             if (pdf == null) {
               Document doc = docBean.getDocument(userInfo, procData, docid);
               pdf = File.createTempFile("merge_", ".pdf");
-              fos = new FileOutputStream(pdf);
-              fos.write(doc.getContent());
-              fos.close();
+              try (FileOutputStream fos = new FileOutputStream(pdf);) {
+            	  fos.write(doc.getContent());
+              }
             } else {
               try {
                 fileIds.add(docid);
@@ -297,23 +289,21 @@ public class AppendDocuments {
         }
       } catch (Throwable t) {
         Logger.warning(login, "AppenDocuments", "mergePDFs", "Error retrieving document IDs", t);
-	  	} finally {
-			if( fos != null) Utils.safeClose(fos);
-		}    
+	  	}    
     }
 
     if(fileIds.isEmpty()) return null;
 
-    OutputStream fout = null;
+    
     File tmpPdf = null;
     PdfReader reader = null;
     int numPages = 0;
     com.lowagie.text.Document document = null;
     PdfCopy writer = null;
-    InputStream in = null;
+    
 
-    try {
-      in = new BufferedInputStream(new FileInputStream(pdf));
+    try (InputStream  in = new BufferedInputStream(new FileInputStream(pdf));){
+     
       // read the original PDF from memory
       reader = new PdfReader(in);
       reader.consolidateNamedDestinations();
@@ -321,12 +311,13 @@ public class AppendDocuments {
 
       // output to temp file
       tmpPdf = File.createTempFile("print_", ".pdf");
-      fout = new FileOutputStream(tmpPdf);
-      Logger.debug(login, "AppenDocuments", "mergePDFs", "Vai duplicar");
-      // step 1: creation of a document-object
-      document = new com.lowagie.text.Document(reader.getPageSizeWithRotation(1));
-      // step 2: we create a writer that listens to the document
-      writer = new PdfCopy(document, fout);
+      try (OutputStream fout = new FileOutputStream(tmpPdf);) {
+    	  Logger.debug(login, "AppenDocuments", "mergePDFs", "Vai duplicar");
+    	  // step 1: creation of a document-object
+    	  document = new com.lowagie.text.Document(reader.getPageSizeWithRotation(1));
+    	  // step 2: we create a writer that listens to the document
+    	  writer = new PdfCopy(document, fout);
+      }
       // step 3: we open the document
       document.open();
 
@@ -346,8 +337,6 @@ public class AppendDocuments {
       reader.close();
       reader = null;
 
-      in.close();
-      in = null;
 
       // Retrieve and append documents
       Rectangle pSize = document.getPageSize();
@@ -421,9 +410,7 @@ public class AppendDocuments {
       Logger.error(login, "AppenDocuments", "mergePDFs", "Error creating temp file", e);
     } finally {
       if(document!=null) document.close();
-      if( fout != null) Utils.safeClose(fout);
-      if( in != null) Utils.safeClose(in);
-      fout = null;
+
       // remove the "unused" file
       if(tmpPdf != null) tmpPdf.delete();
     }

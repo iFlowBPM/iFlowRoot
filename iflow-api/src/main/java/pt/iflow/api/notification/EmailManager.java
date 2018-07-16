@@ -204,7 +204,7 @@ public class EmailManager extends Thread {
 	
 	          sError = null;
 	          email = null;
-	          InputStream inStream = null;
+	          
 	          try {
 	
 	            query = DBQueryManager.processQuery(EmailManager.EMAIL_DATA, new Object[]{sId});
@@ -228,13 +228,16 @@ public class EmailManager extends Thread {
 	              sError = "TO set";
 	
 	              // TO
-	              inStream = rs.getBinaryStream("eto");
-	              stmp = parseBlobStream(inStream);
-	              email.setTo(Utils.tokenize(stmp, sSEPARATOR));
-	
+	              try (InputStream inStream = rs.getBinaryStream("eto");) 
+	              {
+	            	  stmp = parseBlobStream(inStream);
+	            	  email.setTo(Utils.tokenize(stmp, sSEPARATOR));
+	              }
+	              catch (Exception e4) {}
+	              
 	              // CC
-	              try {
-	            	  inStream=rs.getBinaryStream("ecc");
+	              try (InputStream inStream = rs.getBinaryStream("ecc");)
+	              {
 	                stmp = parseBlobStream(inStream);
 	                if (stmp != null && !stmp.equals("")) {
 	                  email.setCc(Utils.tokenize(stmp, sSEPARATOR));
@@ -243,11 +246,7 @@ public class EmailManager extends Thread {
 	              catch (Exception e3) {
 	                Logger.adminError("EmailManager", "run", "Exception3: EMAIL " + sId + ": CC set FAILED: " + e3.getMessage(), e3);
 	              }
-	              finally {
-					if( inStream != null )
-						inStream.close();
-				}
-	
+	              
 	              sError = "SUBJECT set";
 	
 	              // SUBJECT
@@ -257,9 +256,12 @@ public class EmailManager extends Thread {
 	              sError = "BODY set";
 	
 	              // BODY
-	              inStream = rs.getBinaryStream("ebody");
-	              stmp = parseBlobStream(inStream);
-	              email.setMsgText(stmp);
+	              try (InputStream inStream = rs.getBinaryStream("ebody");)
+	              {
+		              stmp = parseBlobStream(inStream);
+		              email.setMsgText(stmp);
+	              }
+	              catch (Exception e4) {}
 	
 	              // HTML
 	              if (rs.getInt("ehtml") == 1) {
@@ -338,10 +340,7 @@ public class EmailManager extends Thread {
 	            Logger.adminError("EmailManager", "run", "Exception2: EMAIL " + sId + " FAILED (" + sError + "): " + e2.getMessage(), e2);
 	            processErroneousEmail(sId, email, lCurrTimestamp, db, st, tries, lastSent, nextSend);
 	          }
-	          finally {
-	        	  if(inStream != null)
-	        		  inStream.close();
-			}
+	          
 	        }
 	      }
 	      catch (Exception e) {
@@ -660,12 +659,11 @@ public class EmailManager extends Thread {
       return _hmTemplates.get(cacheKey);
     }
 
-    InputStream input = null;
-    try {
-
-      Repository rep = BeanFactory.getRepBean();
-      input = rep.getEmailTemplate(userInfo, asTemplate).getResourceAsStream();
-      
+    Repository rep = BeanFactory.getRepBean();
+    try (
+    	InputStream input = rep.getEmailTemplate(userInfo, asTemplate).getResourceAsStream();
+    	){
+   
       NamedXMLElement templateDOM = null; // this is a DOM abstraction...
       if (null != input) {
         templateDOM = SimpleXMLParser.parseXML(new InputSource(input));
@@ -709,11 +707,7 @@ public class EmailManager extends Thread {
       _hmTemplates.put(cacheKey, retObj);
 
     }
-    catch (Exception e) {
-    } finally {
-		if( input != null) Utils.safeClose(input);
-    }
-
+    catch (Exception e) {}
     return retObj;
   }
 

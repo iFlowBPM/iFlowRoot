@@ -46,8 +46,6 @@ public class FileVFile implements IVFile {
       return fos;
     } catch(FileNotFoundException e) {
       log.error("Could not open file for output", e); //$NON-NLS-1$
-	} finally {
-    	if( fos != null) IOUtils.safeClose(fos);
 	}
 
     return null;

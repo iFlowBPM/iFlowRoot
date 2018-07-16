@@ -313,24 +313,15 @@ public class RepositoryBean implements Repository {
 			ok = parentFile.mkdirs();
 		}
 
-		if (ok) {
-			FileOutputStream fout = null;
-			try {
-			
-				fout = new FileOutputStream(file);
-
+		if (ok) {			
+			try (FileOutputStream fout = new FileOutputStream(file);){
 				fout.write(data);
-				ok = true;
-				fout.close();
-				
+				ok = true;				
 			} catch (IOException e) {
 				e.printStackTrace();
 				ok = false;
-			} finally {
-				if( fout != null) Utils.safeClose(fout);
-			}    
+			}   
 			
-
 			// fire event
 			if (null != evt)
 				evt.resourceModified(user, name, fullname);
@@ -668,8 +659,9 @@ public class RepositoryBean implements Repository {
 				return null;
 			InputStream inStream = null;
 			try {
-				inStream = new BufferedInputStream(new FileInputStream(file));
-			} catch (FileNotFoundException e) {
+				FileInputStream fin = new FileInputStream(file);
+				inStream = new BufferedInputStream(fin);
+			} catch (IOException e) {
 				Logger.error(null, this, "getResourceData", "Error opening file " + file + ": " + e.getMessage(), e);
 			}
 			
@@ -683,23 +675,25 @@ public class RepositoryBean implements Repository {
 		}
 
 		public void writeToStream(OutputStream outStream) {
-			InputStream in = getResourceAsStream();
-			if (null == in)
-				return;
-			byte[] b = new byte[2048];
-			int r = -1;
-			try {
-				while ((r = in.read(b)) != -1)
-					outStream.write(b, 0, r);
-			} catch (IOException e) {
-				Logger.error(null, this, "writeToStream", "Error reading file " + file + ": " + e.getMessage(), e);
-			} finally {
+			try (InputStream in = getResourceAsStream();) {
+				if (null == in)
+					return;
+				byte[] b = new byte[2048];
+				int r = -1;
 				try {
-					in.close();
+					while ((r = in.read(b)) != -1)
+						outStream.write(b, 0, r);
 				} catch (IOException e) {
-					Logger.error(null, this, "writeToStream", "Error closing file " + file + ": " + e.getMessage(), e);
+					Logger.error(null, this, "writeToStream", "Error reading file " + file + ": " + e.getMessage(), e);
+				} finally {
+					try {
+						in.close();
+					} catch (IOException e) {
+						Logger.error(null, this, "writeToStream", "Error closing file " + file + ": " + e.getMessage(), e);
+					}
 				}
-			}
+			} catch (IOException e1) {}
+
 		}
 
 		public int getSize() {
@@ -799,12 +793,10 @@ public class RepositoryBean implements Repository {
 
 		orgFile.getParentFile().mkdirs(); // ensure path exist
 
-		FileInputStream fin = null;
-		FileOutputStream fout = null;
 		boolean ok = false;
-		try {
-			fout = new FileOutputStream(orgFile);
-			fin = new FileInputStream(sysFile);
+		try (FileOutputStream fout = new FileOutputStream(orgFile);
+				FileInputStream	fin = new FileInputStream(sysFile);){
+			
 			byte[] b = new byte[8092];
 			int r = -1;
 			while ((r = fin.read(b)) != -1)
@@ -819,9 +811,6 @@ public class RepositoryBean implements Repository {
 		} catch (IOException e) {
 			Logger.error(userInfo.getUtilizador(), this, "resetResource",
 					"Error resetting file " + name + ": " + e.getMessage(), e);
-		} finally {
-			if( fin != null) Utils.safeClose(fin);
-			if( fout != null) Utils.safeClose(fout);
 		}
 
 		return ok;

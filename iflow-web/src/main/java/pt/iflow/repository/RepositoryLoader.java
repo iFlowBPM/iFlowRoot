@@ -101,11 +101,8 @@ public class RepositoryLoader {
     } else {
       System.out.println("'.");
     }
-    
-    FileInputStream fis = null;
-    
-    try {
-    	fis = new FileInputStream(filePath);
+           
+    try (FileInputStream fis = new FileInputStream(filePath);){    	
 
     	byte[] buffer = new byte[8096];
     	ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -122,9 +119,7 @@ public class RepositoryLoader {
     		this._access.setZipFile(repPath, data);
     	else
     		this._access.setFile(repPath, data);
-    } finally {
-    	if( fis != null) Utils.safeClose(fis);
-    }    
+    }   
   }
   
   /**

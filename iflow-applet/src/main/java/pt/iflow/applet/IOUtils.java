@@ -16,20 +16,25 @@ public class IOUtils {
   }
 
   public static byte[] getResourceAsBytes(String resource, ClassLoader cl) {
-    ByteArrayOutputStream out = new ByteArrayOutputStream();
-    InputStream in = null;
-    try {
-      if (null == cl)
-        copyStreams(in = IOUtils.class.getResourceAsStream(resource), out);
-      else
-        copyStreams(in = cl.getResourceAsStream(resource), out);
-    } catch (Exception e) {
-      log.error("Error reading resource " + resource, e); //$NON-NLS-1$
-      return null;
-    } finally {
-    	if( in != null) IOUtils.safeClose(in);
-    }
-    return out.toByteArray();
+	  ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+
+	  if (null == cl)
+		  try (InputStream in = IOUtils.class.getResourceAsStream(resource)) {  
+			  copyStreams(in, out);
+		  } catch (Exception e) {
+			  log.error("Error reading resource without classloader" + resource, e); //$NON-NLS-1$
+			  return null;
+		  } 
+	  else
+		  try (InputStream in = cl.getResourceAsStream(resource)) {
+			  copyStreams(in, out);
+		  } catch (Exception e) {
+			  log.error("Error reading resource with classloader" + resource, e); //$NON-NLS-1$
+			  return null;
+		  }
+
+	  return out.toByteArray();
   }
 
   public static void copyStreams(InputStream in, OutputStream out) throws IOException {

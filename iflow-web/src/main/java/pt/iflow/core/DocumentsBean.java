@@ -674,7 +674,7 @@ public class DocumentsBean implements Documents {
 
     PreparedStatement st = null;
     ResultSet rs = null;
-    InputStream dataStream = null;
+    
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
     // reset datadoc
@@ -728,18 +728,28 @@ public class DocumentsBean implements Documents {
         }
 
         if (abFull) {
-          if (StringUtils.isNotEmpty(filePath)) {
-              dataStream = new FileInputStream(filePath);
-          } else {
-            dataStream = rs.getBinaryStream("datadoc");
+          if (StringUtils.isNotEmpty(filePath)) {       	  
+        	  try (InputStream dataStream = new FileInputStream(filePath);) {
+                  if (null != dataStream) {
+                      byte[] r = new byte[STREAM_SIZE];
+                      int j = 0;
+                      while ((j = dataStream.read(r, 0, STREAM_SIZE)) != -1)
+                        baos.write(r, 0, j);
+                      dataStream.close();
+                    }        		  
+        	  }
+           } else {
+        	  try (InputStream dataStream = rs.getBinaryStream("datadoc");) {
+                  if (null != dataStream) {
+                      byte[] r = new byte[STREAM_SIZE];
+                      int j = 0;
+                      while ((j = dataStream.read(r, 0, STREAM_SIZE)) != -1)
+                        baos.write(r, 0, j);
+                      dataStream.close();
+                    }        	  
+        	  }
           }
-          if (null != dataStream) {
-            byte[] r = new byte[STREAM_SIZE];
-            int j = 0;
-            while ((j = dataStream.read(r, 0, STREAM_SIZE)) != -1)
-              baos.write(r, 0, j);
-            dataStream.close();
-          }
+
           baos.flush();
           baos.close();
           retObj.setContent(baos.toByteArray());
@@ -752,7 +762,6 @@ public class DocumentsBean implements Documents {
     } catch (Exception e) {
       Logger.error(login, this, "getDocument", procData.getSignature() + "Error retrieving document from database.", e);
     } finally {
-    	if( dataStream != null) Utils.safeClose(dataStream);
     	if (st != null) DatabaseInterface.safeClose(st);
     	if (rs != null) DatabaseInterface.safeClose(rs);
     }
