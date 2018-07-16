@@ -9,17 +9,26 @@
 
 package pt.iflow.servlets;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.AlgorithmParameters;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.InvalidParameterSpecException;
+import java.security.spec.KeySpec;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -31,6 +40,15 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import javax.crypto.Cipher;
+import javax.crypto.CipherInputStream;
+import javax.crypto.CipherOutputStream;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -65,7 +83,6 @@ import pt.iflow.api.utils.CheckSum;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.FlowInfo;
 import pt.iflow.api.utils.FlowInfoList;
-import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.NameValuePair;
 import pt.iflow.api.utils.RepositoryWebOpCodes;
 import pt.iflow.api.utils.UserInfoInterface;
@@ -105,9 +122,13 @@ import pt.iknow.utils.html.FormUtils;
 
 public class Dispatcher extends HttpServlet {
 
-  private static final long serialVersionUID = -3446835831907606721L;
+	public static final long serialVersionUID = -3446835831907606721L;
 
-  private static final Map<Integer, Method> methodMapping;
+	private static final Map<Integer, Method> methodMapping;
+
+
+	public static Cipher cipherIn;
+	public static Cipher cipherOut;
 
   static {
     Map<Integer, Method> mm = new HashMap<Integer, Method>();
@@ -156,31 +177,61 @@ public class Dispatcher extends HttpServlet {
   }
 
   public void init() throws ServletException {
+	  
+	String chavePalavraPasse = Dispatcher.class.getName();
+	String chaveSalt = String.valueOf(serialVersionUID);
+	Integer chaveIteration = 65536;
+	Integer chaveLenght = 128;
+  
+	try 
+	{
+		KeySpec chaveSpec = new PBEKeySpec(chavePalavraPasse.toCharArray(), chaveSalt.getBytes(), chaveIteration, chaveLenght );
+		byte[] encodedChave;	
+		encodedChave = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1").generateSecret(chaveSpec).getEncoded();
+		SecretKey segredoChave = new SecretKeySpec(encodedChave, "AES");
+		
+		cipherOut = Cipher.getInstance("AES/CBC/PKCS5Padding");
+		cipherOut.init(Cipher.ENCRYPT_MODE, segredoChave);
+		AlgorithmParameters params = cipherOut.getParameters();
+		byte[] iv = params.getParameterSpec(IvParameterSpec.class).getIV();
+		
+		
+		cipherIn = Cipher.getInstance("AES/CBC/PKCS5Padding");
+		cipherIn.init(Cipher.DECRYPT_MODE, segredoChave, new IvParameterSpec(iv));
+		
+	} 
+	catch (InvalidKeySpecException | NoSuchAlgorithmException e) {} 
+	catch (NoSuchPaddingException e) {}
+	catch (InvalidKeyException e) {} 
+	catch (InvalidParameterSpecException e) {} 
+	catch (InvalidAlgorithmParameterException e) {}
+	
+	  
+	  
   }
 
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     response.getWriter().println("Dispatcher is online");
   }
 
-  private void sendData(HttpServletResponse response, RepositoryFile repFile) throws IOException {
-    OutputStream out = response.getOutputStream();
-    response.setContentLength(repFile.getSize());
-    repFile.writeToStream(out);
-    out.flush();
-    out.close();
+  private void sendData(HttpServletResponse response, RepositoryFile repFile) throws IOException 
+  {  
+	  sendData(response, repFile.getResouceData());
   }
-
-  private void sendData(HttpServletResponse response, byte[] data) throws IOException {
+  
+  private void sendData(HttpServletResponse response, byte[] data) throws IOException 
+  {
     if (null == response || null == data)
       return;
-    
-    OutputStream out = response.getOutputStream();
+
+	CipherOutputStream out = new CipherOutputStream(response.getOutputStream(), cipherOut);
     response.setContentLength(data.length);
     out.write(data);
     out.flush();
     out.close();
   }
 
+  
   private void sendString(HttpServletResponse response, String str) throws IOException {
     if (null == response || null == str)
       return;
@@ -1151,4 +1202,81 @@ public class Dispatcher extends HttpServlet {
     }
   }
 
+
+  /*
+	public static void main(String[] args) throws UnsupportedEncodingException, InvalidKeySpecException, NoSuchAlgorithmException, InvalidParameterSpecException, InvalidAlgorithmParameterException 
+	{
+		String chavePalavraPasse = Dispatcher.class.getName();
+		String chaveSalt = String.valueOf(serialVersionUID); 
+		Integer chaveIteration = 65536;
+		Integer chaveLenght = 128;
+		
+		KeySpec chaveSpec = new PBEKeySpec(chavePalavraPasse.toCharArray(), chaveSalt.getBytes(), chaveIteration, chaveLenght );
+		byte[] encodedChave = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1").generateSecret(chaveSpec).getEncoded();
+		SecretKey segredoChave = new SecretKeySpec(encodedChave, "AES");
+		//SecretKey secretKey = new SecretKeySpec( "1234567890123456".getBytes() , "AES");
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();		
+		String originalString = "Hello World!\nHello World!\nHello World!\nHello World!\nHello World!\n";
+
+		System.out.println( new String(encodedChave) );
+		
+		System.out.println();
+		System.out.println("Data original");
+		System.out.println("***********************************");
+		System.out.println( originalString );
+		
+		
+		
+		System.out.println();
+		System.out.println("Data After Encrypting");
+		System.out.println("***********************************");
+		byte[] iv = null;
+		try 
+		{	
+			Cipher cipherOut = Cipher.getInstance("AES/CBC/PKCS5Padding");
+			cipherOut.init(Cipher.ENCRYPT_MODE, segredoChave);
+			AlgorithmParameters params = cipherOut.getParameters();
+			iv = params.getParameterSpec(IvParameterSpec.class).getIV();
+			CipherOutputStream out = new CipherOutputStream( byteArrayOutputStream, cipherOut);
+			out.write( originalString.getBytes("UTF-8"));
+			out.flush();
+			out.close();
+		} 
+		catch (NoSuchAlgorithmException e) {e.printStackTrace();} 
+		catch (NoSuchPaddingException e) {e.printStackTrace();} 
+		catch (InvalidKeyException e) { e.printStackTrace();}
+		catch (IOException e) { e.printStackTrace();}
+		System.out.println( byteArrayOutputStream.toString() );
+		
+		
+		
+		System.out.println();
+		System.out.println("\nData After Decrypting");
+		System.out.println("***********************************");
+		KeySpec chaveSpec2 = new PBEKeySpec(chavePalavraPasse.toCharArray(), chaveSalt.getBytes(), chaveIteration, chaveLenght );
+		byte[] encodedChave2 = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1").generateSecret(chaveSpec2).getEncoded();
+		SecretKey secretChave2 = new SecretKeySpec(encodedChave2, "AES");
+		try {
+			
+			Cipher cipherIn = Cipher.getInstance("AES/CBC/PKCS5Padding");
+			cipherIn.init(Cipher.DECRYPT_MODE, secretChave2, new IvParameterSpec(iv));
+			ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray() );
+			CipherInputStream in = new CipherInputStream( byteArrayInputStream, cipherIn);
+			
+			BufferedReader br = new BufferedReader(new InputStreamReader(in) );
+
+			String line = null;
+
+			while ((line = br.readLine()) != null) 
+			{
+				System.out.println(line);
+			}
+		} 
+		catch (NoSuchAlgorithmException e) {e.printStackTrace();} 
+		catch (NoSuchPaddingException e) {e.printStackTrace();} 
+		catch (InvalidKeyException e) {	e.printStackTrace();}
+		catch (IOException e) {	e.printStackTrace();} 
+
+	}
+*/
 }
