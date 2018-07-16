@@ -191,7 +191,10 @@ public abstract class TransformUtility {
 
 				SAXSource inputSource = new SAXSource(rdr, XMLSource);
 
-				if (null != template) transformer = template.newTransformer();
+				if (null == template) 
+					throw new RuntimeException("Template is null");
+				
+				transformer = template.newTransformer();
 				// set properties here...
 				for (String key : parameters.keySet())
 					if (null != transformer) {
