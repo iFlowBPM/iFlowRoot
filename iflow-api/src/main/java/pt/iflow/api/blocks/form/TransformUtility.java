@@ -194,7 +194,9 @@ public abstract class TransformUtility {
 				if (null == template) 
 					throw new RuntimeException("Template is null");
 				
-				transformer = template.newTransformer();
+				if (template != null)
+					transformer = template.newTransformer();
+				
 				// set properties here...
 				for (String key : parameters.keySet())
 					if (null != transformer) {

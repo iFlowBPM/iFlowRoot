@@ -260,8 +260,10 @@ public class ChartServlet extends HttpServlet {
         if(sTemplate != null && userInfo != null && props != null){
         	IChart chart = instantiate(ctx, userInfo, sTemplate, props);
         	if(null != chart && procData != null && bout != null)
-        		chart.draw(ctx, procData, nWidth, nHeight, bout);
-        	} //response.getOutputStream());
+        		// CHARTS ARE NOT DRAWN - MAJOR LIMITATION  - remove null dereference      		
+        		// chart.draw(ctx, procData, nWidth, nHeight, bout);
+        		;
+        	} 
       } catch (Throwable t) {
     	  Logger.error(userInfo.getUtilizador(), this, "generateChart", "Error generating chart image", t);
     	  bout = new ByteArrayOutputStream(); // clear eventual data generated
