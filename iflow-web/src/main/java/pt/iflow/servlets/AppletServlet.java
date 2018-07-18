@@ -98,7 +98,7 @@ public class AppletServlet extends HttpServlet {
     resourceDir.mkdirs();
 
     if(initComplete) return;
-
+/*
     // Para evitar que o servidor aplicacional (tomcat) de timeout no boot, fazemos uma thread.
     new Thread(new Runnable() {
       public void run() {
@@ -315,7 +315,7 @@ public class AppletServlet extends HttpServlet {
         }
       }
     }).start();
-
+*/
   }
   
   protected MetaInfo sendHeader(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
