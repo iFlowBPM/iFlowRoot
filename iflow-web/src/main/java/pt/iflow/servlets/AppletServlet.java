@@ -98,7 +98,7 @@ public class AppletServlet extends HttpServlet {
     resourceDir.mkdirs();
 
     if(initComplete) return;
-/*
+
     // Para evitar que o servidor aplicacional (tomcat) de timeout no boot, fazemos uma thread.
     new Thread(new Runnable() {
       public void run() {
@@ -206,7 +206,7 @@ public class AppletServlet extends HttpServlet {
             OutputStream out = null;
             InputStream in = null;
             File tmpFile = null;
-            JarFile jarFile = null;
+            //JarFile jarFile = null;
             try {
               meta = new MetaInfo();
               meta.name = name;
@@ -243,10 +243,10 @@ public class AppletServlet extends HttpServlet {
 
               if(mustSign) {
                 Logger.adminInfo("AppletServlet", "init", "Signing file: "+meta.name);
-                jarFile = new JarFile(tmpFile);
-                out = new FileOutputStream(signedFile);
+                //jarFile = new JarFile(tmpFile);
+                //out = new FileOutputStream(signedFile);
                 
-                signer.signJarFile(jarFile, out);
+                //signer.signJarFile(jarFile, out);
 
                 
                 // store hash
@@ -281,7 +281,7 @@ public class AppletServlet extends HttpServlet {
                 }
               }
               if(null != tmpFile) tmpFile.delete();
-              try {if(null != jarFile) jarFile.close();} catch (Exception e) {}
+              //try {if(null != jarFile) jarFile.close();} catch (Exception e) {}
             }
           }
           
@@ -315,7 +315,7 @@ public class AppletServlet extends HttpServlet {
         }
       }
     }).start();
-*/
+
   }
   
   protected MetaInfo sendHeader(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
