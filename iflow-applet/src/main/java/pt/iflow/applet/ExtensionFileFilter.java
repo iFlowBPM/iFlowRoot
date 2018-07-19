@@ -34,8 +34,12 @@ public class ExtensionFileFilter extends FileFilter implements FilenameFilter {
       String path = file.getAbsolutePath().toLowerCase();
       for (int i = 0; i < extensions.length; i++) {
         String extension = extensions[i];
-        if (path.endsWith(extension) && (path.charAt(path.length() - extension.length() - 1)) == '.')
-          return true;
+        
+        if (path!=null && path.length() >= extension.length()) {
+	        String cmp = path.substring(path.length() - extension.length());
+	        if (cmp.equalsIgnoreCase(extension) && (path.charAt(path.length() - extension.length() - 1)) == '.')
+	          return true;
+	        }
       }
       return false;
     }

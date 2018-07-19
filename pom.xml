@@ -70,6 +70,7 @@
 				<groupId>pt.iknow</groupId>
 				<artifactId>pdfgenerator</artifactId>
 				<version>1.1.5</version>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>pt.iknow</groupId>

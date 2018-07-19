@@ -5115,11 +5115,14 @@ public class ProcessManagerBean implements ProcessManager {
 	public ProcessHeader findProcess(UserInfoInterface userInfo, ProcessHeader proc) {
 		ProcessHeader[] pda = new ProcessHeader[] { proc };
 		pda = findProcesses(userInfo, pda);
-		if (null == pda || pda.length == 0)
+		if (null == pda) 
 			return null;
-		else
-			if (null != pda) return pda[0];
-			else return null;
+		if (pda != null && pda.length == 0)
+			return null;
+		if (null != pda) 
+			return pda[0];
+			
+		return null;
 	}
 
 	public ProcessHeader[] findProcesses(UserInfoInterface userInfo, ProcessHeader[] procs) {

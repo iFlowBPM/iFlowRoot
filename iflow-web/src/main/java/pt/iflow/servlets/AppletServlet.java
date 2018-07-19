@@ -270,7 +270,7 @@ public class AppletServlet extends HttpServlet {
             } finally {
               if(null != out) {
                 try {
-                  out.close();
+                  if (out!=null) out.close();
                 } catch (IOException e) {
                 }
               }
