@@ -224,11 +224,11 @@ public class Dispatcher extends HttpServlet {
     if (null == response || null == data)
       return;
 
-	CipherOutputStream out = new CipherOutputStream(response.getOutputStream(), cipherOut);
-    response.setContentLength(data.length);
-    out.write(data);
-    out.flush();
-    out.close();
+//	CipherOutputStream out = new CipherOutputStream(response.getOutputStream(), cipherOut);
+//    response.setContentLength(data.length);
+//    out.write(data);
+//    out.flush();
+//    out.close();
   }
 
   
