@@ -184,7 +184,7 @@ public class UserProcPrintServlet extends javax.servlet.http.HttpServlet impleme
       tpl.setUseLegacyExpressions(true);
       PDFGenerator generator = new PDFGenerator(tpl);
       generator.addURIResolver(new RepositoryURIResolver(userInfo));
-      generator.setPdfImgUrl(null);
+      //jcosta:20180803:vulnerabilidades generator.setPdfImgUrl(null);
       //      for(String key : env.keySet())
       //        bsh.set(key, env.get(key));
 

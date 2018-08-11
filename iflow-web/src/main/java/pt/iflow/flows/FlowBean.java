@@ -713,7 +713,9 @@ public class FlowBean implements Flow {
             Logger.warning(userInfo.getUtilizador(), this, "storeProcess", procData.getSignature()
                 + "ERROR marking activity as unread", ee);
           } finally {
-            DatabaseInterface.closeResources(conn, pst);
+            // DatabaseInterface.closeResources(conn, pst);
+          	try {if (conn != null) conn.close(); } catch (SQLException e) {}
+          	try {if (pst != null) pst.close(); } catch (SQLException e) {}
           }
         }
 
@@ -1009,7 +1011,7 @@ public class FlowBean implements Flow {
       retObj = false;
       Logger.error(userid, this, "undoProcess", "Exception: " + e.getMessage(), e);
       try {
-        db.rollback();
+        if (db!=null) db.rollback();
       } catch (SQLException ee) {
         Logger.error(userid, this, "undoProcess", "Exception rolling back: " + e.getMessage(), e);
       }
@@ -1678,7 +1680,7 @@ public class FlowBean implements Flow {
       }
     } catch (Exception e) {
       try {
-        db.rollback();
+        if (db!=null) db.rollback();
       } catch (Exception ei) {
       }
       Logger.error(userInfo.getUtilizador(), this, "setFlowRoles", "exception caught: " + e.getMessage(), e);

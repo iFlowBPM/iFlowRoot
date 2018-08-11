@@ -97,13 +97,17 @@ public class AppendDocuments {
       // step 4: we add content
       PdfImportedPage page = null;
       for (int i = 1; i <= numPages;i++) {
-        page = writer.getImportedPage(reader, i);
-        writer.addPage(page);
+    	  if (writer != null) {
+    		  page = writer.getImportedPage(reader, i);
+    		  writer.addPage(page);
+    	  }
       }
       // copy eventual acroform
       PRAcroForm form = reader.getAcroForm();  
       if (form != null) {  
-        writer.copyAcroForm(reader);  
+    	  if (writer != null) {
+    		  writer.copyAcroForm(reader);
+    	  }
       }  
 
       Logger.debug(login, "AppenDocuments", "postProcessPDF", "Copiou paginas impressao");
@@ -147,8 +151,10 @@ public class AppendDocuments {
             file.consolidateNamedDestinations();
             int nPag = file.getNumberOfPages();
             for(int i = 1; i <= nPag;i++) {
-              page = writer.getImportedPage(file, i);
-              writer.addPage(page);
+              if (writer != null) {
+            	  page = writer.getImportedPage(file, i);
+            	  writer.addPage(page);
+              }
             }
             Logger.debug(login, "AppenDocuments", "postProcessPDF", "Documento "+fname+" ("+docid+") copiado");
           } else {
@@ -324,13 +330,17 @@ public class AppendDocuments {
       // step 4: we add content
       PdfImportedPage page = null;
       for (int i = 1; i <= numPages;i++) {
-        page = writer.getImportedPage(reader, i);
-        writer.addPage(page);
+    	if (writer != null) {
+    		page = writer.getImportedPage(reader, i);
+    		writer.addPage(page);
+    	}
       }
       // copy eventual acroform
       PRAcroForm form = reader.getAcroForm();  
       if (form != null) {  
-        writer.copyAcroForm(reader);  
+    	  if (writer != null) {
+    		  writer.copyAcroForm(reader);
+    	  }
       }
 
       Logger.debug(login, "AppenDocuments", "mergePDFs", "Copiou paginas impressao");
@@ -374,8 +384,10 @@ public class AppendDocuments {
             file.consolidateNamedDestinations();
             int nPag = file.getNumberOfPages();
             for(int i = 1; i <= nPag;i++) {
-              page = writer.getImportedPage(file, i);
-              writer.addPage(page);
+            	if (writer != null) {
+            		page = writer.getImportedPage(file, i);
+            		writer.addPage(page);
+            	}
             }
             Logger.debug(login, "AppenDocuments", "mergePDFs", "Documento "+fname+" ("+docid+") copiado");
           } else {
@@ -416,9 +428,9 @@ public class AppendDocuments {
     }
 
     byte[] retObj = null;
-    try {
-      InputStream pdfIn = new FileInputStream(pdf);
-      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    try (InputStream pdfIn = new FileInputStream(pdf);
+    	ByteArrayOutputStream baos = new ByteArrayOutputStream();){
+  
       byte[] r = new byte[STREAM_SIZE];
       int j = 0;
       while ((j = pdfIn.read(r, 0, STREAM_SIZE)) != -1)

@@ -300,7 +300,11 @@ if(userInfo.isLogged()){
     }
     finally
     {
-      DatabaseInterface.closeResources(new Object[] { db, st, rs });
+      //DatabaseInterface.closeResources(new Object[] { db, st, rs });
+	  	try {if (db != null) db.close(); } catch (SQLException e) {}
+	  	try {if (st != null) st.close(); } catch (SQLException e) {}
+	  	try {if (rs != null) rs.close(); } catch (SQLException e) {}       
+      
     }
     return ids;
   }

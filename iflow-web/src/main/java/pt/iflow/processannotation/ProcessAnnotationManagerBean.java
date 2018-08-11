@@ -81,6 +81,8 @@ public class ProcessAnnotationManagerBean implements ProcessAnnotationManager {
       Logger.error(userInfo.getUtilizador(), this, "addLabel","caught sql exception: " + sqle.getMessage(), sqle);
     } finally {
       //DatabaseInterface.closeResources(db, st);
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (st != null) st.close(); } catch (SQLException e) {}
     }
   }
 

@@ -152,12 +152,12 @@ public class BlockCopia extends Block {
         		ProcessListVariable listVar = procData.getList(list);
         		if(null == listVar) continue; // ignore this one...
         		listVar.setItemValue(arrayDestPos, value);
-        		Logger.debug(login, this, "after", "set list " + list + " item " + arrayDestPos + " with " + value);
+        		Logger.debug(login, this, "after", "set list " + list + " item " + arrayDestPos + " with " + ((value!=null)?value:""));
         		this.addToLog("Set list " + list + " item " + arrayDestPos + " with " + value);
         	}
         	else {
         		procData.set(sVarDest, value);
-        		Logger.debug(login, this, "after", "set " + sVarDest + " with " + value);
+        		Logger.debug(login, this, "after", "set " + sVarDest + " with " + ((value!=null)?value:""));
         		this.addToLog("Set " + sVarDest + " with " + value);
         	}
         		

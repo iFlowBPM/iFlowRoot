@@ -29,7 +29,7 @@ public class BlockDocumentFolders extends Block {
 
   private static final String AUTHENTICATION = "f_AUTH";
   private static final String USER = "f_USER";
-  private static final String PASSWORD = "f_PASS";
+  private static final String CHAVE = "f_PASS";
   
   public BlockDocumentFolders(int anFlowId, int id, int subflowblockid, String filename) {
     super(anFlowId, id, subflowblockid, filename);
@@ -100,7 +100,7 @@ public class BlockDocumentFolders extends Block {
       //AUTHENTICATION
       DMSCredential credentialAux = null;
       if(this.getParsedAttribute(userInfo, AUTHENTICATION, procData).equals("true")){
-    	  credentialAux =  DMSConnectorUtils.createCredentialAuth(this.getAttribute(USER), this.getAttribute(PASSWORD));
+    	  credentialAux =  DMSConnectorUtils.createCredentialAuth(this.getAttribute(USER), this.getAttribute(CHAVE));
       }else{
     	  credentialAux =  DMSConnectorUtils.createCredential(userInfo, procData);  
       }

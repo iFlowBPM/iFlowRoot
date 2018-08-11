@@ -56,7 +56,7 @@ public class DSLoader {
   private static final String DATA_SOURCE_CFG_CLASS_NAME = "class";
   private static final String DATA_SOURCE_CFG_DRIVER_ATTR = "driverAttr";
   private static final String DATA_SOURCE_CFG_USERNAME_ATTR = "usernameAttr";
-  private static final String DATA_SOURCE_CFG_PASSWORD_ATTR = "passwordAttr";
+  private static final String DATA_SOURCE_CFG_CHAVE_ATTR = "passwordAttr";
   private static final String DATA_SOURCE_CFG_URL_ATTR = "urlAttr";
   private static final String DATA_SOURCE_CFG_DISABLE_ATTR = "disableAttrs";
   private static final String DATA_SOURCE_CFG_DESCRIPTION = "description";
@@ -271,7 +271,7 @@ public class DSLoader {
         cfg.driverAttr = propsPoolImpl.getProperty(prop);
       } else if (DATA_SOURCE_CFG_USERNAME_ATTR.equals(dsProp)) {
         cfg.usernameAttr = propsPoolImpl.getProperty(prop);
-      } else if (DATA_SOURCE_CFG_PASSWORD_ATTR.equals(dsProp)) {
+      } else if (DATA_SOURCE_CFG_CHAVE_ATTR.equals(dsProp)) {
         cfg.passwordAttr = propsPoolImpl.getProperty(prop);
       } else if (DATA_SOURCE_CFG_URL_ATTR.equals(dsProp)) {
         cfg.urlAttr = propsPoolImpl.getProperty(prop);

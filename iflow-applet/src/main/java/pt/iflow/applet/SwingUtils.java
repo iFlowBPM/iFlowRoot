@@ -137,9 +137,8 @@ public class SwingUtils {
   
   private static byte [] getData(String name) {
 
-    InputStream is = PDFViewerPanel.class.getResourceAsStream(name);
     ByteArrayOutputStream bout = new ByteArrayOutputStream();
-    try {
+    try (InputStream is = PDFViewerPanel.class.getResourceAsStream(name)){
       int r;
       byte [] b = new byte[4096];
       while((r = is.read(b))>=0) {

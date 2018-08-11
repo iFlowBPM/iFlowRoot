@@ -290,10 +290,10 @@ public class ADAuthentication implements Authentication {
       _listPropertiesToImport.add((UserData.ORGADM));
       _propertiesVar.put(UserData.ORGADM, aux);
     }
-    aux = (String)parameters.get(UserData.PASSWORD_RESET);
+    aux = (String)parameters.get(UserData.CHAVE_RESET);
     if (aux != null && ! "".equals(aux)) {
-      _listPropertiesToImport.add((UserData.PASSWORD_RESET));
-      _propertiesVar.put(UserData.PASSWORD_RESET, aux);
+      _listPropertiesToImport.add((UserData.CHAVE_RESET));
+      _propertiesVar.put(UserData.CHAVE_RESET, aux);
     }
     aux = (String)parameters.get(UserData.ORGADM_USERS);
     if (aux != null && ! "".equals(aux)) {

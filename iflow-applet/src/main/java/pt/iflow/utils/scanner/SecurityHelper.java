@@ -59,8 +59,7 @@ public class SecurityHelper {
       System.out.println("Bouncy Castle provider not loaded"); //$NON-NLS-1$
     }
 
-    try {
-      InputStream in = SecurityHelper.class.getResourceAsStream("ikey.cfg"); //$NON-NLS-1$
+    try (InputStream in = SecurityHelper.class.getResourceAsStream("ikey.cfg")) { //$NON-NLS-1$      
       Class pkcs11Class = Class.forName("sun.security.pkcs11.SunPKCS11"); //$NON-NLS-1$
       Constructor pkcs11Constructor = pkcs11Class.getConstructor(InputStream.class);
       pkcs11Provider = (Provider) pkcs11Constructor.newInstance(in);

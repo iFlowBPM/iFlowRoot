@@ -38,7 +38,7 @@ public class DBTableHelper {
         column.put(DBTable.FIELD, dbTable.getFields().get(i));
         column.put(DBTable.TYPE, getListValue(dbTable.getTypes(), i));
         column.put(DBTable.NULL, getListValue(dbTable.getNullables(), i));
-        column.put(DBTable.KEY, getListValue(dbTable.getKeys(), i));
+        column.put(DBTable.CHAVE, getListValue(dbTable.getKeys(), i));
         column.put(DBTable.DEFAULT, getListValue(dbTable.getDefaults(), i));
         column.put(DBTable.EXTRA, getListValue(dbTable.getExtras(), i));
         column.put(DBTable.VALUE, getListValue(dbTable.getValues(), i));
@@ -60,7 +60,7 @@ public class DBTableHelper {
       dbTable.setTypes(addToList(dbTable.getTypes(), name, value, pos));
     } else if (StringUtils.equalsIgnoreCase(name, DBTable.NULL)) {
       dbTable.setNullables(addToList(dbTable.getNullables(), name, value, pos));
-    } else if (StringUtils.equalsIgnoreCase(name, DBTable.KEY)) {
+    } else if (StringUtils.equalsIgnoreCase(name, DBTable.CHAVE)) {
       dbTable.setKeys(addToList(dbTable.getKeys(), name, value, pos));
     } else if (StringUtils.equalsIgnoreCase(name, DBTable.DEFAULT)) {
       dbTable.setDefaults(addToList(dbTable.getDefaults(), name, value, pos));

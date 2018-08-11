@@ -372,165 +372,165 @@ public class FileApplet extends JApplet {
     return retObj;
   }
 */
-  private Map<String,String> postFiles(ClientRequestInfo clientId,  Map<String,File> files, boolean update) {
-    Map<String,String> retObj = new HashMap<String, String>(files.size());
-
-    // Create URL object for upload service 
-    URL url = null;
-    try {
-      url = new URL(clientId.url);
-    } catch (MalformedURLException ex) {
-      System.out.println("From ServletCom CLIENT REQUEST:"+ex); //$NON-NLS-1$
-      try {
-        url = new URL(getDocumentBase(), clientId.url);
-      }
-      catch (MalformedURLException e) {
-        System.out.println("From ServletCom CLIENT REQUEST:"+e); //$NON-NLS-1$
-        return null;
-      }
-    }
-
-
-    // upload document
-    final String lineEnd = "\r\n"; //$NON-NLS-1$
-    final String twoHyphens = "--"; //$NON-NLS-1$
-    final String boundary =  "---------------------------"+System.currentTimeMillis(); //$NON-NLS-1$
-
-    HttpURLConnection conn = null;
-    DataOutputStream dos = null;
-    InputStream inStream = null;
-
-    int pos=0;
-
-    byte [] buffer = new byte[8192];
-    int r;
-    for(String fName : files.keySet()) {
-      if(null == fName) continue;
-      File f = files.get(fName);
-      // ignore baddies....
-      if(null == f) continue;
-      if(!f.canRead()) continue;
-      if(!f.isFile()) continue;
-
-      InputStream in = null;
-      try {
-        //------------------ CLIENT REQUEST
-
-        // Open a HTTP connection to the URL
-        conn = (HttpURLConnection) url.openConnection();
-
-        // Allow Inputs
-        conn.setDoInput(true);
-
-        // Allow Outputs
-        conn.setDoOutput(true);
-
-        // Don't use a cached copy.
-        conn.setUseCaches(false);
-
-        // Use a post method.
-        conn.setRequestMethod("POST"); //$NON-NLS-1$
-
-        conn.setRequestProperty("Connection", "Keep-Alive"); //$NON-NLS-1$ //$NON-NLS-2$
-
-        conn.setRequestProperty("Content-Type", "multipart/form-data;boundary="+boundary); //$NON-NLS-1$ //$NON-NLS-2$
-
-        // set cookies
-        if(null != clientId.cookies && clientId.cookies.trim().length() > 0)
-          conn.setRequestProperty("Cookie", clientId.cookies); //$NON-NLS-1$
-
-        dos = new DataOutputStream( conn.getOutputStream() );
-
-        // send process identification
-        dos.writeBytes(twoHyphens + boundary + lineEnd);
-        dos.writeBytes("Content-Disposition: form-data; name=\"flowid\"" + lineEnd); //$NON-NLS-1$
-        dos.writeBytes("Content-Type: text/plain; charset=UTF-8" + lineEnd); //$NON-NLS-1$
-        dos.writeBytes("Content-Transfer-Encoding: 8bit" + lineEnd); //$NON-NLS-1$
-        dos.writeBytes(lineEnd);
-        dos.write(clientId.flowid.getBytes("UTF-8")); //$NON-NLS-1$
-        dos.writeBytes(lineEnd);
-        dos.writeBytes(twoHyphens + boundary + lineEnd);
-        dos.writeBytes("Content-Disposition: form-data; name=\"pid\"" + lineEnd); //$NON-NLS-1$
-        dos.writeBytes("Content-Type: text/plain; charset=UTF-8" + lineEnd); //$NON-NLS-1$
-        dos.writeBytes("Content-Transfer-Encoding: 8bit" + lineEnd); //$NON-NLS-1$
-        dos.writeBytes(lineEnd);
-        dos.write(clientId.pid.getBytes("UTF-8")); //$NON-NLS-1$
-        dos.writeBytes(lineEnd);
-        dos.writeBytes(twoHyphens + boundary + lineEnd);
-        dos.writeBytes("Content-Disposition: form-data; name=\"subpid\"" + lineEnd); //$NON-NLS-1$
-        dos.writeBytes("Content-Type: text/plain; charset=UTF-8" + lineEnd); //$NON-NLS-1$
-        dos.writeBytes("Content-Transfer-Encoding: 8bit" + lineEnd); //$NON-NLS-1$
-        dos.writeBytes(lineEnd);
-        dos.write(clientId.subpid.getBytes("UTF-8")); //$NON-NLS-1$
-        dos.writeBytes(lineEnd);
-
-        if(update) {
-          // mark as update
-          dos.writeBytes(twoHyphens + boundary + lineEnd);
-          dos.writeBytes("Content-Disposition: form-data; name=\"update\"" + lineEnd); //$NON-NLS-1$
-          dos.writeBytes("Content-Type: text/plain; charset=UTF-8" + lineEnd); //$NON-NLS-1$
-          dos.writeBytes("Content-Transfer-Encoding: 8bit" + lineEnd); //$NON-NLS-1$
-          dos.writeBytes(lineEnd);
-          dos.write("true".getBytes("UTF-8")); //$NON-NLS-1$ //$NON-NLS-2$
-          dos.writeBytes(lineEnd);
-        }
-        
-        
-        // Upload file
-        dos.writeBytes(twoHyphens + boundary + lineEnd);
-        dos.writeBytes("Content-Disposition: form-data; name=\"upload\"; filename=\"" + fName +"\"" + lineEnd); //$NON-NLS-1$ //$NON-NLS-2$
-        dos.writeBytes("Content-Length: " + f.length() + lineEnd); //$NON-NLS-1$
-        dos.writeBytes(lineEnd);
-
-        // output file
-        in = new FileInputStream(f);
-        while((r=in.read(buffer)) > 0)
-          dos.write(buffer, 0, r);
-
-        // send multipart form data necesssary after file data...
-        dos.writeBytes(lineEnd);
-        dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
-
-        dos.flush();
-        dos.close();
-
-        // Read response
-        inStream = null;
-        try {
-          ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
-          inStream = conn.getInputStream();
-          while((r = inStream.read(buffer)) > 0) {
-            dataStream.write(buffer, 0, r);
-          }
-          
-          retObj.put(fName, dataStream.toString("UTF-8")); //$NON-NLS-1$
-          pos++;
-
-          inStream.close();
-
-        }
-        catch (IOException ioex) {
-          System.out.println("From (ServerResponse): "+ioex); //$NON-NLS-1$
-        } finally {
-          try {
-            if(inStream != null) inStream.close();
-          } catch(IOException e) {}
-        }
-
-      }
-      catch (IOException ex) {
-        System.out.println("From ServletCom CLIENT REQUEST:"+ex); //$NON-NLS-1$
-      }
-      finally {
-        try {
-          if(in != null) in.close();
-        } catch (IOException e) {}
-      }
-      System.out.println("Done with: "+fName); //$NON-NLS-1$
-    }
-    
-    return retObj;
-  }
+//  private Map<String,String> postFiles(ClientRequestInfo clientId,  Map<String,File> files, boolean update) {
+//    Map<String,String> retObj = new HashMap<String, String>(files.size());
+//
+//    // Create URL object for upload service 
+//    URL url = null;
+//    try {
+//      url = new URL(clientId.url);
+//    } catch (MalformedURLException ex) {
+//      System.out.println("From ServletCom CLIENT REQUEST:"+ex); //$NON-NLS-1$
+//      try {
+//        url = new URL(getDocumentBase(), clientId.url);
+//      }
+//      catch (MalformedURLException e) {
+//        System.out.println("From ServletCom CLIENT REQUEST:"+e); //$NON-NLS-1$
+//        return null;
+//      }
+//    }
+//
+//
+//    // upload document
+//    final String lineEnd = "\r\n"; //$NON-NLS-1$
+//    final String twoHyphens = "--"; //$NON-NLS-1$
+//    final String boundary =  "---------------------------"+System.currentTimeMillis(); //$NON-NLS-1$
+//
+//    HttpURLConnection conn = null;
+//    DataOutputStream dos = null;
+//    InputStream inStream = null;
+//
+//    int pos=0;
+//
+//    byte [] buffer = new byte[8192];
+//    int r;
+//    for(String fName : files.keySet()) {
+//      if(null == fName) continue;
+//      File f = files.get(fName);
+//      // ignore baddies....
+//      if(null == f) continue;
+//      if(!f.canRead()) continue;
+//      if(!f.isFile()) continue;
+//
+//      InputStream in = null;
+//      try {
+//        //------------------ CLIENT REQUEST
+//
+//        // Open a HTTP connection to the URL
+//        conn = (HttpURLConnection) url.openConnection();
+//
+//        // Allow Inputs
+//        conn.setDoInput(true);
+//
+//        // Allow Outputs
+//        conn.setDoOutput(true);
+//
+//        // Don't use a cached copy.
+//        conn.setUseCaches(false);
+//
+//        // Use a post method.
+//        conn.setRequestMethod("POST"); //$NON-NLS-1$
+//
+//        conn.setRequestProperty("Connection", "Keep-Alive"); //$NON-NLS-1$ //$NON-NLS-2$
+//
+//        conn.setRequestProperty("Content-Type", "multipart/form-data;boundary="+boundary); //$NON-NLS-1$ //$NON-NLS-2$
+//
+//        // set cookies
+//        if(null != clientId.cookies && clientId.cookies.trim().length() > 0)
+//          conn.setRequestProperty("Cookie", clientId.cookies); //$NON-NLS-1$
+//
+//        dos = new DataOutputStream( conn.getOutputStream() );
+//
+//        // send process identification
+//        dos.writeBytes(twoHyphens + boundary + lineEnd);
+//        dos.writeBytes("Content-Disposition: form-data; name=\"flowid\"" + lineEnd); //$NON-NLS-1$
+//        dos.writeBytes("Content-Type: text/plain; charset=UTF-8" + lineEnd); //$NON-NLS-1$
+//        dos.writeBytes("Content-Transfer-Encoding: 8bit" + lineEnd); //$NON-NLS-1$
+//        dos.writeBytes(lineEnd);
+//        dos.write(clientId.flowid.getBytes("UTF-8")); //$NON-NLS-1$
+//        dos.writeBytes(lineEnd);
+//        dos.writeBytes(twoHyphens + boundary + lineEnd);
+//        dos.writeBytes("Content-Disposition: form-data; name=\"pid\"" + lineEnd); //$NON-NLS-1$
+//        dos.writeBytes("Content-Type: text/plain; charset=UTF-8" + lineEnd); //$NON-NLS-1$
+//        dos.writeBytes("Content-Transfer-Encoding: 8bit" + lineEnd); //$NON-NLS-1$
+//        dos.writeBytes(lineEnd);
+//        dos.write(clientId.pid.getBytes("UTF-8")); //$NON-NLS-1$
+//        dos.writeBytes(lineEnd);
+//        dos.writeBytes(twoHyphens + boundary + lineEnd);
+//        dos.writeBytes("Content-Disposition: form-data; name=\"subpid\"" + lineEnd); //$NON-NLS-1$
+//        dos.writeBytes("Content-Type: text/plain; charset=UTF-8" + lineEnd); //$NON-NLS-1$
+//        dos.writeBytes("Content-Transfer-Encoding: 8bit" + lineEnd); //$NON-NLS-1$
+//        dos.writeBytes(lineEnd);
+//        dos.write(clientId.subpid.getBytes("UTF-8")); //$NON-NLS-1$
+//        dos.writeBytes(lineEnd);
+//
+//        if(update) {
+//          // mark as update
+//          dos.writeBytes(twoHyphens + boundary + lineEnd);
+//          dos.writeBytes("Content-Disposition: form-data; name=\"update\"" + lineEnd); //$NON-NLS-1$
+//          dos.writeBytes("Content-Type: text/plain; charset=UTF-8" + lineEnd); //$NON-NLS-1$
+//          dos.writeBytes("Content-Transfer-Encoding: 8bit" + lineEnd); //$NON-NLS-1$
+//          dos.writeBytes(lineEnd);
+//          dos.write("true".getBytes("UTF-8")); //$NON-NLS-1$ //$NON-NLS-2$
+//          dos.writeBytes(lineEnd);
+//        }
+//        
+//        
+//        // Upload file
+//        dos.writeBytes(twoHyphens + boundary + lineEnd);
+//        dos.writeBytes("Content-Disposition: form-data; name=\"upload\"; filename=\"" + fName +"\"" + lineEnd); //$NON-NLS-1$ //$NON-NLS-2$
+//        dos.writeBytes("Content-Length: " + f.length() + lineEnd); //$NON-NLS-1$
+//        dos.writeBytes(lineEnd);
+//
+//        // output file
+//        in = new FileInputStream(f);
+//        while((r=in.read(buffer)) > 0)
+//          dos.write(buffer, 0, r);
+//
+//        // send multipart form data necesssary after file data...
+//        dos.writeBytes(lineEnd);
+//        dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
+//
+//        dos.flush();
+//        dos.close();
+//
+//        // Read response
+//        inStream = null;
+//        try {
+//          ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
+//          inStream = conn.getInputStream();
+//          while((r = inStream.read(buffer)) > 0) {
+//            dataStream.write(buffer, 0, r);
+//          }
+//          
+//          retObj.put(fName, dataStream.toString("UTF-8")); //$NON-NLS-1$
+//          pos++;
+//
+//          inStream.close();
+//
+//        }
+//        catch (IOException ioex) {
+//          System.out.println("From (ServerResponse): "+ioex); //$NON-NLS-1$
+//        } finally {
+//          try {
+//            if(inStream != null) inStream.close();
+//          } catch(IOException e) {}
+//        }
+//
+//      }
+//      catch (IOException ex) {
+//        System.out.println("From ServletCom CLIENT REQUEST:"+ex); //$NON-NLS-1$
+//      }
+//      finally {
+//        try {
+//          if(in != null) in.close();
+//        } catch (IOException e) {}
+//      }
+//      System.out.println("Done with: "+fName); //$NON-NLS-1$
+//    }
+//    
+//    return retObj;
+//  }
 
   private File getDocument(final String fileUrl, final String cookies) {
     HttpURLConnection conn = null;    

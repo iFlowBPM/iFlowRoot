@@ -25,7 +25,7 @@ import com.simplewire.sms.SMS;
 public class SimplewireSMSImpl extends SMSGateway {
   
   public static final String PARAM_SUBSCRIBER_ID = "SW_SUBSCRIBER_ID";
-  public static final String PARAM_SUBSCRIBER_PASSWORD = "SW_SUBSCRIBER_PASSWORD";
+  public static final String PARAM_SUBSCRIBER_CHAVE = "SW_SUBSCRIBER_CHAVE";
   public static final String PARAM_SMS_SOURCE_NUMBER = "SMS_SOURCE_NUMBER";
   
   private String _subscriberID;
@@ -38,10 +38,10 @@ public class SimplewireSMSImpl extends SMSGateway {
     boolean retValue=false;
     
     if(initParams.containsKey(PARAM_SUBSCRIBER_ID) 
-        && initParams.containsKey(PARAM_SUBSCRIBER_PASSWORD)
+        && initParams.containsKey(PARAM_SUBSCRIBER_CHAVE)
         && initParams.containsKey(PARAM_SMS_SOURCE_NUMBER)) {
       this._subscriberID = (String)initParams.get(PARAM_SUBSCRIBER_ID);
-      this._subscriberPassword = (String)initParams.get(PARAM_SUBSCRIBER_PASSWORD);
+      this._subscriberPassword = (String)initParams.get(PARAM_SUBSCRIBER_CHAVE);
 
       SMSData smsData = new SMSData();
       String sourceNumber = (String)initParams.get(PARAM_SMS_SOURCE_NUMBER);

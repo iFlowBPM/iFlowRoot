@@ -564,6 +564,7 @@ public class DelegationManager extends Thread {
       //DatabaseInterface.closeResources(db, st, rs);
     	try {if (db != null) db.close(); } catch (SQLException e) {}
     	try {if (st != null) st.close(); } catch (SQLException e) {}
+    	try {if (pst != null) pst.close(); } catch (SQLException e) {}
     	try {if (rs != null) rs.close(); } catch (SQLException e) {}
 
     }
@@ -637,7 +638,7 @@ public class DelegationManager extends Thread {
       results = new String[]{ flowName, colega };
     } catch (Exception e) {
       try {
-        db.rollback();
+        if (db!=null) db.rollback();
       } catch (SQLException e1) {
         Logger.error(userInfo.getUtilizador(), this, "stopDelegation", "Exception rolling back delegation " + delegationID, e1);
       }
@@ -705,7 +706,7 @@ public class DelegationManager extends Thread {
 
     } catch (Exception e) {
       try {
-        db.rollback();
+        if (db != null) db.rollback();
       } catch (SQLException e1) {
         // TODO Auto-generated catch block
         e1.printStackTrace();
@@ -872,7 +873,7 @@ public class DelegationManager extends Thread {
     } 
     catch (Exception e) {
       Logger.error(superUserInfo.getUtilizador(), this, "superDelegation", "Error creating a new super delegation", e);
-      try { db.rollback(); } catch (Exception e1) { }
+      try { if (db!=null) db.rollback(); } catch (Exception e1) { }
     } 
     finally {
       //DatabaseInterface.closeResources(db, pst, st, pst2, pst3, rs);
@@ -1079,11 +1080,12 @@ public class DelegationManager extends Thread {
 
     } catch (Exception e) {
       Logger.error(userInfo.getUtilizador(), this, "requestDelegation", "Error creating a new delegation request", e);
-      try { db.rollback(); } catch (Exception e1) { }
+      try { if (db!=null) db.rollback(); } catch (Exception e1) { }
     } finally {
       //DatabaseInterface.closeResources(db, pst, st, rs);
     	try {if (db != null) db.close(); } catch (SQLException e) {}
     	try {if (pst != null) pst.close(); } catch (SQLException e) {}
+    	try {if (st != null) st.close(); } catch (SQLException e) {}
     	try {if (rs != null) rs.close(); } catch (SQLException e) {}
     }
     return recordInserted;

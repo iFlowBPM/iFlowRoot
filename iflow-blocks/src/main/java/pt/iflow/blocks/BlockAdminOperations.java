@@ -149,7 +149,7 @@ public class BlockAdminOperations extends Block {
       outPort = portFalse;
     }
 
-    this.addToLog("Using '" + outPort.getName() + "';");
+    this.addToLog("Using '" + (outPort!=null?outPort.getName():"") + "';");
     this.saveLogs(userInfo, procData, this);
 
     return outPort;

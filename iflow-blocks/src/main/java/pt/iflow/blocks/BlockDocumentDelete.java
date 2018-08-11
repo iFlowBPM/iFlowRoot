@@ -22,7 +22,7 @@ public class BlockDocumentDelete extends Block {
 
   private static final String AUTHENTICATION = "d_AUTH";
   private static final String USER = "d_USER";
-  private static final String PASSWORD = "d_PASS";
+  private static final String CHAVE = "d_PASS";
   
   public BlockDocumentDelete(int anFlowId, int id, int subflowblockid, String filename) {
     super(anFlowId, id, subflowblockid, filename);
@@ -59,7 +59,7 @@ public class BlockDocumentDelete extends Block {
   private boolean removeFile(UserInfoInterface userInfo, ProcessData procData, String var) {
     Logger.debug("", this, "", "Delete AUTH "+this.getParsedAttribute(userInfo, AUTHENTICATION, procData));
     Logger.debug("", this, "", "Delete USER "+this.getAttribute(USER));
-    Logger.debug("", this, "", "Delete PASS "+this.getAttribute(PASSWORD));  
+    Logger.debug("", this, "", "Delete PASS "+this.getAttribute(CHAVE));  
 	    
 	  
     boolean retObj = false;
@@ -69,7 +69,7 @@ public class BlockDocumentDelete extends Block {
     //AUTHENTICATION
     Document doc =null;
     if(this.getParsedAttribute(userInfo, AUTHENTICATION, procData).equals("true")){
-    	doc = docBean.getDocumentAuth(userInfo, procData, docId, this.getAttribute(USER),this.getAttribute(PASSWORD));
+    	doc = docBean.getDocumentAuth(userInfo, procData, docId, this.getAttribute(USER),this.getAttribute(CHAVE));
     }else{
     	doc = docBean.getDocument(userInfo, procData, docId);
     }
@@ -84,7 +84,7 @@ public class BlockDocumentDelete extends Block {
         
         //AUTHENTICATION
         if(this.getParsedAttribute(userInfo, AUTHENTICATION, procData).equals("true")){
-            if (docBean.removeDocumentAuth(userInfo, procData, dmsDocId,this.getAttribute(USER),this.getAttribute(PASSWORD))) {
+            if (docBean.removeDocumentAuth(userInfo, procData, dmsDocId,this.getAttribute(USER),this.getAttribute(CHAVE))) {
                 this.addToLog("Deleted remote file with id '" + var + "';");
                 retObj = true;
               }

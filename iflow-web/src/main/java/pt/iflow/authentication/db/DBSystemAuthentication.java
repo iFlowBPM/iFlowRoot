@@ -44,7 +44,7 @@ public class DBSystemAuthentication implements Authentication,UserDataAccess {
   private static final Collection<String> _emptyProfilesList = Collections.unmodifiableCollection(new ArrayList<String>(0));
   private static final Collection<Map<String,String>> _emptyProfileUsers = Collections.unmodifiableCollection(new ArrayList<Map<String,String>>(0));
 
-  private static final String SQL_GET_USER_PASSWORD = "select USERPASSWORD from system_users where USERNAME=''{0}''";
+  private static final String SQL_GET_USER_CHAVE = "select USERPASSWORD from system_users where USERNAME=''{0}''";
   private static final String SQL_GET_USER_SESSION = "select SESSIONID from system_users where USERNAME=''{0}''";
   private static final String SQL_GET_USER_INFO = "select USERNAME,SESSIONID from system_users where USERNAME=''{0}''";
 
@@ -67,7 +67,7 @@ public class DBSystemAuthentication implements Authentication,UserDataAccess {
   public boolean checkUser(String username, String password) {
     boolean result = false;
 
-    Collection<Map<String,String>> users = DatabaseInterface.executeQuery(MessageFormat.format(SQL_GET_USER_PASSWORD,new Object[]{username}));
+    Collection<Map<String,String>> users = DatabaseInterface.executeQuery(MessageFormat.format(SQL_GET_USER_CHAVE,new Object[]{username}));
 
     if(users.isEmpty()) {
       Logger.error(null,this,"checkUser","No user with username " + username);

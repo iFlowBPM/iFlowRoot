@@ -250,7 +250,8 @@ public class BlockSQLBatchInsert extends BlockSQL {
 				Logger.debug(login,this,"after","Query: " + sQuery);
 				
 				// inserts
-				int nTotalInserts = procData.getList(saVars[0]).size();
+				ProcessListVariable plv = procData.getList(saVars[0]);
+				int nTotalInserts = (plv!=null)?plv.size():0;
 				for (int row=0; row < nTotalInserts; row++) {
 					for (int col=0; col < saVars.length; col++) {
 					

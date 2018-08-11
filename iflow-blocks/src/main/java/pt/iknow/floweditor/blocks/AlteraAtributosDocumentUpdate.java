@@ -61,7 +61,7 @@ public class AlteraAtributosDocumentUpdate extends AlteraAtributosDMS {
   
   private static final String AUTHENTICATION = "u_AUTH";
   private static final String USER = "u_USER";
-  private static final String PASSWORD = "u_PASS";
+  private static final String CHAVE = "u_PASS";
   
   public AlteraAtributosDocumentUpdate(FlowEditorAdapter adapter) {
     super(adapter, "");
@@ -129,8 +129,8 @@ public class AlteraAtributosDocumentUpdate extends AlteraAtributosDMS {
   	  }else if(atributo.getNome().equals(USER)){
   		  dataAUTH[1][0] = USER;
       	  dataAUTH[1][1] = atributo.getValor();   		  
-  	  }else if (atributo.getNome().equals(PASSWORD)){
-  		  dataAUTH[2][0] = PASSWORD;
+  	  }else if (atributo.getNome().equals(CHAVE)){
+  		  dataAUTH[2][0] = CHAVE;
       	  dataAUTH[2][1] = atributo.getValor();
   	  }
     }
@@ -169,7 +169,7 @@ public class AlteraAtributosDocumentUpdate extends AlteraAtributosDMS {
     //AUTHENTICATION SAVE
     retObj.add(new String [] {AUTHENTICATION,""+jcbAuth.isSelected()});
     retObj.add(new String [] {USER,jtfUser.getText()});
-    retObj.add(new String [] {PASSWORD,jtfPass.getText()});
+    retObj.add(new String [] {CHAVE,jtfPass.getText()});
     
     return retObj.toArray(new String[retObj.size()][2]);
   }

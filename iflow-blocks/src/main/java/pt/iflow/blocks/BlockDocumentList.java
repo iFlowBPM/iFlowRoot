@@ -28,7 +28,7 @@ public class BlockDocumentList extends Block {
 
   private static final String AUTHENTICATION = "l_AUTH";
   private static final String USER = "l_USER";
-  private static final String PASSWORD = "l_PASS";
+  private static final String CHAVE = "l_PASS";
   
   public BlockDocumentList(int anFlowId, int id, int subflowblockid, String filename) {
     super(anFlowId, id, subflowblockid, filename);
@@ -122,7 +122,7 @@ public class BlockDocumentList extends Block {
      
       DMSCredential credentialAux = null;
       if(this.getParsedAttribute(userInfo, AUTHENTICATION, procData).equals("true")){
-    	  credentialAux =  DMSConnectorUtils.createCredentialAuth(this.getAttribute(USER), this.getAttribute(PASSWORD));
+    	  credentialAux =  DMSConnectorUtils.createCredentialAuth(this.getAttribute(USER), this.getAttribute(CHAVE));
       }else{
     	  credentialAux =  DMSConnectorUtils.createCredential(userInfo, procData);  
       }

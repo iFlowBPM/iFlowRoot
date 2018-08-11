@@ -46,7 +46,7 @@ public class BlockDocumentGet extends Block {
   //AUTHENTICATION
   private static final String AUTHENTICATION = "o_AUTH";
   private static final String USER = "o_USER";
-  private static final String PASSWORD = "o_PASS";
+  private static final String CHAVE = "o_PASS";
   
   
   public BlockDocumentGet(int anFlowId, int id, int subflowblockid, String filename) {
@@ -137,7 +137,7 @@ public class BlockDocumentGet extends Block {
           //AUTHENTICATION
           DMSCredential credential = null;
           if(this.getParsedAttribute(userInfo, AUTHENTICATION, procData).equals("true")){
-        	  credential =  DMSConnectorUtils.createCredentialAuth(this.getAttribute(USER), this.getAttribute(PASSWORD));
+        	  credential =  DMSConnectorUtils.createCredentialAuth(this.getAttribute(USER), this.getAttribute(CHAVE));
           }else{
         	  credential =  DMSConnectorUtils.createCredential(userInfo, procData);  
           }

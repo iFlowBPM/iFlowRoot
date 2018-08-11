@@ -49,14 +49,17 @@ else {
 
   if (sError != null && !sError.equals("")) {
     sError = messages.getString("flow_settings_doimport.error", fileName) + "<br>";
+    out.println("Import Error");
   }
   else {
     sSave = messages.getString("flow_settings_doimport.msg.success", fileName);
     // reset vars
     fileName = null;
+    out.println("Import Success");
   }
   
 }
-out.println(sError);
-out.println(sSave);
+//jcosta:20180803:commented vulnerabilities out.println(sError);
+//jcosta:20180803:commented vulnerabilities out.println(sSave);
+
 %>

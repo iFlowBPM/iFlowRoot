@@ -145,7 +145,7 @@ public class Logger {
 		}
 
 		if (!loggerAvailable) {
-			System.out.println(logLevel + " " + sMessage);
+			//System.out.println(logLevel + " " + sMessage);
 			return;
 		}
 

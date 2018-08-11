@@ -41,7 +41,7 @@ public interface UserData extends IMappedData {
   public static final String FIRST_NAME = "FIRST_NAME";
   public static final String LAST_NAME = "LAST_NAME";
   public static final String ORGADM = "ORGADM";
-  public static final String PASSWORD_RESET = "PASSWORD_RESET";
+  public static final String CHAVE_RESET = "PASSWORD_RESET";
   public static final String ORGADM_USERS = "ORGADM_USERS";
   public static final String ORGADM_FLOWS = "ORGADM_FLOWS";
   public static final String ORGADM_PROCESSES = "ORGADM_PROCESSES";

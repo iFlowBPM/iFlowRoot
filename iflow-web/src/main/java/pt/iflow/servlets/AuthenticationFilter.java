@@ -44,9 +44,9 @@ public class AuthenticationFilter extends IFlowFilter {
               AuthenticationResult result = AuthenticationServlet.authenticate(httpRequest, httpResponse, username, password, "");
               mustAuthenticate = !result.isAuth;
             }
-          } else if (cookies.containsKey(Const.SESSION_COOKIE_USERNAME) && cookies.containsKey(Const.SESSION_COOKIE_PASSWORD)) {
+          } else if (cookies.containsKey(Const.SESSION_COOKIE_USERNAME) && cookies.containsKey(Const.SESSION_COOKIE_CHAVE)) {
             String username = cookies.get(Const.SESSION_COOKIE_USERNAME);
-            String password = cookies.get(Const.SESSION_COOKIE_PASSWORD);
+            String password = cookies.get(Const.SESSION_COOKIE_CHAVE);
             AuthenticationResult result = AuthenticationServlet.authenticate(httpRequest, httpResponse, username, Utils
                 .decrypt(password), "");
             mustAuthenticate = !result.isAuth;

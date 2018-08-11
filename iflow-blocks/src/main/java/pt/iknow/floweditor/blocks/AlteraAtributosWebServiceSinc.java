@@ -1560,7 +1560,7 @@ public class AlteraAtributosWebServiceSinc extends AbstractAlteraAtributos
 							.getString("AlteraAtributosWebServiceSinc.error.invalidURL")); //$NON-NLS-1$
 			throw eRet;
 		} finally {
-			is.close();
+			if (is!=null) is.close();
 			// c.close();
 		}
 

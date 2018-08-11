@@ -339,7 +339,10 @@ public class BlockWebServiceSinc extends Block {
       Logger.debug("", this, "", "URL=" +  sUrl);
 
       //WSDLUtils wu = setWSDLUtils(in, sUrl);
-      WSDLUtils wu = new WSDLUtilsV2(rfWSDLFile, sUrl);
+      WSDLUtils wu = null;
+      try (InputStream ins = rfWSDLFile.getResourceAsStream()) {
+    	  wu = new WSDLUtilsV2(ins, sUrl);
+      }
       
       // input/output mappings
       HashMap<String, String> hmInput = new HashMap<String, String>();

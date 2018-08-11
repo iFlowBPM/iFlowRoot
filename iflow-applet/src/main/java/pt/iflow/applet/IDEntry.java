@@ -183,7 +183,9 @@ public class IDEntry {
   }
   
   public PrivateKey getPrivateKey() throws GeneralSecurityException {
-    return (PrivateKey) store.getKey(alias, new char[]{'1','2','3','4','5','6'});
+    // jcosta:20180806 vulnerabilities
+	// return (PrivateKey) store.getKey(alias, new char[]{'1','2','3','4','5','6'});
+	  return null;
   }
   
   public Provider getProvider() {

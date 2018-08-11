@@ -465,8 +465,8 @@ public class BlockSQLSelect extends BlockSQL {
                 }
               }
 
-              Logger.debug(login, this, "after", "setting " + content.getName() + "[" + counter + "]=" + value);
-              logMsg.append("Set '" + content.getName() + "[" + counter + "]' as '" + value + "';");
+              Logger.debug(login, this, "after", "setting " + ((content!=null)?content.getName():"") + "[" + counter + "]=" + ((value!=null)?value:""));
+              logMsg.append("Set '" + content.getName() + "[" + counter + "]' as '" + ((value!=null)?value:"") + "';");
 
             }
           }

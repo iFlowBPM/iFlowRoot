@@ -55,6 +55,7 @@ import pt.iflow.api.xml.FlowMarshaller;
 import pt.iflow.api.xml.codegen.flow.XmlAttributeType;
 import pt.iflow.api.xml.codegen.flow.XmlBlockType;
 import pt.iflow.api.xml.codegen.flow.XmlCatalogVarAttributeType;
+import pt.iflow.api.xml.codegen.flow.XmlCatalogVarsType;
 import pt.iflow.api.xml.codegen.flow.XmlFlow;
 
 /**
@@ -761,7 +762,7 @@ public class FlowHolderBean implements FlowHolder {
 			result.success = true;
 		} catch (Exception e) {
 			try {
-				db.rollback();
+				if (db!=null) db.rollback();
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
@@ -828,8 +829,11 @@ public class FlowHolderBean implements FlowHolder {
 									&& xmlAttribute.getValue().equals(subFlowName)) {
 								for (XmlCatalogVarAttributeType xmlCatalogueVar : flow.getXmlCatalogVars()
 										.getXmlCatalogVarAttribute()) {
-									for (XmlCatalogVarAttributeType xmlCatalogueVarSub : subFlow.getXmlCatalogVars()
-											.getXmlCatalogVarAttribute()) {
+									List<XmlCatalogVarAttributeType> catVarAttrib = null;
+									if (subFlow!= null)
+										catVarAttrib = subFlow.getXmlCatalogVars().getXmlCatalogVarAttribute();
+									
+									for (XmlCatalogVarAttributeType xmlCatalogueVarSub : nullSafe(catVarAttrib)) {
 										if (xmlCatalogueVar.getName().equals(xmlCatalogueVarSub.getName())
 												&& !isVarMappedToSubflow(xmlCatalogueVar.getName(),
 														xmlCatalogueVarSub.getName(), xmlBlock)) {
@@ -990,7 +994,7 @@ public class FlowHolderBean implements FlowHolder {
 			result.success = true;
 		} catch (Exception e) {
 			try {
-				db.rollback();
+				if (db!=null) db.rollback();
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
@@ -1381,8 +1385,9 @@ public class FlowHolderBean implements FlowHolder {
 					flow.file = rs.getString("flowfile");
 					flow.name = rs.getString("flowname");
 					flow.online = rs.getBoolean("enabled");
-					InputStream is = rs.getBinaryStream("flowdata");
-					flow.data = getBytes(is);
+					try (InputStream is = rs.getBinaryStream("flowdata")) {
+						flow.data = getBytes(is);
+					}
 					flow.created = rs.getTimestamp("created").getTime();
 					flow.lastModified = rs.getTimestamp("modified").getTime();
 					for (int i = 0; i < Const.INDEX_COLUMN_COUNT; i++)
@@ -1915,13 +1920,14 @@ public class FlowHolderBean implements FlowHolder {
 			st.setString(1, name);
 			rs = st.executeQuery();
 			if (rs.next()) {
-				InputStream is = rs.getBinaryStream("data");
-				data = getBytes(is);
+				try (InputStream is = rs.getBinaryStream("data")) {
+					data = getBytes(is);
+				}
 			}
 
 		} catch (Exception e) {
 			try {
-				db.rollback();
+				if (db!=null) db.rollback();
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
@@ -1959,7 +1965,7 @@ public class FlowHolderBean implements FlowHolder {
 			result = (st.executeUpdate() == 1);
 		} catch (Exception e) {
 			try {
-				db.rollback();
+				if (db!=null) db.rollback();
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
@@ -2024,7 +2030,7 @@ public class FlowHolderBean implements FlowHolder {
 			db.commit();
 		} catch (Exception e) {
 			try {
-				db.rollback();
+				if (db!=null) db.rollback();
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
@@ -2097,9 +2103,11 @@ public class FlowHolderBean implements FlowHolder {
 			boolean flowFound = false;
 			if (rs.next()) {
 				flowFound = true;
-				InputStream is = rs.getBinaryStream(1);
-				data = getBytes(is);
-				Logger.debug(userInfo.getUtilizador(), this, "readData", "Flow found. Bytes: " + data.length);
+				
+				try (InputStream is = rs.getBinaryStream(1)) {
+					data = getBytes(is);
+					Logger.debug(userInfo.getUtilizador(), this, "readData", "Flow found. Bytes: " + data.length);
+				}
 			}
 
 			rs.close();
@@ -2115,9 +2123,10 @@ public class FlowHolderBean implements FlowHolder {
 				st.setString(1, name);
 				rs = st.executeQuery();
 				if (rs.next()) {
-					InputStream is = rs.getBinaryStream(1);
-					data = getBytes(is);
-					Logger.debug(userInfo.getUtilizador(), this, "readData", "Template found. Bytes: " + data.length);
+					try (InputStream is = rs.getBinaryStream(1)) {
+						data = getBytes(is);
+						Logger.debug(userInfo.getUtilizador(), this, "readData", "Template found. Bytes: " + data.length);
+					}
 				}
 			}
 
@@ -2646,4 +2655,9 @@ public class FlowHolderBean implements FlowHolder {
 		}
 		return result;
 	}
+	
+    public static List<XmlCatalogVarAttributeType> nullSafe(List<XmlCatalogVarAttributeType> c) {
+        return (List<XmlCatalogVarAttributeType>) ((c == null) ? Collections.emptyList() : c);
+    }
+
 }

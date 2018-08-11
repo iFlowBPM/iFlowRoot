@@ -25,12 +25,10 @@ public class WSDLUtilsV2  extends WSDLUtils{
 
 	org.apache.axis.wsdl.gen.Parser parser= new Parser();
 	
-	public WSDLUtilsV2(RepositoryFile aisWsdl, String asUrl) throws Exception {
-		super(aisWsdl.getResourceAsStream(), asUrl);
+	public WSDLUtilsV2(InputStream inputStream, String asUrl) throws Exception {
+		super(inputStream, asUrl);
 		
-		
-		try (InputStream inputStream = aisWsdl.getResourceAsStream();){
-			 
+		try {
 			 org.w3c.dom.Document doc = XMLUtils.newDocument( inputStream);
 			 inputStream.close();
 			 String _sRealUrl = asUrl;
@@ -40,6 +38,9 @@ public class WSDLUtilsV2  extends WSDLUtils{
 			e.printStackTrace();
 			throw (e);
 		} 
+		finally {
+			try{ if(inputStream!=null) inputStream.close();} catch (Exception e) {}
+		}
 	}
 	
 	public HashMap < String, Object > callService(String asService,

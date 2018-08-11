@@ -295,7 +295,7 @@ public class DatabaseInterface
         "Error excuting updates, transaction will rollback: " + e.getMessage());
       try
       {
-        db.rollback();
+        if (db!=null) db.rollback();
       }
       catch (Exception localException1) {}
     }
@@ -342,7 +342,8 @@ public class DatabaseInterface
     }
     finally
     {
-      closeResources(new Object[] { db });
+      //closeResources(new Object[] { db });
+      try {if (db != null) db.close(); } catch (SQLException e) {}
     }
     return result;
   }

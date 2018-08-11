@@ -31,7 +31,7 @@ import pt.iflow.api.utils.Utils;
 public class DBAuthentication implements Authentication {
 
   // Modificado para nao autenticar utilizadores nao confirmados.
-  private static final String SQL_GET_USER_PASSWORD = "select USERPASSWORD from users where USERNAME=''{0}'' and ACTIVATED=1";
+  private static final String SQL_GET_USER_CHAVE = "select USERPASSWORD from users where USERNAME=''{0}'' and ACTIVATED=1";
   private static final String SQL_GET_USER_SESSION = "select SESSIONID from users where USERNAME=''{0}'' and ACTIVATED=1";
   private static final String SQL_GET_USER_INFO = "select USERNAME,SESSIONID from users where USERNAME=''{0}'' and ACTIVATED=1";
   private static final String SQL_GET_PROFILE_USERS = "select USERID from users where profileid={0} and ACTIVATED=1";
@@ -57,7 +57,7 @@ public class DBAuthentication implements Authentication {
     boolean result = false;
     
     Collection<Map<String,String>> users = 
-       DatabaseInterface.executeQuery(MessageFormat.format(SQL_GET_USER_PASSWORD,new Object[]{username}));
+       DatabaseInterface.executeQuery(MessageFormat.format(SQL_GET_USER_CHAVE,new Object[]{username}));
     
     if(users.isEmpty()) {
       Logger.error(null,this,"checkUser","No user with username " + username);

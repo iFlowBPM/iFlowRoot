@@ -168,8 +168,9 @@ public class AlfrescoUtils extends DMSUtils {
             predicate = new Predicate(ref, doc.reference.getStore(), null);
             Content[] readResult = WebServiceFactory.getContentService().read(predicate, Constants.PROP_CONTENT);
             if (readResult.length > 0) {
-              InputStream contentStream = ContentUtils.getContentAsInputStream(readResult[0]);
-              doc.setContent(IOUtils.toByteArray(contentStream));
+              try (InputStream contentStream = ContentUtils.getContentAsInputStream(readResult[0])) {
+            	  doc.setContent(IOUtils.toByteArray(contentStream));
+              }
             }
           }
           if (!reserve) {

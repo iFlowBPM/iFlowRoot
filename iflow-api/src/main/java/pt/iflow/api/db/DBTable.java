@@ -24,7 +24,7 @@ public class DBTable {
   public static final String FIELD = "COLUMN_NAME";
   public static final String TYPE = "COLUMN_TYPE";
   public static final String NULL = "IS_NULLABLE";
-  public static final String KEY = "COLUMN_KEY";
+  public static final String CHAVE = "COLUMN_KEY";
   public static final String DEFAULT = "COLUMN_DEFAULT";
   public static final String EXTRA = "EXTRA";
   public static final String VALUE = "VALUE";

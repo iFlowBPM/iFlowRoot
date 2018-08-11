@@ -286,11 +286,11 @@ public class FlowData implements IFlowData,Serializable {
          return; // flow not deployed, quit!
 
        // builds ForkJoin dependency path
-       this.buildForkJoinDepPath(userInfo, htBlocks, new HashSet<Integer>(), flowResult.start, null);
+       this.buildForkJoinDepPath(userInfo, htBlocks, new HashSet<Integer>(), (flowResult!=null)?flowResult.start:null, null);
        this.saveForkJoinDepPath(userInfo);
 
        try {
-         instantiateDetailBlock(userInfo, flowResult.start, asFileName);
+         instantiateDetailBlock(userInfo, (flowResult!=null)?flowResult.start:null, asFileName);
          Logger.info(userInfo.getUtilizador(), this, "constructor", "Process Detail Block instantiated in " + asFileName + ".");
        } catch (Throwable t) {
          Logger.warning(userInfo.getUtilizador(), this, "constructor", "Could not instantiate Process Detail Block", t);
@@ -1005,7 +1005,7 @@ public class FlowData implements IFlowData,Serializable {
            "caught sql exception: " + sqle.getMessage());
        sqle.printStackTrace();
        try {
-         db.rollback();
+         if (db!=null) db.rollback();
        } catch (Exception e) {
        }
      } catch (Exception e) {

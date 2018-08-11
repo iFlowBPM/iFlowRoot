@@ -817,12 +817,12 @@ public class ProcessManagerBean implements ProcessManager {
 
 		} finally {
 			// DatabaseInterface.closeResources(db, st, rs);
-			if (db != null)
-				db.close();
-			if (st != null)
-				st.close();
-			if (rs != null)
-				rs.close();
+			try {if (db != null)
+				db.close();}  catch (Exception e) {}
+			try {if (st != null)
+				st.close();}  catch (Exception e) {}
+			try {if (rs != null)
+				rs.close();}  catch (Exception e) {}
 		}
 
 		return previousProcess;
@@ -2229,11 +2229,9 @@ public class ProcessManagerBean implements ProcessManager {
 			Logger.error(userInfo.getUtilizador(), this, "getActivityOwners", "exception: " + e.getMessage(), e);
 		} finally {
 			//DatabaseInterface.closeResources(db, st, rs);
-			try {
-				
-			if(db != null) db.close();
-			if(st != null) st.close();
-			if(rs != null) rs.close();
+			try { if(db != null) db.close();} catch (Exception e2) {}
+			try { if(st != null) st.close();} catch (Exception e2) {}
+			try { if(rs != null) rs.close();
 			} catch (Exception e2) {
 				// TODO: handle exception
 			}
@@ -4423,9 +4421,9 @@ public class ProcessManagerBean implements ProcessManager {
 		} finally {
 			//DatabaseInterface.closeResources(db, pst, rs);
 			
-			try { if (null != rs) rs.close();
-			if (null != pst)	pst.close();
-			if(null != db)	db.close();
+			try { if (null != rs) rs.close();} catch (Exception e) {}
+			try { if (null != pst)	pst.close();} catch (Exception e) {}
+			try { if(null != db)	db.close();
 				
 			} catch (Exception e) {}
 		}
@@ -4475,9 +4473,9 @@ public class ProcessManagerBean implements ProcessManager {
 		} finally {
 			//DatabaseInterface.closeResources(db, pst, rs);
 			
-			try { if (null != rs) rs.close();
-			if (null != pst)	pst.close();
-			if(null != db)	db.close();
+			try { if (null != rs) rs.close();} catch (Exception e) {}
+			try { if (null != pst)	pst.close();} catch (Exception e) {}
+			try { if(null != db)	db.close();
 				
 			} catch (Exception e) {}
 		}
@@ -4528,9 +4526,9 @@ public class ProcessManagerBean implements ProcessManager {
 					e);
 		} finally {
 			// DatabaseInterface.closeResources(db, pst, rs);
-			try { if (null != rs) rs.close();
-			if (null != pst)	pst.close();
-			if(null != db)	db.close();
+			try { if (null != rs) rs.close();} catch (Exception e) {}
+			try { if (null != pst)	pst.close();} catch (Exception e) {}
+			try { if(null != db)	db.close();
 				
 			} catch (Exception e) {}
 		}
@@ -4579,9 +4577,9 @@ public class ProcessManagerBean implements ProcessManager {
 		} finally {
 			// DatabaseInterface.closeResources(db, pst, rs);
 			
-			try { if (null != rs) rs.close();
-			if (null != pst)	pst.close();
-			if(null != db)	db.close();
+			try { if (null != rs) rs.close();} catch (Exception e) {}
+			try { if (null != pst)	pst.close();} catch (Exception e) {}
+			try { if(null != db)	db.close();
 				
 			} catch (Exception e) {}
 		}
@@ -4958,10 +4956,10 @@ public class ProcessManagerBean implements ProcessManager {
 				Logger.error(userInfo.getUtilizador(), this, "getUserProcesses", "Error retrieving processes.", e);
 			} finally {
 				//DatabaseInterface.closeResources(db, st, pst, rs);
-				try { if (null != rs) rs.close();
-				if (null != st)	st.close();
-				if(null != db)	db.close();
-				if(null != pst)	pst.close();
+				try { if (null != rs) rs.close();} catch (Exception e) {}
+				try { if (null != st)	st.close();} catch (Exception e) {}
+				try { if(null != db)	db.close();} catch (Exception e) {}
+				try { if(null != pst)	pst.close();
 					
 				} catch (Exception e) {}
 			}
@@ -5053,11 +5051,11 @@ public class ProcessManagerBean implements ProcessManager {
 		} finally {
 			//DatabaseInterface.closeResources(db, st, rs);
 			
-			try { if (null != rs) rs.close();
-			if (null != st)	st.close();
-			if(null != db)	db.close();
-				
-			} catch (Exception e) {}
+			try { if (null != rs) rs.close();} catch (Exception e) {}
+			try { if (null != st)	st.close();} catch (Exception e) {}
+			try { if(null != db)	db.close();} catch (Exception e) {}
+			
+			
 		}
 		return retObj;
 	}
@@ -5104,11 +5102,9 @@ public class ProcessManagerBean implements ProcessManager {
 			return null;
 		} finally {
 			//DatabaseInterface.closeResources(db, pst, rs);
-			try { if (null != rs) rs.close();
-			if(null != db)	db.close();
-			if(null != pst)	pst.close();
-				
-			} catch (Exception e) {}
+			try { if (null != rs) rs.close();} catch (Exception e) {}
+			try { if(null != db)	db.close();} catch (Exception e) {}
+			try { if(null != pst)	pst.close();} catch (Exception e) {}
 		}
 	}
 	
@@ -5194,11 +5190,9 @@ public class ProcessManagerBean implements ProcessManager {
 			procs = null;
 		} finally {
 			//DatabaseInterface.closeResources(db, pst, rs);
-			try { if (null != rs) rs.close();
-			if(null != db)	db.close();
-			if(null != pst)	pst.close();
-				
-			} catch (Exception e) {}
+			try { if (null != rs) rs.close();} catch (Exception e) {}
+			try { if(null != db)	db.close();} catch (Exception e) {}
+			try { if(null != pst)	pst.close();} catch (Exception e) {}
 		}
 
 		return procs;
@@ -5431,12 +5425,8 @@ public class ProcessManagerBean implements ProcessManager {
 			Logger.error(login, this, "archiveProcesses", "error", oe);
 		} finally {
 			//DatabaseInterface.closeResources(db, cst);
-			try { 
-			if (null != cst)	cst.close();
-			if(null != db)	db.close();
-			
-				
-			} catch (Exception e) {}
+			try {if (null != cst)	cst.close();} catch (Exception e) {} 
+			try {if(null != db)	db.close();} catch (Exception e) {}
 		}
 
 		return removed;

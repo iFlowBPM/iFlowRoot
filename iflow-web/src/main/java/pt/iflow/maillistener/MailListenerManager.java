@@ -295,7 +295,7 @@ public class MailListenerManager extends Thread {
           setVar(procData, "fromEmail", mailsettings.getFromEmailVar(), fromEmail);
           setVar(procData, "fromName", mailsettings.getFromNameVar(), fromName);
           setVar(procData, "subject", mailsettings.getSubjectVar(), subject);
-          setVar(procData, "sentDate", mailsettings.getSentDateVar(), sentDate.toString()); // TODO
+          setVar(procData, "sentDate", mailsettings.getSentDateVar(), (sentDate!=null)?sentDate.toString():null); // TODO
           setVar(procData, "text", mailsettings.getTextVar(), text); 
           if (mailsettings.getCustomProps() != null) {
             for (String mailprop : mailsettings.getCustomProps().asList()) {
@@ -360,15 +360,16 @@ public class MailListenerManager extends Thread {
         tmpDir.mkdirs();
 
         File file = new File(tmpDir, filename);
-        FileOutputStream fos = new FileOutputStream(file);
-
-        int c;
-        while ((c = data.read()) != -1) {
-          fos.write((byte) c);
+        
+        try (FileOutputStream fos = new FileOutputStream(file)) {	
+	        int c;
+	        while ((c = data.read()) != -1) {
+	          fos.write((byte) c);
+	        }
+	
+	        data.close();
+	        fos.close();
         }
-
-        data.close();
-        fos.close();
 
         return file;
       }

@@ -249,7 +249,7 @@ public class BlockSQLBatchUpdate extends BlockSQL {
 	      				pstmt.setDate((col+1), val);
 	      				Logger.debug(login, this, "after", "SETTING DATE COL " + 
 	    					  (col+1) + " WITH " + newArray[col] + "[" + row + "]=" + 
-	    					  val);
+	    					  ((val!=null)?val:""));
 	      			}
 	      			else if (dataTypeClass == int.class) {
 	      				Integer val = 0;
@@ -333,13 +333,15 @@ public class BlockSQLBatchUpdate extends BlockSQL {
      		int nTotalUpdates = 0;
      		
      		// Concatenar os 2 arrays com as Vars
-     		String[] newArray = new String[saSetVars.length + saWhereVars.length];
-	      	for(int i = 0; i < saSetVars.length; i++) {
+     		String[] newArray = new String[
+     		         ((saSetVars!=null)?saSetVars.length:0) 
+     		       + ((saWhereVars!=null)?saWhereVars.length:0)];
+	      	for(int i = 0; saSetVars != null && i < saSetVars.length; i++) {
 	      		newArray[i] = saSetVars[i];
 	      		if (procData.getList(saSetVars[i]).size() > nTotalUpdates)
 	      			nTotalUpdates = procData.getList(saSetVars[i]).size();
 	      	}
-	      	for(int i = 0; i < saWhereVars.length; i++) {
+	      	for(int i = 0; saWhereVars!= null && i < saWhereVars.length; i++) {
 	      		newArray[i+saSetVars.length] = saWhereVars[i];
 
 	      	}
@@ -367,7 +369,7 @@ public class BlockSQLBatchUpdate extends BlockSQL {
 	      				pstmt.setDate((col+1), val);
 	      				Logger.debug(login, this, "after", "SETTING DATE COL " + 
 	    					  (col+1) + " WITH " + newArray[col] + "[" + row + "]=" + 
-	    					  val);
+	    					  ((val!=null)?val:""));
 	      			}
 	      			else if (dataTypeClass == int.class) {
 	      			

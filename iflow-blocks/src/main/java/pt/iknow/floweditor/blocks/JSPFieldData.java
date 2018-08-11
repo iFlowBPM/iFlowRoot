@@ -1030,34 +1030,47 @@ public class JSPFieldData {
 		}
 
 		hmTmp = null;
-		for (int i = 0; i < afd._alTableProps.size(); i++) {
-			if (!this._alTableProps.contains(afd._alTableProps.get(i)))
-				this._alTableProps.add(afd._alTableProps.get(i));
+		
+		if (afd!=null && this._alTableProps != null) {
+			for (int i = 0; i < afd._alTableProps.size(); i++) {
+				if (!this._alTableProps.contains(afd._alTableProps.get(i)))
+					this._alTableProps.add(afd._alTableProps.get(i));
+			}
+		}
+		
+		if (afd!=null && this._alEditSingleProps != null) {
+			for (int i = 0; i < afd._alEditSingleProps.size(); i++) {
+				if (!this._alEditSingleProps.contains(afd._alEditSingleProps.get(i)))
+					this._alEditSingleProps.add(afd._alEditSingleProps.get(i));
+			}
 		}
 
-		for (int i = 0; i < afd._alEditSingleProps.size(); i++) {
-			if (!this._alEditSingleProps.contains(afd._alEditSingleProps.get(i)))
-				this._alEditSingleProps.add(afd._alEditSingleProps.get(i));
+
+		if (afd!=null && this._alEditMultipleProps != null) {
+			for (int i = 0; i < afd._alEditMultipleProps.size(); i++) {
+				if (!this._alEditMultipleProps.contains(afd._alEditMultipleProps.get(i)))
+					this._alEditMultipleProps.add(afd._alEditMultipleProps.get(i));
+			}
 		}
 
-		for (int i = 0; i < afd._alEditMultipleProps.size(); i++) {
-			if (!this._alEditMultipleProps.contains(afd._alEditMultipleProps.get(i)))
-				this._alEditMultipleProps.add(afd._alEditMultipleProps.get(i));
+		if (afd!=null && this._alRequiredProps != null) {
+			for (int i = 0; i < afd._alRequiredProps.size(); i++) {
+				if (!this._alRequiredProps.contains(afd._alRequiredProps.get(i)))
+					this._alRequiredProps.add(afd._alRequiredProps.get(i));
+			}
 		}
-
-		for (int i = 0; i < afd._alRequiredProps.size(); i++) {
-			if (!this._alRequiredProps.contains(afd._alRequiredProps.get(i)))
-				this._alRequiredProps.add(afd._alRequiredProps.get(i));
-		}
-
-		this._hmPropDependencies.putAll(afd._hmPropDependencies);// = new
+		
+		if (this._hmPropDependencies!=null && afd!=null)
+			this._hmPropDependencies.putAll(afd._hmPropDependencies);// = new
 																	// HashMap<Integer,
 																	// PropDependency>(afd._hmPropDependencies);
 
-		this._hmPropTypes.putAll(afd._hmPropTypes);// = new HashMap<Integer,
+		if (this._hmPropTypes!=null && afd!=null)
+			this._hmPropTypes.putAll(afd._hmPropTypes);// = new HashMap<Integer,
 													// Integer>(afd._hmPropTypes);
 
-		this._hsDisableDataTypes.addAll(afd._hsDisableDataTypes);// = new
+		if (this._hsDisableDataTypes!=null && afd!=null)
+			this._hsDisableDataTypes.addAll(afd._hsDisableDataTypes);// = new
 																	// HashSet<Integer>(afd._hsDisableDataTypes);
 
 	}
@@ -3624,9 +3637,11 @@ public class JSPFieldData {
 			e.printStackTrace();
 		}
 
-		XmlCatalogVarsType xmlcv = _xmlflow.getXmlCatalogVars();
+		XmlCatalogVarsType xmlcv = null;
+		if (_xmlflow != null)
+			xmlcv = _xmlflow.getXmlCatalogVars();
 		String[][] inputFields;
-		if (xmlcv.getXmlAttribute().size() > 0 && xmlcv.getXmlCatalogVarAttribute().size() == 0) {
+		if (xmlcv != null && xmlcv.getXmlAttribute().size() > 0 && xmlcv.getXmlCatalogVarAttribute().size() == 0) {
 			inputFields = new String[xmlcv.getXmlAttribute().size()][fieldsColumnNames.length];
 			for (int i = 0; i < xmlcv.getXmlAttribute().size(); i++) {
 				XmlAttributeType attr = xmlcv.getXmlAttribute().get(i);
@@ -3634,8 +3649,8 @@ public class JSPFieldData {
 				inputFields[i][1] = attr.getDescription();
 			}
 		} else {
-			inputFields = new String[xmlcv.getXmlCatalogVarAttribute().size()][fieldsColumnNames.length];
-			for (int i = 0; i < xmlcv.getXmlCatalogVarAttribute().size(); i++) {
+			inputFields = new String[(xmlcv != null)?xmlcv.getXmlCatalogVarAttribute().size():0][fieldsColumnNames.length];
+			for (int i = 0; xmlcv != null && i < xmlcv.getXmlCatalogVarAttribute().size(); i++) {
 				XmlCatalogVarAttributeType attr = xmlcv.getXmlCatalogVarAttribute().get(i);
 				inputFields[i][0] = attr.getName();
 				inputFields[i][1] = attr.getDataType();

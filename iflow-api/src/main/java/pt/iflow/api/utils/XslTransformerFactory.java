@@ -56,30 +56,33 @@ public class XslTransformerFactory {
     boolean notInCache = false;
     notInCache = ((null == cacheElem) || (repFile.getLastModified() != cacheElem.getTimestamp()));
     
-    InputStream isXslStream = null;
+    
     if (notInCache) {
       Templates templates = null;
       Logger.debug("ADMIN", "XslTransformerFactory", "getTemplates", "Nao esta na cache. Processing...");
-      isXslStream = repFile.getResourceAsStream();
-      if (isXslStream != null) {
-        TransformerFactory tFactory = TransformerFactory.newInstance();
-        tFactory.setURIResolver(new RepositoryURIResovler(userInfo, tFactory.getURIResolver()));
-        try {
-          templates = tFactory.newTemplates(new StreamSource(isXslStream));
-          cacheElem = new CacheElem(repFile.getLastModified(), templates);
-          templateCache.put(cacheKey, cacheElem);
-        } catch (TransformerConfigurationException e) {
-          Logger.error(userInfo.getUtilizador(), "XslTransformerFactory", "getTemplates", "Error building transformer template", e);
-          templateCache.remove(cacheKey);
-          cacheElem = null;
-        } finally {
-          try {
-            isXslStream.close();
-          } catch (IOException e) {
-            Logger.warning(userInfo.getUtilizador(), "XslTransformerFactory", "getTemplates", "Exception caught closing stream", e);
-          }
-        }
+      
+      try (InputStream isXslStream = repFile.getResourceAsStream()) {
+	      if (isXslStream != null) {
+	        TransformerFactory tFactory = TransformerFactory.newInstance();
+	        tFactory.setURIResolver(new RepositoryURIResovler(userInfo, tFactory.getURIResolver()));
+	        try {
+	          templates = tFactory.newTemplates(new StreamSource(isXslStream));
+	          cacheElem = new CacheElem(repFile.getLastModified(), templates);
+	          templateCache.put(cacheKey, cacheElem);
+	        } catch (TransformerConfigurationException e) {
+	          Logger.error(userInfo.getUtilizador(), "XslTransformerFactory", "getTemplates", "Error building transformer template", e);
+	          templateCache.remove(cacheKey);
+	          cacheElem = null;
+	        } finally {
+	          try {
+	            isXslStream.close();
+	          } catch (IOException e) {
+	            Logger.warning(userInfo.getUtilizador(), "XslTransformerFactory", "getTemplates", "Exception caught closing stream", e);
+	          }
+	        }
+	      }
       }
+      catch (Exception e) {}
     }
 
     Templates result = null;

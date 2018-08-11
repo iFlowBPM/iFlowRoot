@@ -3,6 +3,7 @@ package pt.iflow.api.blocks;
 import java.io.BufferedWriter;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -722,4 +723,9 @@ public abstract class Block {
     public boolean isBlockRunningInPopup() {
       return !(getBlockRunningInPopup() == null);     
     }
+    
+    public static List<String> nullSafe(List<String> c) {
+        return (List<String>) ((c == null) ? Collections.emptyList() : c);
+    }
+    
 }

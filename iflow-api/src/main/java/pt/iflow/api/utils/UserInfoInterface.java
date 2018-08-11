@@ -1,5 +1,6 @@
 package pt.iflow.api.utils;
 
+import java.io.Serializable;
 import java.sql.Connection;
 
 import pt.iflow.api.db.DBConnectionWrapper;
@@ -8,7 +9,7 @@ import pt.iflow.api.msg.IMessages;
 import pt.iflow.api.processdata.ProcessData;
 import pt.iflow.api.userdata.UserData;
 
-public interface UserInfoInterface {
+public interface UserInfoInterface extends Serializable {
 
 	public abstract String getMainPageHTML();
 

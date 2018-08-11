@@ -398,7 +398,7 @@ public class Const {
 
   // Session cookie
   public static final String SESSION_COOKIE_USERNAME = "SESSION_COOKIE_USERNAME";
-  public static final String SESSION_COOKIE_PASSWORD = "SESSION_COOKIE_PASSWORD";
+  public static final String SESSION_COOKIE_CHAVE = "SESSION_COOKIE_CHAVE";
 
   //Default Locate
   public static String DEFAULT_LOCALE = null;

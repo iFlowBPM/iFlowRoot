@@ -129,10 +129,10 @@ public class RepositoryBean implements Repository {
 
 	private static String getLocaleKey(String orgName) {
 		Locale loc = BeanFactory.getSettingsBean().getOrganizationLocale(orgName);
-		String key = "";
+		String chave = "";
 		if (null != loc)
-			key = "_" + loc.getLanguage() + "_" + loc.getCountry();
-		return key;
+			chave = "_" + loc.getLanguage() + "_" + loc.getCountry();
+		return chave;
 	}
 
 	// User validation
@@ -658,8 +658,7 @@ public class RepositoryBean implements Repository {
 			if (null == file)
 				return null;
 			InputStream inStream = null;
-			try {
-				FileInputStream fin = new FileInputStream(file);
+			try (FileInputStream fin = new FileInputStream(file)){
 				inStream = new BufferedInputStream(fin);
 			} catch (IOException e) {
 				Logger.error(null, this, "getResourceData", "Error opening file " + file + ": " + e.getMessage(), e);

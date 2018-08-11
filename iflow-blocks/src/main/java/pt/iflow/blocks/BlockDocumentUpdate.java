@@ -37,7 +37,7 @@ public class BlockDocumentUpdate extends Block {
   
   private static final String AUTHENTICATION = "u_AUTH";
   private static final String USER = "u_USER";
-  private static final String PASSWORD = "u_PASS";
+  private static final String CHAVE = "u_PASS";
   
   
   public BlockDocumentUpdate(int anFlowId, int id, int subflowblockid, String filename) {
@@ -172,7 +172,7 @@ public class BlockDocumentUpdate extends Block {
     //AUTHENTICATION
     DMSCredential credential = null;
     if(this.getParsedAttribute(userInfo, AUTHENTICATION, procData).equals("true")){
-  	  credential =  DMSConnectorUtils.createCredentialAuth(this.getAttribute(USER), this.getAttribute(PASSWORD));
+  	  credential =  DMSConnectorUtils.createCredentialAuth(this.getAttribute(USER), this.getAttribute(CHAVE));
     }else{
   	  credential =  DMSConnectorUtils.createCredential(userInfo, procData);  
     }

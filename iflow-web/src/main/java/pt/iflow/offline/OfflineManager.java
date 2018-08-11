@@ -91,14 +91,16 @@ public class OfflineManager {
   public static void uploadFile(InputStream inStream, String destFilePath) 
   throws Exception {
     File file = new File(destFilePath);
-    FileOutputStream fos = new FileOutputStream(file);
-
-    byte[] buf = new byte[1024];
-    int len;
-    while ((len = inStream.read(buf)) > 0) {
-      fos.write(buf, 0, len);
+    
+    try (FileOutputStream fos = new FileOutputStream(file)) {
+	
+	    byte[] buf = new byte[1024];
+	    int len;
+	    while ((len = inStream.read(buf)) > 0) {
+	      fos.write(buf, 0, len);
+	    }
+	
+	    fos.close();
     }
-
-    fos.close();
   }
 }

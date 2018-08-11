@@ -325,7 +325,8 @@ public class BlockPesquisaProcesso extends Block implements PesquisaProcesso {
                 stateDesc = new HashMap<String, String>(); // descriptions
 
               try {
-                rs = st.executeQuery(sbquery.toString());
+            	if (sbquery!=null)
+            		rs = st.executeQuery(sbquery.toString());
                 while (rs.next()) {
                   String procKey = rs.getInt("pid") + "/" + rs.getInt("subpid");
                   if ((stateDates != null &&  stateDates.containsKey(procKey))

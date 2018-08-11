@@ -625,11 +625,11 @@ public class UserManagerBean implements UserManager {
       if(StringUtils.isNotEmpty(unit))
         setUnitId=",UNITID=?";
       
-      String setPassword = "";
+      String setChave = "";
       String password = null;
       if(!Const.bUSE_EMAIL && StringUtils.isNotEmpty(newPassword)) {
         password = Utils.encrypt(newPassword);
-        setPassword = ",PASSWORD_RESET=0,USERPASSWORD=?";
+        setChave = ",PASSWORD_RESET=0,USERPASSWORD=?";
       }
 
       String setExtras = "";
@@ -643,7 +643,7 @@ public class UserManagerBean implements UserManager {
       int pos = 0;
       pst = db
           .prepareStatement("update users set GENDER=?,EMAIL_ADDRESS=?,FIRST_NAME=?,LAST_NAME=?,PHONE_NUMBER=?,FAX_NUMBER=?,MOBILE_NUMBER=?,COMPANY_PHONE=?,ORGADM=?,ORGADM_USERS=?,ORGADM_FLOWS=?,ORGADM_PROCESSES=?,ORGADM_RESOURCES=?,ORGADM_ORG=?"
-              + setUnitId + setExtras + setPassword + " where USERID=?");
+              + setUnitId + setExtras + setChave + " where USERID=?");
       pst.setString(++pos, gender);
       pst.setString(++pos, emailAddress);
       pst.setString(++pos, firstName);
@@ -679,6 +679,7 @@ public class UserManagerBean implements UserManager {
       //DatabaseInterface.closeResources(db, pst);
     	try { if (db != null) db.close(); } catch (SQLException e) {}
     	try { if (pst != null) pst.close(); } catch (SQLException e) {}
+    	try { if (rs != null) rs.close(); } catch (SQLException e) {}
     }
 
     if(Const.bUSE_EMAIL && isWebAdmin && !newEmail.equals(oldEmail)) {
@@ -826,6 +827,7 @@ public class UserManagerBean implements UserManager {
     }
     finally {
       //DatabaseInterface.closeResources(db, pst);
+    	try {if (rs != null) rs.close(); } catch (SQLException e) {}
     	try {if (db != null) db.close(); } catch (SQLException e) {}
     	try {if (pst != null) pst.close(); } catch (SQLException e) {}
     }
@@ -2194,9 +2196,9 @@ public class UserManagerBean implements UserManager {
       Logger.error(userInfo.getUtilizador(), this, "getProfiles", "Could not retrieve profiles!", e);
     } finally {
       //DatabaseInterface.closeResources(db, st, rs);
-    	try { db.close(); } catch (SQLException e) {}
-    	try { st.close(); } catch (SQLException e) {}
-    	try { rs.close(); } catch (SQLException e) {}
+    	try { if (db!=null) db.close(); } catch (SQLException e) {}
+    	try { if (st!=null) st.close(); } catch (SQLException e) {}
+    	try { if (rs!=null) rs.close(); } catch (SQLException e) {}
     	
     }
 

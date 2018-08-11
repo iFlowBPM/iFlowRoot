@@ -49,7 +49,11 @@ public class PassImageBean implements PassImage {
 		} catch (SQLException e) {
 			return null;
 		} finally {
-			DatabaseInterface.closeResources(pst, rs, db);
+			//DatabaseInterface.closeResources(pst, rs, db);
+		  	try {if (db != null) db.close(); } catch (SQLException e) {}
+		  	try {if (pst != null) pst.close(); } catch (SQLException e) {}
+		  	try {if (rs != null) rs.close(); } catch (SQLException e) {}       
+
 		}
 
 		return img;
@@ -98,6 +102,11 @@ public class PassImageBean implements PassImage {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		finally {
+	    	try {if (db != null) db.close(); } catch (SQLException e) {}
+	    	try {if (pst != null) pst.close(); } catch (SQLException e) {}
+	    	try {if (rs != null) rs.close(); } catch (SQLException e) {}    	
+		}
 
 		try {
 			if (n <= 0) { // caso nao tenha feito o update
@@ -138,6 +147,11 @@ public class PassImageBean implements PassImage {
 			n = pst.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+		finally {
+	    	try {if (db != null) db.close(); } catch (SQLException e) {}
+	    	try {if (pst != null) pst.close(); } catch (SQLException e) {}
+	    	try {if (rs != null) rs.close(); } catch (SQLException e) {}    	
 		}
 
 		try {

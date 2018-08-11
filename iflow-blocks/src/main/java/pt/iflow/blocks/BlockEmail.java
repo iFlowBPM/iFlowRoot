@@ -207,13 +207,13 @@ public class BlockEmail extends Block {
 
         if (Logger.isDebugEnabled()) {        
           Logger.debug(user, this, "after", "TO list:");
-          for (String s : tos) {            
+          for (String s : nullSafe(tos)) {            
             Logger.debug(user, this, "after", "   TO: " + s);
           }
-          for (String s : ccs) {            
+          for (String s : nullSafe(ccs)) {            
               Logger.debug(user, this, "after", "   cc: " + s);
             }
-          for (String s : bccs) {            
+          for (String s : nullSafe(bccs)) {            
               Logger.debug(user, this, "after", "   bcc: " + s);
             }
           Logger.debug(user, this, "after", "FROM: " + from);
@@ -238,7 +238,7 @@ public class BlockEmail extends Block {
               Logger.error(user,this,"after", procData.getSignature() + "Invalid to address: " + mailto);
             }
           }
-          for (String mailto : ccs) {
+          for (String mailto : nullSafe(ccs)) {
               try {
                 new InternetAddress(mailto, true);
               }
@@ -247,7 +247,7 @@ public class BlockEmail extends Block {
                 Logger.error(user,this,"after", procData.getSignature() + "Invalid to address: " + mailto);
               }
             }
-          for (String mailto : bccs) {
+          for (String mailto : nullSafe(bccs)) {
               try {
                 new InternetAddress(mailto, true);
               }

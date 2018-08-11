@@ -19,7 +19,7 @@ public class SMSExpressGatewayImpl extends SMSGateway {
 
   public static final String PARAM_SMS_EXPRESS_USERNAME = "SMS_EXPRESS_USERNAME";
   public static final String PARAM_SMS_EXPRESS_APPLICATION = "SMS_EXPRESS_APPLICATION";
-  public static final String PARAM_SMS_EXPRESS_PASSWORD = "SMS_EXPRESS_PASSWORD";
+  public static final String PARAM_SMS_EXPRESS_CHAVE = "SMS_EXPRESS_CHAVE";
   public static final String PARAM_SMS_EXPRESS_ORGANIZATION_SENDER = "SMS_EXPRESS_ORGANIZATION_SENDER";
 
   @Override
@@ -91,7 +91,7 @@ public class SMSExpressGatewayImpl extends SMSGateway {
   private AuthenticationInfo getSMSExpressAuthenticationInfo(String applicationUser, Properties iflowSystemProperties) {
     String application = iflowSystemProperties.getProperty(SMSExpressGatewayImpl.PARAM_SMS_EXPRESS_APPLICATION);
     String username = iflowSystemProperties.getProperty(SMSExpressGatewayImpl.PARAM_SMS_EXPRESS_USERNAME);
-    String password = iflowSystemProperties.getProperty(SMSExpressGatewayImpl.PARAM_SMS_EXPRESS_PASSWORD);
+    String password = iflowSystemProperties.getProperty(SMSExpressGatewayImpl.PARAM_SMS_EXPRESS_CHAVE);
 
     AuthenticationInfo authenticationInfo = null;
     if (application != null && username != null && password != null ) {

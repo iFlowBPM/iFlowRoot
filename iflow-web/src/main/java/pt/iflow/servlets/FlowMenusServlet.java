@@ -120,7 +120,10 @@ public class FlowMenusServlet
     finally
     {
       Utils.closeDB(new Object[] { null, st2, rs2 });
-      Utils.closeDB(new Object[] { db, st, rs });
+      //Utils.closeDB(new Object[] { db, st, rs });
+	  	try {if (db != null) db.close(); } catch (SQLException e) {}
+	  	try {if (st != null) st.close(); } catch (SQLException e) {}
+	  	try {if (rs != null) rs.close(); } catch (SQLException e) {}       
     }
   }
   
@@ -362,7 +365,10 @@ public class FlowMenusServlet
     }
     finally
     {
-      Utils.closeDB(new Object[] {db, st, rs });
+      //Utils.closeDB(new Object[] {db, st, rs });
+    	try {if (db != null) db.close(); } catch (SQLException e) {}
+    	try {if (st != null) st.close(); } catch (SQLException e) {}
+    	try {if (rs != null) rs.close(); } catch (SQLException e) {}    	
     }
     ArrayList<FlowMenuItem> flowItems = new ArrayList();
     for (Integer flowid : availableFlows) {

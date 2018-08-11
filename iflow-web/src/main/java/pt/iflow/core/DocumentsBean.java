@@ -418,7 +418,7 @@ public class DocumentsBean implements Documents {
       adoc.setContent(new byte[] {});
     } finally {
       //DatabaseInterface.closeResources(db);
-    	try { db.close(); } catch (SQLException e) {}
+    	try { if (db!=null) db.close(); } catch (SQLException e) {}
     }
     return adoc;
   }
@@ -601,7 +601,8 @@ public class DocumentsBean implements Documents {
     } catch (Exception e) {
       Logger.error(login, this, "getDocument", procData.getSignature() + "Error retrieving document from database.", e);
     } finally {
-      DatabaseInterface.closeResources(db);
+      //DatabaseInterface.closeResources(db);
+	  try {if (db != null) db.close(); } catch (SQLException e) {}
     }
     return retObj;
   }
@@ -969,7 +970,7 @@ public class DocumentsBean implements Documents {
           + e.getMessage(), e);
       try {
         //DatabaseInterface.rollbackConnection(db);
-    	  db.close();
+    	  if (db!=null) db.close();
       } catch (Exception e2) {
         Logger.error(userInfo.getUtilizador(), this, "removeDocument", procData.getSignature() + "Exception rolling back: "
             + e2.getMessage(), e2);
@@ -1048,7 +1049,7 @@ public class DocumentsBean implements Documents {
       adoc.setContent(new byte[] {});
     } finally {
       //DatabaseInterface.closeResources(db);
-    	try { db.close(); } catch (SQLException e) {}
+    	try { if (db!=null) db.close(); } catch (SQLException e) {}
     }
     return adoc;
   }
@@ -1095,7 +1096,12 @@ public class DocumentsBean implements Documents {
       num = rs.getInt(1);
     } 
     catch (SQLException e) {    return false; } 
-    finally {  DatabaseInterface.closeResources(pst, rs, db);}
+    finally {  
+    	//DatabaseInterface.closeResources(pst, rs, db);
+	  	try {if (db != null) db.close(); } catch (SQLException e) {}
+	  	try {if (pst != null) pst.close(); } catch (SQLException e) {}
+	  	try {if (rs != null) rs.close(); } catch (SQLException e) {}       
+    }
 
     if(num>0)
       return true;
@@ -1119,7 +1125,12 @@ public class DocumentsBean implements Documents {
       num = rs.getInt(1);
     } 
     catch (SQLException e) {    return false; } 
-    finally {  DatabaseInterface.closeResources(pst, rs, db);}
+    finally {  
+    	// DatabaseInterface.closeResources(pst, rs, db);
+	  	try {if (db != null) db.close(); } catch (SQLException e) {}
+	  	try {if (pst != null) pst.close(); } catch (SQLException e) {}
+	  	try {if (rs != null) rs.close(); } catch (SQLException e) {}       
+    }
 
     if(num == 1)
       return true;
