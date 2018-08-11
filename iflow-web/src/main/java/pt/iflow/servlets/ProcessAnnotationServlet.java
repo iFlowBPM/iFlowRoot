@@ -24,12 +24,10 @@ import pt.iflow.applet.StringUtils;
 public class ProcessAnnotationServlet extends javax.servlet.http.HttpServlet implements javax.servlet.Servlet {
   static final long serialVersionUID = 1L;
 
-  private UserInfoInterface userInfo = null;
-  private int flowid = -1;
-  private int pid = -1;
-  private int subpid = 1;
-  private HttpServletRequest request = null;
-
+  // jcosta:20180811 vulnerability Race Condition: Singleton Member Field
+  // created private class ProcessAnnotationDataStore
+  // 20180803-1
+  
   private static final String METHOD_UPDATE_ANNOTATIONS = "updateAnnotations";
 
   private static final String PARAM_FOWLID = "flowid";
@@ -51,11 +49,14 @@ public class ProcessAnnotationServlet extends javax.servlet.http.HttpServlet imp
     response.setContentType("text/html; charset=UTF-8");
     PrintWriter out = response.getWriter();
 
-    getProcessData(request);
+    HttpSession session = request.getSession();
+    UserInfoInterface userInfo = (UserInfoInterface) session.getAttribute(Const.USER_INFO);
     if(userInfo == null) {
       out.print("session-expired");
       return;
     }
+
+    ProcessAnnotationDataStore paDataStore = getProcessData(userInfo, request);
     
     // find what to do
     String method = request.getPathInfo();
@@ -68,8 +69,8 @@ public class ProcessAnnotationServlet extends javax.servlet.http.HttpServlet imp
       //Date deadline = (StringUtilities.isEmpty(sDeadline) ? null : Utils.string2date(sDeadline,"dd/MM/yyyy"));     
       String sComment = request.getParameter(PARAM_COMMENT);
 
-      String[] addLabels = getParamListString(PARAM_ADD_LABELS);
-      String[] removeLabels = getParamListString(PARAM_REMOVE_LABELS);
+      String[] addLabels = getParamListString(request, PARAM_ADD_LABELS);
+      String[] removeLabels = getParamListString(request, PARAM_REMOVE_LABELS);
 
       String forwardToLabelId = request.getParameter(PARAM_FORWARD_TO_LABEL_ID);
 
@@ -78,53 +79,67 @@ public class ProcessAnnotationServlet extends javax.servlet.http.HttpServlet imp
         saveHistory = Boolean.valueOf(request.getParameter(PARAM_SAVE_HISTORY));
       } catch (Exception e) {} 
       
-      out.print(updateAnnotations(sDeadline, sComment, addLabels, removeLabels, saveHistory, forwardToLabelId));
+      out.print(updateAnnotations(userInfo, paDataStore, sDeadline, sComment, addLabels, removeLabels, saveHistory, forwardToLabelId));
     }
   }    
   
-  private String updateAnnotations(String sDeadline, String sComment, String[] addLabels, String[] removeLabels, boolean saveHistory, String forwardToLabelId) {
+  private String updateAnnotations(UserInfoInterface userInfo, ProcessAnnotationDataStore paDataStore, String sDeadline, String sComment, String[] addLabels, String[] removeLabels, boolean saveHistory, String forwardToLabelId) {
     ProcessAnnotationManager pam = BeanFactory.getProcessAnnotationManagerBean();
     
+    
+    
     if(sDeadline.equals("remove"))
-    	pam.addDeadline(userInfo, flowid, pid, subpid, "");
+    	pam.addDeadline(userInfo, paDataStore.getFlowid(), paDataStore.getPid(), paDataStore.getSubpid(), "");
     else if(!sDeadline.equals("nochange"))
-    	pam.addDeadline(userInfo, flowid, pid, subpid, sDeadline, saveHistory);
+    	pam.addDeadline(userInfo, paDataStore.getFlowid(), paDataStore.getPid(), paDataStore.getSubpid(), sDeadline, saveHistory);
     
     if(sComment.equals("remove"))
-      pam.addComment(userInfo, flowid, pid, subpid, "");
+      pam.addComment(userInfo, paDataStore.getFlowid(), paDataStore.getPid(), paDataStore.getSubpid(), "");
     else if(!sComment.equals("nochange"))
-      pam.addComment(userInfo, flowid, pid, subpid, sComment, saveHistory);
+      pam.addComment(userInfo, paDataStore.getFlowid(), paDataStore.getPid(), paDataStore.getSubpid(), sComment, saveHistory);
     
     if(addLabels.length > 0)
-    	pam.addLabel(userInfo, flowid, pid, subpid, addLabels, saveHistory);
+    	pam.addLabel(userInfo, paDataStore.getFlowid(), paDataStore.getPid(), paDataStore.getSubpid(), addLabels, saveHistory);
     if(removeLabels.length > 0)
-    	pam.removeLabel(userInfo, flowid, pid, subpid,removeLabels);
+    	pam.removeLabel(userInfo, paDataStore.getFlowid(), paDataStore.getPid(), paDataStore.getSubpid(), removeLabels);
     
     if (!StringUtils.isEmpty(forwardToLabelId)){
       String [] forwardToLabel = new String[1];
       forwardToLabel[0] = forwardToLabelId;
-      pam.addLabel(userInfo, flowid, pid, subpid, forwardToLabel, saveHistory);
+      pam.addLabel(userInfo, paDataStore.getFlowid(), paDataStore.getPid(), paDataStore.getSubpid(), forwardToLabel, saveHistory);
     }
     
     return "";
   }
   
-  private void getProcessData(HttpServletRequest request) {
-    try {
-      flowid = Integer.valueOf(request.getParameter(PARAM_FOWLID));
-    } catch (Exception e) {}
-    try {
-      pid = Integer.valueOf(request.getParameter(PARAM_PID));
-    } catch (Exception e) {}
-    try {
-      subpid = Integer.valueOf(request.getParameter(PARAM_SUBPID));
-    } catch (Exception e) {}
-    HttpSession session = request.getSession();
-    userInfo = (UserInfoInterface) session.getAttribute(Const.USER_INFO);
-    this.request = request;
+  private ProcessAnnotationDataStore getProcessData(UserInfoInterface userInfos, HttpServletRequest request) {
+
+	  int flowid = -1;
+	  int pid = -1;
+	  int subpid = -1;
+
+	  try {
+		  flowid = Integer.valueOf(request.getParameter(PARAM_FOWLID));
+	  } catch (Exception e) {}
+	  try {
+		  pid = Integer.valueOf(request.getParameter(PARAM_PID));
+	  } catch (Exception e) {}
+	  try {
+		  subpid = Integer.valueOf(request.getParameter(PARAM_SUBPID));
+	  } catch (Exception e) {}
+	  //HttpSession session = request.getSession();
+	  //userInfo = (UserInfoInterface) session.getAttribute(Const.USER_INFO);
+	  //this.request = request;
+
+
+	  ProcessAnnotationDataStore paDataStore = new ProcessAnnotationDataStore();
+	  paDataStore.setFlowid(flowid);
+	  paDataStore.setPid(pid);
+	  paDataStore.setSubpid(subpid);
+	  return paDataStore;
   }
 
-  private String[] getParamListString(String paramName) {
+  private String[] getParamListString(HttpServletRequest request, String paramName) {
 	  String param = request.getParameter(paramName);
 	  String[] paramlist = new String[0];
 	  
@@ -135,5 +150,29 @@ public class ProcessAnnotationServlet extends javax.servlet.http.HttpServlet imp
 	  }
 	  return paramlist;
   }
-  
+ 
+  private class ProcessAnnotationDataStore {
+	  private int flowid = -1;
+	  private int pid = -1;
+	  private int subpid = 1;
+
+	  public int getFlowid() {
+		  return flowid;
+	  }
+	  public void setFlowid(int flowid) {
+		  this.flowid = flowid;
+	  }
+	  public int getPid() {
+		  return pid;
+	  }
+	  public void setPid(int pid) {
+		  this.pid = pid;
+	  }
+	  public int getSubpid() {
+		  return subpid;
+	  }
+	  public void setSubpid(int subpid) {
+		  this.subpid = subpid;
+	  }
+  }
 }

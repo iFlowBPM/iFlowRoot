@@ -44,9 +44,11 @@ public class FlowScheduleServlet extends HttpServlet implements Servlet {
   SimpleDateFormat dateFormat_DD_MM_YYYY = new SimpleDateFormat(DATE_FORMAT_DD_MM_YYYY);
   SimpleDateFormat dateFormat_FullDate = new SimpleDateFormat(DATE_FORMAT_FULL_DATE);
 
-  private ArrayList<ComboBoxItems> listOfProfiles = null;
-  private ArrayList<ComboBoxItems> listOfUsers = null;
-  private ArrayList<ComboBoxItems> listOfFlows = null;
+  // jcosta:20180811 vulnerability Race Condition: Singleton Member Field
+  // created private class FlowScheduleDataStore
+  // 20180803-1
+  private HashMap<String, FlowScheduleDataStore> hashStore = new HashMap<String, FlowScheduleDataStore>();
+  
   private HashMap<String, String> flowsHashMap = new HashMap<String, String>();
 
   public FlowScheduleServlet() {
@@ -226,8 +228,12 @@ public class FlowScheduleServlet extends HttpServlet implements Servlet {
 
   private void populateListData(UserInfoInterface userInfo, HttpServletRequest request) {
     AdministrationFlowScheduleInterface adminFlowScheduleBean = BeanFactory.getAdministrationFlowScheduleBean();
-    String user = null;
-    updateListOfFlows(userInfo);
+    String user = userInfo.getUserId();
+    
+    FlowScheduleDataStore fdStore = new FlowScheduleDataStore();
+    fdStore.updateListOfFlows(userInfo);
+    hashStore.put(user, fdStore);
+    
     ArrayList<FlowScheduleDataInterface> listOfJobs = adminFlowScheduleBean.getScheduledFlowsJobs(userInfo, user);
 
     for (FlowScheduleDataInterface job : listOfJobs) {
@@ -239,12 +245,24 @@ public class FlowScheduleServlet extends HttpServlet implements Servlet {
   }
 
   private void populateAddFormData(UserInfoInterface userInfo, HttpServletRequest request) {
-    listOfFlows = updateListOfFlows(userInfo);
-    request.setAttribute("flowItems", listOfFlows);
-    listOfProfiles = updateListOfProfiles(userInfo);
-    request.setAttribute("profiles", listOfProfiles);
-    listOfUsers = updateListOfUsers(userInfo);
-    request.setAttribute("users", listOfUsers);
+	String user = userInfo.getUserId();
+
+	FlowScheduleDataStore fdStore = hashStore.get(user);
+	if (fdStore == null) {
+		fdStore = new FlowScheduleDataStore();
+	}
+		
+    fdStore.updateListOfFlows(userInfo);
+    request.setAttribute("flowItems", fdStore.getListOfFlows());
+    
+    fdStore.updateListOfProfiles(userInfo);
+    request.setAttribute("profiles", fdStore.getListOfProfiles());
+    
+    fdStore.updateListOfUsers(userInfo);
+    request.setAttribute("users", fdStore.getListOfUsers());
+    
+    hashStore.put(user, fdStore);
+	
     ArrayList<ComboBoxItems> listOfEventsTimeUnit = updateListOfTimeIntervalsUnits(userInfo);
     request.setAttribute("timeIntervalsUnits", listOfEventsTimeUnit);
   }
@@ -258,51 +276,6 @@ public class FlowScheduleServlet extends HttpServlet implements Servlet {
     request.removeAttribute("eventDateStr");
     request.removeAttribute("flowScheduleMsgListMsgToUser");
     request.removeAttribute("jobName");
-  }
-
-  private ArrayList<ComboBoxItems> updateListOfFlows(UserInfoInterface userInfo) {
-    IFlowData[] fda = BeanFactory.getFlowHolderBean().listFlowsOnline(userInfo);
-
-    listOfFlows = new ArrayList<ComboBoxItems>();
-    for (IFlowData flowData : fda) {
-      flowsHashMap.put(String.valueOf(flowData.getId()), flowData.getName());
-      listOfFlows.add(new ComboBoxItems(String.valueOf(flowData.getId()), flowData.getName()));
-    }
-    return listOfFlows;
-  }
-
-  private ArrayList<ComboBoxItems> updateListOfProfiles(UserInfoInterface userInfo) {
-    UserManager manager = BeanFactory.getUserManagerBean();
-
-    listOfProfiles = new ArrayList<ComboBoxItems>();
-    ProfilesTO[] profiles = manager.getAllProfiles(userInfo);
-    for (ProfilesTO profile : profiles) {
-      // String [] userProf = manager.getProfileUsers(ui, profileId); AQUISIÇÃO DOS USERS DO PERFIL
-      listOfProfiles.add(new ComboBoxItems(String.valueOf(profile.getProfileId()), profile.getName()));
-    }
-    return listOfProfiles;
-  }
-
-  private ArrayList<ComboBoxItems> updateListOfUsers(UserInfoInterface userInfo) {
-    Collection<UserData> users = null;
-    try {
-      AuthProfile authProfileBean = BeanFactory.getAuthProfileBean();
-      users = authProfileBean.getAllUsers(userInfo.getOrganization());
-    } catch (Exception e) {
-      Logger.error(userInfo.getUtilizador(), this, "updateListOfUsers", "unable to acquire list of users", e);
-    }
-
-    listOfUsers = new ArrayList<ComboBoxItems>();
-    if (users != null) {
-      for (UserData user : users) {
-        try {
-          listOfUsers.add(new ComboBoxItems(user.getUsername(), user.getUsername() + " - " + user.getName()));
-        } catch (NumberFormatException e) {
-          Logger.error(userInfo.getUtilizador(), this, "updateListOfUsers", "Error while processing user id", e);
-        }
-      }
-    }
-    return listOfUsers;
   }
 
   private Calendar getEventTriggerTimeCalendarObject(Date date, String eventTimeStr) {
@@ -364,4 +337,83 @@ public class FlowScheduleServlet extends HttpServlet implements Servlet {
       this.comboName = comboName;
     }
   }
+  
+  private class FlowScheduleDataStore {
+	  private ArrayList<ComboBoxItems> listOfProfiles = null;
+	  private ArrayList<ComboBoxItems> listOfUsers = null;
+	  private ArrayList<ComboBoxItems> listOfFlows = null;
+
+
+	  protected ArrayList<ComboBoxItems> updateListOfFlows(UserInfoInterface userInfo) {
+		  IFlowData[] fda = BeanFactory.getFlowHolderBean().listFlowsOnline(userInfo);
+
+		  listOfFlows = new ArrayList<ComboBoxItems>();
+		  for (IFlowData flowData : fda) {
+			  flowsHashMap.put(String.valueOf(flowData.getId()), flowData.getName());
+			  listOfFlows.add(new ComboBoxItems(String.valueOf(flowData.getId()), flowData.getName()));
+		  }
+		  return listOfFlows;
+	  }
+
+	  private ArrayList<ComboBoxItems> updateListOfProfiles(UserInfoInterface userInfo) {
+		    UserManager manager = BeanFactory.getUserManagerBean();
+
+		    listOfProfiles = new ArrayList<ComboBoxItems>();
+		    ProfilesTO[] profiles = manager.getAllProfiles(userInfo);
+		    for (ProfilesTO profile : profiles) {
+		      // String [] userProf = manager.getProfileUsers(ui, profileId); AQUISIÇÃO DOS USERS DO PERFIL
+		      listOfProfiles.add(new ComboBoxItems(String.valueOf(profile.getProfileId()), profile.getName()));
+		    }
+		    return listOfProfiles;
+		  }
+
+		  private ArrayList<ComboBoxItems> updateListOfUsers(UserInfoInterface userInfo) {
+		    Collection<UserData> users = null;
+		    try {
+		      AuthProfile authProfileBean = BeanFactory.getAuthProfileBean();
+		      users = authProfileBean.getAllUsers(userInfo.getOrganization());
+		    } catch (Exception e) {
+		      Logger.error(userInfo.getUtilizador(), this, "updateListOfUsers", "unable to acquire list of users", e);
+		    }
+
+		    listOfUsers = new ArrayList<ComboBoxItems>();
+		    if (users != null) {
+		      for (UserData user : users) {
+		        try {
+		          listOfUsers.add(new ComboBoxItems(user.getUsername(), user.getUsername() + " - " + user.getName()));
+		        } catch (NumberFormatException e) {
+		          Logger.error(userInfo.getUtilizador(), this, "updateListOfUsers", "Error while processing user id", e);
+		        }
+		      }
+		    }
+		    return listOfUsers;
+		  }
+
+		public ArrayList<ComboBoxItems> getListOfProfiles() {
+			return listOfProfiles;
+		}
+
+		public void setListOfProfiles(ArrayList<ComboBoxItems> listOfProfiles) {
+			this.listOfProfiles = listOfProfiles;
+		}
+
+		public ArrayList<ComboBoxItems> getListOfUsers() {
+			return listOfUsers;
+		}
+
+		public void setListOfUsers(ArrayList<ComboBoxItems> listOfUsers) {
+			this.listOfUsers = listOfUsers;
+		}
+
+		public ArrayList<ComboBoxItems> getListOfFlows() {
+			return listOfFlows;
+		}
+
+		public void setListOfFlows(ArrayList<ComboBoxItems> listOfFlows) {
+			this.listOfFlows = listOfFlows;
+		}
+
+
+  }
+  
 }
