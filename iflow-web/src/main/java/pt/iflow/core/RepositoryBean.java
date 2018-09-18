@@ -658,10 +658,15 @@ public class RepositoryBean implements Repository {
 			if (null == file)
 				return null;
 			InputStream inStream = null;
-			try (FileInputStream fin = new FileInputStream(file)){
+			FileInputStream fin = null;
+			try {
+				fin =  new FileInputStream(file);
 				inStream = new BufferedInputStream(fin);
 			} catch (IOException e) {
 				Logger.error(null, this, "getResourceData", "Error opening file " + file + ": " + e.getMessage(), e);
+			}
+			finally {
+				try {if (fin!=null) fin.close();}  catch (Exception e) {}
 			}
 			
 			return inStream;

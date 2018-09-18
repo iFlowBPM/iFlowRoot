@@ -1394,8 +1394,6 @@ public class FlowHolderBean implements FlowHolder {
 						flow.indexFields[i] = rs.getString("name_idx" + i);
 					flow.seriesId = rs.getInt("seriesid");
 					flow.typeCode = rs.getString("type_code");
-
-					is.close();
 				}
 			}
 			rs.close();

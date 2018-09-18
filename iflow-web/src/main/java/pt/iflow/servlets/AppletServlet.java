@@ -112,8 +112,9 @@ public class AppletServlet extends HttpServlet {
           Certificate [] certChain;
           final String alias = "infosistema.com";
           final char [] pas = "iknow256".toCharArray();
-          try (InputStream cpStoreIn = Setup.getResource("store");){
-            //cpStoreIn = AppletServlet.class.getResourceAsStream("store");
+          InputStream cpStoreIn = null;
+          try {
+            cpStoreIn = AppletServlet.class.getResourceAsStream("store");
             KeyStore store = KeyStore.getInstance("JKS");
             store.load(cpStoreIn, pas);
             certChain = store.getCertificateChain(alias);
@@ -122,7 +123,11 @@ public class AppletServlet extends HttpServlet {
             // notificate que a coisa nao correu bem
             Logger.adminError("AppletServlet", "init", "Could not load signature key.", e);
             return;
-          } 
+
+          } finally {
+        	  try {if (cpStoreIn!= null) cpStoreIn.close();} catch (Exception e3) {}
+          }
+
           
           JarSigner signer = new JarSigner(privateKey, certChain);
           

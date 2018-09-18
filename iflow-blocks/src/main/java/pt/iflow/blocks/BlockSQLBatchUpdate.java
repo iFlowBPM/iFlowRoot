@@ -342,7 +342,7 @@ public class BlockSQLBatchUpdate extends BlockSQL {
 	      			nTotalUpdates = procData.getList(saSetVars[i]).size();
 	      	}
 	      	for(int i = 0; saWhereVars!= null && i < saWhereVars.length; i++) {
-	      		newArray[i+saSetVars.length] = saWhereVars[i];
+	      		if(saSetVars!=null) newArray[i+saSetVars.length] = saWhereVars[i];
 
 	      	}
 

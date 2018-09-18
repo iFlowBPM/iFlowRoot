@@ -360,8 +360,10 @@ public class MailListenerManager extends Thread {
         tmpDir.mkdirs();
 
         File file = new File(tmpDir, filename);
+        FileOutputStream fos = null;
         
-        try (FileOutputStream fos = new FileOutputStream(file)) {	
+        try {	
+        	fos = new FileOutputStream(file);
 	        int c;
 	        while ((c = data.read()) != -1) {
 	          fos.write((byte) c);
@@ -370,6 +372,9 @@ public class MailListenerManager extends Thread {
 	        data.close();
 	        fos.close();
         }
+		finally {
+			try {if (fos!=null) fos.close();}  catch (Exception e) {}
+		}
 
         return file;
       }

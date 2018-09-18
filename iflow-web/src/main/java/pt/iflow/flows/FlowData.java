@@ -303,7 +303,7 @@ public class FlowData implements IFlowData,Serializable {
          Logger.warning(userInfo.getUtilizador(), this, "constructor", "Could not instantiate FormTemplates", t);
        }
        
-       instantiateMailStartSettings(userInfo, flowResult.start);
+       if (flowResult!= null) instantiateMailStartSettings(userInfo, flowResult.start);
 
        setDeployed(true);
        
