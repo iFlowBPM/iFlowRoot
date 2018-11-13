@@ -71,7 +71,7 @@
   username = fdFormData.getParameter("username");
   gender = fdFormData.getParameter("gender");
   unitId = fdFormData.getParameter("unit");
-  emailAddress = fdFormData.getParameter("emailAddress");
+  emailAddress = StringEscapeUtils.unescapeJavaScript(fdFormData.getParameter("emailAddress"));
   firstName = fdFormData.getParameter("firstName");
   lastName = fdFormData.getParameter("lastName");
   phoneNumber = fdFormData.getParameter("phoneNumber");

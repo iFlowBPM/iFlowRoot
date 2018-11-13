@@ -66,7 +66,7 @@ public class FormTemplateResolver {
    
     // check and update conditions
     for (XmlAttribute xmlTemplateAttribute : templateXmlAttribute) {
-      if ((xmlTemplateAttribute.getName().endsWith("_edition_cond") || xmlTemplateAttribute.getName().endsWith("_output_only"))
+      if ((xmlTemplateAttribute.getName().endsWith("_edition_cond") || xmlTemplateAttribute.getName().endsWith("_output_only") || xmlTemplateAttribute.getName().endsWith("read_only"))
           && !editionCond.trim().equals(""))
         xmlTemplateAttribute.setValue(editionCond);
 

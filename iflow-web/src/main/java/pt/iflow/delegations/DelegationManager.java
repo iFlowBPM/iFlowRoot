@@ -374,6 +374,7 @@ public class DelegationManager extends Thread {
       }
 
     } catch (SQLException sqle) {
+    	Logger.error("ADMIN", this, "checkTimeOutDelegationsDB", "Error deleting delegation", sqle);
       sqle.printStackTrace();
     } finally {
       DatabaseInterface.closeResources(db,st,rs);
@@ -472,6 +473,7 @@ public class DelegationManager extends Thread {
       }
 
     } catch (SQLException sqle) {
+    	Logger.error("ADMIN", this, "delegationTimeOut", "Error deleting delegation", sqle);
       sqle.printStackTrace();
     } finally {
       DatabaseInterface.closeResources(db,st,rs);
@@ -694,8 +696,10 @@ public class DelegationManager extends Thread {
       pst = null;
       if(stmp.length() > 0) {
         String query = "delete from activity_hierarchy where hierarchyid in (" + stmp + ")";        
-
         db.createStatement().executeUpdate(query);
+        
+//        query = "delete from activity_hierarchy_history where hierarchyid in (" + stmp + ")";        
+//        db.createStatement().executeUpdate(query);
       }
       db.commit();
 
@@ -704,9 +708,9 @@ public class DelegationManager extends Thread {
         db.rollback();
       } catch (SQLException e1) {
         // TODO Auto-generated catch block
-        e1.printStackTrace();
+    	  Logger.error("ADMIN", this, "deleteDelegationCascade", "Error deleting delegation", e1);
       }
-      e.printStackTrace();
+      Logger.error("ADMIN", this, "deleteDelegationCascade", "Error deleting delegation", e);
     }
     finally {
       DatabaseInterface.closeResources(db, pst, rs);

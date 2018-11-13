@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fop:root xmlns:fop="http://www.w3.org/1999/XSL/Format"
+          xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0">
+   <fop:layout-master-set>
+      <fop:simple-page-master master-name="pm1" margin-top="2cm" margin-bottom="2cm" margin-left="2cm"
+                              margin-right="2cm"
+                              page-width="21.001cm"
+                              page-height="29.7cm"
+                              border="">
+         <fop:region-body margin-bottom="0.499cm"/>
+         <fop:region-after display-align="after" min-height="0cm" space-before="0.499cm" margin-left="0cm"
+                           margin-right="0cm"
+                           extent="0.55cm"/>
+      </fop:simple-page-master>
+   </fop:layout-master-set>
+   <fop:page-sequence master-reference="pm1">
+      <fop:static-content flow-name="xsl-region-after">
+         <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                    language="pt"
+                    country="PT"
+                    font-size="10pt"
+                    font-family="'Times New Roman',serif"
+                    padding="0.074cm"
+                    border-left="none"
+                    border-right="none"
+                    border-top="none"
+                    border-bottom="0.035cm solid #000000"
+                    text-align="center">
+            <fop:leader/>
+         </fop:block>
+         <fop:table margin-left="0cm" margin-right="-0.009cm">
+            <fop:table-column column-width="4.498cm"/>
+            <fop:table-column column-width="6.835cm"/>
+            <fop:table-column column-width="5.676cm"/>
+            <fop:table-body>
+               <fop:table-row keep-together.within-column="always">
+                  <fop:table-cell padding="0.097cm" border="none">
+                     <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                language="pt"
+                                country="PT"
+                                font-size="12pt"
+                                font-family="'Times New Roman',serif"
+                                margin-left="0cm"
+                                margin-right="0.912cm"
+                                text-indent="0cm"
+                                text-align="center">
+                        <fop:inline color="#000000" font-size="8pt" font-family="'Times New Roman',serif">#image:200:50:"governo---logotipo.png"#</fop:inline>
+                     </fop:block>
+                  </fop:table-cell>
+                  <fop:table-cell padding="0.097cm" border="none">
+                     <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                language="pt"
+                                country="PT"
+                                font-size="8pt"
+                                font-family="'Trebuchet MS',sans-serif"
+                                text-align="start">
+                        <fop:leader/>
+                     </fop:block>
+                     <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                language="pt"
+                                country="PT"
+                                font-size="8pt"
+                                font-family="'Trebuchet MS',sans-serif"
+                                text-align="start">MINISTÉRIO DA AGRICULTURA</fop:block>
+                     <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                language="pt"
+                                country="PT"
+                                font-size="8pt"
+                                font-family="'Trebuchet MS',sans-serif"
+                                text-align="start">E DO MAR</fop:block>
+                  </fop:table-cell>
+                  <fop:table-cell padding="0.097cm" border="none">
+                     <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                language="pt"
+                                country="PT"
+                                font-size="7pt"
+                                font-family="Arial,sans-serif"
+                                text-align="end"
+                                font-weight="bold">Direção -Geral de Agricultura e </fop:block>
+                     <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                language="pt"
+                                country="PT"
+                                font-size="7pt"
+                                font-family="Arial,sans-serif"
+                                text-align="end"
+                                font-weight="bold">Desenvolvimento Rural</fop:block>
+                     <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                language="pt"
+                                country="PT"
+                                font-size="7pt"
+                                font-family="Arial,sans-serif"
+                                text-align="end">Av. Afonso Costa 3</fop:block>
+                     <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                language="pt"
+                                country="PT"
+                                font-size="7pt"
+                                font-family="Arial,sans-serif"
+                                text-align="end">1949-002 Lisboa, PORTUGAL</fop:block>
+                     <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                language="pt"
+                                country="PT"
+                                font-size="7pt"
+                                font-family="Arial,sans-serif"
+                                text-align="end">
+                        <fop:inline font-weight="bold">Tel</fop:inline> + 351 218 442 200 – <fop:inline font-weight="bold">Fax</fop:inline> + 351 218 442 202</fop:block>
+                     <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                language="pt"
+                                country="PT"
+                                font-size="7pt"
+                                font-family="Arial,sans-serif"
+                                text-align="end">
+                        <fop:inline font-weight="bold">NIF</fop:inline> 600082440</fop:block>
+                     <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                language="pt"
+                                country="PT"
+                                font-size="10pt"
+                                font-family="'Times New Roman',serif"
+                                text-align="end">
+                        <fop:inline color="#0066cc" font-size="7pt" font-family="Arial,sans-serif">geral@dgadr.pt</fop:inline>
+                     </fop:block>
+                     <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                language="pt"
+                                country="PT"
+                                font-size="7pt"
+                                font-family="Arial,sans-serif"
+                                text-align="end"
+                                color="#0066cc">http://www.dgadr.pt</fop:block>
+                  </fop:table-cell>
+               </fop:table-row>
+            </fop:table-body>
+         </fop:table>
+         <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                    language="pt"
+                    country="PT"
+                    font-size="7pt"
+                    font-family="Arial,sans-serif"
+                    text-align="end"
+                    color="#0066cc">
+            <fop:leader/>
+         </fop:block>
+      </fop:static-content>
+      <fop:static-content flow-name="xsl-footnote-separator">
+         <fop:block>
+            <fop:leader leader-pattern="rule" leader-length="100%" rule-style="solid"
+                        rule-thickness="0.5pt"/>
+         </fop:block>
+      </fop:static-content>
+      <fop:flow flow-name="xsl-region-body">
+         <fop:block>
+            <fop:table margin-left="0cm" margin-right="-0.009cm">
+               <fop:table-column column-width="2.815cm"/>
+               <fop:table-column column-width="14.194cm"/>
+               <fop:table-body>
+                  <fop:table-row keep-together.within-column="always">
+                     <fop:table-cell padding="0.097cm" border="none" display-align="end">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="12pt"
+                                   font-family="'Times New Roman',serif"
+                                   margin-left="0cm"
+                                   margin-right="0.912cm"
+                                   text-indent="0cm"
+                                   text-align="center">
+                           <fop:inline color="#000000" font-size="8pt" font-family="'Times New Roman',serif">#image:100:50:"dgadr_logo.png"#</fop:inline>
+                        </fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border="none">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="Arial,sans-serif"
+                                   margin-left="0cm"
+                                   margin-right="0.912cm"
+                                   text-indent="0cm"
+                                   text-align="start"
+                                   color="#193339"
+                                   font-style="normal"
+                                   font-weight="normal">
+                           <fop:leader/>
+                        </fop:block>
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="Arial,sans-serif"
+                                   margin-left="0cm"
+                                   margin-right="0.912cm"
+                                   text-indent="0cm"
+                                   text-align="start"
+                                   color="#193339"
+                                   font-style="normal"
+                                   font-weight="normal">Direção-Geral de Agricultura </fop:block>
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="Arial,sans-serif"
+                                   margin-left="0cm"
+                                   margin-right="0.912cm"
+                                   text-indent="0cm"
+                                   text-align="start"
+                                   color="#193339"
+                                   font-style="normal"
+                                   font-weight="normal">e Desenvolvimento Rural</fop:block>
+                     </fop:table-cell>
+                  </fop:table-row>
+               </fop:table-body>
+            </fop:table>
+            <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                       language="pt"
+                       country="PT"
+                       font-size="10pt"
+                       font-family="Tahoma,sans-serif"
+                       text-align="start">
+               <fop:leader/>
+            </fop:block>
+            <fop:table margin-left="0cm" margin-right="-0.009cm">
+               <fop:table-column column-width="4.895cm"/>
+               <fop:table-column column-width="12.114cm"/>
+               <fop:table-body>
+                  <fop:table-row keep-together.within-column="always">
+                     <fop:table-cell padding="0.097cm" border="none">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="10pt"
+                                   font-family="Arial,sans-serif"
+                                   text-align="center">INFORMAÇÃO Nº</fop:block>
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="10pt"
+                                   font-family="Arial,sans-serif"
+                                   text-align="center">
+                           <fop:leader/>
+                        </fop:block>
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="10pt"
+                                   font-family="Arial,sans-serif"
+                                   text-align="center">
+                           <fop:leader/>
+                        </fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border="none">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="10pt"
+                                   font-family="Arial,sans-serif"
+                                   text-align="start">$texto:t$</fop:block>
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="10pt"
+                                   font-family="Arial,sans-serif"
+                                   text-align="start">$texto:t$DESPACHO </fop:block>                        
+                     </fop:table-cell>
+                  </fop:table-row>
+                  <fop:table-row keep-together.within-column="always">
+                     <fop:table-cell padding="0.097cm" border="none">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="10pt"
+                                   font-family="Arial,sans-serif"
+                                   text-align="center">PROCESSO</fop:block>
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="10pt"
+                                   font-family="Arial,sans-serif"
+                                   text-align="center">
+                           <fop:leader/>
+                        </fop:block>
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="10pt"
+                                   font-family="Arial,sans-serif"
+                                   text-align="center">$numprocesso:t$</fop:block>
+                     </fop:table-cell>
+                  </fop:table-row>
+                  <fop:table-row keep-together.within-column="always">
+                     <fop:table-cell padding="0.097cm" border="none">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="10pt"
+                                   font-family="Arial,sans-serif"
+                                   text-align="center">
+                           <fop:leader/>
+                        </fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border="none">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="10pt"
+                                   font-family="Arial,sans-serif"
+                                   text-align="start">PARECER</fop:block>
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="10pt"
+                                   font-family="Arial,sans-serif"
+                                   text-align="start">$parecernovo:t$</fop:block>
+                     </fop:table-cell>
+                  </fop:table-row>
+                  <fop:table-row keep-together.within-column="always">
+                     <fop:table-cell padding="0.097cm" border="none">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="10pt"
+                                   font-family="Arial,sans-serif"
+                                   text-align="center">DATA</fop:block>
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="10pt"
+                                   font-family="Arial,sans-serif"
+                                   text-align="center">
+                           <fop:leader/>
+                        </fop:block>
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="10pt"
+                                   font-family="Arial,sans-serif"
+                                   text-align="center">$datahoje:t$</fop:block>
+                     </fop:table-cell>
+                  </fop:table-row>
+               </fop:table-body>
+            </fop:table>
+            <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                       language="pt"
+                       country="PT"
+                       font-size="10pt"
+                       font-family="'Times New Roman',serif"
+                       text-align="center">
+               <fop:leader/>
+            </fop:block>
+            <fop:table>
+               <fop:table-column column-width="17cm"/>
+               <fop:table-body>
+                  <fop:table-row keep-together.within-column="always">
+                     <fop:table-cell padding="0.097cm" border="none">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="10pt"
+                                   font-family="Arial,sans-serif"
+                                   text-align="start">ASSUNTO: $assuntonovo:t$</fop:block>
+                     </fop:table-cell>
+                  </fop:table-row>
+                  <fop:table-row keep-together.within-column="always">
+                     <fop:table-cell padding="0.097cm" border="none">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="10pt"
+                                   font-family="'Times New Roman',serif"
+                                   text-align="center">________________________________________</fop:block>
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="10pt"
+                                   font-family="'Times New Roman',serif"
+                                   text-align="center">assinatura</fop:block>
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="10pt"
+                                   font-family="'Times New Roman',serif"
+                                   text-align="center">
+                           <fop:leader/>
+                        </fop:block>
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="10pt"
+                                   font-family="'Times New Roman',serif"
+                                   text-align="center">$NOMEUTILIZADOR:t$</fop:block>
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="10pt"
+                                   font-family="'Times New Roman',serif"
+                                   text-align="center">$cargonovo:t$</fop:block>
+                     </fop:table-cell>
+                  </fop:table-row>
+               </fop:table-body>
+            </fop:table>
+            <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                       language="pt"
+                       country="PT"
+                       font-size="7pt"
+                       font-family="Arial,sans-serif"
+                       padding="0cm"
+                       border="none"
+                       text-align="center"
+                       color="#0066cc">
+               <fop:leader/>
+            </fop:block>
+         </fop:block>
+         <fop:block id="last-page"/>
+      </fop:flow>
+   </fop:page-sequence>
+</fop:root>

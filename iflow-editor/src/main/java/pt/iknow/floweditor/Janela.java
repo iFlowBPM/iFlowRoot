@@ -370,7 +370,7 @@ public class Janela extends JFrame implements ActionListener, KeyListener, IJane
         library = Ler_Biblioteca.getLibraryFromFile(file, _librarySet);
         _librarySet.addLibrary(library);
       } catch (Exception e) {
-        FlowEditor.log(Messages.getString("Desenho.lib_read_error") + file); //$NON-NLS-1$
+        FlowEditor.log(Messages.getString("Desenho.lib_read_error") + file, e); //$NON-NLS-1$
       }
     }
 

@@ -52,6 +52,7 @@ public enum JSPFieldTypeEnum {
 	      38, "JSPFieldData.fieldtype.documentpreview", "JSPFieldData.tootltip.documentpreview", "JSPDocumentPreview",
 	      "pt.iflow.blocks.form.DocumentPreview"),
   FIELD_TYPE_RADIOBUTTON(39, "JSPFieldData.fieldtype.radiobutton", "JSPFieldData.tootltip.radiobutton", "JSPRadioButton", "pt.iflow.blocks.form.RadioButton", true),
+  FIELD_TYPE_SINGLECHECKBOX(40, "JSPFieldData.fieldtype.singlecheckbox", "JSPFieldData.tootltip.singlecheckbox", "JSPSingleCheckBox", "pt.iflow.blocks.form.SingleCheckBox"),
   ;
 
   private final int code;

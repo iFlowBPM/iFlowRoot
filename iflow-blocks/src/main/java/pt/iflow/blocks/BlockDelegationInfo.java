@@ -88,8 +88,8 @@ public abstract class BlockDelegationInfo extends Block {
   protected Port getOwner(UserInfoInterface userInfo, ProcessData procData) {
     Port outPort = portError;
 
-    final String ownerQry = "select ownerid from activity_hierarchy " +
-    "where pending = 0 and expires >= ? and userid = ? and flowid = ?";
+    final String ownerQry = "select ownerid from activity_delegated " +
+    "where userid = ? and flowid = ? and pid = ? ";
 
     int flowid = procData.getFlowId();
     String login = userInfo.getUtilizador();
@@ -110,9 +110,10 @@ public abstract class BlockDelegationInfo extends Block {
 
       connection = Utils.getDataSource().getConnection();
       pstmt = connection.prepareStatement(ownerQry);
-      pstmt.setDate(1, new java.sql.Date(new java.util.Date().getTime()));
-      pstmt.setString(2, user);
-      pstmt.setInt(3, flowid);
+      //pstmt.setDate(1, new java.sql.Date(new java.util.Date().getTime()));
+      pstmt.setString(1, user);
+      pstmt.setInt(2, flowid);
+      pstmt.setInt(3, procData.getPid());
       rs = pstmt.executeQuery();
 
       String owner = null;

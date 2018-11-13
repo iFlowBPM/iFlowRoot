@@ -51,9 +51,9 @@
   
   StringBuffer sbError = new StringBuffer();
   for (int i = 0; i < ids.length; i++) {
-    String id = ids[i];
-    String sKey = sKeys[i];
-    String ownerid = ownerids[i];
+    String id = ids[i].replace("&#x3b", "");
+    String sKey = sKeys[i].replace("&#x3b", "");
+    String ownerid = ownerids[i].replace("&#x3b", "");
 
     boolean foundActivity = false;
     boolean accept = true;

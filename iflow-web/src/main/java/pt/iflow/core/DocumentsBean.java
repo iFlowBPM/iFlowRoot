@@ -304,7 +304,23 @@ public class DocumentsBean implements Documents {
 
     try {
       Date dateNow = new Date();
-      adoc.setFileName((new String(adoc.getFileName().getBytes(),"UTF-8")).replace("?", ""));
+      
+//      Integer nQuestionMarks = StringUtils.countMatches(adoc.getFileName(), "�");
+//      String a = new String(adoc.getFileName().getBytes(),"UTF-8");
+//      String b = new String(adoc.getFileName().getBytes(),"ISO-8859-1");
+//      String c = new String(adoc.getFileName().getBytes(),"windows-1252");
+//      Boolean aValid = StringUtils.countMatches(new String(adoc.getFileName().getBytes(),"UTF-8"),"�")<=nQuestionMarks;
+//      Boolean bValid = StringUtils.countMatches(new String(adoc.getFileName().getBytes(),"ISO-8859-1"),"�")<=nQuestionMarks;
+//      Boolean cValid = StringUtils.countMatches(new String(adoc.getFileName().getBytes(),"windows-1252"),"�")<=nQuestionMarks;      
+//      if(aValid)
+//    	  adoc.setFileName((new String(adoc.getFileName().getBytes(),"UTF-8")));
+//      else if(bValid)
+//    	  adoc.setFileName((new String(adoc.getFileName().getBytes(),"ISO-8859-1")));
+//      else if(cValid)
+//    	  adoc.setFileName((new String(adoc.getFileName().getBytes(),"windows-1252")));
+//      else
+//    	  adoc.setFileName((new String(adoc.getFileName().getBytes(),"UTF-8")).replace("�", ""));      
+      
       String query = DBQueryManager.getQuery("Documents.ADD_DOCUMENT");            
       // Obtencao de chaves geradas automaticamente. ver
       // http://java-x.blogspot.com/2006/09/oracle-jdbc-automatic-key-generation.html
@@ -345,7 +361,7 @@ public class DocumentsBean implements Documents {
 
       adoc.setDocId(ret);
 
-      if (!docDataInDB && ((filePath = getDocumentFilePath(adoc.getDocId(), adoc.getFileName())) != null)) {
+      if (!docDataInDB && ((filePath = getDocumentFilePath(adoc.getDocId(), ""+adoc.getDocId()/*adoc.getFileName()*/)) != null)) {
         try
         {
           DatabaseInterface.closeResources(pst);
@@ -714,8 +730,11 @@ public class DocumentsBean implements Documents {
         }
 
         if (abFull) {
-          if (StringUtils.isNotEmpty(filePath)) {
-              dataStream = new FileInputStream(filePath);
+          if (StringUtils.isNotEmpty(filePath)) {        	   
+              //new FileInputStream(filePath);
+        	  int auxDirStart = filePath.lastIndexOf(File.separator);
+              File f = new File(filePath.substring(0, auxDirStart));
+              dataStream = new FileInputStream(f.listFiles()[0]);
           } else {
             dataStream = rs.getBinaryStream("datadoc");
           }

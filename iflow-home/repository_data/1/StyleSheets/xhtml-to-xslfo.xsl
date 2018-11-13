@@ -1115,6 +1115,27 @@
   </xsl:template>
 
   <!-- ============================================
+    text size formatting when specified like
+    <span style="font-size:36px">qwerty...</span>
+    =============================================== -->
+    
+  <xsl:template match="span">
+    <fo:block line-height="15pt" space-after="12pt">
+    	<xsl:if test="substring-before(@style,':') = 'font-size'">
+    		<xsl:attribute name="font-size">
+	    		<xsl:value-of select="substring-after(@style,':')"/>
+	    	</xsl:attribute>
+    	</xsl:if>
+    	<xsl:if test="substring-before(@style,':') = 'font-family'">
+	    	<xsl:attribute name="font-family">
+	    		<xsl:value-of select="substring-after(@style,':')"/>
+	    	</xsl:attribute>                      
+    	</xsl:if>
+      <xsl:apply-templates select="*|text()"/>
+    </fo:block>
+  </xsl:template>
+  
+  <!-- ============================================
     Preformatted text is rendered in a monospaced
     font.  We also have to set the wrap-option
     and white-space-collapse properties.  
