@@ -321,7 +321,8 @@ public class DatabaseInterface
     }
     finally
     {
-      closeResources(new Object[] { st });
+      // closeResources(new Object[] { st });
+    	try {if (st != null) st.close(); } catch (SQLException e) {}
     }
     return result;
   }

@@ -533,7 +533,7 @@ public class FlowBean implements Flow {
         }
       } finally {
         // DatabaseInterface.closeResources(conn);
-      	try {if (conn != null) conn.close(); } catch (SQLException e) {}
+      	try { conn.close(); } catch (Exception e) {}
 
       }
     }
@@ -594,7 +594,7 @@ public class FlowBean implements Flow {
       //DatabaseInterface.closeResources(db, pst);
     	try {if (db != null) db.close(); } catch (SQLException e) {}
     	try {if (pst != null) pst.close(); } catch (SQLException e) {}
-    	try {if (rs != null) rs.close(); } catch (SQLException e) {}    	
+    	try {rs.close(); } catch (Exception e) {}    	
     }
 
     return result;
@@ -714,7 +714,7 @@ public class FlowBean implements Flow {
                 + "ERROR marking activity as unread", ee);
           } finally {
             // DatabaseInterface.closeResources(conn, pst);
-          	try {if (conn != null) conn.close(); } catch (SQLException e) {}
+          	try { conn.close(); } catch (Exception e) {}
           	try {if (pst != null) pst.close(); } catch (SQLException e) {}
           }
         }
@@ -1032,7 +1032,7 @@ public class FlowBean implements Flow {
         }
       } finally {
         // DatabaseInterface.closeResources(db, st, updateStatement, rs);
-      	try {if (db != null) db.close(); } catch (SQLException e) {}
+      	try { db.close(); } catch (Exception e) {}
       	try {if (st != null) st.close(); } catch (SQLException e) {}
       	try {if (updateStatement != null) updateStatement.close(); } catch (SQLException e) {}
       	try {if (rs != null) rs.close(); } catch (SQLException e) {}    	
@@ -1413,7 +1413,7 @@ public class FlowBean implements Flow {
                 "illegal access unregistering transaction in userInfo! " + e.getMessage());
           } finally {
             //DatabaseInterface.closeResources(conn);
-          		try {if (conn != null) conn.close(); } catch (SQLException e) {}
+          		try {conn.close(); } catch (Exception e) {}
           }
         }
       }
@@ -2087,7 +2087,7 @@ public class FlowBean implements Flow {
         }
       } finally {
         //DatabaseInterface.closeResources(conn, st, rs);
-      	try {if (conn != null) conn.close(); } catch (SQLException e) {}
+      	try { conn.close(); } catch (Exception e) {}
       	try {if (st != null) st.close(); } catch (SQLException e) {}
       	try {if (rs != null) rs.close(); } catch (SQLException e) {}    	
 
@@ -2326,7 +2326,7 @@ public class FlowBean implements Flow {
         }
       } finally {
         // DatabaseInterface.closeResources(db, st, rs, ps);
-      	try {if (db != null) db.close(); } catch (SQLException e) {}
+      	try { db.close(); } catch (Exception e) {}
       	try {if (st != null) st.close(); } catch (SQLException e) {}
       	try {if (rs != null) rs.close(); } catch (SQLException e) {}    	
       	try {if (ps != null) ps.close(); } catch (SQLException e) {}
@@ -2669,7 +2669,7 @@ public class FlowBean implements Flow {
         }
       } finally {
         // DatabaseInterface.closeResources(db, st, rs, ps);
-      	try {if (db != null) db.close(); } catch (SQLException e) {}
+      	try { db.close(); } catch (Exception e) {}
       	try {if (st != null) st.close(); } catch (SQLException e) {}
       	try {if (rs != null) rs.close(); } catch (SQLException e) {}    	
       	try {if (ps != null) ps.close(); } catch (SQLException e) {}

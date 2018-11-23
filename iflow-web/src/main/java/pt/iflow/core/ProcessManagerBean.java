@@ -1203,6 +1203,11 @@ public class ProcessManagerBean implements ProcessManager {
 			} catch (Exception e2) {
 				Logger.error(userid, this, "modifyProcessData",
 						procData.getSignature() + "exception rolling back connection: " + e2.getMessage(), e);
+			} finally {
+				//DatabaseInterface.closeResources(db, pst, rs);
+				try { if(db != null) db.close();} catch (Exception e1) {}
+	      	  try { if(pst != null) pst.close();} catch (Exception e1) {}
+	      	  try { if(rs != null) rs.close();} catch (Exception e1) {}
 			}
 
 			throw e;

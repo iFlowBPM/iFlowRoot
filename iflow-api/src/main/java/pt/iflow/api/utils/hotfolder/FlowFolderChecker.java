@@ -218,8 +218,8 @@ public class FlowFolderChecker implements Runnable {
         throw e;
       }
       finally {          
-        if (conn != null) DatabaseInterface.safeClose(conn);
-        if (pst != null) DatabaseInterface.safeClose(pst);      
+          try {if(null != conn) conn.close();} catch (Exception e2) {}
+          try {if(null != pst) pst.close();} catch (Exception e2) {}
       }
       
       String docVarName = hfconfig.getDocVar();
@@ -285,8 +285,8 @@ public class FlowFolderChecker implements Runnable {
         }
       } catch (Exception e1) {}
 
-      try {if(null != conn) conn.close();} catch (Exception e2) {}
-      try {if(null != pst) pst.close();} catch (Exception e2) {}
+      try { conn.close();} catch (Exception e2) {}
+      try { pst.close();} catch (Exception e2) {}
         
       }
     }
