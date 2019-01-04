@@ -665,9 +665,6 @@ public class RepositoryBean implements Repository {
 			} catch (IOException e) {
 				Logger.error(null, this, "getResourceData", "Error opening file " + file + ": " + e.getMessage(), e);
 			}
-			finally {
-				try {if (fin!=null) fin.close();}  catch (Exception e) {}
-			}
 			
 			return inStream;
 		}
