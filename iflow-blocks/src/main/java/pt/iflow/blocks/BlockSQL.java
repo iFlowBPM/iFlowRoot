@@ -3,6 +3,9 @@ package pt.iflow.blocks;
 import java.util.HashSet;
 import java.util.List;
 
+import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.lang.StringUtils;
+
 import pt.iflow.api.blocks.Block;
 import pt.iflow.api.blocks.Port;
 import pt.iflow.api.processdata.ProcessData;

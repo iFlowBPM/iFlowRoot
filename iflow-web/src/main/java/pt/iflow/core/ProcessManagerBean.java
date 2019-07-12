@@ -3385,17 +3385,21 @@ public class ProcessManagerBean implements ProcessManager {
             sbUpdateActivity.append("notify=0,");
           }
           if (activity.mid > 0) {
-            sbUpdateActivity.append("mid=").append(activity.mid).append(",");
+            sbUpdateActivity.append("mid=?,");
           }
-          sbUpdateActivity.append("description='").append(escapeSQL(activity.description));
-          sbUpdateActivity.append("',url='").append(escapeSQL(activity.url));
-          sbUpdateActivity.append("' where flowid=").append(activity.flowid);
-          sbUpdateActivity.append(" and pid=").append(activity.pid);
-          sbUpdateActivity.append(" and subpid=").append(activity.subpid);
+          sbUpdateActivity.append("description=?,url=? where flowid=? and pid=? and subpid=? ");
 
           Logger.debug(userid, this, "updateActivity", "Update: Query2(UPD)=" + sbUpdateActivity);
-
-          nUpdatedRows = st.executeUpdate(sbUpdateActivity.toString());
+          st = db.prepareStatement(sbUpdateActivity.toString());
+          int counterAux=1;
+          if (activity.mid > 0) 
+        	  ((PreparedStatement)st).setInt(counterAux++, activity.mid);
+          ((PreparedStatement)st).setString(counterAux++, activity.description);
+          ((PreparedStatement)st).setString(counterAux++, activity.url);
+          ((PreparedStatement)st).setInt(counterAux++, activity.flowid);
+          ((PreparedStatement)st).setInt(counterAux++, activity.pid);
+          ((PreparedStatement)st).setInt(counterAux++, activity.subpid);
+          nUpdatedRows = ((PreparedStatement)st).executeUpdate();
           Logger.debug(userid, this, "updateActivity", nUpdatedRows + " activities updated.");
           
 

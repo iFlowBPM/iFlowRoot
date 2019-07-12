@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 
 import pt.iflow.api.blocks.Port;
@@ -61,7 +62,15 @@ public class BlockSQLUpdate extends BlockSQL {
     try{
     	sQuery = this.getAttribute(advancedQuery);
     	 if (StringUtils.isNotEmpty(sQuery)) {
-    		 sQuery = procData.transform(userInfo, sQuery, true);
+    		 //sQuery = procData.transform(userInfo, sQuery, true);
+    		 
+    		 String[] sQueryParts = sQuery.split("\\+");
+    		 sQuery="";
+    		 for(String part : sQueryParts)
+    			 if(part.trim().startsWith("\"") || part.trim().startsWith("'"))
+    				 sQuery += procData.transform(userInfo, part, true);
+    			 else
+    				 sQuery+= StringEscapeUtils.escapeSql(procData.transform(userInfo, part, true));    		 		     		
     	 }
          if (StringUtils.isEmpty(sQuery)) sQuery = null;
     }
@@ -121,7 +130,7 @@ public class BlockSQLUpdate extends BlockSQL {
           Logger.error(login, this, "after", procData.getSignature() + "Empty table or set");            
           outPort = portError;
     	} else {
-    		if (this.isSystemTable(sDataSource, sTable)) {
+    		if (false && this.isSystemTable(sDataSource, sTable)) {
     		  Logger.error(login, this, "after", procData.getSignature() + "Table '"+ sTable +"'is a system table");
     			outPort = portError;
     		} else {

@@ -451,7 +451,7 @@ public class DocumentsBean implements Documents {
       pst.setString(++pos, adoc.getFileName());
       if(updateContents) {
         String filePath = null;
-        if (docDataInDB || ((filePath = getDocumentFilePath(adoc.getDocId(), adoc.getFileName())) == null)) {
+        if (docDataInDB || ((filePath = getDocumentFilePath(adoc.getDocId(), "" + adoc.getDocId() /*adoc.getFileName()*/)) == null)) {
           ByteArrayInputStream isBody = new ByteArrayInputStream(adoc.getContent());
           pst.setBinaryStream(++pos, isBody, adoc.getContent().length);
           pst.setString(++pos, null);
@@ -505,7 +505,7 @@ public class DocumentsBean implements Documents {
         String docURL = rs.getString("docurl");
         if (StringUtilities.isNotEmpty(docURL)) {
           String fileName = rs.getString("filename");
-          File f = new File(getDocumentFilePath(dbDoc.getDocId(), fileName));
+          File f = new File(getDocumentFilePath(dbDoc.getDocId(), "" + dbDoc.getDocId() /*adoc.getFileName()*/));
           dbDoc.setLength((int)f.length());
         } else {
           dbDoc.setLength(rs.getInt("length"));

@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1270,35 +1271,86 @@ public class FlowBean implements Flow {
           String currResult = rs.getString("result");
           int currExitFlag = rs.getInt("exit_flag");
 
-          String query = DBQueryManager
-              .processQuery("Flow.update", new Object[] { String.valueOf(block.getId()), sResult, String.valueOf(nExitFlag),
-                  String.valueOf(flowid), String.valueOf(pid), String.valueOf(subpid), String.valueOf(mid) });
-          st.executeUpdate(query);
+          String query = "update flow_state set state=?,mdate=?,result=?,exit_flag=?,mid=? where flowid=? and pid=? and subpid=?";
+          st.close();
+          st = db.prepareStatement(query);
+          ((PreparedStatement)st).setInt(1, block.getId());
+          ((PreparedStatement)st).setTimestamp(2, new Timestamp((new Date()).getTime()));
+          ((PreparedStatement)st).setString(3, sResult);
+          ((PreparedStatement)st).setInt(4, nExitFlag);
+          ((PreparedStatement)st).setInt(5, mid);
+          ((PreparedStatement)st).setInt(6, flowid);
+          ((PreparedStatement)st).setInt(7, pid);
+          ((PreparedStatement)st).setInt(8, subpid);
+//          DBQueryManager
+//              .processQuery("Flow.update", new Object[] { String.valueOf(block.getId()), sResult, String.valueOf(nExitFlag),
+//                  String.valueOf(flowid), String.valueOf(pid), String.valueOf(subpid), String.valueOf(mid) });
+          ((PreparedStatement)st).executeUpdate();
 
           if (block.getId() != currState || !StringUtils.equals(sResult, currResult) || nExitFlag != currExitFlag) {
 
             // insert history entry
             if (block.isSaveFlowState() && Const.sSAVE_FLOW_STATE_ALLWAYS.equals("true")) {
-              query = DBQueryManager.processQuery("Flow.insert_state_history", new Object[] { String.valueOf(flowid),
-                  String.valueOf(pid), String.valueOf(subpid), String.valueOf(block.getId()), sResult, String.valueOf(nExitFlag),
-                  String.valueOf(mid), outPort == null ? null : "'" + outPort.getName() + "'" });
-              st.executeUpdate(query);
+              query = "insert into flow_state_history (flowid,pid,subpid,state,result,mdate,exit_flag,mid,exit_port) values (?,?,?,?,?,?,?,?,?)";
+              st = db.prepareStatement(query);
+              ((PreparedStatement)st).setInt(1, flowid);
+              ((PreparedStatement)st).setInt(2, pid);
+              ((PreparedStatement)st).setInt(3, subpid);
+              ((PreparedStatement)st).setInt(4, block.getId());
+              ((PreparedStatement)st).setString(5, sResult);
+              ((PreparedStatement)st).setTimestamp(6, new Timestamp((new Date()).getTime()));
+              ((PreparedStatement)st).setInt(7, nExitFlag);
+              ((PreparedStatement)st).setInt(8, mid);
+              if(outPort == null)
+            	  ((PreparedStatement)st).setNull(9,java.sql.Types.VARCHAR);
+              else
+            	  ((PreparedStatement)st).setString(9,outPort.getName());
+              
+//              DBQueryManager.processQuery("Flow.insert_state_history", new Object[] { String.valueOf(flowid),
+//                  String.valueOf(pid), String.valueOf(subpid), String.valueOf(block.getId()), sResult, String.valueOf(nExitFlag),
+//                  String.valueOf(mid), outPort == null ? null : "'" + outPort.getName() + "'" });
+              ((PreparedStatement)st).executeUpdate();
             }
           }
 
           DatabaseInterface.commitConnection(db);
         } else { // there's no blockId.
 
-          String query = DBQueryManager.processQuery("Flow.insert_state", new Object[] { String.valueOf(flowid),
-              String.valueOf(pid), String.valueOf(subpid), String.valueOf(block.getId()), sResult, String.valueOf(nExitFlag),
-              String.valueOf(mid) });
-          st.executeUpdate(query);
+          String query = "insert into flow_state (flowid,pid,subpid,state,result,mdate,exit_flag,mid) values (?,?,?,?,?,?,?,?)";
+          st.close();
+          st = db.prepareStatement(query);
+          ((PreparedStatement)st).setInt(1, flowid);
+          ((PreparedStatement)st).setInt(2, pid);
+          ((PreparedStatement)st).setInt(3, subpid);
+          ((PreparedStatement)st).setInt(4, block.getId());
+          ((PreparedStatement)st).setString(5, sResult);
+          ((PreparedStatement)st).setTimestamp(6, new Timestamp((new Date()).getTime()));
+          ((PreparedStatement)st).setInt(7, nExitFlag);
+          ((PreparedStatement)st).setInt(8, mid);
+//          DBQueryManager.processQuery("Flow.insert_state", new Object[] { String.valueOf(flowid),
+//              String.valueOf(pid), String.valueOf(subpid), String.valueOf(block.getId()), sResult, String.valueOf(nExitFlag),
+//              String.valueOf(mid) });
+          ((PreparedStatement)st).executeUpdate();
 
           if (block.isSaveFlowState() && Const.sSAVE_FLOW_STATE_ALLWAYS.equals("true")) {
-            query = DBQueryManager.processQuery("Flow.insert_state_history", new Object[] { String.valueOf(flowid),
-                String.valueOf(pid), String.valueOf(subpid), String.valueOf(block.getId()), sResult, String.valueOf(nExitFlag),
-                String.valueOf(mid), outPort == null ? null : "'" + outPort.getName() + "'" });
-            st.executeUpdate(query);
+            query = "insert into flow_state_history (flowid,pid,subpid,state,result,mdate,exit_flag,mid,exit_port) values (?,?,?,?,?,?,?,?,?)";
+            st = db.prepareStatement(query);
+            ((PreparedStatement)st).setInt(1, flowid);
+            ((PreparedStatement)st).setInt(2, pid);
+            ((PreparedStatement)st).setInt(3, subpid);
+            ((PreparedStatement)st).setInt(4, block.getId());
+            ((PreparedStatement)st).setString(5, sResult);
+            ((PreparedStatement)st).setTimestamp(6, new Timestamp((new Date()).getTime()));
+            ((PreparedStatement)st).setInt(7, nExitFlag);
+            ((PreparedStatement)st).setInt(8, mid);
+            if(outPort == null)
+          	  ((PreparedStatement)st).setNull(9,java.sql.Types.VARCHAR);
+            else
+          	  ((PreparedStatement)st).setString(9,outPort.getName());
+//            DBQueryManager.processQuery("Flow.insert_state_history", new Object[] { String.valueOf(flowid),
+//                String.valueOf(pid), String.valueOf(subpid), String.valueOf(block.getId()), sResult, String.valueOf(nExitFlag),
+//                String.valueOf(mid), outPort == null ? null : "'" + outPort.getName() + "'" });
+            ((PreparedStatement)st).executeUpdate();
           }
 
           DatabaseInterface.commitConnection(db);
@@ -1913,9 +1965,16 @@ public class FlowBean implements Flow {
           + " and closed=0");
       if (rs.next()) {
         String stmp = rs.getString("state");
-        String query = DBQueryManager.processQuery("Flow.update_state", new Object[] { stmp,
-            procData.get(DataSetVariables.PROCESS_STATE_DESC).format(), String.valueOf(flowid), String.valueOf(pid) });
-        st.executeUpdate(query);
+        String query = "update flow_state set state=?,mdate=?,result=? where flowid=? and pid=?";
+        st = conn.prepareStatement(query);
+        ((PreparedStatement)st).setInt(1, Integer.parseInt(stmp));
+        ((PreparedStatement)st).setTimestamp(2, new Timestamp((new Date()).getTime()));
+        ((PreparedStatement)st).setString(3, procData.get(DataSetVariables.PROCESS_STATE_DESC).format());
+        ((PreparedStatement)st).setInt(4, flowid);
+        ((PreparedStatement)st).setInt(5, pid);
+//        DBQueryManager.processQuery("Flow.update_state", new Object[] { stmp,
+//            procData.get(DataSetVariables.PROCESS_STATE_DESC).format(), String.valueOf(flowid), String.valueOf(pid) });
+        ((PreparedStatement)st).executeUpdate();
 
         this.saveDataSet(userInfo, procData, null);
 

@@ -556,7 +556,7 @@ public abstract class Block {
             }
             
             if (StringUtils.isNotEmpty(stmp)) {
-                stmp = Utils.transformStringAndPrepareForDB(userInfo, stmp, procData);
+                stmp = /*Utils.transformStringAndPrepareForDB(userInfo, stmp, procData);*/procData.transform(userInfo, stmp);
                 if (StringUtils.isNotEmpty(stmp)) {
                     return stmp;
                 }

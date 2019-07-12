@@ -6,6 +6,7 @@ import java.sql.Statement;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 
 import pt.iflow.api.blocks.Port;
@@ -59,7 +60,15 @@ public class BlockSQLInsert extends BlockSQL {
     try{
     	sQuery = this.getAttribute(advancedQuery);
     	 if (StringUtils.isNotEmpty(sQuery)) {
-    		 sQuery = procData.transform(userInfo, sQuery, true);
+    		 //sQuery = procData.transform(userInfo, sQuery, true);
+    		 
+    		 String[] sQueryParts = sQuery.split("\\+");
+    		 sQuery="";
+    		 for(String part : sQueryParts)
+    			 if(part.trim().startsWith("\"") || part.trim().startsWith("'"))
+    				 sQuery += procData.transform(userInfo, part, true);
+    			 else
+    				 sQuery+= StringEscapeUtils.escapeSql(procData.transform(userInfo, part, true));    		 		     		
     	 }
          if (StringUtils.isEmpty(sQuery)) sQuery = null;
     }
