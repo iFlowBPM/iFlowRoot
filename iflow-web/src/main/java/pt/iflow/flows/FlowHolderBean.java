@@ -1312,16 +1312,27 @@ public class FlowHolderBean implements FlowHolder {
       rst.next();
       Timestamp preiousMapping = rst.getTimestamp(1);
       
+      pst.close();
       pst = db.
     		  prepareStatement("SELECT O.mapped_blockid as oid, N.mapped_blockid as nid FROM " +
     				  			"(SELECT sub_flowname, original_blockid,mapped_blockid FROM subflow_block_mapping s where flowname=? and created=?) O " +
     				  			"left join " +
     				  			"(SELECT sub_flowname, original_blockid,mapped_blockid FROM subflow_block_mapping s where flowname=? and created=?) N " +    				  			
-    				  			"on (O.original_blockid=N.original_blockid and O.sub_flowname=N.sub_flowname) order by oid desc"); 
+    				  			"on (O.original_blockid=N.original_blockid and O.sub_flowname=N.sub_flowname) " + 
+    				  			"where " +
+    				  			"O.mapped_blockid IN " + 
+    				  			"( " +
+    				  			"select flow_state.state " + 
+    				  			"from flow, flow_state " + 
+    				  			"where flow.flowid = flow_state.flowid " + 
+    				  			"	and flow.flowname = ? " +
+    				  			") " +
+    				  			"order by oid desc"); 
       pst.setString(1, subFlowBlockMappings.get(0).getMainFlowName());
       pst.setTimestamp(2, preiousMapping);
       pst.setString(3, subFlowBlockMappings.get(0).getMainFlowName());
       pst.setTimestamp(4, lastMapping);
+      pst.setString(5, subFlowBlockMappings.get(0).getMainFlowName());
       rst = pst.executeQuery();
       
       while(rst.next())

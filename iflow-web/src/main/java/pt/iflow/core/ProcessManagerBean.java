@@ -3401,7 +3401,7 @@ public class ProcessManagerBean implements ProcessManager {
           ((PreparedStatement)st).setInt(counterAux++, activity.subpid);
           nUpdatedRows = ((PreparedStatement)st).executeUpdate();
           Logger.debug(userid, this, "updateActivity", nUpdatedRows + " activities updated.");
-          
+          st.close();
 
           if (activity.isRead()) {
             // update user activity to read
@@ -3414,8 +3414,8 @@ public class ProcessManagerBean implements ProcessManager {
             sbUpdateActivityRead.append(" and userid='").append(escapeSQL(userid)).append("'");
 
             Logger.debug(userid, this, "updateActivity", "Update: Query Read=" + sbUpdateActivityRead);
-
-            nUpdatedRows = st.executeUpdate(sbUpdateActivityRead.toString());
+            st = db.prepareStatement(sbUpdateActivityRead.toString());
+            nUpdatedRows = ((PreparedStatement)st).executeUpdate();
             Logger.debug(userid, this, "updateActivity", nUpdatedRows + " activities updated as read.");
           }
 

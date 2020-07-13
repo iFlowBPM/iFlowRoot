@@ -19,9 +19,9 @@ public class UtilityAppletWebStart {
 	public static final String CHECKREQUESTFORAPPLET = "CHECKREQUESTFORAPPLET";
 	
 	public static void main(String []args) throws JSONException, IOException, InterruptedException{
-//		String arg = "{\"CHECKREQUESTFORAPPLET\":\"http://localhost:8080/iFlow/CheckRequestForApplet\",\"DOCUMENTBASEURL\":\"http://localhost:8080/iFlow/DocumentService\"," +
-//				"\"JSESSIONID\":\"6F331B8A04DC08089F3283675AEFF0CE\"}";
-		String arg = args[0];;
+		String arg = "{\"CHECKREQUESTFORAPPLET\":\"http://localhost:8080/iFlow/CheckRequestForApplet\",\"DOCUMENTBASEURL\":\"http://localhost:8080/iFlow/DocumentService\"," +
+				"\"JSESSIONID\":\"E96F46F177A162FB4214F260BAD965CA\"}";
+//		String arg = args[0];;
 		System.out.println(arg);
 		JSONObject arguments = new JSONObject(arg);		
 		UtilityApplet ua = new UtilityApplet();		
