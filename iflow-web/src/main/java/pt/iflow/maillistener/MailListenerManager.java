@@ -39,6 +39,7 @@ import pt.iflow.api.flows.NewFlowListener;
 import pt.iflow.api.processdata.ProcessData;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
+import pt.iflow.api.utils.Setup;
 import pt.iflow.api.utils.UserInfoInterface;
 import pt.iflow.api.utils.UserInfoManagerInterface;
 import pt.iflow.api.utils.mail.MailChecker;
@@ -49,8 +50,11 @@ import pt.iflow.api.utils.mail.imap.IMAPMailSSLClient;
 import pt.iflow.api.utils.mail.parsers.AbstractPropertiesMessageParser;
 import pt.iflow.api.utils.mail.parsers.MessageParseException;
 import pt.iflow.api.utils.mail.parsers.MessageParser;
+import pt.iflow.utils.BuildPdf;
 
 public class MailListenerManager extends Thread {
+	
+  private static final String sPDF_DOCUMENT_VARIABLE = Setup.getProperty("PDF_DOCUMENT_VARIABLE");
 
   private static MailListenerManager instance;
 
@@ -305,7 +309,21 @@ public class MailListenerManager extends Thread {
               setVar(procData, mailprop, var, props.getProperty(mailprop));
             }
           }
+          
+		  try {
+			  InputStream pdfFromEmailStream = BuildPdf.convertEmailToPdf(text, files);
+			  if (pdfFromEmailStream != null) {
+				  List<File> pdfFiles = new ArrayList<File>();
+				  pdfFiles.add(saveFile(subject.replaceAll("[^a-zA-Z0-9\\.\\-]", "_") + ".pdf", pdfFromEmailStream));
 
+				  procData.addDocuments(userInfo, sPDF_DOCUMENT_VARIABLE, pdfFiles);
+
+			  }
+		  } catch (IOException e) {
+			  Logger.adminWarning("MailListenerManager", "parse", "error getting pdf", e);
+
+		  }
+          
           // now documents
           String docsVarName = mailsettings.getFilesVar();
           Set<File> errors = procData.addDocuments(userInfo, docsVarName, files);

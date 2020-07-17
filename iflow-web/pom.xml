@@ -102,6 +102,13 @@
 			<groupId>iknow-local-libs</groupId>
 			<artifactId>kaptcha</artifactId>
 		</dependency>
+		<!-- Pdfcrowd API Client Library for Java -->
+		<dependency>
+			<groupId>com.pdfcrowd</groupId>
+			<artifactId>pdfcrowd</artifactId>
+			<version>4.12.0</version>
+			<scope>compile</scope>
+		</dependency>
 
 		<!-- OEM -->
 		<dependency>
