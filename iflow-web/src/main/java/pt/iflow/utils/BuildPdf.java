@@ -7,11 +7,12 @@ import java.io.InputStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.xml.bind.DatatypeConverter;
+import org.apache.commons.io.FileUtils;
 
 import com.pdfcrowd.Pdfcrowd;
 
@@ -26,8 +27,8 @@ import pt.iflow.api.utils.Setup;
  */
 public class BuildPdf {
 	
-	private static final String sPDF_CROWD_USERNAME = Setup.getProperty("PDF_CROWD_USERNAME");
-	private static final String sPDF_CROWD_APIKEY = Setup.getProperty("PDF_CROWD_APIKEY");
+	private static final String PDF_CROWD_USERNAME = Setup.getProperty("PDF_CROWD_USERNAME");
+	private static final String PDF_CROWD_APIKEY = Setup.getProperty("PDF_CROWD_APIKEY");
 
 	private BuildPdf() {
 		throw new IllegalStateException("BuildPdf is an utility class");
@@ -78,7 +79,8 @@ public class BuildPdf {
 	private static String insertImagesToHtml(String text, List<File> imagesList, Matcher matcher) throws IOException {
 		while (matcher.find()) {
 			for (int i = 0; i < imagesList.size(); i++) {
-				String base64Image = DatatypeConverter.printBase64Binary(Files.readAllBytes(imagesList.get(0).toPath()));
+				byte[] fileContent = FileUtils.readFileToByteArray(imagesList.get(0));
+				String encodedImage = Base64.getEncoder().encodeToString(fileContent);
 
 				String mimeType = Files.probeContentType(FileSystems.getDefault().getPath(imagesList.get(0).getPath()));
 
@@ -88,7 +90,7 @@ public class BuildPdf {
 
 					}
 				}
-				String replacement = "data:" + mimeType + ";base64," + base64Image + "\"";
+				String replacement = "data:" + mimeType + ";base64," + encodedImage + "\"";
 				text = text.replace(matcher.group(1), replacement);
 				imagesList.remove(0);
 				break;
@@ -100,7 +102,7 @@ public class BuildPdf {
 	private static InputStream callApiPdfCrowd(String text) {
 
 		try {
-			Pdfcrowd.HtmlToPdfClient client = new Pdfcrowd.HtmlToPdfClient(sPDF_CROWD_USERNAME, sPDF_CROWD_APIKEY);
+			Pdfcrowd.HtmlToPdfClient client = new Pdfcrowd.HtmlToPdfClient(PDF_CROWD_USERNAME, PDF_CROWD_APIKEY);
 			byte[] pdf = client.convertString("<html><body>" + text + "</body></html>");
 
 			return new ByteArrayInputStream(pdf);

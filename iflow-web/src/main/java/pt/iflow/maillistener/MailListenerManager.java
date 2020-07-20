@@ -54,8 +54,6 @@ import pt.iflow.utils.BuildPdf;
 
 public class MailListenerManager extends Thread {
 	
-  private static final String sPDF_DOCUMENT_VARIABLE = Setup.getProperty("PDF_DOCUMENT_VARIABLE");
-
   private static MailListenerManager instance;
 
   private enum FlowStatus { CHECK_FLOW, ONLINE };
@@ -316,7 +314,7 @@ public class MailListenerManager extends Thread {
 				  List<File> pdfFiles = new ArrayList<File>();
 				  pdfFiles.add(saveFile(subject.replaceAll("[^a-zA-Z0-9\\.\\-]", "_") + ".pdf", pdfFromEmailStream));
 
-				  procData.addDocuments(userInfo, sPDF_DOCUMENT_VARIABLE, pdfFiles);
+				  procData.addDocuments(userInfo, Setup.getProperty("PDF_DOCUMENT_VARIABLE"), pdfFiles);
 
 			  }
 		  } catch (IOException e) {
