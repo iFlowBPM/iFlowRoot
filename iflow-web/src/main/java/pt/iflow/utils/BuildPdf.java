@@ -109,8 +109,8 @@ public class BuildPdf {
 
 		} catch (Pdfcrowd.Error why) {
 			Logger.adminWarning("BuildPdf", "callApiPdfCrowd", "Pdfcrowd Error: ", why);
+			throw why;
 		}
-		return null;
 
 	}
 }

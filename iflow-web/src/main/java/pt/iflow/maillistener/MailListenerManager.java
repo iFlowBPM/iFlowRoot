@@ -4,7 +4,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -15,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.mail.Address;
 import javax.mail.Message;
@@ -23,10 +29,13 @@ import javax.mail.Multipart;
 import javax.mail.Part;
 import javax.mail.internet.InternetAddress;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
 import pt.iflow.api.core.BeanFactory;
 import pt.iflow.api.core.ProcessManager;
+import pt.iflow.api.documents.DocumentData;
+import pt.iflow.api.documents.Documents;
 import pt.iflow.api.flows.Flow;
 import pt.iflow.api.flows.FlowDeployListener;
 import pt.iflow.api.flows.FlowHolder;
@@ -37,6 +46,7 @@ import pt.iflow.api.flows.IFlowData;
 import pt.iflow.api.flows.MailStartSettings;
 import pt.iflow.api.flows.NewFlowListener;
 import pt.iflow.api.processdata.ProcessData;
+import pt.iflow.api.processdata.ProcessListVariable;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.Setup;
@@ -50,6 +60,7 @@ import pt.iflow.api.utils.mail.imap.IMAPMailSSLClient;
 import pt.iflow.api.utils.mail.parsers.AbstractPropertiesMessageParser;
 import pt.iflow.api.utils.mail.parsers.MessageParseException;
 import pt.iflow.api.utils.mail.parsers.MessageParser;
+import pt.iflow.connector.document.Document;
 import pt.iflow.utils.BuildPdf;
 
 public class MailListenerManager extends Thread {
@@ -293,6 +304,27 @@ public class MailListenerManager extends Thread {
 
           Properties props = parseProperties(message);
           List<File> files = parseFiles(message);
+          
+		  for (int i = 0; i < files.size(); i++) {
+			  if (files.get(i).getName().length() > 128) {
+				  String fileName = files.get(i).getName().substring(0, files.get(i).getName().lastIndexOf('.'));
+				  int fileExtensionSize = files.get(i).getName()
+						  .substring(files.get(i).getName().lastIndexOf(".")).length();
+
+				  String newFileName = fileName.substring(0, 127 - fileExtensionSize);
+				  newFileName = files.get(i).getPath().replace(fileName, newFileName);
+				  Path destination = Paths.get(newFileName);
+				  Path source = Paths.get(files.get(i).getPath());
+				  
+				  try {
+					  files.set(i, Files.move(source, source.resolveSibling(destination),
+							  StandardCopyOption.REPLACE_EXISTING).toFile());
+
+				  } catch (IOException e) {
+					  Logger.adminWarning("MailListenerManager", "parse", "error truncating long file name ", e);
+				  }
+			  }
+		  }
 
           setVar(procData, "fromEmail", mailsettings.getFromEmailVar(), fromEmail);
           setVar(procData, "fromName", mailsettings.getFromNameVar(), fromName);
@@ -311,13 +343,25 @@ public class MailListenerManager extends Thread {
 		  try {
 			  InputStream pdfFromEmailStream = BuildPdf.convertEmailToPdf(text, files);
 			  if (pdfFromEmailStream != null) {
-				  List<File> pdfFiles = new ArrayList<File>();
-				  pdfFiles.add(saveFile(subject.replaceAll("[^a-zA-Z0-9\\.\\-]", "_") + ".pdf", pdfFromEmailStream));
+				  String sOutputMailToPdfVar = Setup.getProperty("PDF_DOCUMENT_VARIABLE");
 
-				  procData.addDocuments(userInfo, Setup.getProperty("PDF_DOCUMENT_VARIABLE"), pdfFiles);
+				  Documents docBean = BeanFactory.getDocumentsBean();
+				  Document doc = new DocumentData(
+						  new SimpleDateFormat("'email'yyyyMMddHHmmss'_'").format(new Date())
+								  + UUID.randomUUID().toString().replace("-", "") + ".pdf",
+						  IOUtils.toByteArray(pdfFromEmailStream));
+				  doc = docBean.addDocument(userInfo, procData, doc);
+
+				  Logger.info(userInfo.getUtilizador(), this, "processForm",
+						  "file (" + doc.getFileName() + ") for var " + sOutputMailToPdfVar + " added.");
+
+				  ProcessListVariable docsVar = procData.getList(sOutputMailToPdfVar);
+				  docsVar.parseAndAddNewItem(String.valueOf(doc.getDocId()));
+
+				  pdfFromEmailStream.close();
 
 			  }
-		  } catch (IOException e) {
+		  } catch (Exception e) {
 			  Logger.adminWarning("MailListenerManager", "parse", "error getting pdf", e);
 
 		  }
