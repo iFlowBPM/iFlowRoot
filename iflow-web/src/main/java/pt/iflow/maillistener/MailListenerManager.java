@@ -341,7 +341,7 @@ public class MailListenerManager extends Thread {
           }
           
 		  try {
-			  InputStream pdfFromEmailStream = BuildPdf.convertEmailToPdf(text, files);
+			  InputStream pdfFromEmailStream = BuildPdf.convertEmailToPdf(text, message, files);
 			  if (pdfFromEmailStream != null) {
 				  String sOutputMailToPdfVar = Setup.getProperty("PDF_DOCUMENT_VARIABLE");
 
