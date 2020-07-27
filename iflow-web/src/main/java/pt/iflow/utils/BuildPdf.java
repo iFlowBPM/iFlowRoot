@@ -47,9 +47,7 @@ public class BuildPdf {
 		if (text == null) {
 			return null;
 
-		} else if (files == null || files.isEmpty()) {
-			return callApiPdfCrowd(text);
-		}
+		} 
 
 		Pattern pattern = Pattern.compile("src=\"(.*?)\"");
 		Matcher matcher = pattern.matcher(text);

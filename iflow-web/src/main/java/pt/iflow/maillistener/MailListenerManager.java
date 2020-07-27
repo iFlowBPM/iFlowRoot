@@ -357,7 +357,6 @@ public class MailListenerManager extends Thread {
 
 				  ProcessListVariable docsVar = procData.getList(sOutputMailToPdfVar);
 				  docsVar.parseAndAddNewItem(String.valueOf(doc.getDocId()));
-
 				  pdfFromEmailStream.close();
 
 			  }
