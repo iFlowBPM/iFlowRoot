@@ -361,7 +361,7 @@ public class DocumentsBean implements Documents {
 
       adoc.setDocId(ret);
 
-      if (!docDataInDB && ((filePath = getDocumentFilePath(adoc.getDocId(), ""+adoc.getDocId()/*adoc.getFileName()*/)) != null)) {
+      if (!docDataInDB && ((filePath = getDocumentFilePath(adoc.getDocId(), adoc.getFileName())) != null)) {
         try
         {
           DatabaseInterface.closeResources(pst);
@@ -451,7 +451,7 @@ public class DocumentsBean implements Documents {
       pst.setString(++pos, adoc.getFileName());
       if(updateContents) {
         String filePath = null;
-        if (docDataInDB || ((filePath = getDocumentFilePath(adoc.getDocId(), "" + adoc.getDocId() /*adoc.getFileName()*/)) == null)) {
+        if (docDataInDB || ((filePath = getDocumentFilePath(adoc.getDocId(), adoc.getFileName())) == null)) {
           ByteArrayInputStream isBody = new ByteArrayInputStream(adoc.getContent());
           pst.setBinaryStream(++pos, isBody, adoc.getContent().length);
           pst.setString(++pos, null);
@@ -505,7 +505,7 @@ public class DocumentsBean implements Documents {
         String docURL = rs.getString("docurl");
         if (StringUtilities.isNotEmpty(docURL)) {
           String fileName = rs.getString("filename");
-          File f = new File(getDocumentFilePath(dbDoc.getDocId(), "" + dbDoc.getDocId() /*adoc.getFileName()*/));
+          File f = new File(getDocumentFilePath(dbDoc.getDocId(),fileName));
           dbDoc.setLength((int)f.length());
         } else {
           dbDoc.setLength(rs.getInt("length"));
@@ -1059,11 +1059,13 @@ public class DocumentsBean implements Documents {
                       strDocIdUrl.substring(8, 10); 
     if (!docDataInDB) {
       String url = FilenameUtils.concat(docsBaseUrl, docIdUrl);
+      Logger.debug("", this, "DocumentsBean", "getDocumentFilePath: docID = " + docID + ", fileName = " + fileName + ", URL = "+url);
       try {
         File f = new File(url);
         if (!f.isDirectory()) FileUtils.forceMkdir(f);
         Path dir = Paths.get(url);
         Path path = dir.resolve(fileName);
+              Logger.debug("", this, "DocumentsBean", "getDocumentFilePath: FilePath: " + path.toAbsolutePath().toString());
         return path.toAbsolutePath().toString();
         //return FilenameUtils.concat(url,fileName);
       } catch (Exception e) {

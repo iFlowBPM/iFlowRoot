@@ -1918,13 +1918,13 @@ public class ProcessManagerBean implements ProcessManager {
   }
 
   public void createActivity(UserInfoInterface userInfo, Activity activity, boolean hasSelfCreatePriv) throws Exception {
-	    this.createActivity(userInfo, activity, hasSelfCreatePriv, false);
+      this.createActivity(userInfo, activity, hasSelfCreatePriv, false);
   }
 
   public void createActivity(UserInfoInterface userInfo, Activity activity, boolean hasSelfCreatePriv, boolean forceNotRead) throws Exception {
-	    List<Activity> altmp = new ArrayList<Activity>(1);
-	    altmp.add(activity);
-	    this.createActivities(userInfo, altmp.listIterator(), hasSelfCreatePriv, forceNotRead);
+      List<Activity> altmp = new ArrayList<Activity>(1);
+      altmp.add(activity);
+      this.createActivities(userInfo, altmp.listIterator(), hasSelfCreatePriv, forceNotRead);
   }
   
 
@@ -1934,7 +1934,7 @@ public class ProcessManagerBean implements ProcessManager {
 
   public void createActivities(UserInfoInterface userInfo, Iterator<Activity> liActivities, boolean hasSelfCreatePriv)
   throws Exception {
-	  createActivities(userInfo, liActivities, hasSelfCreatePriv, false);
+    createActivities(userInfo, liActivities, hasSelfCreatePriv, false);
   }
 
 
@@ -2597,7 +2597,7 @@ public class ProcessManagerBean implements ProcessManager {
    * @see pt.iflow.api.core.ProcessManager#getUserActivities(pt.iflow.api.utils.UserInfoInterface)
    */
   public ListIterator<Activity> getUserActivities(UserInfoInterface userInfo) {
-	  return this.getUserActivities(userInfo, -1);
+    return this.getUserActivities(userInfo, -1);
   }
   
   /*
@@ -3393,7 +3393,7 @@ public class ProcessManagerBean implements ProcessManager {
           st = db.prepareStatement(sbUpdateActivity.toString());
           int counterAux=1;
           if (activity.mid > 0) 
-        	  ((PreparedStatement)st).setInt(counterAux++, activity.mid);
+            ((PreparedStatement)st).setInt(counterAux++, activity.mid);
           ((PreparedStatement)st).setString(counterAux++, activity.description);
           ((PreparedStatement)st).setString(counterAux++, activity.url);
           ((PreparedStatement)st).setInt(counterAux++, activity.flowid);
@@ -3591,18 +3591,18 @@ public class ProcessManagerBean implements ProcessManager {
         hsProfiles = new HashSet<String>();
         String[] asProfileList = asProfile.split(",");
         for(String asProfileAux: asProfileList){
-	        hsProfiles.add(asProfileAux);
-	        Iterator<String> userIdIterator = (ap.getUsersInProfile(userInfo, asProfileAux)).iterator();
-	        if (userIdIterator != null && userIdIterator.hasNext()) {
-	          // Create the activity for each user in the profile
-	          while (userIdIterator.hasNext()) {
-	        	String nextUser = userIdIterator.next();
-	        	if(!alUsers.contains(nextUser)){
-	        		alUsers.add(nextUser);
-	        		alProfiles.add(hsProfiles);
-	        	}
-	          }
-	        }
+          hsProfiles.add(asProfileAux);
+          Iterator<String> userIdIterator = (ap.getUsersInProfile(userInfo, asProfileAux)).iterator();
+          if (userIdIterator != null && userIdIterator.hasNext()) {
+            // Create the activity for each user in the profile
+            while (userIdIterator.hasNext()) {
+            String nextUser = userIdIterator.next();
+            if(!alUsers.contains(nextUser)){
+              alUsers.add(nextUser);
+              alProfiles.add(hsProfiles);
+            }
+            }
+          }
         }
       }
 
@@ -5568,68 +5568,68 @@ public class ProcessManagerBean implements ProcessManager {
 
   public void updatePidDocs(UserInfoInterface userInfo, ProcessData procData){
 
-	    Logger.debug(userInfo.getUtilizador(), this, "updatePidDocs", "PID "+procData.getPid());
-	    
-	    //GET DOCIDS
-	    Collection <String> n = procData.getListVariableNames();
-	    Iterator <String> nomes = n.iterator();
-	    String docids = null;
-	    
-	    while(nomes.hasNext()) {
-	    	
-	    	ProcessListVariable varlist = procData.getList(nomes.next());
+      Logger.debug(userInfo.getUtilizador(), this, "updatePidDocs", "PID "+procData.getPid());
+      
+      //GET DOCIDS
+      Collection <String> n = procData.getListVariableNames();
+      Iterator <String> nomes = n.iterator();
+      String docids = null;
+      
+      while(nomes.hasNext()) {
+        
+        ProcessListVariable varlist = procData.getList(nomes.next());
 
-	    	Logger.debug("", this, "", "VAR "+varlist.getName()+" TIPO: "+varlist.getType().toString());
-	    	
-			    if( varlist != null && "Document" == varlist.getType().toString() ){
-			    	docids = "("+ varlist.getFormattedItem(0);
-			    	
-			    	for(int i = 1; i < varlist.size(); i++)
-			    	{
-			    		docids = docids +","+ varlist.getFormattedItem(i);
-			    	}   	
-			    	
-		         docids = docids +")";
-			    }
-	    }
-	    
-	   if(docids != null){
-		    int flowid = procData.getFlowId();
-		    int pid = procData.getPid();
-		    int mid = procData.getSubPid();
-	
-		    //UPDATE PIDs 
-		    Connection db = null;
-		    Statement st = null;
-		    try {
-		        db = DatabaseInterface.getConnection(userInfo);
-		        st = db.createStatement();
-		        String query = "update documents set pid = "+pid+" , subpid= "+mid+" where flowid = "+flowid+" and docid in "+docids;
-		        st.executeUpdate(query);      	      
-		    } catch (SQLException sqle) {Logger.error(userInfo.getUtilizador(), this, "updatePidDocs", "sql exception: " + sqle.getMessage(), sqle);
-		    } catch (Exception e) { Logger.error(userInfo.getUtilizador(), this, "updatePidDocs", "exception: " + e.getMessage(), e);
-		    } finally {DatabaseInterface.closeResources(db, st);
-		    } 
-	   }
-	}
+        Logger.debug("", this, "", "VAR "+varlist.getName()+" TIPO: "+varlist.getType().toString());
+        
+          if( varlist != null && "Document" == varlist.getType().toString() ){
+            docids = "("+ varlist.getFormattedItem(0);
+            
+            for(int i = 1; i < varlist.size(); i++)
+            {
+              docids = docids +","+ varlist.getFormattedItem(i);
+            }     
+            
+             docids = docids +")";
+          }
+      }
+      
+     if(docids != null){
+        int flowid = procData.getFlowId();
+        int pid = procData.getPid();
+        int mid = procData.getSubPid();
+  
+        //UPDATE PIDs 
+        Connection db = null;
+        Statement st = null;
+        try {
+            db = DatabaseInterface.getConnection(userInfo);
+            st = db.createStatement();
+            String query = "update documents set pid = "+pid+" , subpid= "+mid+" where flowid = "+flowid+" and docid in "+docids;
+            st.executeUpdate(query);              
+        } catch (SQLException sqle) {Logger.error(userInfo.getUtilizador(), this, "updatePidDocs", "sql exception: " + sqle.getMessage(), sqle);
+        } catch (Exception e) { Logger.error(userInfo.getUtilizador(), this, "updatePidDocs", "exception: " + e.getMessage(), e);
+        } finally {DatabaseInterface.closeResources(db, st);
+        } 
+     }
+  }
 
   public ListIterator<Activity> getUserActivitiesOrderByPid(UserInfoInterface userInfo) {
-	    String userid = userInfo.getUtilizador();
-	    Logger.trace(this, "getUserActivitiesOrderByPid", userid + " call.");
-	    
+      String userid = userInfo.getUtilizador();
+      Logger.trace(this, "getUserActivitiesOrderByPid", userid + " call.");
+      
 
 
-	    Connection db = null;
-	    PreparedStatement st = null;
-	    ResultSet rs = null;
-	    LinkedList<Activity> l = new LinkedList<Activity>();
-	    ListIterator<Activity> result = null;
+      Connection db = null;
+      PreparedStatement st = null;
+      ResultSet rs = null;
+      LinkedList<Activity> l = new LinkedList<Activity>();
+      ListIterator<Activity> result = null;
 
-	    try {
-	      db = DatabaseInterface.getConnection(userInfo);
-	      db.setAutoCommit(true);
-	
-	      final StringBuilder sQuery = new StringBuilder(
+      try {
+        db = DatabaseInterface.getConnection(userInfo);
+        db.setAutoCommit(true);
+  
+        final StringBuilder sQuery = new StringBuilder(
               "select a.flowid , a.pid, a.mid, a.subpid, a.type, a.priority, a.created, a.started, a.archived, a.description, a.url, a.status, a.notify, a.profilename, a.read_flag, a.delegated, p.pnumber, PAI.icon, a.folderid from activity a,process p LEFT JOIN process_annotation_icon PAI ON (p.flowid=PAI.flowid AND p.pid=PAI.pid AND p.subpid=PAI.subpid) where p.flowid=a.flowid and p.pid=a.pid and p.subpid=a.subpid and status=0 and userid='"+userid+"' ");
 
           final StringBuilder sQueryDelegated = new StringBuilder(
@@ -5639,29 +5639,29 @@ public class ProcessManagerBean implements ProcessManager {
 
           String queryUnion = sQuery.toString()+" UNION "+sQueryDelegated.toString()+" order by created";
                   
-	      st = db.prepareStatement(queryUnion);
+        st = db.prepareStatement(queryUnion);
 
-	      rs = st.executeQuery();
+        rs = st.executeQuery();
 
-	      while (rs.next()) {
-	    	  
-	        Activity wle = new Activity(userid, rs.getInt("flowid"), rs.getInt("pid"), rs.getInt("subpid"), rs.getInt("type"), 
-	            rs.getInt("priority"), rs.getTimestamp("created"), rs.getTimestamp("started"), rs.getTimestamp("archived"), 
-	            rs.getString("description"), rs.getString("url"), rs.getInt("status"), rs.getInt("notify"));
-	        wle.profilename = rs.getString("profilename");
-	        wle.pnumber = rs.getString("pnumber");
-	        if (rs.getInt("read_flag") == 1) {
-	          wle.setRead();
-	        }
-	        else {
-	          wle.setUnread();
-	        }
-	        wle.mid = rs.getInt("mid");
-	        
-	        if(rs.getInt("delegated") == 0)
-	        	wle.delegated =  false;
-	        else
-		        wle.delegated =  true;	
+        while (rs.next()) {
+          
+          Activity wle = new Activity(userid, rs.getInt("flowid"), rs.getInt("pid"), rs.getInt("subpid"), rs.getInt("type"), 
+              rs.getInt("priority"), rs.getTimestamp("created"), rs.getTimestamp("started"), rs.getTimestamp("archived"), 
+              rs.getString("description"), rs.getString("url"), rs.getInt("status"), rs.getInt("notify"));
+          wle.profilename = rs.getString("profilename");
+          wle.pnumber = rs.getString("pnumber");
+          if (rs.getInt("read_flag") == 1) {
+            wle.setRead();
+          }
+          else {
+            wle.setUnread();
+          }
+          wle.mid = rs.getInt("mid");
+          
+          if(rs.getInt("delegated") == 0)
+            wle.delegated =  false;
+          else
+            wle.delegated =  true;  
 
             String icon = "";
             try {
@@ -5675,22 +5675,22 @@ public class ProcessManagerBean implements ProcessManager {
             if( folderid > 0)
                 wle.setFolderid(folderid);
 
-	        l.add(wle);
-	      }
-	      DatabaseInterface.closeResources(st, rs);
-	      
-	      result = l.listIterator();
-	    } catch (SQLException sqle) {
-	      Logger.error(userid, this, "getUserActivitiesOrderByPid", "sql exception: " + sqle.getMessage(), sqle);
-	      result = null;
-	    } catch (Exception e) {
-	      Logger.error(userid, this, "getUserActivitiesOrderByPid", "exception: " + e.getMessage(), e);
-	      result = null;
-	    } finally {
-	      DatabaseInterface.closeResources(db, st, rs);
-	    }
-	    return result;
-	  }
+          l.add(wle);
+        }
+        DatabaseInterface.closeResources(st, rs);
+        
+        result = l.listIterator();
+      } catch (SQLException sqle) {
+        Logger.error(userid, this, "getUserActivitiesOrderByPid", "sql exception: " + sqle.getMessage(), sqle);
+        result = null;
+      } catch (Exception e) {
+        Logger.error(userid, this, "getUserActivitiesOrderByPid", "exception: " + e.getMessage(), e);
+        result = null;
+      } finally {
+        DatabaseInterface.closeResources(db, st, rs);
+      }
+      return result;
+    }
   
   private String getMaxDeadline(String op){
     int select = 0;   
@@ -5746,154 +5746,155 @@ public class ProcessManagerBean implements ProcessManager {
   }
   
   public ListIterator<Activity> getUserActivitiesOrderFilters(UserInfoInterface userInfo, int anFlowId, FlowFilter filter) {
-	    String userid = userInfo.getUtilizador();
-	    Logger.trace(this, "getUserActivitiesOrderFilters", userid + " call.");
-	    String union="";
-	    int folderid = -1;
-	    String maxDeadline = "";
-	    
-	    // first, fix filter
-	    if (filter == null) {
-	      filter = new FlowFilter();
-	    }
-	    filter.setDateAfter(Utils.fixDateAfter(filter.getDateAfter()));
-	    filter.setDateBefore(Utils.fixDateBefore(filter.getDateBefore()));
+      String userid = userInfo.getUtilizador();
+      Logger.trace(this, "getUserActivitiesOrderFilters", userid + " call.");
+      String union="";
+      int folderid = -1;
+      String maxDeadline = "";
+      
+      // first, fix filter
+      if (filter == null) {
+        filter = new FlowFilter();
+      }
+      filter.setDateAfter(Utils.fixDateAfter(filter.getDateAfter()));
+      filter.setDateBefore(Utils.fixDateBefore(filter.getDateBefore()));
 
-	    if(!filter.getDeadline().equals("0"))
-	      maxDeadline = getMaxDeadline(filter.getDeadline());
-	    
-	    Connection db = null;
-	    PreparedStatement st = null;
-	    ResultSet rs = null;
-	    LinkedList<Activity> l = new LinkedList<Activity>();
-	    ListIterator<Activity> result = null;
+      if(!filter.getDeadline().equals("0"))
+        maxDeadline = getMaxDeadline(filter.getDeadline());
+      
+      Connection db = null;
+      PreparedStatement st = null;
+      ResultSet rs = null;
+      LinkedList<Activity> l = new LinkedList<Activity>();
+      ListIterator<Activity> result = null;
 
-	    try {
-	      db = DatabaseInterface.getConnection(userInfo);
-	      db.setAutoCommit(true);
-	      int nField = 1;
-	      // 1: userid
+      try {
+        db = DatabaseInterface.getConnection(userInfo);
+        db.setAutoCommit(true);
+        int nField = 1;
+        // 1: userid
 
-	      StringBuilder sQuery = new StringBuilder(DBQueryManager.processQuery("ProcessManager.get_activity_filters_user", new Object[]{ userid }));
-	      
-	      if(!filter.getFolderid().equals("0"))
-	    	  sQuery.append(" and folderid="+filter.getFolderid());
-	      
-	       if(!filter.getLabelid().equals("0"))
+        StringBuilder sQuery = new StringBuilder(DBQueryManager.processQuery("ProcessManager.get_activity_filters_user", new Object[]{ userid }));
+        
+        if(!filter.getFolderid().equals("0"))
+          sQuery.append(" and folderid="+filter.getFolderid());
+        
+         if(!filter.getLabelid().equals("0"))
              sQuery.append(" and a.pid in ( select pid from process_label where labelid="+filter.getLabelid()+") ");
-	      
-	       if(!maxDeadline.equals(""))
+        
+         if(!maxDeadline.equals(""))
              sQuery.append(" and a.pid in ( select pid from deadline where deadline < '"+maxDeadline+"' AND deadline != '') ");
-	      
-	       StringBuilder sQueryDelegated = new StringBuilder(DBQueryManager.processQuery("ProcessManager.get_activity_filters_delegated", new Object[]{ userid }));
+        
+         StringBuilder sQueryDelegated = new StringBuilder(DBQueryManager.processQuery("ProcessManager.get_activity_filters_delegated", new Object[]{ userid }));
 
-	      // 2: anFlowId
-	      if (anFlowId > -1) {
-	        sQuery.append(" and a.flowid=?");
-	        sQueryDelegated.append(" and a.flowid=?");
-	      }
-	      // 3: adtAfter
-	      if (filter.getDateAfter() != null) {
-	        sQuery.append(" and a.created >= ?");
-	        sQueryDelegated.append(" and a.created >= ?");
-	      }
-	      // 4: adtBefore
-	      if (filter.getDateBefore() != null) {
-	        sQuery.append(" and a.created < ?");
-	        sQueryDelegated.append(" and a.created < ?");
-	      }
-	      // 5: pnumber
-	      if (StringUtils.isNotEmpty(filter.getPnumber())) {
-	        sQuery.append(" and upper(pnumber) like upper('%").append(escapeSQL(filter.getPnumber())).append("%')");
-	        sQueryDelegated.append(" and upper(pnumber) like upper('%").append(escapeSQL(filter.getPnumber())).append("%')");
-	      }
+        // 2: anFlowId
+        if (anFlowId > -1) {
+          sQuery.append(" and a.flowid=?");
+          sQueryDelegated.append(" and a.flowid=?");
+        }
+        // 3: adtAfter
+        if (filter.getDateAfter() != null) {
+          sQuery.append(" and a.created >= ?");
+          sQueryDelegated.append(" and a.created >= ?");
+        }
+        // 4: adtBefore
+        if (filter.getDateBefore() != null) {
+          sQuery.append(" and a.created < ?");
+          sQueryDelegated.append(" and a.created < ?");
+        }
+        // 5: pnumber
+        if (StringUtils.isNotEmpty(filter.getPnumber())) {
+          sQuery.append(" and upper(pnumber) like upper('%").append(escapeSQL(filter.getPnumber())).append("%')");
+          sQueryDelegated.append(" and upper(pnumber) like upper('%").append(escapeSQL(filter.getPnumber())).append("%')");
+        }
 
-	      if(filter.getOrderType() != null && filter.getOrderType().equals("desc")){
-	          sQueryDelegated.append(" order by iconid asc, created desc");
-	    	  //sQueryDelegated.append(" order by created desc");
-	      }else{
-	          sQueryDelegated.append(" order by iconid asc, created asc");
-	    	  //sQueryDelegated.append(" order by created asc");
-	      }
-	      
-	      
-	      union = sQuery.toString()+" UNION "+sQueryDelegated.toString();
+        if(filter.getOrderType() != null && filter.getOrderType().equals("desc")){
+            sQueryDelegated.append(" order by iconid asc, created desc");
+          //sQueryDelegated.append(" order by created desc");
+        }else{
+            sQueryDelegated.append(" order by iconid asc, created asc");
+          //sQueryDelegated.append(" order by created asc");
+        }
+        
+        
+        //union = sQuery.toString()+" UNION "+sQueryDelegated.toString();
+        union = "select * from (" + sQuery.toString()+")B order by created desc";
+        
+        st = db.prepareStatement(union);
 
-	      st = db.prepareStatement(union);
 
+        if (anFlowId > -1) {
+          st.setInt(nField, anFlowId);
+          ++nField;
+        }
+        if (filter.getDateAfter() != null) {
+          st.setTimestamp(nField, new java.sql.Timestamp(filter.getDateAfter().getTime()));
+          ++nField;
+        }
+        if (filter.getDateBefore() != null) {
+          st.setTimestamp(nField, new java.sql.Timestamp(filter.getDateBefore().getTime()));
+          ++nField;
+        }
 
-	      if (anFlowId > -1) {
-	        st.setInt(nField, anFlowId);
-	        ++nField;
-	      }
-	      if (filter.getDateAfter() != null) {
-	        st.setTimestamp(nField, new java.sql.Timestamp(filter.getDateAfter().getTime()));
-	        ++nField;
-	      }
-	      if (filter.getDateBefore() != null) {
-	        st.setTimestamp(nField, new java.sql.Timestamp(filter.getDateBefore().getTime()));
-	        ++nField;
-	      }
+  
+        int counter = -1;
+  
+        
+        if (!filter.hasSizeLimit() || l.size() <= filter.getNumElements()) {
+          // after getting the 'normal' activities, we get the 'delegated ones'
+          //nField = 1;
 
-	
-	      int counter = -1;
-	
-	      
-	      if (!filter.hasSizeLimit() || l.size() <= filter.getNumElements()) {
-	        // after getting the 'normal' activities, we get the 'delegated ones'
-	        //nField = 1;
-
-	        if (anFlowId > -1) {
-	          st.setInt(nField, anFlowId);
-	          ++nField;
-	        }
-	        if (filter.getDateAfter() != null) {
-	          st.setTimestamp(nField, new Timestamp(filter.getDateAfter().getTime()));
-	          ++nField;
-	        }
-	        if (filter.getDateBefore() != null) {
-	          st.setTimestamp(nField, new Timestamp(filter.getDateBefore().getTime()));
-	          ++nField;
-	        }
-	        
-	        rs = st.executeQuery();
-	        while (rs.next()) {
-	          int flowid = rs.getInt("flowid");
-	          if(filter.ignoreFlow(flowid)) {
-	            continue;
-	          }
-	          if(filter.isComment() && StringUtils.isBlank(BeanFactory.getProcessAnnotationManagerBean().getProcessComment(userInfo, rs.getInt("flowid"), rs.getInt("pid"), rs.getInt("subpid")).getComment())){
-	        	  continue;
-	          }
-	          if(filter.hasSizeLimit()) {
-	            counter++;
-	            if (counter - filter.getStartIndex() > filter.getNumElements()) {
-	              break;
-	            } else if (counter < filter.getStartIndex()) {
-	              continue;
-	            }
-	          }
-		        Activity wle = new Activity(userid, rs.getInt("flowid"), rs.getInt("pid"), rs.getInt("subpid"), rs.getInt("type"), 
-			            rs.getInt("priority"), rs.getTimestamp("created"), rs.getTimestamp("started"), rs.getTimestamp("archived"), 
-			            rs.getString("description"), rs.getString("url"), rs.getInt("status"), rs.getInt("notify"));
-			        wle.profilename = rs.getString("profilename");
-			        wle.pnumber = rs.getString("pnumber");
-			        if (rs.getInt("read_flag") == 1) {
-			          wle.setRead();
-			        }
-			        else {
-			          wle.setUnread();
-			        }
-			        wle.mid = rs.getInt("mid");
-			        
-			        if(rs.getInt("delegated") == 0)
-			        	wle.delegated =  false;
-			        else
-				        wle.delegated =  true;	
-			        
-			        folderid = rs.getInt("folderid");
-			        if( folderid > 0)
-			        	wle.setFolderid(folderid);
+          if (anFlowId > -1) {
+            st.setInt(nField, anFlowId);
+            ++nField;
+          }
+          if (filter.getDateAfter() != null) {
+            st.setTimestamp(nField, new Timestamp(filter.getDateAfter().getTime()));
+            ++nField;
+          }
+          if (filter.getDateBefore() != null) {
+            st.setTimestamp(nField, new Timestamp(filter.getDateBefore().getTime()));
+            ++nField;
+          }
+          
+          rs = st.executeQuery();
+          while (rs.next()) {
+            int flowid = rs.getInt("flowid");
+            if(filter.ignoreFlow(flowid)) {
+              continue;
+            }
+            if(filter.isComment() && StringUtils.isBlank(BeanFactory.getProcessAnnotationManagerBean().getProcessComment(userInfo, rs.getInt("flowid"), rs.getInt("pid"), rs.getInt("subpid")).getComment())){
+              continue;
+            }
+            if(filter.hasSizeLimit()) {
+              counter++;
+              if (counter - filter.getStartIndex() > filter.getNumElements()) {
+                break;
+              } else if (counter < filter.getStartIndex()) {
+                continue;
+              }
+            }
+            Activity wle = new Activity(userid, rs.getInt("flowid"), rs.getInt("pid"), rs.getInt("subpid"), rs.getInt("type"), 
+                  rs.getInt("priority"), rs.getTimestamp("created"), rs.getTimestamp("started"), rs.getTimestamp("archived"), 
+                  rs.getString("description"), rs.getString("url"), rs.getInt("status"), rs.getInt("notify"));
+              wle.profilename = rs.getString("profilename");
+              wle.pnumber = rs.getString("pnumber");
+              if (rs.getInt("read_flag") == 1) {
+                wle.setRead();
+              }
+              else {
+                wle.setUnread();
+              }
+              wle.mid = rs.getInt("mid");
+              
+              if(rs.getInt("delegated") == 0)
+                wle.delegated =  false;
+              else
+                wle.delegated =  true;  
+              
+              folderid = rs.getInt("folderid");
+              if( folderid > 0)
+                wle.setFolderid(folderid);
 
                     String icon = "";
                     try {
@@ -5903,85 +5904,91 @@ public class ProcessManagerBean implements ProcessManager {
                     }
                     wle.setAnnotationIcon(icon);
 
-			        l.add(wle);
-	        }
-	      }
-	      result = l.listIterator();
-	    } catch (SQLException sqle) {
-	      Logger.error(userid, this, "getUserActivitiesOrderFilters", "sql exception: " + sqle.getMessage()+" QUERY:"+union, sqle);
-	      result = null;
-	    } catch (Exception e) {
-	      Logger.error(userid, this, "getUserActivitiesOrderFilters", "exception: " + e.getMessage(), e);
-	      result = null;
-	    } finally {
-	      DatabaseInterface.closeResources(db, st, rs);
-	    }
-	    return result;
-	  }
+                    //Detail
+                    HashMap<String,String> detailItemMap = new HashMap<>();
+                    for(int j=0; j<19; j++)             
+                      detailItemMap.put(rs.getString("name_idx" + j), rs.getString("idx"+j));           
+                    wle.setDetailItemList(detailItemMap);
+          
+              l.add(wle);
+          }
+        }
+        result = l.listIterator();
+      } catch (SQLException sqle) {
+        Logger.error(userid, this, "getUserActivitiesOrderFilters", "sql exception: " + sqle.getMessage()+" QUERY:"+union, sqle);
+        result = null;
+      } catch (Exception e) {
+        Logger.error(userid, this, "getUserActivitiesOrderFilters", "exception: " + e.getMessage(), e);
+        result = null;
+      } finally {
+        DatabaseInterface.closeResources(db, st, rs);
+      }
+      return result;
+    }
   
   public ListIterator<Activity> getUserAndSubordinatesActivities(UserInfoInterface userInfo) {
-	    String userid = userInfo.getUtilizador();
-	    Logger.trace(this, "getUserActivities", userid + " call.");
+      String userid = userInfo.getUtilizador();
+      Logger.trace(this, "getUserActivities", userid + " call.");
 
-	    Connection db = null;
-	    PreparedStatement st = null;
-	    ResultSet rs = null;
-	    LinkedList<Activity> l = new LinkedList<Activity>();
-	    ListIterator<Activity> result = null;
+      Connection db = null;
+      PreparedStatement st = null;
+      ResultSet rs = null;
+      LinkedList<Activity> l = new LinkedList<Activity>();
+      ListIterator<Activity> result = null;
 
-	    String usersInUnitTxt = "( ";
-	    UserViewInterface[] usersInUnit = BeanFactory.getUserManagerBean().getAllUsers(userInfo, true);
-	    for (UserViewInterface ui : usersInUnit)
-	      usersInUnitTxt += "'" + ui.getUsername() + "',";
-	    usersInUnitTxt = StringUtils.chop(usersInUnitTxt) + " )";
+      String usersInUnitTxt = "( ";
+      UserViewInterface[] usersInUnit = BeanFactory.getUserManagerBean().getAllUsers(userInfo, true);
+      for (UserViewInterface ui : usersInUnit)
+        usersInUnitTxt += "'" + ui.getUsername() + "',";
+      usersInUnitTxt = StringUtils.chop(usersInUnitTxt) + " )";
 
-	    try {
-	      db = DatabaseInterface.getConnection(userInfo);
-	      db.setAutoCommit(true);
-	      int nField = 1;
-	      // 1: userid
-	      final String userFilter = "userid=?";
-	      final StringBuilder sQuery = new StringBuilder(
-	          "select a.*,p.pnumber from activity a,process p where p.flowid=a.flowid and p.pid=a.pid and p.subpid=a.subpid and status=0 and userid in ")
-	          .append(usersInUnitTxt);
-	      final StringBuilder sQueryDelegated = new StringBuilder(
-	          "select a.*,p.pnumber from activity_delegated a,process p where p.flowid=a.flowid and p.pid=a.pid and p.subpid=a.subpid and status=0 and  userid in ")
-	          .append(usersInUnitTxt);
+      try {
+        db = DatabaseInterface.getConnection(userInfo);
+        db.setAutoCommit(true);
+        int nField = 1;
+        // 1: userid
+        final String userFilter = "userid=?";
+        final StringBuilder sQuery = new StringBuilder(
+            "select a.*,p.pnumber from activity a,process p where p.flowid=a.flowid and p.pid=a.pid and p.subpid=a.subpid and status=0 and userid in ")
+            .append(usersInUnitTxt);
+        final StringBuilder sQueryDelegated = new StringBuilder(
+            "select a.*,p.pnumber from activity_delegated a,process p where p.flowid=a.flowid and p.pid=a.pid and p.subpid=a.subpid and status=0 and  userid in ")
+            .append(usersInUnitTxt);
 
-	      st = db.prepareStatement(sQuery.toString());
+        st = db.prepareStatement(sQuery.toString());
 
-	      rs = st.executeQuery();
-	      int counter = -1;
-	      while (rs.next()) {
-	        int flowid = rs.getInt("flowid");
+        rs = st.executeQuery();
+        int counter = -1;
+        while (rs.next()) {
+          int flowid = rs.getInt("flowid");
 
-	        Activity wle = new Activity(userid, flowid, rs.getInt("pid"), rs.getInt("subpid"), rs.getInt("type"),
-	            rs.getInt("priority"), rs.getTimestamp("created"), rs.getTimestamp("started"), rs.getTimestamp("archived"), rs
-	                .getString("description"), rs.getString("url"), rs.getInt("status"), rs.getInt("notify"));
-	        wle.profilename = rs.getString("profilename");
-	        wle.pnumber = rs.getString("pnumber");
-	        if (rs.getInt("read_flag") == 1) {
-	          wle.setRead();
-	        } else {
-	          wle.setUnread();
-	        }
-	        wle.mid = rs.getInt("mid");
-	        l.add(wle);
-	      }
-	      DatabaseInterface.closeResources(st, rs);
-	      st = null;
-	      rs = null;
+          Activity wle = new Activity(userid, flowid, rs.getInt("pid"), rs.getInt("subpid"), rs.getInt("type"),
+              rs.getInt("priority"), rs.getTimestamp("created"), rs.getTimestamp("started"), rs.getTimestamp("archived"), rs
+                  .getString("description"), rs.getString("url"), rs.getInt("status"), rs.getInt("notify"));
+          wle.profilename = rs.getString("profilename");
+          wle.pnumber = rs.getString("pnumber");
+          if (rs.getInt("read_flag") == 1) {
+            wle.setRead();
+          } else {
+            wle.setUnread();
+          }
+          wle.mid = rs.getInt("mid");
+          l.add(wle);
+        }
+        DatabaseInterface.closeResources(st, rs);
+        st = null;
+        rs = null;
 
-	      result = l.listIterator();
-	    } catch (SQLException sqle) {
-	      Logger.error(userid, this, "getUserActivities", "sql exception: " + sqle.getMessage(), sqle);
-	      result = null;
-	    } catch (Exception e) {
-	      Logger.error(userid, this, "getUserActivities", "exception: " + e.getMessage(), e);
-	      result = null;
-	    } finally {
-	      DatabaseInterface.closeResources(db, st, rs);
-	    }
-	    return result;
-	  }
+        result = l.listIterator();
+      } catch (SQLException sqle) {
+        Logger.error(userid, this, "getUserActivities", "sql exception: " + sqle.getMessage(), sqle);
+        result = null;
+      } catch (Exception e) {
+        Logger.error(userid, this, "getUserActivities", "exception: " + e.getMessage(), e);
+        result = null;
+      } finally {
+        DatabaseInterface.closeResources(db, st, rs);
+      }
+      return result;
+    }
 }

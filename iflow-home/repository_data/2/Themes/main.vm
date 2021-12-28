@@ -1,0 +1,503 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>iFlow - enterprise process modeling</title>
+	<link rel="stylesheet" type="text/css" media="all" href="javascript/calendar/calendar-iflow.css" title="cal-iflow" />
+	<link rel="stylesheet" type="text/css" href="javascript/yahoo/container/assets/skins/sam/container.css" />
+
+	<link rel="stylesheet" type="text/css" href="javascript/yahoo/button/assets/skins/sam/button.css" />
+	<link rel="stylesheet" href="Themes/${orgTheme}/css/tips.css" type="text/css">
+	<link rel="stylesheet" href="Themes/${orgTheme}/css/iflow_main.css" type="text/css">
+	<link rel="stylesheet" href="Themes/${orgTheme}/css/tutorial.css" type="text/css">
+    <link rel="stylesheet" href="Themes/${orgTheme}/css/tree.css" type="text/css"  />
+    #if ("${menuLocation}" == "right")
+      <link rel="stylesheet" href="Themes/${orgTheme}/css/menuright.css" type="text/css"  />
+    #else
+      <link rel="stylesheet" href="Themes/${orgTheme}/css/menuleft.css" type="text/css"  />
+    #end
+    
+	<link rel="shortcut icon" href="images/favicon.ico" />
+	<!--[if IE]>
+		<link rel="stylesheet" href="Themes/${orgTheme}/css/iflow_ie.css" type="text/css">
+	<![endif]-->
+
+	<!--[if lt IE 7]>
+		<style type="text/css">
+		  .icon_item { // append this style
+		    width:24px;
+		    height:24px;
+		  }
+		  img { behavior: url(iepngfix.htc) }
+		</style>
+	<![endif]-->
+
+	<!-- locale stuff -->
+	<script type="text/javascript" src="javascript/messages.js"> </script><!-- default messages -->
+	<script type="text/javascript" src="javascript/messages_${lang}.js"> </script> <!-- localized version override -->
+	<script type="text/javascript" src="javascript/ibox.js"> </script>
+	<script type="text/javascript" src="javascript/calendar/calendar.js"></script>
+	<script type="text/javascript" src="javascript/calendar/lang/${cal_lang_file}"></script>
+	<script type="text/javascript" src="javascript/calendar/calendar-setup.js"></script>
+	<script type="text/javascript" src="javascript/yahoo/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="javascript/yahoo/event/event-min.js"></script>
+	<script type="text/javascript" src="javascript/yahoo/connection/connection-min.js"></script>
+	<script type="text/javascript" src="javascript/yahoo/dom/dom-min.js"></script>
+
+
+	<script type="text/javascript" src="javascript/yahoo/dragdrop/dragdrop-min.js"></script>
+	<script type="text/javascript" src="javascript/yahoo/animation/animation-min.js"></script>
+	<script type="text/javascript" src="javascript/yahoo/container/container-min.js"></script>
+	<script type="text/javascript" src="javascript/yahoo/yahoo-dom-event/yahoo-dom-event.js"></script>
+	<script type="text/javascript" src="javascript/yahoo/treeview/treeview-min.js"></script>
+
+	<script type="text/javascript" src="javascript/mootools.js"></script>
+
+	<script type="text/javascript" src="javascript/ajax_processing.js"></script>
+	<script type="text/javascript" src="javascript/iflow_main.js"></script>
+	<script type="text/javascript" src="$response.encodeURL('javascript/encodedURLS.jsp')"></script>
+	
+	<script type="text/javascript" src="javascript/tutorial.js"></script>
+	<script type="text/javascript" src="$response.encodeURL('javascript/applet.js')"></script>
+	<script type="text/javascript" src="javascript/processAnnotations.js"></script>
+	<script type="text/javascript" src="javascript/applet_functions.js"></script>	
+	
+   	<script type="text/javascript" src="javascript/jquery-1.10.2.js"> </script>
+	<script>var $jQuery = jQuery.noConflict();</script>		
+	<script type="text/javascript" src="javascript/jquery-ui/jquery-ui.js"> </script>
+	<link rel="stylesheet" href="javascript/jquery-ui/jquery-ui.css">	
+  		
+	<script language="JavaScript">
+	function calcFrameHeight(frameName) {
+	  //find the height of the internal page
+	  var the_height = document.getElementById(frameName).contentWindow.document.body.scrollHeight + 10; //pp: martelada dos 10 deveria ser corrigida.
+	
+	  //change the height of the iframe
+	  //document.getElementById(frameName).height = the_height;
+	  document.getElementById(frameName).style.height = the_height.toString() + 'px';
+	}
+	
+		<!--
+	function calcHeight() {
+	  //find the height of the internal page
+	  var the_height = document.getElementById('iframe_proc_detail').contentWindow.document.body.scrollHeight;
+	
+	  //change the height of the iframe
+	  document.getElementById('iframe_proc_detail').height = the_height;
+	}
+	//-->
+	</script>
+			
+	<script type="text/javascript">
+		function setFocus(el, focus) {
+			el.focused = focus;
+		}
+		
+		function orgTheme() {
+		  return '${orgTheme}';
+		}
+
+		var iboxlogin = new iBox({
+			indicatorImg: "images/indicator.gif",
+			bgColor: '#528b8b', // dark slate gray 4
+			closeLink: false,
+			bgOpacity:7, // how transparent our overlay bg is
+			fgOpacity:10 // how transparent our overlay fg is
+		});
+  
+        #if($orgTheme == "classic")
+		function resizeDelay(delayMillisecs) {
+			if(!$('iframe_proc_detail')) {
+				setTimeout("resizeDelay()", delayMillisecs);
+			}
+			else {
+				resizeProcDetail();
+			}
+		}
+
+		function process_detail (tabnr, thePage, flowid, pid, subpid, procStatus) {
+			var params = 'flowid='+flowid+'&pid='+pid+'&subpid='+subpid+'&procStatus='+procStatus;
+			tabber_right(8, thePage, params);
+			resizeDelay(100);
+		}
+        #end
+		
+		function executeOnLoad() {
+			init("Themes/${orgTheme}/css/iflow_std.css");
+			#if($orgTheme == "classic")
+			  mainResize();
+			#end
+
+			#if($tab == "3" && $flowid != "")
+				open_process(3, $flowid, '$response.encodeURL($url_prefix,$content)', '$contentparams', $runMax);
+			#else
+				#if($sys_admin == "no")
+					#if($nav == "")
+						tabber_right($tab, '$response.encodeURL($url_prefix,$content)', 'ts=$ts&$contentparams')
+					#else
+						tabber($tab, '$response.encodeURL($url_prefix,$nav)' , 'ts=$ts&$navparams', '$response.encodeURL($url_prefix,$content)', 'ts=$ts&$contentparams')
+					#end
+				#else
+					tabber(4,'$response.encodeURL($url_prefix,'Admin/admin_nav.jsp')','sel=1','$response.encodeURL($url_prefix,'Admin/settings.jsp')','ts=$ts');
+				#end
+			#end
+		}
+	
+	    // Register tabs history locations - tab vars are not used because they may have not yet been initialized
+	    setHistory(1,'$response.encodeURL($url_prefix,'main_content.jsp')' , 'ts=${ts}&data=procs&tabnm=dashboard', '$response.encodeURL($url_prefix,'main_content.jsp')', 'ts=$ts&data=tasks');
+	    setHistory(2,'$response.encodeURL($url_prefix,'actividades_filtro.jsp')','','$response.encodeURL($url_prefix,'actividades.jsp')','ts=$ts');
+	    setHistory(8,'$response.encodeURL($url_prefix,'user_procs_filtro.jsp')','','$response.encodeURL($url_prefix,'user_proc_seach.jsp')','ts=$ts');
+	    setHistory(3,'$response.encodeURL($url_prefix,'main_content.jsp')','ts=${ts}&data=procs&tabnm=processes','','');
+	    setHistory(5,'$response.encodeURL($url_prefix,'gestao_tarefas_nav.jsp')','','$response.encodeURL($url_prefix,'gestao_tarefas.jsp')','ts=$ts');        
+	    setHistory(10,'$response.encodeURL($url_prefix,'Reports/reports_nav.jsp')','','$response.encodeURL($url_prefix,'Reports/proc_perf.jsp')','ts=$ts');        
+	    setHistory(4,'$response.encodeURL($url_prefix,'Admin/admin_nav.jsp')','sel=13','$response.encodeURL($url_prefix,'Admin/flow_settings.jsp')','ts=$ts');
+	    setHistory(6,false,false,'$response.encodeURL('personal_account.jsp')','');
+				
+		function initDom () {
+<!--		YAHOO.util.Event.addListener("tutorial_bubble", "click", hideBubble, $('tutorial_bubble'), true); -->	
+			executeOnLoad();
+			#if ($openTutorial == "yes")
+			  openTutorial('$current_option', 'false');
+			#end
+
+			#* Inject applet inside element body (right here...) *#
+			//setApplet('div_applet');
+			//getAppletElem();
+			
+		}
+
+	</script>  
+
+</head>
+
+<body onresize="/*javascript:mainResize()*/">
+
+<style type="text/css">
+#main {
+    width: 93%;
+}
+
+.nav_div {
+    padding: 0 10px 10px;
+    width: 20%;
+}
+</style>
+   
+
+	<div class="yui-skin-sam">
+		<div id="userdialog">
+		</div>
+		<div id="helpdialog">
+		</div>
+		<div id="tutorialdialog" style="display:none;">
+		</div>
+		<div id="popupdialog">
+		</div>
+	</div>
+	
+	<div id="autoSaveMessage" style="display:none">
+		<form name="loginform">
+		
+			<div style="margin:auto;align:center;height:200px;background-image:url('images/login_bg.gif');background-repeat:no-repeat;padding-top:1px;">
+			  <div style="position: relative; top: 60px;">
+				<div style="margin: 5px 0px; padding: 0px; position: relative; text-align: center; height: 2em;" class="error_msg">
+				$login_msg
+				</div>	
+				
+				<div style="margin: 2px 0pt; padding: 0pt; width: 140px; height: 18px; position: relative; text-align: right; float: left;" class="user_info"> 
+				  $field_username
+				</div>
+				<div style="margin: 2px 0pt; padding: 0pt; width: 140px; height: 18px; position: relative; text-align: left; float: right;" class="item">
+				  <input type="hidden" id="idlogin" name="login" value="${username}"/>
+				  <input type="text" name="xxxxx" value="${username}" disabled="disabled" size="15">
+				</div>    
+				<div style="margin: 2px 0pt; padding: 0pt; width: 140px; height: 18px; position: relative; text-align: right; float: left;" class="user_info">
+				   $field_password
+				</div>
+				<div style="margin: 2px 0pt; padding: 0pt; width: 140px; height: 18px; position: relative; text-align: left; float: right;" class="item">
+				    <input id="idpassword" type="password" name="password" size="15" maxlength="40" onblur="document.getElementById('idpassword').value=this.value;"/>
+				</div>
+				 
+		        <div style="position: relative; width: 280px; float: left; text-align: right;" class="item">
+			     	<input style="" id="link_search_span" class="regular_button_01" type="button" name="filter" value="Login" 
+				 	onClick="javascript:doassynclogin();"
+				 />
+		        </div>
+		      </div>
+			</div>
+		
+		</form>
+	</div>
+
+
+  <div id="div_header">
+    <div id="div_logo"><a style="vertical-align:0%;" href="javascript:tabber(1, mainContentJSP , 'ts=$ts&data=procs', mainContentJSP, 'ts=$ts&data=tasks')"><img border="0" src="$response.encodeURL('Logo')" id="img_org_logo"/></a></div>
+	#if($sys_admin != "yes")
+	    <div id="div_company_info">$username @ $unit</div>
+	    <div id="div_user_info">$welcome_msg, $user</div>
+	#end
+  </div>
+
+  <div id="div_body">
+	<div id="div_menu">
+		<div id="div_menu_date" class="menu_date">
+			$date
+		</div>
+		<div id="div_menu_link" class="menu_link">
+		<div id="warnmessage" style="color:#777;position:relative;float:left;font-family:verdana;font-size:15px;font-weight:bold;font-style:italic">Ambiente de Demonstração</div>
+		  #if($sys_admin == "yes" && $license_ok == "no")
+			<a class="menu_link" href="$response.encodeURL($url_prefix,'Admin/licenseValidation.jsp')?ts=$ts"  title="$license_error_tooltip"><img src="images/warning.png" class="noToolTipsImg" width="16" height="16" border="0">&nbsp;$license_error_msg</a><br><br>
+		  #end
+			<a class="menu_link" href="javascript:tabber('rss','','',rssJSP,'ts=$ts');" title="$tooltip_rss"><img class="noToolTipsImg" src="images/icon_rss.png" width="16" height="16" border="0"></a>
+			:
+			<a class="menu_link" href="javascript:tabber('inbox','','',inboxJSP,'ts=$ts');" title="$tooltip_inbox"><img class="noToolTipsImg" src="images/icon_inbox.png" width="16" height="16" border="0"></a> (<a class="menu_link" href="javascript:tabber(6,'','',inboxJSP,'ts=$ts');" title="$tooltip_inbox" id="new_msg_count">0</a>)
+			:
+		  #if($sys_admin == "yes")
+		  	<a class="menu_link" href="javascript:tabber(4,'$response.encodeURL($url_prefix,'Admin/admin_nav.jsp')','sel=1',personalAccountJSP,'ts=$ts');"  title="$tooltip_account">$link_account</a>
+		  #end  
+		  #if($sys_admin == "no") 
+			<a class="menu_link" href="javascript:tabber(6,personalAccountNavJSP,'sel=1',personalAccountJSP,'ts=$ts');"  title="$tooltip_account">$link_account</a>
+		    #if($org_admin == "yes")	  
+				: <a class="menu_link" href="javascript:tutorialModeOn();"  title="$tooltip_tutorial">$link_tutorial</a>
+			#end	
+			: <a class="menu_link" href="javascript:tabber('help',helpNavJSP,'sel=8',helpJSP,'sel=8&ts=$ts');"  title="$tooltip_help">$link_help</a>
+			<!--
+			(<a class="menu_link" href="javascript:toggleHelpMode();" title="" id="helpModeSwitch">
+				  <span id="show_inline_help" class="$hiddenShowInlineHelp">$showInlineHelp</span>
+				  <span id="hide_inline_help" class="$hiddenHideInlineHelp">$hideInlineHelp</span>
+				</a>)
+				-->
+		   #if($http_auth_type != "HTTP")
+			: <a class="menu_link" href="$response.encodeURL($url_prefix,'logout.jsp')?ts=$ts" id="top_logout_link" title="$tooltip_logout">$link_logout</a>
+		   #end
+	  	  #else 
+			: <a class="menu_link" href="$response.encodeURL($url_prefix,'logout.jsp')?ts=$ts" id="top_logout_link" title="$tooltip_logout">$link_logout</a>
+		  #end
+	    </div>
+		<div id="div_tabs">
+		  #if($sys_admin == "no")
+		    #if("$Tab1" != "no")
+				<div id="button1_span" class="tab_button_span"><input type="button" id="button1" value="$field_dashboard" class="tab_button" onClick="this.blur();tabber_load(1, mainContentJSP);" title="$tooltip_dashboard" /></div>
+			#end	
+			#if("$Tab2" != "no")	
+				<div id="button2_span" class="tab_button_span"><input type="button" id="button2" value="$field_tasks" class="tab_button" onClick="this.blur();tabber_load(2,actividadesFiltroJSP)" title="$tooltip_tasks" /></div>
+			#end
+			#if("$Tab8" != "no")
+				<div id="button8_span" class="tab_button_span"><input type="button" id="button8" value="$field_myprocesses" class="tab_button" onClick="this.blur();tabber_load(8,userProcsFiltroJSP)" title="$tooltip_myprocesses" /></div>
+			#end
+			#if("$Tab3" != "no")	
+				<div id="button3_span" class="tab_button_span"><input type="button" id="button3" value="$field_processes" class="tab_button" onClick="this.blur();tabber_load(3,mainContentJSP)" title="$tooltip_processes" /></div>
+			#end
+			#if("$Tab5" != "no")	
+				<div id="button5_span" class="tab_button_span"><input type="button" id="button5" value="$field_delegations" class="tab_button" onClick="this.blur();tabber_load(5,gestaoTarefasNavJSP)" title="$tooltip_delegations" /></div>
+			#end
+			  #if($org_admin == "yes")
+			  	#if("$Tab10" != "no")	
+					<div id="button10_span" class="tab_button_span"><input type="button" id="button10" value="$field_reports" class="tab_button" onClick="this.blur();tabber_load(10,reportsNavJSP)" title="$tooltip_reports" /></div>
+				#end
+				<div id="button4_span" class="tab_button_span"><input type="button" id="button4" value="$field_admin" class="tab_button" onClick="this.blur();tabber_load(4,adminNavJSP)" title="$tooltip_orgadmin" /></div>
+			  #else
+			   #if($supervisor == "yes")
+			   		#if("$Tab10" != "no")	
+						<div id="button10_span" class="tab_button_span"><input type="button" id="button10" value="$field_reports" class="tab_button" onClick="this.blur();tabber_load(10,reportsNavJSP)" title="$tooltip_reports" /></div>
+					#end
+	    	   #end
+			  #end
+		  #else
+				<span style="display:none;color:white; font-size: 14px; font-weight: bold;vertical-alignment:middle;">$main_admin_title</span>      
+				<div id="button4_span" class="tab_button_span"><input type="button" id="button4" value="$field_admin" class="tab_button" onClick="tabber_load(4,adminNavJSP)" title="$tooltip_sysadmin" /></div>
+		  #end
+		</div>
+	</div>
+
+
+#if($include_main == "no")
+  <div id="div_nomain">
+  </div>
+#else
+
+  <div id="div_main" class="main">
+    
+    <div id="section1_div" class="tab_body">
+      <div id="section1_header_div" class="header_div">
+<!--      	<a href="javascript:showHelpDialogItem('dashboard');"><img class="help_button" src="Themes/${orgTheme}/images/question_mark_qm.png"/></a>-->
+      </div>
+      <div class="main_div">
+        <div id="section1_nav_div" class="nav_div">
+        </div>
+        <div id="section1_content_div" class="content_div">
+        </div>
+      </div>
+    </div>
+
+    <div id="section2_div" class="tab_body" align=left>
+      <div id="section2_header_div" class="header_div">
+<!--      	<a href="javascript:showHelpDialogItem('tasks');"><img class="help_button" src="Themes/${orgTheme}/images/question_mark_qm.png"/></a>-->
+      </div>
+      <div class="main_div">
+        <div id="section2_nav_div" class="nav_div">
+        </div>
+        <div id="section2_content_div" class="content_div">
+        </div>
+      </div>
+    </div>
+
+    <div id="section8_div" class="tab_body" align=left>
+      <div id="section8_header_div" class="header_div">
+<!--      	<a href="javascript:showHelpDialogItem('myprocesses');"><img class="help_button" src="Themes/${orgTheme}/images/question_mark_qm.png"/></a>-->
+      </div>
+      <div class="main_div">
+        <div id="section8_nav_div" class="nav_div">
+        </div>
+        <div id="section8_content_div" class="content_div">
+        </div>
+      </div>
+    </div>
+
+    <div id="section3_div" class="tab_body" align=left>
+      <div id="section3_header_div" class="header_div">
+<!--      	<a id="link_process_help" href="javascript:showHelpDialogItem('processes');"><img class="help_button" src="Themes/${orgTheme}/images/question_mark_qm.png"/></a>-->
+      </div>
+      <div class="main_div">
+#if($procMenuVisible == "yes")
+        <div id="section3_nav_div" class="nav_div">
+        </div>      
+        <div id="section3_content_div" class="content_div">
+#else
+        <div id="section3_nav_div" class="nav_div" style="display:none;">
+        </div>      
+        <div id="section3_content_div" class="content_div" style="width:94%;right:2%;">
+#end
+      	  <div id="div_proc_menu_colapsed" class="proc_menu_colapsed" style="display:none;">
+			<!--img id="butclose" class="proc_menu_button" style="display:block;" src="$url_prefix/images/close.png" onclick="javascript:close_process(3);"/-->
+			<img id="butexpand" class="proc_menu_button"  style="display:block;" src="$url_prefix/images/printer.png" onclick="window.frames['open_proc_frame'].print();"/>
+			<!--img id="butinfocol" class="proc_menu_button" style="width:auto; display:none;" src="$url_prefix/images/info.png" onclick="info();"/-->
+			<span id ="process_annotations_span_colapsed"></span>
+		  </div>
+	      <div id="div_proc_menu_expanded" class="proc_menu_expanded" style="display:none;">
+			<!--img id="butclose" class="proc_menu_button" src="$url_prefix/images/close.png" onclick="javascript:close_process(3);"/-->
+			<img id="butcolapse" class="proc_menu_button" src="$url_prefix/images/attach.png" onclick="colapse();"/>
+			<!--img id="butinfoexp" class="proc_menu_button" style="width:auto; display:none;" src="$url_prefix/images/info.png" onclick="info();"/-->
+			<span id ="process_annotations_span_expanded"></span>
+	      </div>
+          <iframe onload="calcFrameHeight('open_proc_frame');" id="open_proc_frame" name="open_proc_frame" frameborder="0" scrolling="auto" marginheight="0" marginwidth="0" width="100%" height="100%" src="" class="open_proc_frame_colapsed" style="display:block;">
+           your browser does not support iframes or they are disabled at this time
+          </iframe>
+        </div>
+      </div>
+    </div>
+    
+    <div id="section5_div" class="tab_body" align=left>
+      <div id="section5_header_div" class="header_div">
+<!--      	<a href="javascript:showHelpDialogItem('delegations');"><img class="help_button" src="Themes/${orgTheme}/images/question_mark_qm.png"/></a>-->
+      </div>
+      <div class="main_div">
+        <div id="section5_nav_div" class="nav_div">
+        </div>
+        <div id="section5_content_div" class="content_div">
+        </div>
+      </div>
+    </div>
+    
+	<div id="section10_div" class="tab_body" align=left>
+      <div id="section6_header_div" class="header_div">
+      	
+      </div>
+      <div class="main_div">
+        <div id="section10_nav_div" class="nav_div">
+        </div>
+        <div id="section10_content_div" class="content_div">
+        </div>
+      </div>
+    </div>
+
+	<div id="section4_div" class="tab_body" align=left>
+      <div id="section6_header_div" class="header_div">
+
+      </div>
+      <div class="main_div">
+        <div id="section4_nav_div" class="nav_div">
+        </div>
+        <div id="section4_content_div" class="content_div">
+        </div>
+      </div>
+    </div>
+
+	<div id="section6_div" class="tab_body" align=left>
+      <div id="section6_header_div" class="header_div">
+      	<img style="opacity: 0.3;filter:alpha(opacity=0);" class="help_button" src="Themes/${orgTheme}/images/question_mark_qm.png"/>
+      </div>
+      <div class="main_div">
+        <div id="section6_nav_div" class="nav_div">
+        </div>
+        <div id="section6_content_div" class="content_div">
+        </div>
+      </div>
+    </div>
+
+	<div id="section7_div" class="tab_body" align=left>
+      <div id="section7_header_div" class="header_div">
+      	<img style="opacity: 0;filter:alpha(opacity=0);" class="help_button" src="Themes/${orgTheme}/images/question_mark_qm.png"/>
+      </div>
+      <div class="main_div">
+        <div id="section7_nav_div" class="nav_div">
+        </div>
+        <div id="section7_content_div" class="content_div">
+        </div>
+      </div>
+    </div>
+
+	<div id="section11_div" class="tab_body" align=left>
+      <div id="section11_header_div" class="header_div">
+      	<img style="opacity: 0;filter:alpha(opacity=0);" class="help_button" src="Themes/${orgTheme}/images/question_mark_qm.png"/>
+      </div>
+      <div class="main_div">
+        <div id="section11_content_div" class="content_div full_width">
+        </div>
+      </div>
+    </div>
+
+	<div id="section9_div" class="tab_body" align=left>
+      <div id="section9_header_div" class="header_div">
+      	<img style="opacity: 0;filter:alpha(opacity=0);" class="help_button" src="Themes/${orgTheme}/images/question_mark_qm.png"/>
+      </div>
+      <div class="main_div">
+        <div id="section9_content_div" class="content_div full_width">
+        </div>
+      </div>
+    </div>
+
+  </div>
+#end
+	<div id="footerwrapper">
+		<div id="footer">
+		</div>
+    </div>
+    
+	<div id="overlay_shade">	  
+	</div>	
+
+	<script type="text/javascript">
+  
+  		function killTutorialDialog () {
+  			$('tutorialdialog').setStyle('display','none');
+  		}
+	    
+  		function killTutorialBubble () {
+  			$('tutorial_bubble').setStyle('display','none');
+  		}
+	    
+		var bubbleOff = new YAHOO.util.Anim('tutorial_bubble', {height: { to: 0, unit: "px" },opacity:  { from: 1, to: 0 }}, 1.5, YAHOO.util.Easing.easeOut); 
+		var bubbleOn = new YAHOO.util.Anim('tutorial_bubble', {height: { from: 0, unit: "px" },opacity:  { from: 0, to: 1 }}, 1.5, YAHOO.util.Easing.easeOut); 
+		var tutorialOff = new YAHOO.util.Anim('tutorialdialog', {opacity:  { from: 1, to: 0 }}, 0.8, YAHOO.util.Easing.easeOut);  
+
+        tutorialOff.onComplete.subscribe(killTutorialDialog); 
+        bubbleOff.onComplete.subscribe(killTutorialBubble); 
+
+		YAHOO.util.Event.onDOMReady(initDom);  	
+
+	</script> 
+    </div>
+</body>
+</html>
+  

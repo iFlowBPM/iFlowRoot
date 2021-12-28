@@ -1,4 +1,4 @@
-package pt.iflow.api.search.lucene;
+/*package pt.iflow.api.search.lucene;
 
 import java.io.IOException;
 
@@ -67,3 +67,4 @@ public class Indexer {
 	}
 
 }
+*/

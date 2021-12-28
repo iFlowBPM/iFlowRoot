@@ -64,14 +64,13 @@
           <tr class="tab_header">
             <td></td>
             <td></td>
-		#if($has_appname)
-			<td>$application</td>
-		#end
-			<td>$flow</td>
-			<td>$pnumber</td>
-			<td>$subject</td>#*
-			<td>$arrived</td>*#
-			<td>$waiting</td>
+			<td>Data do pedido</td>
+			<td>Pedido nº</td>
+			<td>Nome do proponente</td>
+			<td>Tipo de serviço</td>
+			<td>Concelho</td>
+			<td>Estado do pedido</td>
+			<td>Dias</td>
 			<td></td>
 		  </tr>
 		  #set($odd=1)
@@ -108,24 +107,49 @@
 				<td></td>
 			#end
 			#set($row=$row+1)
-             
-            #if($has_appname)
-			 <td align="center"><a $style_read href="javascript:open_process(2, $act.get("flowid"), '$response.encodeURL($url_prefix,$act.get("uri"))','flowid=$act.get("flowid")&pid=$act.get("pid")&subpid=$act.get("subpid")&ts=$ts', $act.get("runMax"));">$act.get("appname")</a></td>
-			#end
-			 <td align="center">
-			 	#if($act.get("flowType").equals("D"))
-				 <img class="toolTipImg" src="images/flow_type_D.png" border="0"/qu>
-				#end			 				 
-			 	<a $style_read href="javascript:open_process(2, $act.get("flowid"), '$response.encodeURL($url_prefix,$act.get("uri"))','flowid=$act.get("flowid")&pid=$act.get("pid")&subpid=$act.get("subpid")&ts=$ts', $act.get("runMax"));">
-			 #if($act.get("delegated") == "1")
-			   <img src="$response.encodeURL($url_prefix,'images/icon_delegations.png')" alt="$act.get("delegated_alt")" style="border:none; float:left;" />
+
+             #if($act.get("dataPedido"))
+             	#set($dataString = $act.get("dataPedido").replace("-", '') )
+             	#if($dataString.length() >= 8)
+	             	#set($dataSize= $dataString.substring(0, 8))
+	             	#set($dataString2= $dataSize.substring(0, 2) + '-' + $dataSize.substring(2, 4) + '-' + $dataSize.substring(4, 8))
+				 	<td align="center"><a $style_read href="javascript:open_process(2, $act.get("flowid"), '$response.encodeURL($url_prefix,$act.get("uri"))','flowid=$act.get("flowid")&pid=$act.get("pid")&subpid=$act.get("subpid")&ts=$ts', $act.get("runMax"));">$dataString2</a></td>
+				#else
+					<td> </td>
+				#end
+			 #else
+				<td> </td>
 			 #end
-			   $act.get("flowname")
-			 </a></td>
-			 <td align="center"><a $style_read href="javascript:open_process(2, $act.get("flowid"), '$response.encodeURL($url_prefix,$act.get("uri"))','flowid=$act.get("flowid")&pid=$act.get("pid")&subpid=$act.get("subpid")&ts=$ts', $act.get("runMax"));">$act.get("pnumber")</a></td>
-			 <td align="center"><a $style_read href="javascript:open_process(2, $act.get("flowid"), '$response.encodeURL($url_prefix,$act.get("uri"))','flowid=$act.get("flowid")&pid=$act.get("pid")&subpid=$act.get("subpid")&ts=$ts', $act.get("runMax"));">$act.get("desc")</a></td>#*
-			 <td align="center"><a $style_read href="javascript:open_process(2, $act.get("flowid"), '$response.encodeURL($url_prefix,$act.get("uri"))','flowid=$act.get("flowid")&pid=$act.get("pid")&subpid=$act.get("subpid")&ts=$ts', $act.get("runMax"));">$act.get("created")</a></td>*#
-			 <td align="center"><a $style_read href="javascript:open_process(2, $act.get("flowid"), '$response.encodeURL($url_prefix,$act.get("uri"))','flowid=$act.get("flowid")&pid=$act.get("pid")&subpid=$act.get("subpid")&ts=$ts', $act.get("runMax"));">$act.get("duration")</a></td>
+			 #if($act.get("numProcesso"))
+			 	<td align="center"><a $style_read href="javascript:open_process(2, $act.get("flowid"), '$response.encodeURL($url_prefix,$act.get("uri"))','flowid=$act.get("flowid")&pid=$act.get("pid")&subpid=$act.get("subpid")&ts=$ts', $act.get("runMax"));">$act.get("numProcesso")</a></td>
+			 #else
+				<td> </td>
+			 #end
+			 #if($act.get("proponente"))
+			 	<td align="center"><a $style_read href="javascript:open_process(2, $act.get("flowid"), '$response.encodeURL($url_prefix,$act.get("uri"))','flowid=$act.get("flowid")&pid=$act.get("pid")&subpid=$act.get("subpid")&ts=$ts', $act.get("runMax"));">$act.get("proponente")</a></td>
+			 #else
+				<td> </td>
+			 #end
+			 #if($act.get("tipoServico_text"))
+			 	<td align="center"><a $style_read href="javascript:open_process(2, $act.get("flowid"), '$response.encodeURL($url_prefix,$act.get("uri"))','flowid=$act.get("flowid")&pid=$act.get("pid")&subpid=$act.get("subpid")&ts=$ts', $act.get("runMax"));">$act.get("tipoServico_text")</a></td>
+			 #else
+				<td> </td>
+			 #end
+			 #if($act.get("concelhoImovel_text"))
+			 	<td align="center"><a $style_read href="javascript:open_process(2, $act.get("flowid"), '$response.encodeURL($url_prefix,$act.get("uri"))','flowid=$act.get("flowid")&pid=$act.get("pid")&subpid=$act.get("subpid")&ts=$ts', $act.get("runMax"));">$act.get("concelhoImovel_text")</a></td>
+			 #else
+				<td> </td>
+			 #end
+			 #if($act.get("estadoProcesso_text"))
+			 	<td align="center"><a $style_read href="javascript:open_process(2, $act.get("flowid"), '$response.encodeURL($url_prefix,$act.get("uri"))','flowid=$act.get("flowid")&pid=$act.get("pid")&subpid=$act.get("subpid")&ts=$ts', $act.get("runMax"));">$act.get("estadoProcesso_text")</a></td>
+			 #else
+				<td> </td>
+			 #end
+			 #if($act.get("dias"))
+			 	<td align="center"><a $style_read href="javascript:open_process(2, $act.get("flowid"), '$response.encodeURL($url_prefix,$act.get("uri"))','flowid=$act.get("flowid")&pid=$act.get("pid")&subpid=$act.get("subpid")&ts=$ts', $act.get("runMax"));">$act.get("dias")</a></td>
+			 #else
+				<td> </td>
+			 #end
 			<td>$act.get("task_annotation_icon")</td>
 			</tr>
 		  #end

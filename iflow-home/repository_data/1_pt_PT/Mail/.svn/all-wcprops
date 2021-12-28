@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/iFlowRoot/!svn/ver/3341/trunk/iflow-home/repository_data/1_pt_PT/Mail
+END
+password_reset.et
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/iFlowRoot/!svn/ver/3341/trunk/iflow-home/repository_data/1_pt_PT/Mail/password_reset.et
+END
+new_user.et
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/iFlowRoot/!svn/ver/3341/trunk/iflow-home/repository_data/1_pt_PT/Mail/new_user.et
+END
+delegation_inconsistence.et
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/iFlowRoot/!svn/ver/3341/trunk/iflow-home/repository_data/1_pt_PT/Mail/delegation_inconsistence.et
+END
+new_invite.et
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/iFlowRoot/!svn/ver/3341/trunk/iflow-home/repository_data/1_pt_PT/Mail/new_invite.et
+END
+old_email_confirm.et
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/iFlowRoot/!svn/ver/3341/trunk/iflow-home/repository_data/1_pt_PT/Mail/old_email_confirm.et
+END
+new_register.et
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/iFlowRoot/!svn/ver/3341/trunk/iflow-home/repository_data/1_pt_PT/Mail/new_register.et
+END
+notify_undone.et
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/iFlowRoot/!svn/ver/3341/trunk/iflow-home/repository_data/1_pt_PT/Mail/notify_undone.et
+END
+new_email_confirm.et
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/iFlowRoot/!svn/ver/3341/trunk/iflow-home/repository_data/1_pt_PT/Mail/new_email_confirm.et
+END
+new_activity.et
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/iFlowRoot/!svn/ver/3341/trunk/iflow-home/repository_data/1_pt_PT/Mail/new_activity.et
+END

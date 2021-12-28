@@ -1,3 +1,5 @@
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.sql.Timestamp"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://jakarta.apache.org/taglibs/core" prefix="c" %>
 <%@ taglib uri="http://www.iknow.pt/jsp/jstl/iflow" prefix="if" %>
@@ -104,9 +106,11 @@
   //GET USER FOLDERS
   List<Folder> folders = fm.getUserFolders(userInfo);
   
-  String[] saCols = { messages.getString("actividades.field.application"), messages.getString("actividades.field.flow"),
-      messages.getString("actividades.field.processid"), messages.getString("actividades.field.subject"),
-      messages.getString("actividades.field.since") };
+  String[] saCols = { messages.getString("actividades.field.request_date"),
+      messages.getString("actividades.field.request"), messages.getString("actividades.field.proponent_name"),
+      messages.getString("actividades.field.service_type"), messages.getString("actividades.field.county"),
+      messages.getString("actividades.field.request_state"), messages.getString("actividades.field.days")
+      };
   ArrayList<List<String>> alData = new ArrayList<List<String>>();
 
     
@@ -596,28 +600,44 @@
 	
 	    List<String> actividade = new ArrayList<String>();
 	    actividade.add(a.flowid + "_" + a.pid + "_" + a.subpid);
-	    actividade.add(stmp + appName + stmp2);
+	    //actividade.add(stmp + appName + stmp2);
 	    if(BeanFactory.getFlowHolderBean().getFlow(userInfo, a.getFlowid()).getFlowType().compareTo(FlowType.DOCUMENT)==0)
 	    	stmp4="<img class=\"toolTipImg\" src=\"images/flow_type_D.png\" border=\"0\"/>";
 	    else
 	    	stmp4="";
-	    if (a.delegated) {
-	      actividade.add("<a title=\"" + messages.getString("actividades.msg.taskdeleg")
-	          + "\"><img src=\"images/icon_delegations.png\" height=\"10\"/></a>" + stmp + flowName + stmp2 + stmp4);
-	    } else {
-	      actividade.add(stmp4 + stmp + flowName + stmp2);
-	    }
-	
-	    // replaced by process number
-	    //altmp.add(stmp + a.pid + stmp2);
-	    actividade.add(stmp + a.pnumber + stmp2);
-	    actividade.add(String.valueOf(a.subpid));
-	    actividade.add(stmp + a.description + stmp2);
-	
-	    // reprocess timestamp
-	    java.sql.Timestamp tsDate = new java.sql.Timestamp(a.created.getTime());
-	    String sCreated = DateUtility.formatTimestamp(userInfo, tsDate);
-	    actividade.add(stmp + sCreated + stmp2);
+
+	    //task values
+	    String[] allowedMetadata = Setup.getProperty("DEFAULT_TASKS_ALLOWED_METADATA").split(",");
+        String[] allowedMetadataLabel = Setup.getProperty("DEFAULT_TASKS_ALLOWED_METADATA_LABEL").split(",");
+        
+        for(int mdCounter=0; mdCounter<allowedMetadataLabel.length; mdCounter++){
+	    	if(StringUtils.equals(allowedMetadata[mdCounter], "dataPedido")){
+	    		if(a.getDetailItemMap().get(allowedMetadata[mdCounter]) != null){
+	    			try{	    				
+		             	String dataString = a.getDetailItemMap().get(allowedMetadata[mdCounter]);
+		             	dataString = dataString.replaceAll("-", "");
+		             	dataString = dataString.substring(0, 8);
+		             	dataString = dataString.substring(0, 2) + '-' + dataString.substring(2, 4) + '-' + dataString.substring(4, 8);
+		    			actividade.add(stmp + dataString + stmp2);
+	    			}catch(Exception e){
+	    				actividade.add(stmp + "" + stmp2);
+	    			}
+	    		}else{
+	    			actividade.add(stmp + "" + stmp2);
+	    		}
+    		}else{
+    			if(a.getDetailItemMap().get(allowedMetadata[mdCounter]) != null){
+		    		actividade.add(stmp + a.getDetailItemMap().get(allowedMetadata[mdCounter]) + stmp2);
+    			}else{
+	    			actividade.add(stmp + "" + stmp2);
+    			}
+   			}
+        }
+        
+        //days
+        Timestamp tsNow = new Timestamp((new java.util.Date()).getTime());
+        String sDias = "" + (tsNow.getTime()-new Timestamp(a.created.getTime()).getTime())/86400000;
+    	actividade.add(stmp + sDias + stmp2);
 	    
 	    actividade.add(fm.getFolderColor(a.getFolderid(), folders));
 	    actividade.add(fm.getFolderName(a.getFolderid(), folders));
@@ -875,12 +895,13 @@ jscolor.bind();
             if (bBatchProcessing) {
               cols_length++;
             }
-            if (!showApplicationName)
-              cols_length--;
+            //Dont show application
+            /*if (!showApplicationName)
+              cols_length--;*/
 
             for (int i = 0; i < saCols.length; i++) {
-              if (!showApplicationName && i == 0)
-                continue;
+              /*if (!showApplicationName && i == 0)
+                continue;*/
         %>
           <td><%=saCols[i]%></td>
           
@@ -912,7 +933,7 @@ jscolor.bind();
 	      int nflowid = 0;
     	  try{
             nflowid = Integer.parseInt(vars[0]);
-    		npid = Integer.parseInt(vars[1]);  
+    		npid = Integer.parseInt(vars[1]);
     	    nsubpid = Integer.parseInt(vars[2]);
     		  }catch(Exception e){ }
     	  
@@ -975,20 +996,15 @@ jscolor.bind();
         
         String field = "";
         for (int j = 1; j < altmp.size()-3; j++) {  
-        	       
-          if (!showApplicationName && j == 1)
-            continue;
-          if (j != 4) { // é o subpid
+        	     
+        	//Dont show application
+          /*if (!showApplicationName && j == 1)
+            continue;*/
+          
             out.print("          <td>"); 
             field = (String) altmp.get(j);
-            if (j == 3) { // este é o pid
-              if (!Const.DEFAULT_SUBPID.equals((String) altmp.get(4))) {                 
-                field += "/" + (String) altmp.get(4);
-              }
-            }
             out.print(field);
             out.println("</td>");
-          }
         }
         
         StringBuffer annotationIcon = new StringBuffer("<td class=\"itemlist_icon\">");

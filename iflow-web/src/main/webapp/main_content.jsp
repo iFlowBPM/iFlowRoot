@@ -1,3 +1,4 @@
+<%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://jakarta.apache.org/taglibs/core" prefix="c" %>
 <%@ taglib uri="http://www.iknow.pt/jsp/jstl/iflow" prefix="if" %>
@@ -439,12 +440,42 @@ function cleanFilter(){
 	Timestamp tsNow = new Timestamp((new java.util.Date()).getTime());
 
 	// newest
+	SimpleDateFormat sdfReader = new SimpleDateFormat("ddMMyyyy");
+    SimpleDateFormat sdfWriter = new SimpleDateFormat("dd/MM/yyyy");
+    
 	for (int i=0,j=0; i < alAct.size() && j < nNEWEST_LIMIT; i++) {
 		a = alAct.get((i));
 
 		// build hashmap to be able to display things properly
 		Map<String,String> hm = new HashMap<String,String>();
 
+		//Metadados
+        if(StringUtils.isNotBlank(Setup.getProperty("DEFAULT_TASKS_ALLOWED_METADATA"))){
+        	try{        		                
+                String[] allowedMetadata = Setup.getProperty("DEFAULT_TASKS_ALLOWED_METADATA").split(",");
+                String[] allowedMetadataLabel = Setup.getProperty("DEFAULT_TASKS_ALLOWED_METADATA_LABEL").split(",");
+                for(int mdCounter=0; mdCounter<allowedMetadataLabel.length; mdCounter++){
+                	String valorMetadadosAux = a.getDetailItemMap().get(allowedMetadata[mdCounter]);
+                	/*if(StringUtils.equals(allowedMetadata[mdCounter], "numero1") || 
+                			StringUtils.equals(allowedMetadata[mdCounter], "numProcesso") || 
+                			StringUtils.equals(allowedMetadata[mdCounter], "numeroImoveis")){
+                		valorMetadadosAux = StringUtils.stripStart(StringUtils.removeStart(StringUtils.removeEnd(valorMetadadosAux, "00000"), "1"),"0") ;
+                	}else if(StringUtils.equals(allowedMetadata[mdCounter], "data1") ||
+                			StringUtils.equals(allowedMetadata[mdCounter], "dataPedido")){
+                		if(valorMetadadosAux != null && valorMetadadosAux.length() >= 8){
+                			valorMetadadosAux = sdfWriter.format(sdfReader.parse(StringUtils.substring(valorMetadadosAux, 0, 8))) ;
+                		}
+                	}*/
+                	hm.put(allowedMetadata[mdCounter], valorMetadadosAux);
+                }                
+               
+        	} catch(Exception e){        		
+        		Logger.errorJsp(login, sPage, "exception: " + e.getMessage());
+        	}       	
+        	
+        }
+
+    ///
 		IFlowData fd = hmFlows.get(String.valueOf(a.flowid));
 
 		if (fd == null) continue;
@@ -458,6 +489,7 @@ function cleanFilter(){
 		String sDesc = a.description;
 		String sCreated = DateUtility.formatTimestamp(userInfo, a.created);
 		String sDuration = Utils.getDuration(new Timestamp(a.created.getTime()), tsNow);
+		String sDias = "" + (tsNow.getTime()-new Timestamp(a.created.getTime()).getTime())/86400000;
 		String sUri = "";
 		if (a.url != null && StringUtilities.isNotEmpty(a.url)) {
 			if (a.url.indexOf("?") > -1) {
@@ -503,6 +535,7 @@ function cleanFilter(){
 		hm.put("desc", sDesc);
 		hm.put("created", sCreated);
 		hm.put("duration", sDuration);
+		hm.put("dias", sDias);
 		hm.put("uri", sUri);
 		hm.put("pnumber", pnumber);
 		hm.put("delegated", a.delegated ? "1" : "0");

@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fop:root xmlns:fop="http://www.w3.org/1999/XSL/Format"
+          xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0">
+   <fop:layout-master-set>
+      <fop:simple-page-master master-name="pm1" margin-top="2cm" margin-bottom="2cm" margin-left="2cm"
+                              margin-right="2cm"
+                              page-width="21.001cm"
+                              page-height="29.7cm"
+                              border="">
+         <fop:region-body margin-bottom="0.499cm"/>
+         <fop:region-after display-align="after" min-height="0cm" space-before="0.499cm" margin-left="0cm"
+                           margin-right="0cm"
+                           extent="0.55cm"/>
+      </fop:simple-page-master>
+   </fop:layout-master-set>
+   <fop:page-sequence master-reference="pm1">
+      <fop:static-content flow-name="xsl-region-after">
+         <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                    language="pt"
+                    country="PT"
+                    font-size="8pt"
+                    font-family="Arial,sans-serif"
+                    font-weight="bold">
+            <fop:leader/>
+         </fop:block>
+      </fop:static-content>
+      <fop:static-content flow-name="xsl-footnote-separator">
+         <fop:block>
+            <fop:leader leader-pattern="rule" leader-length="100%" rule-style="solid"
+                        rule-thickness="0.5pt"/>
+         </fop:block>
+      </fop:static-content>
+      <fop:flow flow-name="xsl-region-body">
+         <fop:block>
+            <fop:table>
+               <fop:table-column column-width="3.946cm"/>
+               <fop:table-column column-width="13.055cm"/>
+               <fop:table-body>
+                  <fop:table-row keep-together.within-column="always">
+                     <fop:table-cell padding="0.097cm" border-left="0.002cm solid #000000" border-right="none"
+                                     border-top="0.002cm solid #000000"
+                                     border-bottom="0.002cm solid #000000"
+                                     background-color="transparent"
+                                     display-align="end">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="Arial,sans-serif"
+                                   margin-left="0cm"
+                                   margin-right="0.912cm"
+                                   text-indent="0cm"
+                                   text-align="center">#image:80:50:"BancoBIC.jpg"#</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border="0.002cm solid #000000">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="12pt"
+                                   font-family="Arial,sans-serif">
+                           <fop:leader/>
+                        </fop:block>
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="16pt"
+                                   font-family="Arial,sans-serif"
+                                   text-align="center"
+                                   font-weight="bold">RELATÓRIO DE AVALIAÇÃO IMOBILIÁRIA</fop:block>
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="12pt"
+                                   font-family="Arial,sans-serif">
+                           <fop:leader/>
+                        </fop:block>
+                     </fop:table-cell>
+                  </fop:table-row>
+               </fop:table-body>
+            </fop:table>
+            <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                       language="pt"
+                       country="PT"
+                       font-size="12pt"
+                       font-family="'Times New Roman',serif">
+               <fop:leader/>
+            </fop:block>
+            <fop:table margin-left="0.007cm" margin-right="0.011cm">
+               <fop:table-column column-width="0.619cm"/>
+               <fop:table-column column-width="16.364cm"/>
+               <fop:table-body>
+                  <fop:table-row keep-together.within-column="always">
+                     <fop:table-cell padding="0.097cm" border-left="0.002cm solid #000000" border-right="none"
+                                     border-top="0.002cm solid #000000"
+                                     border-bottom="0.002cm solid #000000"
+                                     background-color="#cccccc">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="Arial,sans-serif"
+                                   text-align="center"
+                                   font-weight="bold">21</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border="0.002cm solid #000000">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="Arial,sans-serif"
+                                   text-align="center"
+                                   font-weight="bold">ANEXO – QUADRO DE PROSPEÇÃO</fop:block>
+                     </fop:table-cell>
+                  </fop:table-row>
+               </fop:table-body>
+            </fop:table>
+            <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                       language="pt"
+                       country="PT"
+                       font-size="7pt"
+                       font-family="Tahoma,sans-serif"
+                       font-weight="normal">
+               <fop:leader/>
+            </fop:block>
+            <fop:table>
+               <fop:table-column column-width="2.106cm"/>
+               <fop:table-column column-width="0.649cm"/>
+               <fop:table-column column-width="1.533cm"/>
+               <fop:table-column column-width="2.321cm"/>
+               <fop:table-column column-width="0.78cm"/>
+               <fop:table-column column-width="1.171cm"/>
+               <fop:table-column column-width="4.073cm"/>
+               <fop:table-column column-width="2.364cm"/>
+               <fop:table-column column-width="2.006cm"/>
+               <fop:table-body>
+                  <fop:table-row keep-together.within-column="always">
+                     <fop:table-cell padding="0.097cm" border-left="0.002cm solid #000000" border-right="none"
+                                     border-top="0.002cm solid #000000"
+                                     border-bottom="0.002cm solid #000000">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="Arial,sans-serif"
+                                   text-align="center"
+                                   font-weight="bold">Item e Localização</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border-left="0.002cm solid #000000" border-right="none"
+                                     border-top="0.002cm solid #000000"
+                                     border-bottom="0.002cm solid #000000">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="Arial,sans-serif"
+                                   text-align="center"
+                                   font-weight="bold">Tip</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border-left="0.002cm solid #000000" border-right="none"
+                                     border-top="0.002cm solid #000000"
+                                     border-bottom="0.002cm solid #000000">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="Arial,sans-serif"
+                                   text-align="center"
+                                   font-weight="bold">Área (m2)</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border-left="0.002cm solid #000000" border-right="none"
+                                     border-top="0.002cm solid #000000"
+                                     border-bottom="0.002cm solid #000000">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="Arial,sans-serif"
+                                   text-align="center"
+                                   font-weight="bold">Valor ou Renda</fop:block>
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="Arial,sans-serif"
+                                   text-align="center"
+                                   font-weight="bold">Total V. Unit.</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border-left="0.002cm solid #000000" border-right="none"
+                                     border-top="0.002cm solid #000000"
+                                     border-bottom="0.002cm solid #000000">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="Arial,sans-serif"
+                                   text-align="center"
+                                   font-weight="bold">Ano</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border-left="0.002cm solid #000000" border-right="none"
+                                     border-top="0.002cm solid #000000"
+                                     border-bottom="0.002cm solid #000000">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="Arial,sans-serif"
+                                   text-align="center"
+                                   font-weight="bold">Estado</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border-left="0.002cm solid #000000" border-right="none"
+                                     border-top="0.002cm solid #000000"
+                                     border-bottom="0.002cm solid #000000">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="Arial,sans-serif"
+                                   text-align="center"
+                                   font-weight="bold">Nome e Contacto Prospeção</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border-left="0.002cm solid #000000" border-right="none"
+                                     border-top="0.002cm solid #000000"
+                                     border-bottom="0.002cm solid #000000">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="Arial,sans-serif"
+                                   text-align="center"
+                                   font-weight="bold">Data Prospeção</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border="0.002cm solid #000000">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="Arial,sans-serif"
+                                   text-align="center"
+                                   font-weight="bold">Observações</fop:block>
+                     </fop:table-cell>
+                  </fop:table-row>
+               </fop:table-body>
+            </fop:table>
+            <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                       language="pt"
+                       country="PT"
+                       font-size="7pt"
+                       font-family="Tahoma,sans-serif"
+                       font-weight="normal">#for:i:0:(malp_listaItem .length):1#</fop:block>
+            <fop:table margin-left="0cm" margin-right="-0.005cm">
+               <fop:table-column column-width="2.094cm"/>
+               <fop:table-column column-width="0.647cm"/>
+               <fop:table-column column-width="1.549cm"/>
+               <fop:table-column column-width="1.138cm"/>
+               <fop:table-column column-width="1.185cm"/>
+               <fop:table-column column-width="0.773cm"/>
+               <fop:table-column column-width="1.171cm"/>
+               <fop:table-column column-width="4.076cm"/>
+               <fop:table-column column-width="2.358cm"/>
+               <fop:table-column column-width="2.014cm"/>
+               <fop:table-body>
+                  <fop:table-row keep-together.within-column="always">
+                     <fop:table-cell padding="0.097cm" border-left="0.002cm solid #000000" border-right="none"
+                                     border-top="0.002cm solid #000000"
+                                     border-bottom="0.002cm solid #000000">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="Arial,sans-serif"
+                                   font-weight="normal">$malp_listaItem[i]:t$</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border-left="0.002cm solid #000000" border-right="none"
+                                     border-top="0.002cm solid #000000"
+                                     border-bottom="0.002cm solid #000000">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="Arial,sans-serif"
+                                   font-weight="normal">$malp_listaTip[i]:t$</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border-left="0.002cm solid #000000" border-right="none"
+                                     border-top="0.002cm solid #000000"
+                                     border-bottom="0.002cm solid #000000">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="Arial,sans-serif"
+                                   font-weight="normal">$malp_listaAreaLP[i]:r$</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border-left="0.002cm solid #000000" border-right="none"
+                                     border-top="0.002cm solid #000000"
+                                     border-bottom="0.002cm solid #000000">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="Arial,sans-serif"
+                                   font-weight="normal">$malp_listaValorTotalLP[i]:e$</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border-left="0.002cm solid #000000" border-right="none"
+                                     border-top="0.002cm solid #000000"
+                                     border-bottom="0.002cm solid #000000">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="Arial,sans-serif"
+                                   font-weight="normal">$valorrendaunit[i]:e$</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border-left="0.002cm solid #000000" border-right="none"
+                                     border-top="0.002cm solid #000000"
+                                     border-bottom="0.002cm solid #000000">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="Arial,sans-serif"
+                                   font-weight="normal">$malp_listaAno[i]:t$</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border-left="0.002cm solid #000000" border-right="none"
+                                     border-top="0.002cm solid #000000"
+                                     border-bottom="0.002cm solid #000000">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="Arial,sans-serif"
+                                   font-weight="normal">$malp_listaEstado[i]:t$</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border-left="0.002cm solid #000000" border-right="none"
+                                     border-top="0.002cm solid #000000"
+                                     border-bottom="0.002cm solid #000000">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="Arial,sans-serif"
+                                   font-weight="normal">$malp_listaNome[i]:t$</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border-left="0.002cm solid #000000" border-right="none"
+                                     border-top="0.002cm solid #000000"
+                                     border-bottom="0.002cm solid #000000">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="Arial,sans-serif"
+                                   font-weight="normal">$malp_listaData[i]:d$</fop:block>
+                     </fop:table-cell>
+                     <fop:table-cell padding="0.097cm" border="0.002cm solid #000000">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="Arial,sans-serif"
+                                   font-weight="normal">$malp_listaObs[i]:t$</fop:block>
+                     </fop:table-cell>
+                  </fop:table-row>
+               </fop:table-body>
+            </fop:table>
+            <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                       language="pt"
+                       country="PT"
+                       font-size="7pt"
+                       font-family="Arial,sans-serif"
+                       font-weight="normal">#end#</fop:block>
+            <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                       language="pt"
+                       country="PT"
+                       font-size="7pt"
+                       font-family="Arial,sans-serif"
+                       font-weight="normal">
+               <fop:leader/>
+            </fop:block>
+            <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                       language="pt"
+                       country="PT"
+                       font-size="7pt"
+                       font-family="Arial,sans-serif"
+                       font-weight="normal">
+               <fop:leader/>
+            </fop:block>
+            <fop:table>
+               <fop:table-column column-width="17cm"/>
+               <fop:table-body>
+                  <fop:table-row keep-together.within-column="always">
+                     <fop:table-cell padding="0.097cm" border="none">
+                        <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                                   language="pt"
+                                   country="PT"
+                                   font-size="8pt"
+                                   font-family="Arial,sans-serif">Observações: <fop:inline font-weight="normal">$malp_observacoes:t$</fop:inline>
+                        </fop:block>
+                     </fop:table-cell>
+                  </fop:table-row>
+               </fop:table-body>
+            </fop:table>
+            <fop:block line-height="110%" hyphenation-ladder-count="no-limit" hyphenate="false"
+                       language="pt"
+                       country="PT"
+                       font-size="12pt"
+                       font-family="'Times New Roman',serif">
+               <fop:leader/>
+            </fop:block>
+         </fop:block>
+         <fop:block id="last-page"/>
+      </fop:flow>
+   </fop:page-sequence>
+</fop:root>

@@ -59,24 +59,17 @@ public class BlockSQLUpdate extends BlockSQL {
     String sWhere = null;
     String sQuery = null;
     
-    try{
-    	sQuery = this.getAttribute(advancedQuery);
-    	 if (StringUtils.isNotEmpty(sQuery)) {
-    		 //sQuery = procData.transform(userInfo, sQuery, true);
-    		 
-    		 String[] sQueryParts = sQuery.split("\\+");
-    		 sQuery="";
-    		 for(String part : sQueryParts)
-    			 if(part.trim().startsWith("\"") || part.trim().startsWith("'"))
-    				 sQuery += procData.transform(userInfo, part, true);
-    			 else
-    				 sQuery+= StringEscapeUtils.escapeSql(procData.transform(userInfo, part, true));    		 		     		
-    	 }
-         if (StringUtils.isEmpty(sQuery)) sQuery = null;
-    }
-    catch (Exception e) {
-    	sQuery = null;
-    }
+    try {
+        sQuery = getAttribute("advancedQuery");
+        if (StringUtils.isNotEmpty(sQuery)) {
+          sQuery = procData.transform(userInfo, sQuery, true); 
+        }
+        if (StringUtils.isEmpty(sQuery)) {
+          sQuery = null; 
+        }
+      } catch (Exception e) {
+        sQuery = null;
+      } 
     
     try {
       sDataSource = this.getAttribute(BlockSQL.sDATASOURCE);

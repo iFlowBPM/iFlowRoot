@@ -2,6 +2,7 @@ package pt.iflow.api.core;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashMap;
 
 public class Activity {
   public String userid;
@@ -24,6 +25,8 @@ public class Activity {
   public int mid = -1;
   public int folderid = -1;
   public String annotationIcon = "";
+  
+  private HashMap<String,String> detailItemMap;
   
   public Activity() {
     super();
@@ -96,7 +99,7 @@ public class Activity {
     else {
       notify = false;
     }
-	 delegated = false;
+   delegated = false;
   }
 
   public Activity(String u, int f, int p, int sp, int t, int pri,
@@ -120,32 +123,32 @@ public class Activity {
     else {
       notify = false;
     }
-	 delegated = false;
+   delegated = false;
   }
 
   public Activity(String u, int f, int p, int sp, int t, int pri,
-		  Timestamp s, Timestamp d, Timestamp a, String descr, String ur, int stat, int notif, String profName) {
-	  this();
-	  userid = u;
-	  flowid = f;
-	  pid = p;
-	  subpid = sp;
-	  type = t;
-	  priority = pri;
-	  created = s;
-	  started = d;
-	  archived = a;
-	  description = descr;
-	  url = ur;
-	  status = stat;
-	  profilename = profName;
-	  if (notif == 1) {
-		  notify = true;
-	  }
-	  else {
-		  notify = false;
-	  }
-	  delegated = false;
+      Timestamp s, Timestamp d, Timestamp a, String descr, String ur, int stat, int notif, String profName) {
+    this();
+    userid = u;
+    flowid = f;
+    pid = p;
+    subpid = sp;
+    type = t;
+    priority = pri;
+    created = s;
+    started = d;
+    archived = a;
+    description = descr;
+    url = ur;
+    status = stat;
+    profilename = profName;
+    if (notif == 1) {
+      notify = true;
+    }
+    else {
+      notify = false;
+    }
+    delegated = false;
   }
 
   /**
@@ -289,7 +292,7 @@ public class Activity {
   }
 
   public int getFolderid() {
-	  return this.folderid;
+    return this.folderid;
   }
   
   /**
@@ -311,8 +314,8 @@ public class Activity {
   }
   
   public void setFolderid(int folderid) {
-	    this.folderid = folderid;
-	  }
+      this.folderid = folderid;
+    }
   
   public boolean isRead() {
     return read;
@@ -324,5 +327,13 @@ public class Activity {
 
   public void setAnnotationIcon(String annotationIcon) {
     this.annotationIcon = annotationIcon;
+  }
+  
+  public HashMap<String, String> getDetailItemMap() {
+  return detailItemMap;
+  }
+
+  public void setDetailItemList(HashMap<String, String> detailItemMap) {
+  this.detailItemMap = detailItemMap;
   }
 }
