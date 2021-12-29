@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XmlLibrary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="library.xsd">
+    <name>PariPersi</name>
+    <version>1.0</version>
+    <author>iKnow</author>
+    <description>PariPersi Library</description>
+    <i18nName>library.paripersi.name</i18nName>
+    <i18nDescription>library.paripersi.description</i18nDescription>
+    
+    <XmlBlock>
+	    <class>BlockCreateXML</class>
+	    <XmlAttribute>
+			<name>ano</name>
+			<description>Ano</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>mes</name>
+			<description>Mês</description>
+			<value />
+		</XmlAttribute>
+	    <XmlAttribute>
+			<name>entReportada</name>
+			<description>Entidade Reportada</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>entReportante</name>
+			<description>Entidade Reportante</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>dtReferencia</name>
+			<description>Data Referencia</description>
+			<value />
+		</XmlAttribute>
+	    <XmlAttribute>
+	        <name>outputFile</name>
+	        <description>Output XML File</description>
+	        <value />
+	    </XmlAttribute>
+	      <XmlPort>
+	      <name>portIn</name>
+	      <description>portIn</description>
+	      <in_out>in</in_out>
+	      <position>
+	        <x>-5</x>
+	        <y>25</y>
+	      </position>
+	    </XmlPort>
+	    <XmlPort>
+	      <name>portSuccess</name>
+	      <description>portSuccess</description>
+	      <in_out>out</in_out>
+	      <position>
+	        <x>105</x>
+	        <y>10</y>
+	      </position>
+	    </XmlPort>
+	    <XmlPort>
+	      <name>portEmpty</name>
+	      <description>portEmpty</description>
+	      <in_out>out</in_out>
+	      <position>
+	        <x>105</x>
+	        <y>29</y>
+	      </position>
+	    </XmlPort>
+	    <XmlPort>
+	      <name>portError</name>
+	      <description>portError</description>
+	      <in_out>out</in_out>
+	      <position>
+	        <x>105</x>
+	        <y>48</y>
+	      </position>
+	    </XmlPort>
+	    <image>bpmn_task.png</image>
+	    <description>library.paripersi.block.create_xml</description>    
+	    <i18n>library.paripersi.block.create_xml</i18n>
+  	</XmlBlock>
+    
+</XmlLibrary>
