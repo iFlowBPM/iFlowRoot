@@ -24,9 +24,19 @@
 			<description>Entidade Reportada</description>
 			<value />
 		</XmlAttribute>
+	    <XmlAttribute>
+			<name>LEIReportada</name>
+			<description>LEI Reportada</description>
+			<value />
+		</XmlAttribute>
 		<XmlAttribute>
 			<name>entReportante</name>
 			<description>Entidade Reportante</description>
+			<value />
+		</XmlAttribute>
+		<XmlAttribute>
+			<name>LEIReportante</name>
+			<description>LEI Reportante</description>
 			<value />
 		</XmlAttribute>
 		<XmlAttribute>

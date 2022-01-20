@@ -59,6 +59,10 @@ public class BlockCreateXML extends Block{
 	private static final String MES = "mes";
 	private static final String entReportada = "entReportada";
 	private static final String entReportante = "entReportante";
+
+	private static final String LEIReportada = "LEIReportada";
+	private static final String LEIReportante = "LEIReportante";
+	
 	private static final String dtReferencia = "dtReferencia";
 	private static final String outputFile = "outputFile";
 	
@@ -108,6 +112,8 @@ public class BlockCreateXML extends Block{
 
 		String entReportadaVar = null;
 		String entReportanteVar = null;
+		String LEIReportadaVar = null;
+		String LEIReportanteVar = null;
 		String dtReferenciaVar = null;
 		String outputFileVar = null;
 		String ano = null;
@@ -124,6 +130,8 @@ public class BlockCreateXML extends Block{
 			outputFileVar = this.getAttribute(outputFile);
 			entReportadaVar = procData.transform(userInfo, this.getAttribute(entReportada));
 			entReportanteVar = procData.transform(userInfo, this.getAttribute(entReportante));
+			LEIReportadaVar = procData.transform(userInfo, this.getAttribute(LEIReportada));
+			LEIReportanteVar = procData.transform(userInfo, this.getAttribute(LEIReportante));
 			dtReferenciaVar = procData.transform(userInfo, this.getAttribute(dtReferencia));
 			ano = procData.transform(userInfo, this.getAttribute(ANO));
 			mes = procData.transform(userInfo, this.getAttribute(MES));
@@ -174,8 +182,10 @@ public class BlockCreateXML extends Block{
 		    	//header
 			    Element header = doc.createElement("Header");
 			    rootElement.appendChild(header);
-			    createElement("EntidadeReportante", formatStringSize(entReportanteVar), header, doc);
-			    createElement("EntidadeReportada", formatStringSize(entReportadaVar), header, doc);
+			    createElement("EntidadeReportante", formatStringSize4(entReportanteVar), header, doc);
+			    createElement("LEIReportante", LEIReportanteVar, header, doc);
+			    createElement("EntidadeReportada", formatStringSize4(entReportadaVar), header, doc);
+			    createElement("LEIReportada", LEIReportadaVar, header, doc);
 			    createElement("DataReferencia", ""+dtReferenciaDate, header, doc);
 			    createElement("VersaoXSD", "2.00", header, doc);
 			    
@@ -218,7 +228,7 @@ public class BlockCreateXML extends Block{
 				for (int i = 0; i < quadro3Values.size(); i++) {
 				    Element quadro3 = doc.createElement("Quadro3");
 				    body.appendChild(quadro3);
-				    createElement("CodigoIC", formatStringSize((String) quadro3Values.get(i).get("codigoic")), quadro3, doc);
+				    createElement("CodigoIC", formatStringSize4((String) quadro3Values.get(i).get("codigoic")), quadro3, doc);
 				    createElement("IdContrato", (String) quadro3Values.get(i).get("nic"), quadro3, doc);
 				    createElement("IdContratoCRC", (String) quadro3Values.get(i).get("nic"), quadro3, doc);
 				    createElement("IdInstrumentoCRC", (String) quadro3Values.get(i).get("nic"), quadro3, doc);
@@ -252,7 +262,7 @@ public class BlockCreateXML extends Block{
 				for (int i = 0; i < quadro4Values.size(); i++) {
 				    Element quadro4 = doc.createElement("Quadro4");
 				    body.appendChild(quadro4);
-				    createElement("CodigoIC", formatStringSize((String) quadro4Values.get(i).get("codigoic")), quadro4, doc);
+				    createElement("CodigoIC", formatStringSize4((String) quadro4Values.get(i).get("codigoic")), quadro4, doc);
 				    createElement("IdContrato", (String) quadro4Values.get(i).get("nic"), quadro4, doc);
 				    createElement("IdContratoCRC", (String) quadro4Values.get(i).get("nic"), quadro4, doc);
 				    createElement("IdInstrumentoCRC", (String) quadro4Values.get(i).get("nic"), quadro4, doc);
