@@ -78,17 +78,19 @@ public class FormTableThumbnail implements DataTypeInterface, ArrayTableProcessi
 	      ProcessData procData,
 	      FormService service,
 	      int fieldNumber, 
+	      boolean isOutput, 
 	      String name,
 	      ProcessVariableValue value, 
 	      Properties props,
 	      ServletUtils response) {
-	    return formatRow(userInfo, procData, service, fieldNumber, -1, name, -1, value, props, response);
+	    return formatRow(userInfo, procData, service, fieldNumber, isOutput, -1, name, -1, value, props, response);
 	  }
 	  
 	  public String formatRow(UserInfoInterface userInfo, 
 	      ProcessData procData,
 	      FormService service,
 	      int fieldNumber,
+	      boolean isOutput, 
 	      int varIndex,
 	      String name,
 	      int row,

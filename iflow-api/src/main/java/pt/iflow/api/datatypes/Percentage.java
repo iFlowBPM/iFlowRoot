@@ -1,9 +1,13 @@
 package pt.iflow.api.datatypes;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 import java.util.Map;
 
 import pt.iflow.api.datatypes.msg.Messages;
 import pt.iflow.api.processdata.ProcessData;
+import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.UserInfoInterface;
 
 /**
@@ -18,7 +22,8 @@ import pt.iflow.api.utils.UserInfoInterface;
 public class Percentage extends NumericDataType implements DataTypeInterface {
 
   public Percentage() {
-    this.setLocale(null);
+	numberPattern = Const.sDEF_PERCENTAGE_FORMAT;
+	this.setLocale(null);
   }
   
   public void init(UserInfoInterface userInfo, ProcessData procData, Map<String, String> extraProps, Map<String, Object> deps) {
@@ -55,7 +60,7 @@ public class Percentage extends NumericDataType implements DataTypeInterface {
   }
   
   public String formatToHtml (Object input, Object[] aoaArgs) {
-    return formatNumber(input, aoaArgs)+getFormSuffix();
+    return formatNumber(input, aoaArgs, true)+getFormSuffix();
   }
 
 }

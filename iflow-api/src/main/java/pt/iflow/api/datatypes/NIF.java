@@ -112,13 +112,13 @@ public class NIF implements DataTypeInterface {
   }
 
   public String format(UserInfoInterface userInfo, ProcessData procData, FormService service, 
-      int fieldNumber, String name,
+      int fieldNumber, boolean isOutput, String name,
       ProcessVariableValue value, Properties props, ServletUtils response) {
-    return formatRow(userInfo, procData, service, fieldNumber, -1, name, -1, value, props, response);
+    return formatRow(userInfo, procData, service, fieldNumber, isOutput, -1, name, -1, value, props, response);
   }
 
   public String formatRow(UserInfoInterface userInfo, ProcessData procData, FormService service, 
-      int fieldNumber, int varIndex, String name,
+      int fieldNumber, boolean isOutput, int varIndex, String name,
       int row, ProcessVariableValue value, Properties props, ServletUtils response) {
     return value != null ? value.format() : ""; 
   }
@@ -129,10 +129,11 @@ public class NIF implements DataTypeInterface {
   public String parseAndSet(UserInfoInterface userInfo, 
       ProcessData procData, String name, FormData formData, Properties props,
       boolean ignoreValidation, StringBuilder logBuffer) {
-    
+    boolean temp_req = FormUtils.checkRequiredField(userInfo, procData, props);
     String value = parseValue(name, formData);
+    if(!ignoreValidation && (value == null || value.isEmpty()) && !temp_req ) return null;
     if (!ignoreValidation && 
-        FormUtils.checkRequiredField(userInfo, procData, props) &&
+    		temp_req &&
         value == null) {
       return userInfo.getMessages().getString("Datatype.required_field");
     }
@@ -145,7 +146,7 @@ public class NIF implements DataTypeInterface {
     logBuffer.append("Set '" + name + "' with '" + value + "';");
     debug(userInfo, "parseAndSet", "Set '" + name + "' with '" + value + "'");
 
-    if (!ignoreValidation && !isValid(value)) {
+    if (!ignoreValidation && !isValid(value) ) {
       return userInfo.getMessages().getString("Datatype.invalid_value");
     }       
 

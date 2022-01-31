@@ -61,5 +61,6 @@ public class Integer extends NumericDataType implements DataTypeInterface {
     if(null == locale) locale = Locale.getDefault();
     this.locale = locale;
     this.fmt = NumberFormat.getIntegerInstance(this.locale);
+    this.fmtInput = NumberFormat.getIntegerInstance(this.locale);
   }
 }

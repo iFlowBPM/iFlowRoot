@@ -157,17 +157,19 @@ public class FormTableText implements DataTypeInterface, ArrayTableProcessingCap
       ProcessData procData,
       FormService service,
       int fieldNumber, 
+      boolean isOutput, 
       String name,
       ProcessVariableValue value, 
       Properties props,
       ServletUtils response) {
-    return formatRow(userInfo, procData, service, fieldNumber, -1, name, -1, value, props, response);
+    return formatRow(userInfo, procData, service, fieldNumber, isOutput, -1, name, -1, value, props, response);
   }
   
   public String formatRow(UserInfoInterface userInfo, 
       ProcessData procData,
       FormService service,
       int fieldNumber,
+      boolean isOutput, 
       int varIndex,
       String name,
       int row,
@@ -182,7 +184,7 @@ public class FormTableText implements DataTypeInterface, ArrayTableProcessingCap
 
     String ret = null;
     if (_dti != null) {
-      ret = _dti.formatRow(userInfo, procData, service, fieldNumber, varIndex, name, row, value, props, response);
+      ret = _dti.formatRow(userInfo, procData, service, fieldNumber, isOutput, varIndex, name, row, value, props, response);
     }
     else {
       ret = value != null ? value.format() : "";

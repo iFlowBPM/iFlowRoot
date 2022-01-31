@@ -107,12 +107,12 @@ public class FormTableDialogBox implements DataTypeInterface, ArrayTableProcessi
     return null;
   }
 
-  public String format(UserInfoInterface userInfo, ProcessData procData, FormService service, int fieldNumber, String name,
+  public String format(UserInfoInterface userInfo, ProcessData procData, FormService service, int fieldNumber, boolean isOutput, String name,
       ProcessVariableValue value, Properties props, ServletUtils response) {
-    return formatRow(userInfo, procData, service, fieldNumber, -1, name, -1, value, props, response);
+    return formatRow(userInfo, procData, service, fieldNumber, isOutput, -1, name, -1, value, props, response);
   }
 
-  public String formatRow(UserInfoInterface userInfo, ProcessData procData, FormService service, int fieldNumber, int varIndex,
+  public String formatRow(UserInfoInterface userInfo, ProcessData procData, FormService service, int fieldNumber, boolean isOutput, int varIndex,
       String name, int row, ProcessVariableValue value, Properties props, ServletUtils response) {
     return genXml(userInfo, (value != null ? value.format() : ""), (row < 0 ? name : FormUtils.getListKey(name, row)),
         _sDialogType, _sDialogWidth, _sDialogHeight);

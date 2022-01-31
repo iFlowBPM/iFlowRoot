@@ -15,6 +15,7 @@ import pt.iflow.api.datatypes.msg.Messages;
 import pt.iflow.api.processdata.ProcessData;
 import pt.iflow.api.processdata.ProcessListVariable;
 import pt.iflow.api.processdata.ProcessVariableValue;
+import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.ServletUtils;
 import pt.iflow.api.utils.UserInfoInterface;
@@ -22,24 +23,28 @@ import pt.iknow.utils.html.FormData;
 
 public abstract class NumericDataType implements DataTypeInterface {
 
-  protected NumberFormat fmt;
+  protected NumberFormat fmt; //for data output
+  //for data input - consider . and , as decimal separators, do not use thousands separator
+  protected NumberFormat fmtInput; 
+  
   protected Locale locale;
+  protected String numberPattern = Const.sDEF_FLOAT_FORMAT;
  
   public String format(UserInfoInterface userInfo, ProcessData procData, FormService service, 
-      int fieldNumber, String name,
+      int fieldNumber, boolean isOutput, String name,
       ProcessVariableValue value, Properties props, ServletUtils response) {
-    return formatRow(userInfo, procData, service, fieldNumber, -1, name, -1, value, props, response);
+    return formatRow(userInfo, procData, service, fieldNumber, isOutput, -1, name, -1, value, props, response);
   }
 
   public String formatRow(UserInfoInterface userInfo, ProcessData procData, FormService service, 
-      int fieldNumber, int varIndex, String name,
+      int fieldNumber, boolean isOutput, int varIndex, String name,
       int row, ProcessVariableValue value, Properties props, ServletUtils response) {
 
     String propPrefix = varIndex < 0 || row < 0 ? "" : varIndex + "_" + row + "_";
     props.setProperty(propPrefix + "prefix", getFormPrefix());
     props.setProperty(propPrefix + "suffix", getFormSuffix());
 
-    return formatNumber(value == null ? null : value.getValue(), null);
+    return formatNumber(value == null ? null : value.getValue(), null, isOutput);
   }
   
   public String formatToForm(Object input) {
@@ -47,7 +52,7 @@ public abstract class NumericDataType implements DataTypeInterface {
   }
 
   public String formatToForm(Object input, Object[] aoaArgs) {
-    return formatNumber(input, aoaArgs);
+    return formatNumber(input, aoaArgs, true);
   }
 
   public String formatToHtml(Object input) {
@@ -55,14 +60,14 @@ public abstract class NumericDataType implements DataTypeInterface {
   }
 
   public String formatToHtml (Object input, Object[] aoaArgs) {
-    return formatNumber(input, aoaArgs);
+    return formatNumber(input, aoaArgs, true);
   }
 
-  protected String formatNumber (Object input, Object[] aoaArgs) {
+  protected String formatNumber (Object input, Object[] aoaArgs, boolean isOutput) {
 
     // Integer, Float, Double etc are all java.lang.Number instances
     if (input instanceof java.lang.Number) {
-      return internalFormat((java.lang.Number)input);
+      return internalFormat((java.lang.Number)input, isOutput);
     }
     else if (input instanceof java.lang.String) {
       // return value as is...
@@ -82,27 +87,17 @@ public abstract class NumericDataType implements DataTypeInterface {
       Logger.error("", this, "formatNumber", "Unable to format number '" + input + "'.");
     }
 
-    return internalFormat(d);
+    return internalFormat(d, isOutput);
   }
 
-  private String internalFormat(Number num) {
+  private String internalFormat(Number num, boolean isOutput) {
     String s = ""; //$NON-NLS-1$
 
     if (num != null && !java.lang.Double.isNaN(num.doubleValue())) {
-//      if (num instanceof java.lang.Integer || num instanceof java.lang.Long) {
-        s = fmt.format(num);
-//      }
-//      else {        
-//        java.lang.Double d = num.doubleValue();
-//        if (!d.isNaN()) {
-//          if (java.lang.Double.compare(d.doubleValue(), 0) == 0) { //$NON-NLS-1$
-//            s = "0"; //$NON-NLS-1$
-//          }
-//          else {
-//            s = fmt.format(d);
-//          }
-//        }
-//      }
+    	if (isOutput)
+    		s = fmt.format(num);// num.toString();
+    	else
+    		s = fmtInput.format(num);// num.toString();
     }
     return s;    
   }
@@ -122,21 +117,25 @@ public abstract class NumericDataType implements DataTypeInterface {
   public double getValue(Object input) {
     double d = java.lang.Double.NaN;
     try {
-      d = fmt.parse((String)input).doubleValue();
+      d = fmtInput.parse(((String)input).replace(',','.')).doubleValue();
     }
     catch (Exception nfe) {
       d = java.lang.Double.NaN;
     }
     return d;
   }
-
+  
   public void setLocale(Locale locale) {
-    if(null == locale) locale = Locale.getDefault();
+    if(null == locale) locale = new Locale(Const.sDEF_NUMBER_LOCALE);
     this.locale = locale;
-    this.fmt = new DecimalFormat("#,##0.000", new DecimalFormatSymbols(this.locale));
+    // set format for data output
+    this.fmt = new DecimalFormat(numberPattern, new DecimalFormatSymbols(this.locale));
+    
+    // set format for data input. ALWAYS consider . and , as valid decimal separators
+    this.fmtInput = new DecimalFormat(numberPattern, new DecimalFormatSymbols(Locale.ENGLISH));
+    this.fmtInput.setGroupingUsed(false);
   }
 
-  
   public String parseAndSet(UserInfoInterface userInfo, 
       ProcessData procData, String name, FormData formData, Properties props, boolean ignoreValidation, StringBuilder logBuffer) {
     try {
@@ -197,7 +196,7 @@ public abstract class NumericDataType implements DataTypeInterface {
     if (formData.hasParameter(name)) {      
       String formValue = formData.getParameter(name);
       if (StringUtils.isNotEmpty(formValue)) {
-        value =  fmt.parse(formValue);
+        value =  fmtInput.parse(formValue.replace(',', '.'));
       }
     }
     
@@ -213,9 +212,9 @@ public abstract class NumericDataType implements DataTypeInterface {
   public String validateFormData (Object input, Object[] aoaArgs) {
     String error = null;
     try {
-      fmt.parse((String)input);
+      fmtInput.parse(((String)input).replace(',', '.'));
     }
-    catch (ParseException nfe) {
+    catch (Exception nfe) {
       // error = Messages.getString(validateErrorMsg()); //$NON-NLS-1$
     }
     return error;
@@ -230,5 +229,6 @@ public abstract class NumericDataType implements DataTypeInterface {
     if (Logger.isDebugEnabled()) {
       Logger.debug(userInfo.getUtilizador(), this, method, message);
     }
-  }
+  }  
+  
 }

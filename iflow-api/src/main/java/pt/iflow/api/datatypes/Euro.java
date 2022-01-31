@@ -7,6 +7,7 @@ import java.util.Map;
 
 import pt.iflow.api.datatypes.msg.Messages;
 import pt.iflow.api.processdata.ProcessData;
+import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.UserInfoInterface;
 
 /**
@@ -23,6 +24,7 @@ public class Euro extends NumericDataType implements DataTypeInterface {
   private boolean hideSufix = false;
 
   public Euro() {
+	numberPattern = Const.sDEF_CURRENCY_FORMAT;
     this.setLocale(null);
   }
 
@@ -72,14 +74,7 @@ public class Euro extends NumericDataType implements DataTypeInterface {
       }
       catch (Exception e) {}
     }
-    return formatNumber(myinput, aoaArgs)+getFormSuffix();
-  }
-
-  
-  public void setLocale(Locale locale) {
-    if(null == locale) locale = Locale.getDefault();
-    this.locale = locale;
-    this.fmt = new DecimalFormat("#,##0.00", new DecimalFormatSymbols(this.locale));
+    return formatNumber(myinput, aoaArgs, true)+getFormSuffix();
   }
 
 }

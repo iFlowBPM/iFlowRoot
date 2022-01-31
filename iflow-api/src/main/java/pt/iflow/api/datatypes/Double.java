@@ -60,28 +60,4 @@ public class Double extends NumericDataType implements DataTypeInterface {
     return "Double.validation_error"; //$NON-NLS-1$
   }
 
-//  protected String formatNumber (Object input, Object[] aoaArgs) {
-//    java.lang.Double d = new java.lang.Double(java.lang.Double.NaN);
-//    try {
-//      String var = (String)input;
-//      var = var.replace(",", "");
-//      d = new java.lang.Double(var);
-//    }
-//    catch (Exception e) {
-//      Logger.error("", this, "formatNumber", "Unable to format number '" + input + "'.");
-//    }
-//
-//    String s = ""; //$NON-NLS-1$
-//
-//    if (!d.isNaN()) {
-//      if (java.lang.Double.compare(d.doubleValue(), 0) == 0) { //$NON-NLS-1$
-//        s = "0"; //$NON-NLS-1$
-//      }
-//      else {
-//        s = fmt.format(d);
-//      }
-//    }
-//    return s;
-//  }
-
 }
