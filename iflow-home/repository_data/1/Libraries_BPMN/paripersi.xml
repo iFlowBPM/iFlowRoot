@@ -12,6 +12,11 @@
     <XmlBlock>
 	    <class>BlockCreateXML</class>
 	    <XmlAttribute>
+      		<name>JNDIName</name>
+      		<description>JNDIName (Datasource)</description>
+      		<value />
+    	</XmlAttribute>
+	    <XmlAttribute>
 			<name>ano</name>
 			<description>Ano</description>
 			<value />

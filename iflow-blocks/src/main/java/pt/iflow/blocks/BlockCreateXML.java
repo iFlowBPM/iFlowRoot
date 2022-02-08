@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -22,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.sql.DataSource;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLOutputFactory;
@@ -37,7 +37,6 @@ import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import pt.iflow.api.utils.Logger;
 import pt.iflow.api.blocks.Block;
 import pt.iflow.api.blocks.Port;
 import pt.iflow.api.core.BeanFactory;
@@ -47,13 +46,17 @@ import pt.iflow.api.documents.DocumentDataStream;
 import pt.iflow.api.documents.Documents;
 import pt.iflow.api.processdata.ProcessData;
 import pt.iflow.api.processdata.ProcessListVariable;
+import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.UserInfoInterface;
+import pt.iflow.api.utils.Utils;
 import pt.iknow.utils.StringUtilities;
 
 
 
 public class BlockCreateXML extends Block{
 	public Port portIn, portSuccess, portEmpty, portError;
+	
+	public static final String sDATASOURCE = "JNDIName";
 
 	private static final String ANO = "ano";
 	private static final String MES = "mes";
@@ -126,6 +129,23 @@ public class BlockCreateXML extends Block{
 		Connection connection = null;
 		String url = "jdbc:mysql://168.63.58.132:3306/paripersi";
 		
+		
+	    DataSource ds = null;
+
+	    String sDataSource = null;
+		
+	    try {
+	    	sDataSource = this.getAttribute(BlockSQL.sDATASOURCE);
+	        if (StringUtils.isNotEmpty(sDataSource)) {
+	          sDataSource = procData.transform(userInfo, sDataSource, true);
+	        }
+	        if (StringUtils.isEmpty(sDataSource)) sDataSource = null;
+	    }
+	      catch (Exception e) {
+	        sDataSource = null;
+	    }
+
+		
 		try {
 			outputFileVar = this.getAttribute(outputFile);
 			entReportadaVar = procData.transform(userInfo, this.getAttribute(entReportada));
@@ -142,13 +162,10 @@ public class BlockCreateXML extends Block{
 			dtReferenciaTitle = datetime.format(DateTimeFormatter.ofPattern("yyyyMM"));
 		} catch (Exception e1) {
 			Logger.error(login, this, "after", procData.getSignature() + "error transforming attributes", e1);
-		}		
-		try{
-			connection = DriverManager.getConnection(url, "iflow", "iflow");
-		} catch(Exception e){
-			Logger.error(login, this, "after", procData.getSignature() + "error establishing connection");
-			outPort = portEmpty;
-		}
+		}	
+		
+		
+		
 		if (StringUtilities.isEmpty(outputFileVar) || StringUtilities.isEmpty(entReportadaVar) 
 				|| StringUtilities.isEmpty(entReportanteVar) || StringUtilities.isEmpty(dtReferenciaVar)
 				|| StringUtilities.isEmpty(ano) || StringUtilities.isEmpty(mes)) {
@@ -156,7 +173,23 @@ public class BlockCreateXML extends Block{
 			outPort = portEmpty;
 		} 
 			
+
 		try {
+
+			try{			
+		        ds = Utils.getUserDataSource(sDataSource);
+		        if (null == ds) {
+		          outPort = portError;
+		          Logger.error(login, this, "after", procData.getSignature() + "Unable to get user datasource " + sDataSource);
+		        } else {
+		          connection = ds.getConnection();
+		        }
+			} catch(Exception e){
+				Logger.error(login, this, "after", procData.getSignature() + "error establishing connection");
+				outPort = portError;
+				DatabaseInterface.closeResources(connection);
+			}
+
 			
 			XMLOutputFactory f = XMLOutputFactory.newInstance();
 			File tmpFile = File.createTempFile(this.getClass().getName(), ".xml");
@@ -297,7 +330,7 @@ public class BlockCreateXML extends Block{
 				for (int i = 0; i < quadro5AValues.size(); i++) {
 				    Element quadro5A = doc.createElement("Quadro5A");
 				    body.appendChild(quadro5A);
-				    createElement("CodigoIC", formatStringSize((String) quadro5AValues.get(i).get("codigoic")), quadro5A, doc);
+				    createElement("CodigoIC", formatStringSize4((String) quadro5AValues.get(i).get("codigoic")), quadro5A, doc);
 				    createElement("IdContrato", (String) quadro5AValues.get(i).get("nic"), quadro5A, doc);
 				    createElement("IdContratoCRC", (String) quadro5AValues.get(i).get("nic"), quadro5A, doc);
 				    createElement("IdInstrumentoCRC", (String) quadro5AValues.get(i).get("nic"), quadro5A, doc);
@@ -320,7 +353,7 @@ public class BlockCreateXML extends Block{
 				for (int i = 0; i < quadro5bValues.size(); i++) {
 				    Element quadro5B = doc.createElement("Quadro5B");
 				    body.appendChild(quadro5B);
-				    createElement("CodigoIC", formatStringSize((String) quadro5bValues.get(i).get("codigoic")), quadro5B, doc);
+				    createElement("CodigoIC", formatStringSize4((String) quadro5bValues.get(i).get("codigoic")), quadro5B, doc);
 				    createElement("IdContrato", (String) quadro5bValues.get(i).get("nic"), quadro5B, doc);
 				    createElement("IdContratoCRC", (String) quadro5bValues.get(i).get("nic"), quadro5B, doc);
 				    createElement("IdInstrumentoCRC", (String) quadro5bValues.get(i).get("nic"), quadro5B, doc);
@@ -338,7 +371,7 @@ public class BlockCreateXML extends Block{
 				for (int i = 0; i < quadro6Values.size(); i++) {
 				    Element quadro6 = doc.createElement("Quadro6");
 				    body.appendChild(quadro6);
-				    createElement("CodigoIC", formatStringSize((String) quadro6Values.get(i).get("codigoic")), quadro6, doc);
+				    createElement("CodigoIC", formatStringSize4((String) quadro6Values.get(i).get("codigoic")), quadro6, doc);
 				    createElement("IdContratoOriginal", (String) quadro6Values.get(i).get("nicoriginal"), quadro6, doc);
 				    createElement("IdContrato", (String) quadro6Values.get(i).get("nic"), quadro6, doc);
 				    createElement("IdContratoOriginalCRC", (String) quadro6Values.get(i).get("nicoriginal"), quadro6, doc);
@@ -367,7 +400,7 @@ public class BlockCreateXML extends Block{
 				for (int i = 0; i < quadro7Values.size(); i++) {
 				    Element quadro7 = doc.createElement("Quadro7");
 				    body.appendChild(quadro7);
-				    createElement("CodigoIC", formatStringSize((String) quadro7Values.get(i).get("codigoic")), quadro7, doc);
+				    createElement("CodigoIC", formatStringSize4((String) quadro7Values.get(i).get("codigoic")), quadro7, doc);
 				    createElement("IdContratoOriginal", (String) quadro7Values.get(i).get("nicoriginal"), quadro7, doc);
 				    createElement("IdContrato", (String) quadro7Values.get(i).get("nic"), quadro7, doc);
 				    createElement("IdContratoOriginalCRC", (String) quadro7Values.get(i).get("nicoriginal"), quadro7, doc);
@@ -396,7 +429,7 @@ public class BlockCreateXML extends Block{
 				for (int i = 0; i < quadro8Values.size(); i++) {
 				    Element quadro8 = doc.createElement("Quadro8");
 				    body.appendChild(quadro8);
-				    createElement("CodigoIC", formatStringSize((String) quadro8Values.get(i).get("codigoic")), quadro8, doc);
+				    createElement("CodigoIC", formatStringSize4((String) quadro8Values.get(i).get("codigoic")), quadro8, doc);
 				    createElement("IdContrato", (String) quadro8Values.get(i).get("nic"), quadro8, doc);
 				    createElement("IdContratoCRC", (String) quadro8Values.get(i).get("nic"), quadro8, doc);
 				    createElement("IdInstrumentoCRC", (String) quadro8Values.get(i).get("nic"), quadro8, doc);
@@ -413,7 +446,7 @@ public class BlockCreateXML extends Block{
 				for (int i = 0; i < quadro9Values.size(); i++) {
 				    Element quadro9 = doc.createElement("Quadro9");
 				    body.appendChild(quadro9);
-				    createElement("CodigoIC", formatStringSize((String) quadro9Values.get(i).get("codigoic")), quadro9, doc);
+				    createElement("CodigoIC", formatStringSize4((String) quadro9Values.get(i).get("codigoic")), quadro9, doc);
 				    createElement("IdContrato", (String) quadro9Values.get(i).get("nic"), quadro9, doc);
 				    createElement("IdContratoCRC", (String) quadro9Values.get(i).get("nic"), quadro9, doc);
 				    createElement("IdInstrumentoCRC", (String) quadro9Values.get(i).get("nic"), quadro9, doc);
@@ -442,7 +475,7 @@ public class BlockCreateXML extends Block{
 				for (int i = 0; i < quadro10Values.size(); i++) {
 				    Element quadro10 = doc.createElement("Quadro10");
 				    body.appendChild(quadro10);
-				    createElement("CodigoIC", formatStringSize((String) quadro10Values.get(i).get("codigoic")), quadro10, doc);
+				    createElement("CodigoIC", formatStringSize4((String) quadro10Values.get(i).get("codigoic")), quadro10, doc);
 				    createElement("IdContrato", (String) quadro10Values.get(i).get("nic"), quadro10, doc);
 				    createElement("IdContratoCRC", (String) quadro10Values.get(i).get("nic"), quadro10, doc);
 				    createElement("IdInstrumentoCRC", (String) quadro10Values.get(i).get("nic"), quadro10, doc);
@@ -477,7 +510,7 @@ public class BlockCreateXML extends Block{
 				for (int i = 0; i < quadro11Values.size(); i++) {
 				    Element quadro11A = doc.createElement("Quadro11A");
 				    body.appendChild(quadro11A);
-				    createElement("CodigoIC", formatStringSize((String) quadro11Values.get(i).get("codigoic")), quadro11A, doc);
+				    createElement("CodigoIC", formatStringSize4((String) quadro11Values.get(i).get("codigoic")), quadro11A, doc);
 				    createElement("IdContrato", (String) quadro11Values.get(i).get("nic"), quadro11A, doc);
 				    createElement("IdContratoCRC", (String) quadro11Values.get(i).get("nic"), quadro11A, doc);
 				    createElement("IdInstrumentoCRC", (String) quadro11Values.get(i).get("nic"), quadro11A, doc);
@@ -500,7 +533,7 @@ public class BlockCreateXML extends Block{
 				for (int i = 0; i < quadro11bValues.size(); i++) {
 				    Element quadro11B = doc.createElement("Quadro11B");
 				    body.appendChild(quadro11B);
-				    createElement("CodigoIC", formatStringSize((String) quadro11bValues.get(i).get("codigoic")), quadro11B, doc);
+				    createElement("CodigoIC", formatStringSize4((String) quadro11bValues.get(i).get("codigoic")), quadro11B, doc);
 				    createElement("IdContrato", (String) quadro11bValues.get(i).get("nic"), quadro11B, doc);
 				    createElement("IdContratoCRC", (String) quadro11bValues.get(i).get("nic"), quadro11B, doc);
 				    createElement("IdInstrumentoCRC", (String) quadro11bValues.get(i).get("nic"), quadro11B, doc);
@@ -518,7 +551,7 @@ public class BlockCreateXML extends Block{
 				for (int i = 0; i < quadro12Values.size(); i++) {
 				    Element quadro12 = doc.createElement("Quadro12");
 				    body.appendChild(quadro12);
-				    createElement("CodigoIC", formatStringSize((String) quadro12Values.get(i).get("codigoic")), quadro12, doc);
+				    createElement("CodigoIC", formatStringSize4((String) quadro12Values.get(i).get("codigoic")), quadro12, doc);
 				    createElement("IdContratoOriginal", (String) quadro12Values.get(i).get("nicoriginal"), quadro12, doc);
 				    createElement("IdContrato", (String) quadro12Values.get(i).get("nic"), quadro12, doc);
 				    createElement("IdContratoOriginalCRC", (String) quadro12Values.get(i).get("nicoriginal"), quadro12, doc);
@@ -547,7 +580,7 @@ public class BlockCreateXML extends Block{
 				for (int i = 0; i < quadro13Values.size(); i++) {
 				    Element quadro13 = doc.createElement("Quadro13");
 				    body.appendChild(quadro13);
-				    createElement("CodigoIC", formatStringSize((String) quadro13Values.get(i).get("codigoic")), quadro13, doc);
+				    createElement("CodigoIC", formatStringSize4((String) quadro13Values.get(i).get("codigoic")), quadro13, doc);
 				    createElement("IdContratoOriginal", (String) quadro13Values.get(i).get("nicoriginal"), quadro13, doc);
 				    createElement("IdContrato", (String) quadro13Values.get(i).get("nic"), quadro13, doc);
 				    createElement("IdContratoOriginalCRC", (String) quadro13Values.get(i).get("nicoriginal"), quadro13, doc);
@@ -576,7 +609,7 @@ public class BlockCreateXML extends Block{
 				for (int i = 0; i < quadro14Values.size(); i++) {
 				    Element quadro14 = doc.createElement("Quadro14");
 				    body.appendChild(quadro14);
-				    createElement("CodigoIC", formatStringSize((String) quadro14Values.get(i).get("codigoic")), quadro14, doc);
+				    createElement("CodigoIC", formatStringSize4((String) quadro14Values.get(i).get("codigoic")), quadro14, doc);
 				    createElement("IdContrato", (String) quadro14Values.get(i).get("nic"), quadro14, doc);
 				    createElement("IdContratoCRC", (String) quadro14Values.get(i).get("nic"), quadro14, doc);
 				    createElement("IdInstrumentoCRC", (String) quadro14Values.get(i).get("nic"), quadro14, doc);
@@ -777,9 +810,13 @@ public class BlockCreateXML extends Block{
 		return ""+bd;
 	}
 	
-	public String formatStringSize(String string) {
+	public String formatStringSize4(String string) {
+		return formatStringSize(string, 4);
+	}
+
+	public String formatStringSize(String string, int length) {
 		String stringStr = String.valueOf(string);
-	    while(stringStr.length()<4) {
+	    while(stringStr.length()<length) {
 	    	stringStr = "0" + stringStr;
 	    }
 	    return stringStr;
