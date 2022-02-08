@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.util.Locale;
 
 import org.apache.commons.lang.StringUtils;
@@ -67,6 +68,14 @@ public class FloatDataType extends FormattedDataType implements ProcessDataType 
 //      }
     }
     return result;
+  }
+  
+  public Object parse(String source) throws ParseException {
+    if (StringUtils.isEmpty(source))
+      return null;
+    
+    source = source.replace(",", ".");
+    return super.parse(source);
   }
 
 }

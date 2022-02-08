@@ -861,7 +861,11 @@ public class BlockFormulario extends Block implements FormOperations {
 									&& rowValue.getValue().getClass().equals(String.class))
 								rowValue.setValue(StringEscapeUtils.escapeXml(rowValue.getValue().toString()));
 
-							fieldContent = dtiMultiple.formatRow(userInfo, procData, anService, fieldNumber, fi.isOutputField(), i,
+							// jcosta 20220212: arraytables are always output, but some fields are not, namelly FormTableText - important for number formatting
+							boolean isOutput = fi.isOutputField();
+							if (dtiMultiple instanceof pt.iflow.api.datatypes.FormTableText) isOutput = false;
+							
+							fieldContent = dtiMultiple.formatRow(userInfo, procData, anService, fieldNumber, isOutput, i,
 									listVarName, row, rowValue, props, response);
 							Logger.debug(sLogin, abBlock, "generateForm", procData.getSignature() + "List formatRow("
 									+ listVarName + ")[" + row + "]=" + fieldContent);
@@ -3245,11 +3249,11 @@ public class BlockFormulario extends Block implements FormOperations {
 	private boolean extensionAccepted(UserInfoInterface userInfo, ProcessData procData, Properties props, String name) {
 		if (name == null)
 			return false;
-		String allowedExtensions = props.getProperty("file_upload_extensions");
+		String allowedExtensions = props.getProperty(FormProps.FILE_UPLOAD_EXTENSIONS);
 		if (StringUtils.isBlank(allowedExtensions))
 			return true;
 		String ext = "";
-		int pos = name.lastIndexOf('.');
+		int pos = name.lastIndexOf('.')+1;
 		if (pos > 0)
 			ext = name.substring(pos);
 		String extensions = allowedExtensions;
@@ -3263,7 +3267,7 @@ public class BlockFormulario extends Block implements FormOperations {
 			String[] exts = extensions.split(",");
 			for (String e : exts) {
 				e = e.trim();
-				if (e.equals(ext))
+				if (e.equalsIgnoreCase(ext))
 					return true;
 			}
 		} catch (Exception e) {
@@ -3276,8 +3280,8 @@ public class BlockFormulario extends Block implements FormOperations {
 	private String getFileName(UserInfoInterface userInfo, ProcessData procData, Properties props, String name) {
 		if (name == null)
 			return null;
-		String sKeepExtensions = props.getProperty("file_upload_preserve_ext");
-		String nameTemplate = props.getProperty("file_upload_rename");
+		String sKeepExtensions = props.getProperty(FormProps.FILE_UPLOAD_PRESERVE_EXT);
+		String nameTemplate = props.getProperty(FormProps.FILE_UPLOAD_RENAME);
 		if (StringUtils.isBlank(nameTemplate))
 			return name;
 		String ext = "";
