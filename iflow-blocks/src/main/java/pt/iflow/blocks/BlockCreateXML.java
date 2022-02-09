@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -127,7 +128,8 @@ public class BlockCreateXML extends Block{
 		
 		//Database Connection
 		Connection connection = null;
-		String url = "jdbc:mysql://168.63.58.132:3306/paripersi";
+		String url = "jdbc:mysql://168.63.58.132:3306/paripersi"; // BBVA
+		//String url = "jdbc:mysql://13.79.28.254/paripersi"; //WIZINK
 		
 		
 	    DataSource ds = null;
@@ -162,8 +164,7 @@ public class BlockCreateXML extends Block{
 			dtReferenciaTitle = datetime.format(DateTimeFormatter.ofPattern("yyyyMM"));
 		} catch (Exception e1) {
 			Logger.error(login, this, "after", procData.getSignature() + "error transforming attributes", e1);
-		}	
-		
+		}		
 		
 		
 		if (StringUtilities.isEmpty(outputFileVar) || StringUtilities.isEmpty(entReportadaVar) 
@@ -780,9 +781,13 @@ public class BlockCreateXML extends Block{
 			valor = (String) quadro.get(field);
 			
 			if(type.equals("Date")) {//Date
-				LocalDate datetime = LocalDate.parse(valor, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-				valor = datetime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-				return valor;	
+				if(valor.equals("00/00/0000") || valor.equals("00-00-0000")){
+					return "0000-00-00";
+				}else {
+					LocalDate datetime = LocalDate.parse(valor, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+					valor = datetime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+					return valor;	
+				}
 				
 			}else if(type.equals("DateAlt")) {
 				LocalDate datetime = LocalDate.parse(valor, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
