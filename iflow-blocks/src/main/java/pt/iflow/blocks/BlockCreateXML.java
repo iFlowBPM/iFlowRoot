@@ -131,11 +131,10 @@ public class BlockCreateXML extends Block{
 		String url = "jdbc:mysql://168.63.58.132:3306/paripersi"; // BBVA
 		//String url = "jdbc:mysql://13.79.28.254/paripersi"; //WIZINK
 		
-		
 	    DataSource ds = null;
 
 	    String sDataSource = null;
-		
+		    
 	    try {
 	    	sDataSource = this.getAttribute(BlockSQL.sDATASOURCE);
 	        if (StringUtils.isNotEmpty(sDataSource)) {
@@ -304,22 +303,40 @@ public class BlockCreateXML extends Block{
 				    createElement("MntDividaReneg", formatField(quadro4Values.get(i), "montantedivida", "String"), quadro4, doc);
 				    createElement("MntIncumpReneg", formatField(quadro4Values.get(i), "montanteactual", "String"), quadro4, doc);
 				    createElement("MntReneg", formatField(quadro4Values.get(i), "montanterenegociado", "String"), quadro4, doc);
-				    if(((String) quadro4Values.get(i).get("spread")).equals("0")) {
+				    if(((String) quadro4Values.get(i).get("spread")) != null
+				    		&& !((String) quadro4Values.get(i).get("spread")).equals("0") 
+				    		&& !((String) quadro4Values.get(i).get("spread")).equals("") 
+				    		&& !((String) quadro4Values.get(i).get("spread")).equals("0.0000000")) {
 				    	createElement("VarSpread", formatField(quadro4Values.get(i), "spread", "String"), quadro4, doc);
 				    }
-				    if(((String) quadro4Values.get(i).get("taxajuro")).equals("0")) {
+				    if(((String) quadro4Values.get(i).get("taxajuro")) != null 
+				    		&& !((String) quadro4Values.get(i).get("taxajuro")).equals("0") 
+				    		&& !((String) quadro4Values.get(i).get("taxajuro")).equals("")
+				    		&& !((String) quadro4Values.get(i).get("taxajuro")).equals("0.0000000")) {
 				    	createElement("VarTxJuro", formatField(quadro4Values.get(i), "taxajuro", "String"), quadro4, doc);
 				    }
-				    if(((String) quadro4Values.get(i).get("prazocontrato")).equals("0")) {
+				    if(((String) quadro4Values.get(i).get("prazocontrato")) != null 
+				    		&& !((String) quadro4Values.get(i).get("prazocontrato")).equals("0") 
+				    		&& !((String) quadro4Values.get(i).get("prazocontrato")).equals("")
+				    		&& !((String) quadro4Values.get(i).get("prazocontrato")).equals("0.0000000")) {
 				    	createElement("VarPrazoContrato", formatField(quadro4Values.get(i), "prazocontrato", "String"), quadro4, doc);
 				    }
-				    if(((String) quadro4Values.get(i).get("prazocarenciacap")).equals("0")) {
+				    if(((String) quadro4Values.get(i).get("prazocarenciacap")) != null 
+				    		&& !((String) quadro4Values.get(i).get("prazocarenciacap")).equals("0") 
+				    		&& !((String) quadro4Values.get(i).get("prazocarenciacap")).equals("")
+				    		&& !((String) quadro4Values.get(i).get("prazocarenciacap")).equals("0.0000000")) {
 				    	createElement("VarPrazoCarencia", formatField(quadro4Values.get(i), "prazocarenciacap", "String"), quadro4, doc);
 				    }
-				    if(((String) quadro4Values.get(i).get("prazocarenciajuros")).equals("0")) {
+				    if(((String) quadro4Values.get(i).get("prazocarenciajuros")) != null 
+				    		&& !((String) quadro4Values.get(i).get("prazocarenciajuros")).equals("0") 
+				    		&& !((String) quadro4Values.get(i).get("prazocarenciajuros")).equals("")
+				    		&& !((String) quadro4Values.get(i).get("prazocarenciajuros")).equals("0.0000000")) {
 				    	createElement("VarPrazoCarenciaCapJuros", formatField(quadro4Values.get(i), "prazocarenciajuros", "String"), quadro4, doc);
 				    }
-				    if(((String) quadro4Values.get(i).get("capitalDiferido")).equals("0")) {
+				    if(((String) quadro4Values.get(i).get("capitalDiferido")) != null 
+				    		&& !((String) quadro4Values.get(i).get("capitalDiferido")).equals("0") 
+				    		&& !((String) quadro4Values.get(i).get("capitalDiferido")).equals("")
+				    		&& !((String) quadro4Values.get(i).get("capitalDiferido")).equals("0.0000000")) {
 				    	createElement("VarDifUltPrestacao", formatField(quadro4Values.get(i), "capitalDiferido", "String"), quadro4, doc);
 				    }
 			    	createElement("VarOutras", ""+(String) quadro4Values.get(i).get("outras"), quadro4, doc);
@@ -484,22 +501,40 @@ public class BlockCreateXML extends Block{
 				    createElement("MntDividaReneg", formatField(quadro10Values.get(i), "montantedivida", "String"), quadro10, doc);
 				    createElement("MntIncumpReneg", formatField(quadro10Values.get(i), "montanteactual", "String"), quadro10, doc);
 				    createElement("MntReneg", formatField(quadro10Values.get(i), "montanterenegociado", "String"), quadro10, doc);
-				    if(((String) quadro10Values.get(i).get("spread")).equals("0")) {	
+				    if(((String) quadro10Values.get(i).get("spread")) != null
+				    		&& !((String) quadro10Values.get(i).get("spread")).equals("0") 
+				    		&& !((String) quadro10Values.get(i).get("spread")).equals("") 
+				    		&& !((String) quadro10Values.get(i).get("spread")).equals("0.0000000")) {	
 				    	createElement("VarSpread", formatField(quadro10Values.get(i), "spread", "String"), quadro10, doc);
 				    }
-				    if(((String) quadro10Values.get(i).get("taxajuro")).equals("0")) {	
+				    if(((String) quadro10Values.get(i).get("taxajuro")) != null
+				    		&& !((String) quadro10Values.get(i).get("taxajuro")).equals("0") 
+				    		&& !((String) quadro10Values.get(i).get("taxajuro")).equals("") 
+				    		&& !((String) quadro10Values.get(i).get("taxajuro")).equals("0.0000000")) {	
 				    	createElement("VarTxJuro", formatField(quadro10Values.get(i), "taxajuro", "String"), quadro10, doc);
 				    }
-				    if(((String) quadro10Values.get(i).get("prazocontrato")).equals("0")) {	
+				    if(((String) quadro10Values.get(i).get("prazocontrato")) != null
+				    		&& !((String) quadro10Values.get(i).get("prazocontrato")).equals("0") 
+				    		&& !((String) quadro10Values.get(i).get("prazocontrato")).equals("") 
+				    		&& !((String) quadro10Values.get(i).get("prazocontrato")).equals("0.0000000")) {	
 				    	createElement("VarPrazoContrato", formatField(quadro10Values.get(i), "prazocontrato", "String"), quadro10, doc);
 				    }
-				    if(((String) quadro10Values.get(i).get("prazocarenciacap")).equals("0")) {
+				    if(((String) quadro10Values.get(i).get("prazocarenciacap")) != null
+				    		&& !((String) quadro10Values.get(i).get("prazocarenciacap")).equals("0") 
+				    		&& !((String) quadro10Values.get(i).get("prazocarenciacap")).equals("") 
+				    		&& !((String) quadro10Values.get(i).get("prazocarenciacap")).equals("0.0000000")) {
 				    	createElement("VarPrazoCarencia", formatField(quadro10Values.get(i), "prazocarenciacap", "String"), quadro10, doc);
 				    }
-				    if(((String) quadro10Values.get(i).get("prazocarenciajuros")).equals("0")) {
+				    if(((String) quadro10Values.get(i).get("prazocarenciajuros")) != null
+				    		&& !((String) quadro10Values.get(i).get("prazocarenciajuros")).equals("0") 
+				    		&& !((String) quadro10Values.get(i).get("prazocarenciajuros")).equals("") 
+				    		&& !((String) quadro10Values.get(i).get("prazocarenciajuros")).equals("0.0000000")) {
 				    	createElement("VarPrazoCarenciaCapJuros", formatField(quadro10Values.get(i), "prazocarenciajuros", "String"), quadro10, doc);
 				    }
-			    	if(((String) quadro10Values.get(i).get("taxajuro")).equals("0")) {	
+			    	if(((String) quadro10Values.get(i).get("capitalDiferido")) != null
+				    		&& !((String) quadro10Values.get(i).get("capitalDiferido")).equals("0") 
+				    		&& !((String) quadro10Values.get(i).get("capitalDiferido")).equals("") 
+				    		&& !((String) quadro10Values.get(i).get("capitalDiferido")).equals("0.0000000")) {	
 				    	createElement("VarDifUltPrestacao", formatField(quadro10Values.get(i), "capitalDiferido", "String"), quadro10, doc);
 			    	}
 				    createElement("VarOutras", ""+(String) quadro10Values.get(i).get("outras"), quadro10, doc);
