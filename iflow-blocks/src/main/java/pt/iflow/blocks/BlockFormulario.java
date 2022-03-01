@@ -69,7 +69,7 @@ import pt.iflow.api.utils.DataSetVariables;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.NameValuePair;
 import pt.iflow.api.utils.ServletUtils;
-import pt.iflow.api.utils.Translator;
+import pt.iflow.api.utils.Setup;
 import pt.iflow.api.utils.UserInfoInterface;
 import pt.iflow.api.utils.UserSettings;
 import pt.iflow.api.utils.Utils;
@@ -338,8 +338,7 @@ public class BlockFormulario extends Block implements FormOperations {
 		final int pid = procData.getPid();
 		final int subpid = procData.getSubPid();
 		int level = 0;
-		UserSettings us = userInfo.getUserSettings();
-		Translator translator= new Translator(us.getLocale(), userInfo);
+
 		
 		final String sLogin = userInfo.getUtilizador();
 		try {
@@ -1024,14 +1023,6 @@ public class BlockFormulario extends Block implements FormOperations {
 					submitOnBlur = procData.transform(userInfo, submitOnBlur);
 					props.setProperty(FormProps.TEXT_SUBMIT_ON_BLUR, submitOnBlur);
 
-				} else if (stmp.endsWith("form.CheckBox")) {
-					String submitOnBlur = props.getProperty(FormProps.CHECKBOX_SUBMIT_ON_BLUR);
-					if (StringUtils.isBlank(submitOnBlur)) {
-						submitOnBlur = "false";
-					}
-					submitOnBlur = procData.transform(userInfo, submitOnBlur);
-					props.setProperty(FormProps.CHECKBOX_SUBMIT_ON_BLUR, submitOnBlur);
-
 				} else if (stmp.endsWith("form.File")) {
 					String onclick = "javascript:if (this.checked) { return confirm('"
 							+ userInfo.getMessages().getString("BlockFormulario.file.delete.confirmation") + "'); }";
@@ -1063,14 +1054,6 @@ public class BlockFormulario extends Block implements FormOperations {
 							ahmHiddenFields.get("_tabholder_selected" + props.getProperty("fieldid")));
 
 				// now get xml from field object
-				
-				// Translate
-				List<String> elementsToTranslate = new ArrayList<String>();
-				elementsToTranslate.add("text");
-				elementsToTranslate.add(FormProps.sMACROTITLE);
-				elementsToTranslate.add(FormProps.sTITLE);
-				props=translator.translateMultipleElements(props,elementsToTranslate);
-
 				stmp = fi.getXML(props);
 				if (stmp != null) {
 					sbXml.append(stmp);
@@ -1108,8 +1091,6 @@ public class BlockFormulario extends Block implements FormOperations {
 					String operation = "";
 					String buttonFormName = BlockFormulario.getButtonFormId(formButton);
 					
-					if(text!=null) {text=translator.getString(text);}
-
 					String showCond = formButton.getAttribute(FormButton.ATTR_SHOW_COND);
 					if (StringUtils.isNotEmpty(showCond)) {
 						useIt = false;
@@ -1302,7 +1283,6 @@ public class BlockFormulario extends Block implements FormOperations {
 			// Logger.debug(sLogin,abBlock,"generateForm","[" + flowid + "," +
 			// pid + "," + subpid + "] " +"xml=" + sbXml.toString());
 
-			translator.addMissingKeys(userInfo);
 			if (anService == FormService.EXPORT) {
 				// return xml
 				retObj = sbXml.toString();
@@ -2463,7 +2443,8 @@ public class BlockFormulario extends Block implements FormOperations {
 									// IE
 									String fileName = ffFile.getFileName().replace('\\', '/').replaceAll("[^/]*/", "");
 									// process file name
-									if (extensionAccepted(userInfo, pdProcData, props, fileName)) {
+									if (extensionAccepted(userInfo, pdProcData, props, fileName)
+											&& validateMagicNumber(userInfo, pdProcData, props, ffFile.getData())) {
 										fileName = getFileName(userInfo, pdProcData, props, fileName);
 
 										Document doc = new DocumentData(nDocId, fileName, ffFile.getData(),
@@ -2506,7 +2487,8 @@ public class BlockFormulario extends Block implements FormOperations {
 								}
 								// [FORM FIELD FILE VALIDATION] END
 
-								else if (extensionAccepted(userInfo, pdProcData, props, fileName)) {
+								else if (extensionAccepted(userInfo, pdProcData, props, fileName)
+										&& validateMagicNumber(userInfo, pdProcData, props, ffFile.getData())) {
 									fileName = getFileName(userInfo, pdProcData, props, fileName);
 
 									Document doc = new DocumentData(fileName, ffFile.getData());
@@ -3276,6 +3258,7 @@ public class BlockFormulario extends Block implements FormOperations {
 		}
 		return false;
 	}
+	
 
 	private String getFileName(UserInfoInterface userInfo, ProcessData procData, Properties props, String name) {
 		if (name == null)
@@ -3315,5 +3298,59 @@ public class BlockFormulario extends Block implements FormOperations {
 		} else {
 			return sJSP;
 		}
+	}
+	
+	private boolean validateMagicNumber(UserInfoInterface userInfo, ProcessData procData, Properties props, byte[] content) {
+				
+		String allowedExtensions = Setup.getProperty("FILE_UPLOAD_MAGIC_NUMBERS");
+		if (StringUtils.isBlank(allowedExtensions)) {
+			return true;
+		}
+		
+		try {
+			String[] exts = allowedExtensions.split(",");
+			for (String e : exts) {
+				e = e.trim();
+				byte[] prefix = hexStringToByteArray(e);
+				if(startsWith(content, prefix)) {
+					return true;
+				}
+			}
+		} catch (Exception e) {
+			Logger.warning(userInfo.getUtilizador(), this, "extensionAccepted", "Error comparing allowed extensions",
+					e);
+		}
+		return false;
+	}
+	
+	public static boolean startsWith(byte[] array, byte[] prefix) {
+        if (array == prefix) {
+            return true;
+        }
+        if (array == null || prefix == null) {
+            return false;
+        }
+        int prefixLength = prefix.length;
+
+        if (prefix.length > array.length) {
+            return false;
+        }
+
+        for (int i = 0; i < prefixLength; i++) {
+            if (array[i] != prefix[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+	
+	public static byte[] hexStringToByteArray(String s) {
+	    int len = s.length();
+	    byte[] data = new byte[len / 2];
+	    for (int i = 0; i < len; i += 2) {
+	        data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
+	                             + Character.digit(s.charAt(i+1), 16));
+	    }
+	    return data;
 	}
 }
