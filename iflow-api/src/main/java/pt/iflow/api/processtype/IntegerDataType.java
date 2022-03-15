@@ -14,15 +14,15 @@ public class IntegerDataType extends FormattedDataType implements ProcessDataTyp
   protected static final NumberFormat integerInstance = new DecimalFormat(Const.sDEF_INT_FORMAT);
 
   public IntegerDataType() {
-    this(getFormat(null));
+    this(getFormat(null),getFormat(null));
   }
 
-  public IntegerDataType(NumberFormat numberFormat) {
-    super(numberFormat, rawFormatter);
+  public IntegerDataType(NumberFormat numberFormat, NumberFormat inputNumberFormat) {
+    super(numberFormat, inputNumberFormat, rawFormatter);
   }
 
-  public IntegerDataType(String format) {
-    this(getFormat(format));
+  public IntegerDataType(String format, String inputFormat) {
+    this(getFormat(format), getFormat(inputFormat));
   }
 
   private static NumberFormat getFormat(String format) {
@@ -32,7 +32,7 @@ public class IntegerDataType extends FormattedDataType implements ProcessDataTyp
     fmt.setParseIntegerOnly(true);
     return fmt;
   }
-  
+	  
   @Override
   public Object convertFrom(String rawvalue) throws ParseException {
     Object obj = super.convertFrom(rawvalue);

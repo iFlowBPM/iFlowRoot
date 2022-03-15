@@ -24,7 +24,6 @@ import pt.iknow.utils.html.FormData;
 public abstract class NumericDataType implements DataTypeInterface {
 
   protected NumberFormat fmt; //for data output
-  //for data input - consider . and , as decimal separators, do not use thousands separator
   protected NumberFormat fmtInput; 
   
   protected Locale locale;
@@ -79,7 +78,7 @@ public abstract class NumericDataType implements DataTypeInterface {
     try {
       String var = (String)input;
       if (StringUtils.isNotEmpty(var)) {
-        var = var.replace(",", "");
+        //var = var.replace(",", "");
         d = new java.lang.Double(var);
       }
     }
@@ -117,7 +116,7 @@ public abstract class NumericDataType implements DataTypeInterface {
   public double getValue(Object input) {
     double d = java.lang.Double.NaN;
     try {
-      d = fmtInput.parse(((String)input).replace(',','.')).doubleValue();
+      d = fmtInput.parse((String)input).doubleValue();
     }
     catch (Exception nfe) {
       d = java.lang.Double.NaN;
@@ -131,8 +130,7 @@ public abstract class NumericDataType implements DataTypeInterface {
     // set format for data output
     this.fmt = new DecimalFormat(numberPattern, new DecimalFormatSymbols(this.locale));
     
-    // set format for data input. ALWAYS consider . and , as valid decimal separators
-    this.fmtInput = new DecimalFormat(numberPattern, new DecimalFormatSymbols(Locale.ENGLISH));
+    this.fmtInput = new DecimalFormat(numberPattern, new DecimalFormatSymbols(new Locale(Const.sDEF_INPUT_NUMBER_LOCALE)));
     this.fmtInput.setGroupingUsed(false);
   }
 
@@ -196,7 +194,7 @@ public abstract class NumericDataType implements DataTypeInterface {
     if (formData.hasParameter(name)) {      
       String formValue = formData.getParameter(name);
       if (StringUtils.isNotEmpty(formValue)) {
-        value =  fmtInput.parse(formValue.replace(',', '.'));
+        value =  fmtInput.parse(formValue);
       }
     }
     
@@ -212,7 +210,7 @@ public abstract class NumericDataType implements DataTypeInterface {
   public String validateFormData (Object input, Object[] aoaArgs) {
     String error = null;
     try {
-      fmtInput.parse(((String)input).replace(',', '.'));
+      fmtInput.parse((String)input);
     }
     catch (Exception nfe) {
       // error = Messages.getString(validateErrorMsg()); //$NON-NLS-1$

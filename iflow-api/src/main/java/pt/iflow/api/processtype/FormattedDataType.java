@@ -9,14 +9,16 @@ import org.apache.commons.lang.StringUtils;
 public abstract class FormattedDataType implements ProcessDataType {
   
   protected Format formatter;
+  protected Format inputFormatter;
   protected Format rawFormatter;
   
   public FormattedDataType() {
-    this(null, null);
+    this(null, null, null);
   }
 
-  public FormattedDataType(Format formatter, Format rawFormatter) {
+  public FormattedDataType(Format formatter, Format inputFormatter, Format rawFormatter) {
     this.formatter = formatter;
+    this.inputFormatter = inputFormatter;
     this.rawFormatter = rawFormatter;
   }
 
@@ -49,9 +51,9 @@ public abstract class FormattedDataType implements ProcessDataType {
     if (StringUtils.isEmpty(source))
       return null;
     
-    if(null == formatter) throw new ParseException("Parser/Formatter not set", -1);
+    if(null == inputFormatter) throw new ParseException("Parser/Formatter not set", -1);
     ParsePosition parsePosition = new ParsePosition(0);
-    Object result = formatter.parseObject(source, parsePosition);
+    Object result = inputFormatter.parseObject(source, parsePosition);
     if (parsePosition.getIndex() == 0) {
       throw new ParseException("Error parsing String: \""+source+"\"", parsePosition.getErrorIndex());
     }

@@ -14,15 +14,15 @@ public class DateDataType extends FormattedDataType implements ProcessDataType {
   private static final DateFormat DATE_FORMAT = new SimpleDateFormat(Const.sDEF_DATE_FORMAT);
 
   public DateDataType() {
-    this(getFormat(null));
+    this(getFormat(null), getFormat(null));
   }
 
-  public DateDataType(DateFormat format) {
-    super(format, RAW_FORMAT);
+  public DateDataType(DateFormat format, DateFormat inputFormat) {
+    super(format, inputFormat, RAW_FORMAT);
   }
   
-  public DateDataType(String format) {
-    this(getFormat(format));
+  public DateDataType(String format, String inputFormat) {
+    this(getFormat(format), getFormat(inputFormat));
   }
 
   private static DateFormat getFormat(String format) {

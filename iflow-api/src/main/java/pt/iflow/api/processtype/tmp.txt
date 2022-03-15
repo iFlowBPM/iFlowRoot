@@ -1,0 +1,26 @@
+C:\Users\jcosta\git\iflow-bpm\iflow-api\src\main\java\pt\iflow\api\datatypes\NumericDataType.java
+C:\Users\jcosta\git\iflow-bpm\iflow-api\src\main\java\pt\iflow\api\processtype\DateDataType.java
+C:\Users\jcosta\git\iflow-bpm\iflow-api\src\main\java\pt\iflow\api\processtype\DocumentDataType.java
+C:\Users\jcosta\git\iflow-bpm\iflow-api\src\main\java\pt\iflow\api\processtype\FloatDataType.java
+C:\Users\jcosta\git\iflow-bpm\iflow-api\src\main\java\pt\iflow\api\processtype\FormattedDataType.java
+C:\Users\jcosta\git\iflow-bpm\iflow-api\src\main\java\pt\iflow\api\processtype\IntegerDataType.java
+C:\Users\jcosta\git\iflow-bpm\iflow-api\src\main\java\pt\iflow\api\utils\Const.java
+C:\Users\jcosta\git\iflow-bpm\iflow-api\iflow-home\config\iflow.properties
+
+
+C:\Users\jcosta\git\iflow-bpm\iflow-api\src\main\java\pt\iflow\api\datatypes\NumericDataType.java
+C:\Users\jcosta\git\iflow-bpm\iflow-api\src\main\java\pt\iflow\api\processtype\DateDataType.java
+C:\Users\jcosta\git\iflow-bpm\iflow-api\src\main\java\pt\iflow\api\processtype\DocumentDataType.java
+C:\Users\jcosta\git\iflow-bpm\iflow-api\src\main\java\pt\iflow\api\processtype\FloatDataType.java
+C:\Users\jcosta\git\iflow-bpm\iflow-api\src\main\java\pt\iflow\api\processtype\FormattedDataType.java
+C:\Users\jcosta\git\iflow-bpm\iflow-api\src\main\java\pt\iflow\api\processtype\IntegerDataType.java
+C:\Users\jcosta\git\iflow-bpm\iflow-api\src\main\java\pt\iflow\api\utils\Const.java
+C:\Users\jcosta\git\iflow-bpm\iflow-api\iflow-home\config\iflow.properties
+
+iFlowRootPARIPERSI
+
+
+
+# INPUT_NUMBER_LOCALE controls the locale used for number input, namely decimal e thousands separators
+INPUT_NUMBER_LOCALE=pt
+

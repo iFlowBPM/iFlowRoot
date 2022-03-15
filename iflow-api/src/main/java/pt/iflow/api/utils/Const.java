@@ -36,6 +36,7 @@ public class Const {
 	//backend URL
 
 	public static String BACKEND_URL = null;
+	public static String PORTAL_RH_URL=null;
 
 
 	public static String IFLOW_HOME_PROP = "iflow.home";
@@ -207,6 +208,8 @@ public class Const {
 	public static String sDEF_PERCENTAGE_FORMAT = null;
 	public static String sDEF_CURRENCY_FORMAT = null;
 	public static String sDEF_NUMBER_LOCALE = null;
+	public static String sDEF_INPUT_NUMBER_LOCALE = null;
+	
 
 	public static final String sFLOW_DATE_FORMAT = "FLOW_DATE_FORMAT";
 	public static String sFLOW_DATE_FORMAT_DESC = "Formato para as Datas";
@@ -219,7 +222,8 @@ public class Const {
 	public static final String sFLOW_CURRENCY_FORMAT = "FLOW_CURRENCY_FORMAT";
 	public static String sFLOW_FLOAT_CURRENCY_DESC = "Formato para Moeda";
 	public static final String sFLOW_NUMBER_LOCALE = "FLOW_NUMBER_LOCALE";
-	public static String sFLOW_NUMBER_LOCALE_DESC = "Locale para Separadores de Números Decimais";
+	public static String sFLOW_NUMBER_LOCALE_DESC = "Locale para Separadores de Números Decimais de Saída";
+	public static String sFLOW_INPUT_NUMBER_LOCALE_DESC = "Locale para Separadores de Números Decimais de Entrada";
 
 	public static final String sSEARCHABLE_BY_INTERVENIENT = "SEARCHABLE_BY_INTERVENIENT";
 	public static final String sSEARCHABLE_BY_INTERVENIENT_DESC = "Pesquisável pelos intervenientes";
@@ -525,6 +529,7 @@ public class Const {
 		//setting constant backend
 
 		BACKEND_URL = Setup.getProperty("BACKEND_URL");
+		PORTAL_RH_URL = Setup.getProperty("PORTAL_RH_URL");
 
 		// direct setting constants
 		APP_PROTOCOL = Setup.getProperty("APP_PROTOCOL");
@@ -706,7 +711,15 @@ public class Const {
 		} else {
 			sDEF_NUMBER_LOCALE = "en";
 		}
-		sFLOW_NUMBER_LOCALE_DESC = "Locale para os símbolos dos separadores nos Números Decimais (" + sDEF_NUMBER_LOCALE + ")";
+		sFLOW_NUMBER_LOCALE_DESC = "Locale para os símbolos dos separadores nos Números Decimais de saída (" + sDEF_NUMBER_LOCALE + ")";
+
+		stmp = Setup.getProperty("INPUT_NUMBER_LOCALE");
+		if (StringUtils.isNotBlank(stmp)) {
+			sDEF_INPUT_NUMBER_LOCALE = stmp;
+		} else {
+			sDEF_INPUT_NUMBER_LOCALE = "en";
+		}
+		sFLOW_INPUT_NUMBER_LOCALE_DESC = "Locale para os símbolos dos separadores nos Números Decimais de entrada (" + sDEF_INPUT_NUMBER_LOCALE + ")";
 
 		// default is EXCEL
 		nEXPORT_MODE = nEXPORT_MODE_EXCEL;

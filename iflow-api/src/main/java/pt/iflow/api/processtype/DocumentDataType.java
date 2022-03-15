@@ -6,7 +6,7 @@ import pt.iflow.connector.document.Document;
 
 public class DocumentDataType extends IntegerDataType implements ProcessDataType {
   public DocumentDataType() {
-    super(new DecimalFormat("#0"));
+    super(new DecimalFormat("#0"),new DecimalFormat("#0"));
   }
   
   @Override
