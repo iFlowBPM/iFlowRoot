@@ -131,7 +131,7 @@ public abstract class NumericDataType implements DataTypeInterface {
     this.fmt = new DecimalFormat(numberPattern, new DecimalFormatSymbols(this.locale));
     
     this.fmtInput = new DecimalFormat(numberPattern, new DecimalFormatSymbols(new Locale(Const.sDEF_INPUT_NUMBER_LOCALE)));
-    this.fmtInput.setGroupingUsed(false);
+    //this.fmtInput.setGroupingUsed(false);
   }
 
   public String parseAndSet(UserInfoInterface userInfo, 
