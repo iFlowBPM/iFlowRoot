@@ -64,7 +64,7 @@
           <tr class="tab_header">
             <td></td>
             <td></td>
-			<td>Data do pedido</td>
+			<td>Data e Hora</td>
 			<td>Pedido nº</td>
 			<td>Nome do proponente</td>
 			<td>Tipo de serviço</td>
@@ -111,8 +111,10 @@
              #if($act.get("dataPedido"))
              	#set($dataString = $act.get("dataPedido").replace("-", '') )
              	#if($dataString.length() >= 8)
-	             	#set($dataSize= $dataString.substring(0, 8))
-	             	#set($dataString2= $dataSize.substring(0, 2) + '-' + $dataSize.substring(2, 4) + '-' + $dataSize.substring(4, 8))
+	             	#set($dataString2= $dataString.substring(0, 2) + '-' + $dataString.substring(2, 4) + '-' + $dataString.substring(4, 8))
+	             	#if($dataString.length() >= 14)
+	             		#set($dataString2= $dataString2 + " " + $dataString.substring(8, 10) + ":" + $dataString.substring(10, 12) + ":" + $dataString.substring(12, 14))
+	             	#end
 				 	<td align="center"><a $style_read href="javascript:open_process(2, $act.get("flowid"), '$response.encodeURL($url_prefix,$act.get("uri"))','flowid=$act.get("flowid")&pid=$act.get("pid")&subpid=$act.get("subpid")&ts=$ts', $act.get("runMax"));">$dataString2</a></td>
 				#else
 					<td> </td>

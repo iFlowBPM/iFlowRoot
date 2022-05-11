@@ -616,8 +616,12 @@
 	    			try{	    				
 		             	String dataString = a.getDetailItemMap().get(allowedMetadata[mdCounter]);
 		             	dataString = dataString.replaceAll("-", "");
-		             	dataString = dataString.substring(0, 8);
-		             	dataString = dataString.substring(0, 2) + '-' + dataString.substring(2, 4) + '-' + dataString.substring(4, 8);
+		             	if(dataString.length() >= 14){
+		             		dataString = dataString.substring(0, 2) + '-' + dataString.substring(2, 4) + '-' + dataString.substring(4, 8) + " " 
+		             			+ dataString.substring(8, 10) + ":" + dataString.substring(10, 12) + ":" + dataString.substring(12, 14);
+		             	}else{
+			             	dataString = dataString.substring(0, 2) + '-' + dataString.substring(2, 4) + '-' + dataString.substring(4, 8);
+		             	}
 		    			actividade.add(stmp + dataString + stmp2);
 	    			}catch(Exception e){
 	    				actividade.add(stmp + "" + stmp2);
