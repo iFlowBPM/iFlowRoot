@@ -15,6 +15,12 @@ String createVersion = fdFormData.getParameter("create_version");
 String versionNote = fdFormData.getParameter("version_note");
 FormFile file = fdFormData.getFileParameter("file");
 
+if (!file.getContentType().equals("text/xml")) {
+	response.sendRedirect(request.getHeader("referer"));
+	return;
+}
+
+
 // do not create version
 if(!"yes".equals(createVersion)) versionNote=null;
 

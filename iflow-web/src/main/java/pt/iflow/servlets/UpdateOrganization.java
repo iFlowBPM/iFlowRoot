@@ -200,6 +200,11 @@ public class UpdateOrganization extends HttpServlet {
     String menuLocation = null;
     String menuStyle = null;
     boolean procMenuVisible = true;
+	
+	if(!file.getContentType().contains("image/")) {
+        return;
+      }
+
     
     try {
       FormData formData = FormUtils.parseRequest(request, Const.nUPLOAD_THRESHOLD_SIZE, Const.nUPLOAD_MAX_SIZE, Const.fUPLOAD_TEMP_DIR);

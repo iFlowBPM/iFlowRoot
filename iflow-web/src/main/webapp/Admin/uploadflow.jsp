@@ -9,7 +9,7 @@
 
 <div class="upload_box table_inc">
 	<form name="formulario" action="<%=response.encodeURL("Admin/doupload_flow.jsp")%>" method="POST" enctype="multipart/form-data"
-		onsubmit="javascript:return AIM.submit(this, {'onStart' : getStartUploadCallback(), 'onComplete' : getUploadCompleteCallback('Upload complete', 4, '<%=response.encodeURL("Admin/flow_settings.jsp")%>', 'ts=<%=ts%>')})">
+		onsubmit="javascript:return document.forms['formulario']['file-to-upload'].files[0].type !== 'text/xml' ? false : AIM.submit(this, {'onStart' : getStartUploadCallback(), 'onComplete' : getUploadCompleteCallback('Upload complete', 4, '<%=response.encodeURL("Admin/flow_settings.jsp")%>', 'ts=<%=ts%>')});">
 		<fieldset>
 			<legend></legend>
 			<ol>
@@ -17,7 +17,9 @@
 					<label for="file">
 						<if:message string="flow_settings.import.label"/>
 					</label>
-					<input type="file" name="file" />
+					<input onchange="(function(){document.forms['formulario']['file-to-upload'].files[0].type !== 'text/xml' ? alert(
+    '<if:message string="incorrect.format.xml"/>') : ''})();" id="file-to-upload" accept="text/xml" type="file" name="file" class="form-control"/>
+
 				</li>				
 				<li>
 					<label for="create_version">
