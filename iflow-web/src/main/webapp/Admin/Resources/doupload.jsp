@@ -12,6 +12,14 @@ String type = fdFormData.getParameter("type");
 String filename = fdFormData.getParameter("filename");
 FormFile file = fdFormData.getFileParameter("file");
 
+if (!file.getContentType().equals("text/xml") && !file.getContentType().equals("application/pdf")
+    && !file.getFileName().contains(".fo") && !file.getFileName().contains(".et")
+        && !file.getContentType().contains("image/")) {
+  response.sendRedirect(request.getHeader("referer"));
+  return;
+}
+
+
 if(StringUtils.isEmpty(filename)) {
   filename = file.getFileName();
   // eh necessario "sanar" o path

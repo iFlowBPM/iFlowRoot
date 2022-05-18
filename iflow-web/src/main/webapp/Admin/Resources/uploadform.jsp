@@ -9,7 +9,7 @@
 
 <div class="upload_box table_inc">
 	<form name="formulario" action="<%=response.encodeURL("Admin/Resources/doupload.jsp")%>" method="POST" enctype="multipart/form-data"
-		onsubmit="javascript:return AIM.submit(this, {'onStart' : getStartUploadCallback(), 'onComplete' : getUploadCompleteCallback('Upload complete', 4, '<%=response.encodeURL("Admin/Resources/dolist.jsp")%>', 'type=${param.type}')})">
+		onsubmit="javascript:return document.forms['formulario']['file-to-upload'].files[0].type !== 'text/xml' && !document.forms['formulario']['file-to-upload'].files[0].name.contains('.fo') && !document.forms['formulario']['file-to-upload'].files[0].name.contains('.et') && document.forms['formulario']['file-to-upload'].files[0].type !== 'application/pdf' && !document.forms['formulario']['file-to-upload'].files[0].type.contains('image/') ? false : AIM.submit(this, {'onStart' : getStartUploadCallback(), 'onComplete' : getUploadCompleteCallback('Upload complete', 4, '<%=response.encodeURL("Admin/Resources/dolist.jsp")%>', 'type=${fn:escapeXml(param.type)}')})">
 		<input type="hidden" name="type" value="${param.type}" />
 		<c:if test="${not empty param.file}">
 			<input type="hidden" name="filename" value="${param.file}" />
@@ -31,7 +31,9 @@
 							</c:otherwise>
 						</c:choose>
 					</label>
-					<input type="file" name="file" />
+					<input onchange="(function(){document.forms['formulario']['file-to-upload'].files[0].type !== 'text/xml' && !document.forms['formulario']['file-to-upload'].files[0].name.contains('.fo') && !document.forms['formulario']['file-to-upload'].files[0].name.contains('.et') && document.forms['formulario']['file-to-upload'].files[0].type !== 'application/pdf' && !document.forms['formulario']['file-to-upload'].files[0].type.contains('image/') ? alert(
+							'<if:message string="incorrect.format.dolist"/>') : ''})();" id="file-to-upload" accept="text/xml,.xsl,.fo,.et,application/pdf,image/*" type="file" name="file"/>
+
 				</li>
 			</ol>
 		</fieldset>
