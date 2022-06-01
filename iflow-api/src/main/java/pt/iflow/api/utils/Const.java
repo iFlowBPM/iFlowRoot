@@ -90,6 +90,7 @@ public class Const {
 	public static long lMAIL_RESCHEDULE_INTERVAL = 1L;
 	public static String sAPP_EMAIL = null;
 	public static String sTEST_EMAIL = null;
+	public static String sAPP_EMAIL_ADMIN = null;
 	public static String sTEST_SMS = null;
 	public static boolean bUSE_EMAIL = true;
 	public static boolean bEMAIL_MANAGER = false;
@@ -376,6 +377,8 @@ public class Const {
 	public static final String SAVE_PROCESSHISTORY_WHEN_NEVER = "NEVER";
 	public static String SAVE_PROCESSHISTORY_WHEN = SAVE_PROCESSHISTORY_WHEN_ALLWAYS;    	
 
+	public static int nNotifications_keep_days = 15;
+
 	public static final String sEXTRA_PROP = "EXTRA.";
 
 	// Show Button Help
@@ -488,6 +491,8 @@ public class Const {
 
 	private static List<String> ALLOWED_LOCALES = new ArrayList<String>();
 
+	public static Boolean DISABLE_DOCS_PERMISSIONS = Boolean.valueOf(false);
+	
 	public static String sFLOW_INITIALS_DESC = "Iniciais do Fluxo em Tarefas";
 	public static final String sFLOW_INITIALS = "FLOW_INITIALS";
 
@@ -610,6 +615,9 @@ public class Const {
 			e.printStackTrace();
 		}
 		sAPP_EMAIL = Setup.getProperty("APP_EMAIL");
+		sAPP_EMAIL_ADMIN = Setup.getProperty("APP_EMAIL_ADMIN");
+	    if (StringUtils.isBlank(sAPP_EMAIL_ADMIN))
+	      sAPP_EMAIL_ADMIN = sAPP_EMAIL; 
 		sTEST_EMAIL = Setup.getProperty("TEST_EMAIL");
 		sTEST_SMS = Setup.getProperty("TEST_SMS");
 		nEMAIL_MANAGER_TIMEOUT = Setup.getPropertyInt("EMAIL_MANAGER_TIMEOUT");
@@ -817,6 +825,8 @@ public class Const {
 		}
 		nUPLOAD_MAX_SIZE = MAX_FILE_SIZE * 1024 * 1024; // 10 MB
 
+		nNotifications_keep_days = Setup.getPropertyInt("NOTIFICATIONS_KEEP_DAYS");
+		
 		String sEXCEL_LIBRARY = Setup.getProperty("EXCEL_LIBRARY");
 		if (sEXCEL_LIBRARY != null && sEXCEL_LIBRARY.equals("JXL"))
 			nEXCEL_LIBRARY = nEXCEL_LIBRARY_JXL;
@@ -1052,7 +1062,11 @@ public class Const {
 		} catch (Exception e) {
 			NOTIFICATION_ENDPOINT="";
 		}
-		
+		try {
+			DISABLE_DOCS_PERMISSIONS = Boolean.valueOf(Boolean.parseBoolean(Setup.getProperty("DISABLE_DOCS_PERMISSIONS")));
+	    } catch (Exception exception) {
+	    	DISABLE_DOCS_PERMISSIONS = false;
+	    }
 	}
 
 	public static void main(String[] args) {

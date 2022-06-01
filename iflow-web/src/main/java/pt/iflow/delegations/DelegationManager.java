@@ -37,7 +37,7 @@ import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.UserInfoInterface;
 import pt.iflow.api.utils.Utils;
 import pt.iknow.utils.Crypt;
-
+import pt.iflow.delegations.DelegationData;
 
 public class DelegationManager extends Thread {
 

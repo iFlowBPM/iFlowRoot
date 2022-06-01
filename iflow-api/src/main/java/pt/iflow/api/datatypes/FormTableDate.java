@@ -472,4 +472,19 @@ public class FormTableDate implements DataTypeInterface, ArrayTableProcessingCap
 	    
 	    return dateFormat;
 	  }
+
+	@Override
+	public String format(UserInfoInterface userInfo, ProcessData procData, FormService service, int fieldNumber,
+			boolean isOutput, String name, ProcessVariableValue value, Properties props, ServletUtils response) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String formatRow(UserInfoInterface userInfo, ProcessData procData, FormService service, int fieldNumber,
+			boolean isOutput, int varIndex, String name, int row, ProcessVariableValue value, Properties props,
+			ServletUtils response) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

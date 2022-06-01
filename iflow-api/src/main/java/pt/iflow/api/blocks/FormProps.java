@@ -49,7 +49,7 @@ public class FormProps {
   public final static String TEXT_SUBMIT_ON_BLUR = "text_submit_on_blur";
   public final static String ONCLICK = "onclick";
   public final static String FILE_UPLOAD_RENAME = "file_upload_rename";
-  public final static String FILE_UPLOAD_EXTENSIONS = "file_upload_extensions";
+  //public final static String FILE_UPLOAD_EXTENSIONS = "file_upload_extensions";
   public final static String FILE_UPLOAD_PRESERVE_EXT = "file_upload_preserve_ext";
   public final static String FILE_UPLOAD_EXTENSIONS = "file_upload_valid_extensions";
   public final static String DMS_FOLDER = "dms_folder";
