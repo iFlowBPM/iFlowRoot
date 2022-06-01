@@ -133,4 +133,8 @@ public class MappedUserData extends MappedData implements UserData,Serializable{
   public String getOrgAdmUsers() {
     return get(ORGADM_USERS);
   }
+
+  public String getPasswordCreationDate() {
+    return get(PASSWORD_CREATION_DATE);
+  }
 }

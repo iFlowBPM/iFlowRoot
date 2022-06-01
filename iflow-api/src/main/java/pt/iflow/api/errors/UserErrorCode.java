@@ -13,6 +13,11 @@ public class UserErrorCode extends ErrorCode {
 			10004);
 	public static final ErrorCode PENDING_ORG_ADM_EMAIL = new UserErrorCode(
 			10005);
+	public static final ErrorCode USERNAME_TOO_SHORT = new UserErrorCode(
+			10006);
+
+	public static final ErrorCode PASSWORD_NOT_COMPLEX = new UserErrorCode(
+			10007);
 
 	protected UserErrorCode(int code) {
 		super(code);

@@ -11,6 +11,8 @@ import java.util.Iterator;
 
 import org.apache.commons.lang.StringUtils;
 
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
 import pt.iflow.api.core.AuthProfile;
 import pt.iflow.api.core.BeanFactory;
 import pt.iflow.api.core.UserManager;
@@ -627,6 +629,25 @@ public class UserInfo implements Serializable, UserInfoInterface {
    * @see pt.iknow.utils.UserInfoInterface#isPasswordExpired()
    */
   public boolean isPasswordExpired() {
+    if(this._userData!=null){
+      try{
+        SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date=formatter.parse(this._userData.getPasswordCreationDate());
+        LocalDate dateToCompare = LocalDate.fromDateFields(date);
+        LocalDate now = LocalDate.now();
+        Integer result =Days.daysBetween(dateToCompare , now ).getDays();
+
+        if(Const.PASSWORD_EXPIRATION_TIME!=null&&result>Integer.parseInt(Const.PASSWORD_EXPIRATION_TIME )){
+          return true;
+        }
+
+      }catch (ParseException e){
+        Logger.error(getUtilizador(), this, "isPasswordExpired", "Cannot validate date, parsing error!");
+
+      }
+
+
+    }
     String passReset = this.getUserInfo(UserData.PASSWORD_RESET);
     if (null == passReset)
       passReset = "0";

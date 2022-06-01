@@ -37,6 +37,9 @@ public class Const {
 
 	public static String BACKEND_URL = null;
 	public static String PORTAL_RH_URL=null;
+	public static String PASSWORD_FORMAT= null;
+	public static String USERNAME_LENGTH = null;
+	public static String PASSWORD_EXPIRATION_TIME = "1000";
 
 
 	public static String IFLOW_HOME_PROP = "iflow.home";
@@ -535,6 +538,10 @@ public class Const {
 
 		BACKEND_URL = Setup.getProperty("BACKEND_URL");
 		PORTAL_RH_URL = Setup.getProperty("PORTAL_RH_URL");
+
+		PASSWORD_FORMAT = Setup.getProperty("PASSWORD_FORMAT");
+		USERNAME_LENGTH =  Setup.getProperty("USERNAME_LENGTH");
+		PASSWORD_EXPIRATION_TIME = Setup.getProperty("PASSWORD_EXPIRATION_TIME");
 
 		// direct setting constants
 		APP_PROTOCOL = Setup.getProperty("APP_PROTOCOL");

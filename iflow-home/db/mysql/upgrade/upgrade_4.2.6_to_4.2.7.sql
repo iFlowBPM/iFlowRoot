@@ -1,0 +1,3 @@
+ALTER TABLE users ADD password_creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL;
+
+UPDATE users SET password_creation_date = CURRENT_TIMESTAMP;

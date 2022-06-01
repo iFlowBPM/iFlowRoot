@@ -22,6 +22,7 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 
+import org.joda.time.LocalDateTime;
 import pt.iflow.api.core.BeanFactory;
 import pt.iflow.api.core.UserCredentials;
 import pt.iflow.api.core.UserManager;
@@ -139,6 +140,11 @@ public class UserManagerBean implements UserManager {
     PreparedStatement pst = null;
     ResultSet rs = null;
 
+    if (!usernameCheckOk(username)) {
+      Logger.warning(userInfo.getUtilizador(), this, "createUser", "username too short, please ensure it has at least 8 characters");
+      return new ErrorHandler(UserErrorCode.USERNAME_TOO_SHORT);
+    }
+
     if(Const.bUSE_EMAIL)
       password =  RandomStringUtils.random(8, true, true);
     else {
@@ -146,6 +152,10 @@ public class UserManagerBean implements UserManager {
         Logger.warning(userInfo.getUtilizador(), this, "createUser", "no password and no email, exiting");
         new ErrorHandler(UserErrorCode.FAILURE);
       }
+    }
+    if (!password.matches(Const.PASSWORD_FORMAT)) {
+      Logger.warning(userInfo.getUtilizador(), this, "createUser", "password doesn't meet requirements");
+      new ErrorHandler(UserErrorCode.PASSWORD_NOT_COMPLEX);
     }
     
     String activationCode =  RandomStringUtils.random(40, true, true);
@@ -2183,10 +2193,15 @@ public class UserManagerBean implements UserManager {
     if(invalidPassword(password))
       return ERR_PASSWORD;
 
+    if (!usernameCheckOk(username)) {
+      return ERR_USERNAME;
+    }
+
     if(Const.bUSE_EMAIL) {  // test email address
       if(invalidEmail(emailAddress))
         return ERR_INVALID_EMAIL;
     }
+
 
     DataSource ds = null;
     Connection db = null;
@@ -2387,8 +2402,18 @@ public class UserManagerBean implements UserManager {
   }
 
   private static boolean invalidPassword(String password) {
+    if (Const.PASSWORD_FORMAT != null) {
+      return (null == password) || (!password.matches(Const.PASSWORD_FORMAT));
+    }
     // todo: perform adicional checks to password
     return null == password || password.length()<4;
+  }
+
+  private static boolean usernameCheckOk(String username) {
+    if(Const.USERNAME_LENGTH != null){
+      return (null != username) && (username.length() >= Integer.parseInt(Const.USERNAME_LENGTH));
+    }
+    return false;
   }
 
   private static boolean invalidEmail(String email) {
@@ -2637,10 +2662,11 @@ public class UserManagerBean implements UserManager {
       db.setAutoCommit(false);
 
       // change organization
-      pst = db.prepareStatement("update users set password_reset=0, userpassword=? where username=? and userpassword=?");
+      pst = db.prepareStatement("update users set password_reset=0, userpassword=? ,password_creation_date=? where username=? and userpassword=?");
       pst.setString(1, Utils.encrypt(password));
-      pst.setString(2, username);
-      pst.setString(3, Utils.encrypt(oldPassword));
+      pst.setString(2, LocalDateTime.now().toString());
+      pst.setString(3, username);
+      pst.setString(4, Utils.encrypt(oldPassword));
       colsModified = pst.executeUpdate();
       pst.close();
 
@@ -2677,10 +2703,11 @@ public class UserManagerBean implements UserManager {
       ds = Utils.getDataSource();
       db = ds.getConnection();
 
-      pst = db.prepareStatement("update system_users set userpassword=? where username=? and userpassword=?");
+      pst = db.prepareStatement("update system_users set userpassword=?, password_creation_date=? where username=? and userpassword=?");
       pst.setString(1, Utils.encrypt(password));
-      pst.setString(2, username);
-      pst.setString(3, Utils.encrypt(oldPassword));
+      pst.setString(2, LocalDateTime.now().toString());
+      pst.setString(3, username);
+      pst.setString(4, Utils.encrypt(oldPassword));
       colsModified = pst.executeUpdate();
       pst.close();
 

@@ -47,6 +47,7 @@ public interface UserData extends IMappedData {
   public static final String ORGADM_PROCESSES = "ORGADM_PROCESSES";
   public static final String ORGADM_RESOURCES = "ORGADM_RESOURCES";
   public static final String ORGADM_ORG = "ORGADM_ORG";
+  public static final String PASSWORD_CREATION_DATE = "PASSWORD_CREATION_DATE";
   
   public abstract String getEmail();
   public abstract String getUsername();
@@ -70,4 +71,5 @@ public interface UserData extends IMappedData {
   public abstract String getOrgAdmProcesses();
   public abstract String getOrgAdmResources();
   public abstract String getOrgAdmOrg();
+  public abstract String getPasswordCreationDate();
 }

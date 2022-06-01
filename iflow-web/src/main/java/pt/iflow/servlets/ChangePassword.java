@@ -76,6 +76,12 @@ public class ChangePassword extends HttpServlet {
       request.getRequestDispatcher("/ResetPass/change.jsp").forward(request, response);
       return;
     }
+
+    if (Const.PASSWORD_FORMAT!=null &&!password.matches(Const.PASSWORD_FORMAT)) {
+      request.setAttribute("error_msg", msg.getString("changePassword.error.weakPassword"));
+      request.getRequestDispatcher("/ResetPass/change.jsp").forward(request, response);
+      return;
+    }
     
     int success = BeanFactory.getUserManagerBean().changePassword(userName, oldPassword, password);
     
