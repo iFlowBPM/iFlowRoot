@@ -3,11 +3,9 @@ package pt.iflow.utils;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.text.MessageFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.*;
 
 import org.apache.commons.lang.StringUtils;
 
