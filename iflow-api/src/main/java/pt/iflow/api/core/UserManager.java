@@ -24,6 +24,7 @@ public interface UserManager {
   public static final int ERR_EMAIL_EXISTS = 5;
   public static final int ERR_PASSWORD = 6;
   public static final int ERR_INVALID_EMAIL = 7;
+  public static final int ERR_USERNAME = 8;
 
   public static final int USERNAME_MAX_LENGTH = 100;
   

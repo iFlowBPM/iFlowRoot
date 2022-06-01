@@ -320,6 +320,11 @@ public class ADAuthentication implements Authentication {
       _listPropertiesToImport.add((UserData.ORGADM_ORG));
       _propertiesVar.put(UserData.ORGADM_ORG, aux);
     }
+    aux = (String)parameters.get(UserData.PASSWORD_CREATION_DATE);
+    if (aux != null && ! "".equals(aux)) {
+      _listPropertiesToImport.add((UserData.PASSWORD_CREATION_DATE));
+      _propertiesVar.put(UserData.PASSWORD_CREATION_DATE, aux);
+    }
   }
   
   /* (non-Javadoc)

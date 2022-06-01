@@ -46,6 +46,7 @@ public class GuestUserData implements UserData,Serializable{
     this._data.put(ORGADM_PROCESSES, ORGADM_PROCESSES);
     this._data.put(ORGADM_RESOURCES, ORGADM_RESOURCES);
     this._data.put(ORGADM_ORG, ORGADM_ORG);
+    this._data.put(PASSWORD_CREATION_DATE, PASSWORD_CREATION_DATE);
   }
   
 
@@ -159,5 +160,9 @@ public class GuestUserData implements UserData,Serializable{
 
   public String getOrgAdmUsers() {
     return get(ORGADM_USERS);
+  }
+
+  public String getPasswordCreationDate() {
+    return get(PASSWORD_CREATION_DATE);
   }
 }

@@ -24,6 +24,8 @@
       sErrorMsg += "<br>" + msg.getString("userform.error.duplicateEmail");
     } else if (ErrorCode.SEND_EMAIL.equals(errCode)) {
       sErrorMsg += "<br>" + msg.getString("userform.error.sendEmail");
+    }else if (UserErrorCode.USERNAME_TOO_SHORT.equals(errCode)) {
+      sErrorMsg += "<br>" + msg.getString("userform.error.shortUsername");
     } else {
       sErrorMsg += "<br>" + msg.getString(defaultMsg);
     }

@@ -22,30 +22,30 @@ import pt.iflow.api.utils.UserInfoInterface;
 import pt.iflow.msg.Messages;
 
 /**
-* 
+*
 * <p>Title: </p>
 * <p>Description: </p>
 * <p>Copyright (c) 2005 iKnow</p>
-* 
+*
 * @author iKnow
-* 
+*
 * @web.servlet
 * name="Register"
-* 
+*
 * @web.servlet-mapping
 * url-pattern="/register"
 */
 public class Register extends HttpServlet {
-  
+
   /**
-   * 
+   *
    */
   private static final long serialVersionUID = 4781792362541777645L;
 
   public Register() { }
-  
+
   public void init() { }
- 
+
   private static final String [] SESSION_PROPERTIES = new String[]{
     "organization_name",
     "organization_desc",
@@ -62,19 +62,19 @@ public class Register extends HttpServlet {
     "companyPhone",
     "isSystemAdm",
   };
-  
-  
+
+
   private static final String LOGIN_URI = "login.jsp";
   private static final String ORG_URI = "/Register/neworg.jsp";
   private static final String USER_URI = "/Register/newuser.jsp";
   private static final String ERROR_URI = "/Register/error.jsp";
   private static final String SUCCESS_URI = "/Register/success.jsp";
   private static final String ORG_ADM_URI = "/Admin/UserManagement/organizationadm.jsp"; // used by sys adm
-  
+
   private boolean isBlank(String var) {
     return null == var || "".equals(var.trim());
   }
-  
+
   private void clearSession(HttpSession session, boolean isSystemAdmin) {
     if(null == session) return;
     if(isSystemAdmin) {
@@ -85,10 +85,10 @@ public class Register extends HttpServlet {
       session.invalidate();
     }
   }
-  
+
   private String orgAction(boolean isSystemAdmin, HttpServletRequest request) {
     HttpSession session = request.getSession();
-    
+
     String next = USER_URI;
     String orgName = request.getParameter("organization_name");
     String orgDesc = request.getParameter("organization_desc");
@@ -116,10 +116,10 @@ public class Register extends HttpServlet {
       request.setAttribute("error_msg", msg.getString("register.error.org_exists", orgName));
       next = ORG_URI;
     }
-    
+
     return next;
   }
-  
+
   private String userAction(boolean isSystemAdmin, HttpServletRequest request) {
     String sErrorMsg = null;
     HttpSession session = request.getSession();
@@ -165,13 +165,13 @@ public class Register extends HttpServlet {
     String orgDescription = (String) session.getAttribute("organization_desc");
     String orgLang = (String) session.getAttribute("organization_lang");
     String orgTimeZone = (String) session.getAttribute("organization_timezone");
-    
+
     IMessages msg = Messages.getInstance(orgLang);
     if(isSystemAdmin) {
       UserInfoInterface userInfo = (UserInfoInterface) session.getAttribute(Const.USER_INFO);
       msg = userInfo.getMessages();
     }
-    
+
     if(isBlank(orgName)) {
       request.setAttribute("organization_name", orgName);
       request.setAttribute("organization_desc", orgDescription);
@@ -184,15 +184,15 @@ public class Register extends HttpServlet {
       request.setAttribute("error_msg", msg.getString("register.error.empty_fields"));
       return USER_URI;
     }
-    
+
     if(Const.bUSE_EMAIL && isBlank(emailAddress)) {
       request.setAttribute("error_msg", msg.getString("register.error.empty_fields"));
       return USER_URI;
     }
-    
+
     if(!isSystemAdmin) { // System admin dont need captcha
       String kaptcha = (String) request.getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
-      
+
       String challenge = request.getParameter("challenge");
       if(kaptcha == null || !kaptcha.equals(challenge)) {
         request.setAttribute("error_msg", msg.getString("register.error.challenge"));
@@ -243,6 +243,10 @@ public class Register extends HttpServlet {
           next = USER_URI;
           sErrorMsg = msg.getString("register.error.invalid_email", orgName);
           break;
+        case UserManager.ERR_USERNAME:
+          next = USER_URI;
+          sErrorMsg = msg.getString("register.error.username_short", username);
+          break;
         default:
           next = ERROR_URI;
         sErrorMsg = msg.getString("register.error.internal");
@@ -263,13 +267,13 @@ public class Register extends HttpServlet {
     request.setAttribute("error_msg", sErrorMsg);
     return next;
   }
-  
-  
-  
+
+
+
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     HttpSession session = request.getSession();// create a session if does not exists
     UserInfoInterface userInfo = (UserInfoInterface) session.getAttribute(Const.USER_INFO);
-    
+
     boolean isSystemAdmin = (null != userInfo && userInfo.isSysAdmin());
     if(Const.INSTALL_LOCAL.equals(Const.INSTALL_TYPE) && !isSystemAdmin ) {
       clearSession(session, isSystemAdmin);
@@ -278,7 +282,7 @@ public class Register extends HttpServlet {
       return;
     }
 
-    
+
     request.setAttribute("isSystemAdmin", isSystemAdmin);
 
     // first time setup get the cookie lang
@@ -289,26 +293,26 @@ public class Register extends HttpServlet {
     clearSession(session, isSystemAdmin);
     request.getRequestDispatcher(ORG_URI).forward(request, response);
   }
-  
+
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     HttpSession session = request.getSession();
     UserInfoInterface userInfo = (UserInfoInterface) session.getAttribute(Const.USER_INFO);
     boolean isSystemAdmin = (null != userInfo && userInfo.isSysAdmin());
-    
+
     if(Const.INSTALL_LOCAL.equals(Const.INSTALL_TYPE) && !isSystemAdmin ) {
       clearSession(session, isSystemAdmin);
       Logger.info(null, this, "doPost", "Registration disabled in LOCAL installation mode");
       ServletUtils.sendEncodeRedirect(response, LOGIN_URI);
       return;
     }
-    
+
     request.setAttribute("isSystemAdmin", isSystemAdmin);
-    
+
     String next = ORG_URI;
     String step = request.getParameter("step");
 
     if(null == step) step = "start";
-    
+
     // verificar os botoes
     String doneButton = request.getParameter("done");
     if(StringUtils.isNotEmpty(doneButton)) {
@@ -322,7 +326,7 @@ public class Register extends HttpServlet {
       }
       return;
     }
-    
+
     String cancelButton = request.getParameter("cancel");
     if(StringUtils.isNotEmpty(cancelButton)) {
       clearSession(session, isSystemAdmin);
@@ -343,7 +347,7 @@ public class Register extends HttpServlet {
     } else {
       clearSession(session, isSystemAdmin);
     }
-    
+
     request.getRequestDispatcher(next).include(request, response);
   }
 
