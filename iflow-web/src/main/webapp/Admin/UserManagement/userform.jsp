@@ -26,6 +26,8 @@
       sErrorMsg += "<br>" + msg.getString("userform.error.sendEmail");
     }else if (UserErrorCode.USERNAME_TOO_SHORT.equals(errCode)) {
       sErrorMsg += "<br>" + msg.getString("userform.error.shortUsername");
+    }else if (UserErrorCode.PASSWORD_NOT_COMPLEX.equals(errCode)) {
+      sErrorMsg += "<br>" + msg.getString("userform.error.weakPassword");
     } else {
       sErrorMsg += "<br>" + msg.getString(defaultMsg);
     }

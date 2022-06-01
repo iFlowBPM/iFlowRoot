@@ -153,10 +153,6 @@ public class UserManagerBean implements UserManager {
         new ErrorHandler(UserErrorCode.FAILURE);
       }
     }
-    if (!password.matches(Const.PASSWORD_FORMAT)) {
-      Logger.warning(userInfo.getUtilizador(), this, "createUser", "password doesn't meet requirements");
-      new ErrorHandler(UserErrorCode.PASSWORD_NOT_COMPLEX);
-    }
     
     String activationCode =  RandomStringUtils.random(40, true, true);
 
@@ -201,6 +197,10 @@ public class UserManagerBean implements UserManager {
         pst.close();
       } else if(null == emailAddress) {
         emailAddress = "";
+      }
+      if (!password.matches(Const.PASSWORD_FORMAT)) {
+        Logger.warning(userInfo.getUtilizador(), this, "createUser", "password doesn't meet requirements");
+        return new ErrorHandler(UserErrorCode.PASSWORD_NOT_COMPLEX);
       }
 
       String sQuery = "insert into users (GENDER,UNITID,USERNAME,USERPASSWORD,EMAIL_ADDRESS,FIRST_NAME,LAST_NAME,PHONE_NUMBER,FAX_NUMBER,MOBILE_NUMBER,COMPANY_PHONE,ACTIVATED,PASSWORD_RESET,ORGADM#EP#) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?#EV#)";
@@ -628,6 +628,10 @@ public class UserManagerBean implements UserManager {
       String setPassword = "";
       String password = null;
       if(!Const.bUSE_EMAIL && StringUtils.isNotEmpty(newPassword)) {
+        if (!newPassword.matches(Const.PASSWORD_FORMAT)) {
+          Logger.warning(userInfo.getUtilizador(), this, "createUser", "password doesn't meet requirements");
+          return new ErrorHandler(UserErrorCode.PASSWORD_NOT_COMPLEX);
+        }
         password = Utils.encrypt(newPassword);
         setPassword = ",PASSWORD_RESET=0,USERPASSWORD=?";
       }
@@ -779,7 +783,10 @@ public class UserManagerBean implements UserManager {
           setExtras += "," + mapExtra.get(listExtraProperties[i]) + "=?";
         }
       }
-
+      if (!password.matches(Const.PASSWORD_FORMAT)) {
+        Logger.warning(userInfo.getUtilizador(), this, "createUser", "password doesn't meet requirements");
+        return new ErrorHandler(UserErrorCode.PASSWORD_NOT_COMPLEX);
+      }
       int pos = 0;
       String query = "";
       if (!userInfo.isSysAdmin()){
