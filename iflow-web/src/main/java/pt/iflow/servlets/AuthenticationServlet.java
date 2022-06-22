@@ -168,10 +168,7 @@ public class AuthenticationServlet extends javax.servlet.http.HttpServlet implem
     }   
     
     //if Kaptcha is activated and invalid nullify credentials
-    Boolean isOverFailureLimit = LoginAttemptCounterController.isOverFailureLimit(getServletContext() , request);
-    if(isOverFailureLimit && Const.BLOCK_USER_ON_FAILED_ATTEMPTS){
-  	  BeanFactory.getUserManagerBean().blockUser(login);
-    }
+    Boolean isOverFailureLimit = LoginAttemptCounterController.isOverFailureLimit(getServletContext() , request, login);
     String kaptcha = (String) request.getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);    
     String challenge = request.getParameter("challenge");
     if(isOverFailureLimit && (kaptcha == null || !kaptcha.equals(challenge))) {

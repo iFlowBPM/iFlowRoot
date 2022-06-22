@@ -33,7 +33,7 @@ public class LoginAttemptCounterController {
         sc.setAttribute(LOGIN_ATTEMPT_COUNTER_MAP_NAME, map);
     }
 
-    public static Boolean isOverFailureLimit(ServletContext sc, ServletRequest req) throws UnknownHostException {
+    public static Boolean isOverFailureLimit(ServletContext sc, ServletRequest req, String username) throws UnknownHostException {
         HashMap<InetAddress, LoginAttemptCounter> map = (HashMap<InetAddress, LoginAttemptCounter>) sc.getAttribute(LOGIN_ATTEMPT_COUNTER_MAP_NAME);
         if (map == null || !(map instanceof HashMap<?, ?>))
             return false;
@@ -41,7 +41,7 @@ public class LoginAttemptCounterController {
         LoginAttemptCounter lc = map.get(InetAddress.getByName(req.getLocalAddr()));
         if (lc == null)
             return false;
-        
+
         //excedeed attempts but reset time has come
         if (lc.getFailedAttempt() > Setup.getPropertyInt(Const.MAX_LOGIN_ATTEMPTS)
                 && lc.getLastFailedAttempt().getTime() < ((new Date()).getTime() - Setup.getPropertyInt(Const.MAX_LOGIN_ATTEMPTS_WAIT))) {
@@ -54,8 +54,16 @@ public class LoginAttemptCounterController {
 
         //excedeed attempts and yet too soon
         if (lc.getFailedAttempt() > Setup.getPropertyInt(Const.MAX_LOGIN_ATTEMPTS)
-                && lc.getLastFailedAttempt().getTime() > ((new Date()).getTime() - Setup.getPropertyInt(Const.MAX_LOGIN_ATTEMPTS_WAIT)))
+                && lc.getLastFailedAttempt().getTime() > ((new Date()).getTime() - Setup.getPropertyInt(Const.MAX_LOGIN_ATTEMPTS_WAIT))) {
+            if ( Const.BLOCK_USER_ON_FAILED_ATTEMPTS) {
+                BeanFactory.getUserManagerBean().blockUser(username);
+                lc.setFailedAttempt(0);
+                map.put(lc.getAddressAttempt(), lc);
+                sc.setAttribute(LOGIN_ATTEMPT_COUNTER_MAP_NAME, map);
+            }
             return true;
+        }
+
 
         return false;
     }
