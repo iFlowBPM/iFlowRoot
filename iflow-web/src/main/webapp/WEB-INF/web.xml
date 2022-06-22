@@ -55,8 +55,12 @@ Disabled. Use servlet container defaults
       <init-param>
       	<param-name>pt.iflow.filter_exception0</param-name>
       	<param-value>/</param-value>
-      </init-param>                
-      <init-param>
+      </init-param>
+       <init-param>
+           <param-name>pt.iflow.filter_url_exception0</param-name>
+           <param-value>/iFlow/Admin</param-value>
+       </init-param>
+       <init-param>
       	<param-name>pt.iflow.filter_url_exception1</param-name>
       	<param-value>/iFlow/AuthenticationServlet</param-value>
       </init-param>
