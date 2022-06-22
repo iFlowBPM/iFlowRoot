@@ -41,16 +41,7 @@ public class LoginAttemptCounterController {
         LoginAttemptCounter lc = map.get(InetAddress.getByName(req.getLocalAddr()));
         if (lc == null)
             return false;
-
-        if (lc.getFailedAttempt() > Setup.getPropertyInt(Const.MAX_LOGIN_ATTEMPTS) && Const.BLOCK_USER_ON_FAILED_ATTEMPTS) {
-            String login = req.getParameter("login");
-            BeanFactory.getUserManagerBean().blockUser(login);
-            lc.setFailedAttempt(0);
-            map.put(lc.getAddressAttempt(), lc);
-            sc.setAttribute(LOGIN_ATTEMPT_COUNTER_MAP_NAME, map);
-        }
-
-
+        
         //excedeed attempts but reset time has come
         if (lc.getFailedAttempt() > Setup.getPropertyInt(Const.MAX_LOGIN_ATTEMPTS)
                 && lc.getLastFailedAttempt().getTime() < ((new Date()).getTime() - Setup.getPropertyInt(Const.MAX_LOGIN_ATTEMPTS_WAIT))) {
