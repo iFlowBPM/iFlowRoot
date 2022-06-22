@@ -40,6 +40,7 @@ public class Const {
 	public static String PASSWORD_FORMAT= null;
 	public static String USERNAME_LENGTH = null;
 	public static String PASSWORD_EXPIRATION_TIME = "1000";
+	public static boolean BLOCK_USER_ON_FAILED_ATTEMPTS = false;
 
 
 	public static String IFLOW_HOME_PROP = "iflow.home";
@@ -542,6 +543,7 @@ public class Const {
 		PASSWORD_FORMAT = Setup.getProperty("PASSWORD_FORMAT");
 		USERNAME_LENGTH =  Setup.getProperty("USERNAME_LENGTH");
 		PASSWORD_EXPIRATION_TIME = Setup.getProperty("PASSWORD_EXPIRATION_TIME");
+		BLOCK_USER_ON_FAILED_ATTEMPTS= Boolean.parseBoolean(Setup.getProperty("BLOCK_USER_ON_FAILED_ATTEMPTS"));
 
 		// direct setting constants
 		APP_PROTOCOL = Setup.getProperty("APP_PROTOCOL");
