@@ -69,7 +69,7 @@
 				<script type="text/javascript" src="{$url_prefix}/javascript/Stickman.MultiUpload.js"/>
 				<script type="text/javascript" src="{$url_prefix}/Themes/{$theme}/javascript/theme.js">
 				</script>
-				<script src="{$url_prefix}/javascript/jquery-1.10.2.js"/>
+				<script src="{$url_prefix}/javascript/jquery-3.6.0.js"/>
 				<script src="{$url_prefix}/javascript/jquery-ui.js"/>
 				<script type="text/javascript" src="{$url_prefix}/javascript/sorttable.js"/>
 				<script type="text/javascript" src="{$url_prefix}/javascript/yahoo/element/element-min.js"/>
