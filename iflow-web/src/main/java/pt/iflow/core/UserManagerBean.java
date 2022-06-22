@@ -3082,4 +3082,58 @@ public class UserManagerBean implements UserManager {
       return new Integer(EventManager.READY_TO_PROCESS);
     }
   }
+
+  public boolean blockUser(String username) {
+    Logger.info(username, this, "blockUser", "Blocking user " + username +" for exceeding password tries");
+    return blockUserInDb(username);
+  }
+
+
+
+  private boolean blockUserInDb( String user) {
+    boolean result = false;
+
+    DataSource ds = null;
+    Connection db = null;
+    PreparedStatement pst = null;
+    ResultSet rs = null;
+    int userId = -1;
+    boolean userFound = false;
+    try {
+      ds = Utils.getDataSource();
+      db = ds.getConnection();
+      db.setAutoCommit(false);
+      if (StringUtils.isNotEmpty(user)) {
+        pst = db.prepareStatement("select userid,email_address,username from users where username=?");
+      }
+      pst.setString(1, user);
+      rs = pst.executeQuery();
+      if (rs.next()) {
+        userId = rs.getInt(1);
+        userFound = true;
+      }
+      rs.close();
+      pst.close();
+      if (userFound) {
+        Logger.debug("ADMIN", this, "blockUserInDb", "User found, blocking user.");
+
+
+        pst = db.prepareStatement("update users set activated=0 where userid=?");
+        pst.setInt(1, userId);
+        pst.executeUpdate();
+        pst.close();
+
+        db.commit();
+        Logger.info("ADMIN", this, "blockUserInDb", "User blocked successfully");
+        result = true;
+      } else {
+        Logger.debug("ADMIN", this, "blockUserInDb", "User not found");
+      }
+    } catch (SQLException e) {
+      Logger.warning("ADMIN", this, "blockUserInDb", "User not blocked!", e);
+    } finally {
+      DatabaseInterface.closeResources(new Object[]{db, pst, rs});
+    }
+    return result;
+  }
 }

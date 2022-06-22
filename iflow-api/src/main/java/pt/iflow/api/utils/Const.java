@@ -40,6 +40,7 @@ public class Const {
 	public static String PASSWORD_FORMAT= null;
 	public static String USERNAME_LENGTH = null;
 	public static String PASSWORD_EXPIRATION_TIME = "1000";
+	public static boolean BLOCK_USER_ON_FAILED_ATTEMPTS = false;
 
 
 	public static String IFLOW_HOME_PROP = "iflow.home";
