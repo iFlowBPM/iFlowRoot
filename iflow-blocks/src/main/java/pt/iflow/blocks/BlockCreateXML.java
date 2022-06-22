@@ -118,7 +118,7 @@ public class BlockCreateXML extends Block{
 		
 		//Database Connection
 		Connection connection = null;
-		String url = "jdbc:mysql://168.63.58.132:3306/paripersi";
+		String url = "jdbc:mysql://bbva.cl.uniksystem.pt:3306/paripersi";
 		
 		try {
 			outputFileVar = this.getAttribute(outputFile);

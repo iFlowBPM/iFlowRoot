@@ -1,3 +1,4 @@
+<%@page import="java.text.ParseException"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://jakarta.apache.org/taglibs/core" prefix="c" %>
@@ -490,6 +491,7 @@ function cleanFilter(){
 		String sCreated = DateUtility.formatTimestamp(userInfo, a.created);
 		String sDuration = Utils.getDuration(new Timestamp(a.created.getTime()), tsNow);
 		String sDias = "" + (tsNow.getTime()-new Timestamp(a.created.getTime()).getTime())/86400000;
+		String sDataHora = "" + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(new Timestamp(a.created.getTime()));
 		String sUri = "";
 		if (a.url != null && StringUtilities.isNotEmpty(a.url)) {
 			if (a.url.indexOf("?") > -1) {
@@ -536,6 +538,7 @@ function cleanFilter(){
 		hm.put("created", sCreated);
 		hm.put("duration", sDuration);
 		hm.put("dias", sDias);
+		hm.put("data_hora", sDataHora);
 		hm.put("uri", sUri);
 		hm.put("pnumber", pnumber);
 		hm.put("delegated", a.delegated ? "1" : "0");
@@ -555,7 +558,8 @@ function cleanFilter(){
 	hmFlows = null;
 	alAct = null;
 	a = null;
-
+		
+	
       hsSubstLocal.put("newact", alNew);
       hsSubstLocal.put("actsize", alNew.size());
       // check if contains appname

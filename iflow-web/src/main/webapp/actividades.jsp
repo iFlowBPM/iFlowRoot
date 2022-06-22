@@ -472,6 +472,7 @@
   filter.setFolderid(""+selectedFolder);
   filter.setLabelid(""+selectedLabel);
   filter.setDeadline(""+selectedDays);
+
   
   ListIterator<Activity> it = pm.getUserActivitiesOrderFilters(userInfo, nShowFlowId, filter);
   Activity a;
@@ -568,6 +569,7 @@
     bHasMoreItems = true;
   }
   
+	
   for (int i = 0; i < alActivities.size(); i++) {
     a = alActivities.get(i);
  
@@ -605,44 +607,28 @@
 	    	stmp4="<img class=\"toolTipImg\" src=\"images/flow_type_D.png\" border=\"0\"/>";
 	    else
 	    	stmp4="";
+	    
+	  	//Data e Hora
+  		String sDataHora = "" + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(new Timestamp(a.created.getTime()));
+  		actividade.add(stmp + sDataHora + stmp2);
 
 	    //task values
 	    String[] allowedMetadata = Setup.getProperty("DEFAULT_TASKS_ALLOWED_METADATA").split(",");
         String[] allowedMetadataLabel = Setup.getProperty("DEFAULT_TASKS_ALLOWED_METADATA_LABEL").split(",");
         
-        for(int mdCounter=0; mdCounter<allowedMetadataLabel.length; mdCounter++){
-	    	if(StringUtils.equals(allowedMetadata[mdCounter], "dataPedido")){
-	    		if(a.getDetailItemMap().get(allowedMetadata[mdCounter]) != null){
-	    			try{	    				
-		             	String dataString = a.getDetailItemMap().get(allowedMetadata[mdCounter]);
-		             	dataString = dataString.replaceAll("-", "");
-		             	if(dataString.length() >= 14){
-		             		dataString = dataString.substring(0, 2) + '-' + dataString.substring(2, 4) + '-' + dataString.substring(4, 8) + " " 
-		             			+ dataString.substring(8, 10) + ":" + dataString.substring(10, 12) + ":" + dataString.substring(12, 14);
-		             	}else{
-			             	dataString = dataString.substring(0, 2) + '-' + dataString.substring(2, 4) + '-' + dataString.substring(4, 8);
-		             	}
-		    			actividade.add(stmp + dataString + stmp2);
-	    			}catch(Exception e){
-	    				actividade.add(stmp + "" + stmp2);
-	    			}
-	    		}else{
-	    			actividade.add(stmp + "" + stmp2);
-	    		}
-    		}else{
-    			if(a.getDetailItemMap().get(allowedMetadata[mdCounter]) != null){
-		    		actividade.add(stmp + a.getDetailItemMap().get(allowedMetadata[mdCounter]) + stmp2);
-    			}else{
-	    			actividade.add(stmp + "" + stmp2);
-    			}
-   			}
+        for(int mdCounter=0; mdCounter<allowedMetadataLabel.length; mdCounter++){	    	
+   			if(a.getDetailItemMap().get(allowedMetadata[mdCounter]) != null){
+	    		actividade.add(stmp + a.getDetailItemMap().get(allowedMetadata[mdCounter]) + stmp2);
+   			}else{
+    			actividade.add(stmp + "" + stmp2);
+   			}   			
         }
         
         //days
         Timestamp tsNow = new Timestamp((new java.util.Date()).getTime());
         String sDias = "" + (tsNow.getTime()-new Timestamp(a.created.getTime()).getTime())/86400000;
     	actividade.add(stmp + sDias + stmp2);
-	    
+    			
 	    actividade.add(fm.getFolderColor(a.getFolderid(), folders));
 	    actividade.add(fm.getFolderName(a.getFolderid(), folders));
         actividade.add(a.getAnnotationIcon());
