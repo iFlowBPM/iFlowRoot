@@ -134,7 +134,7 @@ for (int i = 0, lim = Settings.localeKeys.length; i < lim; i++) {
   localeKeys.add(localeKey);
 }
 hsSubst.put("localeKeys", localeKeys);
-hsSubst.put("isOverFailureLimit", LoginAttemptCounterController.isOverFailureLimit(config.getServletContext() , request, userInfo.getUtilizador()));
+hsSubst.put("isOverFailureLimit", LoginAttemptCounterController.isOverFailureLimit(config.getServletContext() , request, ""));
 hsSubst.put("isLoginAvaliadoras", Boolean.TRUE);
 %>
 <%=PresentationManager.buildLoginPage(response, userInfo, hsSubst) %>

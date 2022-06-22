@@ -1,5 +1,6 @@
 package pt.iflow.servlets;
 
+import org.apache.commons.lang.StringUtils;
 import pt.iflow.api.core.BeanFactory;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Setup;
@@ -55,7 +56,7 @@ public class LoginAttemptCounterController {
         //excedeed attempts and yet too soon
         if (lc.getFailedAttempt() > Setup.getPropertyInt(Const.MAX_LOGIN_ATTEMPTS)
                 && lc.getLastFailedAttempt().getTime() > ((new Date()).getTime() - Setup.getPropertyInt(Const.MAX_LOGIN_ATTEMPTS_WAIT))) {
-            if ( Const.BLOCK_USER_ON_FAILED_ATTEMPTS) {
+            if ( Const.BLOCK_USER_ON_FAILED_ATTEMPTS&& StringUtils.isNotEmpty(username)) {
                 BeanFactory.getUserManagerBean().blockUser(username);
                 lc.setFailedAttempt(0);
                 map.put(lc.getAddressAttempt(), lc);
