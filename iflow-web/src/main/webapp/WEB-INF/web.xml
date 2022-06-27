@@ -71,7 +71,35 @@ Disabled. Use servlet container defaults
       <init-param>
       	<param-name>pt.iflow.filter_url_exception3</param-name>
       	<param-value>/iFlow/personal_account_password.jsp</param-value>
-      </init-param>   
+      </init-param>
+       <init-param>
+           <param-name>pt.iflow.filter_url_exception4</param-name>
+           <param-value>/changePassword</param-value>
+       </init-param>
+       <init-param>
+           <param-name>pt.iflow.filter_url_exception5</param-name>
+           <param-value>/iFlow/Form/form.jsp?flowid=9</param-value>
+       </init-param>
+       <init-param>
+           <param-name>pt.iflow.filter_url_exception6</param-name>
+           <param-value>/iFlow/Form/form.jsp?flowid=8</param-value>
+       </init-param>
+       <init-param>
+           <param-name>pt.iflow.filter_url_exception7</param-name>
+           <param-value>/Form/form.jsp?flowid=9</param-value>
+       </init-param>
+       <init-param>
+           <param-name>pt.iflow.filter_url_exception8</param-name>
+           <param-value>/Form/form.jsp?flowid=8</param-value>
+       </init-param>
+       <init-param>
+           <param-name>pt.iflow.filter_url_exception9</param-name>
+           <param-value>/form.jsp?flowid=9</param-value>
+       </init-param>
+       <init-param>
+           <param-name>pt.iflow.filter_url_exception10</param-name>
+           <param-value>/form.jsp?flowid=8</param-value>
+       </init-param>
    </filter>
    <filter>
       <filter-name>CSRFFilter</filter-name>
