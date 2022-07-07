@@ -491,7 +491,7 @@ function cleanFilter(){
 		String sCreated = DateUtility.formatTimestamp(userInfo, a.created);
 		String sDuration = Utils.getDuration(new Timestamp(a.created.getTime()), tsNow);
 		String sDias = "" + (tsNow.getTime()-new Timestamp(a.created.getTime()).getTime())/86400000;
-		String sDataHora = "" + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(new Timestamp(a.created.getTime()));
+		String sDataHora = "" + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Timestamp(a.created.getTime()));
 		String sUri = "";
 		if (a.url != null && StringUtilities.isNotEmpty(a.url)) {
 			if (a.url.indexOf("?") > -1) {

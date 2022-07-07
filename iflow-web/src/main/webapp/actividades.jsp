@@ -609,7 +609,7 @@
 	    	stmp4="";
 	    
 	  	//Data e Hora
-  		String sDataHora = "" + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(new Timestamp(a.created.getTime()));
+  		String sDataHora = "" + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Timestamp(a.created.getTime()));
   		actividade.add(stmp + sDataHora + stmp2);
 
 	    //task values
