@@ -52,19 +52,19 @@
 				<div class="item lp_field_input">
 					<input type="password" name="password" id="password" size="15" maxlength="40"/>
 				</div>
-		       #if ($isOverFailureLimit)
-				<div style="width: 320px; margin: auto;">
-					<img alt="Challenge" id="challenge_kap" src="/iFlow/kaptcha" style="padding-left: 175px;margin-bottom:4px;">
-					<br/>			
-					<div class="user_info lp_field_label">
-						Preencha texto da imagem
+		   <!-- #if ($isOverFailureLimit)
+					<div style="width: 320px; margin: auto;">
+						<img alt="Challenge" id="challenge_kap" src="/iFlow/kaptcha" style="padding-left: 175px;margin-bottom:4px;">
+						<br/>			
+						<div class="user_info lp_field_label">
+							Preencha texto da imagem
+						</div>
+						<div class="item lp_field_input">				
+							<input type="text" value="" id="challenge" name="challenge" size="15" maxlength="5">
+						</div>
+						<br/>
 					</div>
-					<div class="item lp_field_input">				
-						<input type="text" value="" id="challenge" name="challenge" size="15" maxlength="5">
-					</div>
-					<br/>
-				</div>
-			#end
+				#end -->
 				<div class="lp_login_button">
 					<input id="link_search_span" class="regular_button_01" type="button" name="filter" value="Login" onClick="document.dados.submit();" />
 				</div>

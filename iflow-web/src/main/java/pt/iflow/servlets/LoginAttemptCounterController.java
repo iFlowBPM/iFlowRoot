@@ -44,17 +44,17 @@ public class LoginAttemptCounterController {
             return false;
 
         //excedeed attempts but reset time has come
-        if (lc.getFailedAttempt() > Setup.getPropertyInt(Const.MAX_LOGIN_ATTEMPTS)
+        /*if (lc.getFailedAttempt() > Setup.getPropertyInt(Const.MAX_LOGIN_ATTEMPTS)
                 && lc.getLastFailedAttempt().getTime() < ((new Date()).getTime() - Setup.getPropertyInt(Const.MAX_LOGIN_ATTEMPTS_WAIT))) {
             lc.setFailedAttempt(0);
             map.put(lc.getAddressAttempt(), lc);
             sc.setAttribute(LOGIN_ATTEMPT_COUNTER_MAP_NAME, map);
 
             return false;
-        }
+        }*/
 
         //excedeed attempts and yet too soon
-        if (lc.getFailedAttempt() > Setup.getPropertyInt(Const.MAX_LOGIN_ATTEMPTS)
+        /*if (lc.getFailedAttempt() > Setup.getPropertyInt(Const.MAX_LOGIN_ATTEMPTS)
                 && lc.getLastFailedAttempt().getTime() > ((new Date()).getTime() - Setup.getPropertyInt(Const.MAX_LOGIN_ATTEMPTS_WAIT))) {
             if ( Const.BLOCK_USER_ON_FAILED_ATTEMPTS&& StringUtils.isNotEmpty(username)) {
                 BeanFactory.getUserManagerBean().blockUser(username);
@@ -63,8 +63,17 @@ public class LoginAttemptCounterController {
                 sc.setAttribute(LOGIN_ATTEMPT_COUNTER_MAP_NAME, map);
             }
             return true;
+        }*/
+        
+        //excedeed attempts -> blocks user without wait time
+        if (lc.getFailedAttempt() > Setup.getPropertyInt(Const.MAX_LOGIN_ATTEMPTS)) {
+        	if ( Const.BLOCK_USER_ON_FAILED_ATTEMPTS && StringUtils.isNotEmpty(username)) {
+                BeanFactory.getUserManagerBean().blockUser(username);
+                lc.setFailedAttempt(0);
+                map.put(lc.getAddressAttempt(), lc);
+                sc.setAttribute(LOGIN_ATTEMPT_COUNTER_MAP_NAME, map);
+            }
         }
-
 
         return false;
     }
