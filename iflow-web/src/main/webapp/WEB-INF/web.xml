@@ -447,6 +447,11 @@ Disabled. Use servlet container defaults
 	  <servlet-name>CheckRequestForApplet</servlet-name>
 	  <servlet-class>pt.iflow.servlets.CheckRequestForApplet</servlet-class>
   </servlet>
+  <servlet>
+     <servlet-name>ErrorValidatorServlet</servlet-name>
+     <servlet-class>pt.iflow.servlets.ErrorValidatorServlet</servlet-class>
+  </servlet>
+  
 
    <!-- end of axis -->
 
@@ -482,6 +487,11 @@ Disabled. Use servlet container defaults
 	  <servlet-name>AxisServlet</servlet-name>
 	  <url-pattern>/ws/AxisServlet</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+        <servlet-name>ErrorValidatorServlet</servlet-name>
+        <url-pattern>/error</url-pattern>
+    </servlet-mapping>
+  
 
   <servlet-mapping>
 	  <servlet-name>AxisServlet</servlet-name>
@@ -816,5 +826,23 @@ Disabled. Use servlet container defaults
    <!ELEMENT form-login-page (#PCDATA)>
    <!ELEMENT form-error-page (#PCDATA)>
    -->
+   
+   <error-page>
+        <error-code>403</error-code>
+        <location>/error?status=403</location>
+    </error-page>
+   <error-page>
+        <error-code>404</error-code>
+        <location>/error?status=404</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error?status=500</location>
+    </error-page>
+
+    <error-page>
+        <location>/error.html</location>
+    </error-page>
+   
 
 </web-app>
