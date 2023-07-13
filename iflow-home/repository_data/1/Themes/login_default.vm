@@ -37,8 +37,8 @@
 				<!--<p>$msg.get('login.msg.localAccess')</p>-->
 			    <div class="error_msg lp_error_msg" style="margin-top:-10px;height:25px">
 			        #if ($hasError)
-			        	$loginError
-			        #end
+		        		$loginError
+		        	#end
 			    </div>
  				<div class="user_info lp_field_label">
 					$msg.get('login.field.user')

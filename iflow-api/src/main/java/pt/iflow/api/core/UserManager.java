@@ -504,4 +504,6 @@ public interface UserManager {
     public int changePasswordAdmin(String username, String oldPassword, String password);
 
     public abstract boolean blockUser(String paramString);
+    
+    public abstract boolean isUserBlocked(String username);
 }

@@ -46,6 +46,7 @@ import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.UserInfoInterface;
 import pt.iflow.api.utils.Utils;
 import pt.iflow.errors.ErrorHandler;
+import pt.iflow.servlets.AuthenticationServlet;
 import pt.iflow.userdata.views.OrganizationView;
 import pt.iflow.userdata.views.OrganizationalUnitView;
 import pt.iflow.userdata.views.UserView;
@@ -3136,4 +3137,33 @@ public class UserManagerBean implements UserManager {
     }
     return result;
   }
+  
+  public boolean isUserBlocked(String username){
+	  
+	  	boolean isBlocked = false; 
+	  
+		DataSource ds = null;
+		Connection db = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+	  
+	    try {
+	    	ds = Utils.getDataSource();
+	        db = ds.getConnection();
+	        db.setAutoCommit(false);
+	        
+	        pst = db.prepareStatement("SELECT username FROM users where username=? and activated=0");
+		    pst.setString(1, username);
+		    rs = pst.executeQuery();
+		    isBlocked = rs.next();
+	
+		    pst.close();
+		    db.commit();
+		      
+	    } catch (SQLException e) {
+	        Logger.warning("ADMIN", this, "isUserBlocked", "Error in query checking if user is blocked", e);
+	    }
+	    return isBlocked;
+  }
+  
 }

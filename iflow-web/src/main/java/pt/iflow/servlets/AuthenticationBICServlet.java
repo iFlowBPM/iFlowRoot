@@ -1,12 +1,18 @@
 package pt.iflow.servlets;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Hashtable;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
@@ -18,11 +24,13 @@ import pt.iflow.api.presentation.OrganizationTheme;
 import pt.iflow.api.presentation.OrganizationThemeData;
 import pt.iflow.api.userdata.OrganizationData;
 import pt.iflow.api.utils.Const;
+import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.ServletUtils;
 import pt.iflow.api.utils.UserInfoInterface;
 import pt.iflow.api.utils.UserSettings;
 import pt.iflow.api.utils.Utils;
 import pt.iflow.core.PersistSession;
+import pt.iflow.servlets.AuthenticationServlet.AuthenticationResult;
 import pt.iflow.utils.UserInfoBIC;
 
 
@@ -130,6 +138,100 @@ public class AuthenticationBICServlet extends javax.servlet.http.HttpServlet imp
 	    ps.getSession(ui, session);
 	    return result;
 	  }
+	  
+	  static AuthenticationResult authenticate(final HttpServletRequest request, final HttpServletResponse response, final String username, final String password, final String nextUrl, boolean isBlocked)
+			  throws ServletException, IOException {
+			    AuthenticationResult result = new AuthenticationResult();
+			    result.nextUrl = nextUrl;    
+
+			    HttpSession session = request.getSession();
+
+			    Boolean bIsSystem = (Boolean) session.getAttribute(ADMIN_SESSION_NAME);
+			    boolean isSystem = false;
+
+			    if(bIsSystem != null) isSystem = bIsSystem.booleanValue();
+
+			    String login = username;
+			    if (login != null) {
+			      login = login.trim();
+			    }
+
+			    boolean licenseOk = LicenseServiceFactory.getLicenseService().isLicenseOK();
+
+			    AuthProfile ap = BeanFactory.getAuthProfileBean();
+
+			    UserInfoInterface ui = null;
+
+			    if(isSystem)
+			      ui = BeanFactory.getUserInfoFactory().newSystemUserInfo();
+			    else
+			      ui = BeanFactory.getUserInfoFactory().newUserInfo();
+
+			    
+			    Hashtable<String,String> cookies = ServletUtils.getCookies(request);
+			    if (cookies != null) {
+			      ui.setCookieLang(cookies.get(Const.LANG_COOKIE));
+			    }
+			    
+			    ui.login(login, password);
+
+			    // check license status
+			    if(!licenseOk && !isSystem) {
+			      result.nextUrl = "Admin/login.jsp";
+			      session.invalidate();
+			      return result;
+			    }
+
+			    boolean isAuth = result.isAuth = ui.isLogged();
+
+			    if (isAuth) {
+
+			      /////////////////////////////
+			      //
+			      // Now set some session vars
+			      //
+			      /////////////////////////////
+
+			      //Application Data
+			      session.setAttribute("login",login);
+
+			      session.setAttribute(Const.USER_INFO, ui);
+			      UserSettings settings = ui.getUserSettings();
+			      OrganizationData orgData = ap.getOrganizationInfo(ui.getOrganization());
+			      session.setAttribute(Const.ORG_INFO,orgData);
+
+
+			      OrganizationTheme orgTheme = BeanFactory.getOrganizationThemeBean();
+			      if (orgTheme != null) {
+			        OrganizationThemeData themeData = orgTheme.getOrganizationTheme(ui);
+			        session.setAttribute("themedata",themeData);    
+			      }
+
+
+			      if(ui.isPasswordExpired()) {
+			        result.nextUrl = "changePassword";
+			      }
+
+			      if(!isSystem && settings.isDefault() && Const.USE_INDIVIDUAL_LOCALE && Const.ASK_LOCALE_AT_LOGIN) { 
+			        result.nextUrl = "setupUser";
+			      }
+
+			      // check license status
+			      if(!licenseOk && isSystem) {
+			        result.nextUrl = "Admin/licenseValidation.jsp";
+			      }
+
+			      session.setAttribute("SessionHelperToken", new SimpleSessionHelper());
+
+			    } else {
+			      result.nextUrl = "main.jsp";
+			      result.errorMsg = isBlocked ? "Utilizador bloqueado devido a ter excedido o limite de tentativas" : ui.getError();
+			      session.setAttribute("login_error", result.errorMsg);
+			    }
+			    PersistSession ps = new PersistSession();
+			    ps.getSession(ui, session);
+			    return result;
+			  }
 
 
 	  /* (non-Java-doc)
@@ -165,9 +267,11 @@ public class AuthenticationBICServlet extends javax.servlet.http.HttpServlet imp
 	    	login=null;
 	    	password=null;
 	    }*/
-	            
-	    AuthenticationResult result = authenticate(request, response, login, password, nextUrl);
-
+	    
+	    boolean isBlocked = LoginAttemptCounterController.isBlocked(login);      
+	    
+	    AuthenticationResult result = authenticate(request, response, login, password, nextUrl, isBlocked);
+	    
 	    // keep session in cookie
 	    Cookie sessionUsername = ServletUtils.newCookie(Const.SESSION_COOKIE_USERNAME, "");
 	    Cookie sessionPassword = ServletUtils.newCookie(Const.SESSION_COOKIE_PASSWORD, "");
@@ -201,5 +305,7 @@ public class AuthenticationBICServlet extends javax.servlet.http.HttpServlet imp
 	    public String nextUrl = "main.jsp";
 	    public String errorMsg = null;
 	    public boolean isAuth = false;
+	    public boolean isBlocked = false;
 	  }
+	  
 	}

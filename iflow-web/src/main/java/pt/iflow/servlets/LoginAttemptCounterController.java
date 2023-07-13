@@ -7,6 +7,8 @@ import pt.iflow.api.utils.Setup;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
@@ -76,5 +78,13 @@ public class LoginAttemptCounterController {
         }
 
         return false;
+    }
+    
+    public static Boolean isBlocked(HttpServletRequest request) {
+    	return BeanFactory.getUserManagerBean().isUserBlocked(request.getParameter("login"));
+    }
+    
+    public static Boolean isBlocked(String username) {
+    	return BeanFactory.getUserManagerBean().isUserBlocked(username);
     }
 }
