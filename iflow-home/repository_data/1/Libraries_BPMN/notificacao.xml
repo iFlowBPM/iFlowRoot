@@ -225,4 +225,58 @@
     <description>Notification</description>
 	<i18n>library.notify.block.notification</i18n>
   </XmlBlock>
+      <XmlBlock>
+        <class>BlockSendSMS</class>
+        <XmlPort>
+            <name>portIn</name>
+            <description>Entrada</description>
+            <in_out>in</in_out>
+            <position>
+                <x>-5</x>
+                <y>25</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portSuccess</name>
+            <description>Sucesso</description>
+            <in_out>out</in_out>
+            <position>
+                <x>102</x>
+                <y>15</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portError</name>
+            <description>Erro</description>
+            <in_out>out</in_out>
+            <position>
+                <x>102</x>
+                <y>45</y>
+            </position>
+        </XmlPort>
+        <XmlAttribute>
+            <name>smsText</name>
+            <description>smsText</description>
+            <value/>
+        </XmlAttribute>
+        <XmlAttribute>
+            <name>usernameVar</name>
+            <description>Username</description>
+            <value/>
+        </XmlAttribute>
+        <XmlAttribute>
+            <name>passwordVar</name>
+            <description>Password</description>
+            <value/>
+        </XmlAttribute>
+        <XmlAttribute>
+            <name>smsPhoneNumbers</name>
+            <description>Phone Numbers to send</description>
+            <value/>
+        </XmlAttribute>
+        <image>bpmn_send_sms.png</image>
+        <description>library.integrations.block.send.external.provider.sms</description>
+        <i18n>library.integrations.block.send.external.provider.sms</i18n>
+    </XmlBlock>
+  
 </XmlLibrary>

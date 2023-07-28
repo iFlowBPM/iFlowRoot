@@ -52,11 +52,11 @@
 		<!-- OEM -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>			
+			<artifactId>poi</artifactId>		
 		</dependency>
 		<dependency>
 			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml</artifactId>			
+			<artifactId>poi-ooxml</artifactId>	
 		</dependency>
 		<dependency>
 			<groupId>org.apache.poi</groupId>
@@ -168,6 +168,22 @@
 			<version>1.4</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-core</artifactId>
+			<version>1.17</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>1.17</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>4.4.11</version>
+		</dependency>
+		
 	</dependencies>
 
 	<build>

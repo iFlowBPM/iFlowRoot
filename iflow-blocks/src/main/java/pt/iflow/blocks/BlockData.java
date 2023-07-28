@@ -33,10 +33,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import jxl.Workbook;
-import jxl.write.Label;
-import jxl.write.WritableSheet;
-import jxl.write.WritableWorkbook;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
@@ -49,6 +45,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -62,6 +59,10 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import jxl.Workbook;
+import jxl.write.Label;
+import jxl.write.WritableSheet;
+import jxl.write.WritableWorkbook;
 import pt.iflow.api.blocks.Block;
 import pt.iflow.api.blocks.Port;
 import pt.iflow.api.core.Activity;
@@ -428,19 +429,21 @@ public class BlockData extends Block {
         		if (cellA1==null)
         			tempRowData.add("");
         		else{   
-        			if (cellA1.getCellType()==Cell.CELL_TYPE_STRING)
+        			CellType cellType = cellA1.getCellTypeEnum();
+        			
+        			if (cellType==CellType.STRING)
         				tempRowData.add(cellA1.getStringCellValue());
-        			else if (cellA1.getCellType()==Cell.CELL_TYPE_NUMERIC && DateUtil.isCellDateFormatted(cellA1))
+        			else if (cellType==CellType.NUMERIC && DateUtil.isCellDateFormatted(cellA1))
         				tempRowData.add(sdf.format(DateUtil.getJavaDate(cellA1.getNumericCellValue())));
-        			else if (cellA1.getCellType()==Cell.CELL_TYPE_NUMERIC)
+        			else if (cellType==CellType.NUMERIC)
         				tempRowData.add("" + new BigDecimal( cellA1.getNumericCellValue()));
-        			else if (cellA1.getCellType()==Cell.CELL_TYPE_BLANK)
+        			else if (cellType==CellType.BLANK)
         				tempRowData.add("");
-        			else if (cellA1.getCellType()==Cell.CELL_TYPE_BOOLEAN)
+        			else if (cellType==CellType.BOOLEAN)
         				tempRowData.add("" + cellA1.getBooleanCellValue());
-        			else if (cellA1.getCellType()==Cell.CELL_TYPE_FORMULA)
+        			else if (cellType==CellType.FORMULA)
         				tempRowData.add("" + cellA1.getCellFormula());
-        			else if (cellA1.getCellType()==Cell.CELL_TYPE_ERROR)
+        			else if (cellType==CellType.ERROR)
         				tempRowData.add("");
         			}
         	}
@@ -526,16 +529,17 @@ public class BlockData extends Block {
           			line.add("");
           		else{
           			int type = cell.getCellType();
+          			CellType cellType = cell.getCellTypeEnum();
                     Object value = "";
 
-                    switch (type) {
-                    case HSSFCell.CELL_TYPE_STRING:
+                    switch (cellType) {
+                    case STRING:
                       value = cell.getRichStringCellValue().getString();
                       break;
-                    case HSSFCell.CELL_TYPE_BOOLEAN:
+                    case BOOLEAN:
                       value = new Boolean(cell.getBooleanCellValue());
                       break;
-                    case HSSFCell.CELL_TYPE_NUMERIC:
+                    case NUMERIC:
                       if(HSSFDateUtil.isCellDateFormatted(cell)) {
                         value = cell.getDateCellValue();
                         
@@ -547,13 +551,13 @@ public class BlockData extends Block {
                     	 value = new BigDecimal( cell.getNumericCellValue());
                       }
                       break;
-                    case HSSFCell.CELL_TYPE_ERROR:
+                    case ERROR:
                       value = "#ERR" + cell.getErrorCellValue();
                       break;
-                    case HSSFCell.CELL_TYPE_FORMULA:
+                    case FORMULA:
                       value = cell.getCellFormula();
                       break;
-                    case HSSFCell.CELL_TYPE_BLANK:
+                    case BLANK:
                     default:
                       value = ""; // NOT SUPPORTED
                     }
@@ -984,6 +988,16 @@ public class BlockData extends Block {
     aaValues[0] = aalValues;
 
     return BlockData.exportToSpreadSheet(abBlock, userInfo, saSheets, aaValues, psOut);    
+  }    
+
+  @SuppressWarnings("unchecked")
+  public static String exportToSpreadSheet(Block abBlock, UserInfoInterface userInfo, String asSheetName, String separator, List<List<String>> aalValues, OutputStream psOut) {
+    String[] saSheets = new String[1];
+    saSheets[0] = asSheetName;
+    List<List<String>>[] aaValues = new List[1];
+    aaValues[0] = aalValues;
+
+    return BlockData.exportToSpreadSheet(abBlock, userInfo, saSheets, separator, aaValues, psOut);    
 
   }    
 
@@ -1002,6 +1016,10 @@ public class BlockData extends Block {
       }
     }
     return null;
+  }
+
+  public static String exportToSpreadSheet(Block abBlock, UserInfoInterface userInfo, String[] asaSheetName, String separator, List<List<String>>[] aalaValues, OutputStream psOut) {
+      return exportToCSV(abBlock, userInfo, asaSheetName, separator, aalaValues, psOut);
   }
 
   private static String exportToCSV(Block abBlock, UserInfoInterface userInfo, String[] asaSheetName, List<List<String>>[] aalaValues, OutputStream psOut) {
@@ -1052,6 +1070,58 @@ public class BlockData extends Block {
 
     return retObj;
   }
+
+  private static String exportToCSV(Block abBlock, UserInfoInterface userInfo, String[] asaSheetName, String separator, List<List<String>>[] aalaValues, OutputStream psOut) {
+	    String retObj = null;
+
+	    PrintWriter aWriter = new PrintWriter(psOut);
+	    try {
+	      List<List<String>> alValues = null;
+	      List<String> altmp = null;
+	      String stmp = null;
+	      StringBuffer sbtmp = null;
+
+	      for (int sheet=0; sheet < aalaValues.length; sheet++) {
+
+	        alValues = aalaValues[sheet];
+
+	        // rows
+	        for (int row=0; row < alValues.size(); row++) {
+	          altmp = alValues.get(row);
+	          sbtmp = new StringBuffer();
+	          for (int col=0; altmp != null && col < altmp.size(); col++) {
+	            stmp = (String)altmp.get(col);
+	            if (stmp == null) stmp = "";
+
+	            if (stmp.indexOf(separator) > -1 ||
+	                stmp.indexOf("\"") > -1) {
+
+	              // replace " by ""
+	              Utils.replaceString(stmp, "\"", "\"\"");
+
+	              // append " at start and end
+	              stmp = "\"" + stmp + "\"";
+	            }
+	            if(altmp != null && col == altmp.size()-1) {
+	            	sbtmp.append(stmp);
+	            }else {
+	            	sbtmp.append(stmp).append(separator);
+	            }	            
+	          }
+	          aWriter.println(sbtmp.toString());
+	        }      
+	      }
+
+	      aWriter.close();
+
+	    }
+	    catch (Exception e) {
+	      Logger.error(userInfo.getUtilizador(), abBlock, "exportToCSV", "caught exception: ", e);
+	      retObj = "Ocorreu um erro ao exportar: " + e.getMessage();
+	    }
+
+	    return retObj;
+	  }
 
   private static String exportToSpreadSheetJXL(Block abBlock, UserInfoInterface userInfo, String[] asaSheetName, List<List<String>>[] aalaValues, OutputStream psOut) {
 
@@ -1134,7 +1204,7 @@ public class BlockData extends Block {
             if (stmp == null) stmp = "";
 
             hCell = hRow.createCell((short)col);
-            hCell.setCellType(HSSFCell.CELL_TYPE_STRING);
+            hCell.setCellType(CellType.STRING);
             hCell.setCellValue(stmp);
           }
         }      
@@ -1277,6 +1347,7 @@ public class BlockData extends Block {
 
             if (updateDS) {
             	// write always or first time
+            	if (procData.getList(var) != null)
             	procData.getList(var).parseAndSetItemValue(irow, value); 
             }
           } // while
@@ -1336,14 +1407,15 @@ public class BlockData extends Block {
 
 
   public static void main (String[] args) throws Throwable {
-	
-    try (FileInputStream fin = new FileInputStream("/iKnow/work/projects/iFlowRoot/iFlowHome/content.xml");){
+    try {
       ByteArrayOutputStream bous = new ByteArrayOutputStream();
       
+      FileInputStream fin = new FileInputStream("/iKnow/work/projects/iFlowRoot/iFlowHome/content.xml");
       byte [] d = new byte[4096];
       int r = 0;
       while((r = fin.read(d)) != -1)
         bous.write(d, 0, r);
+      fin.close();
 
       new ODSAdapter().loadData(bous.toByteArray(), new Properties());
 
