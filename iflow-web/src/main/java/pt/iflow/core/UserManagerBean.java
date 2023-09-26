@@ -2556,6 +2556,11 @@ public class UserManagerBean implements UserManager {
     return resetPassword(true, username);
   }
 
+  public boolean resetPasswordSendCode(String username, String code) {
+	    Logger.info(username, this, "resetPassword", "Sending code to reset password password for user "+username);
+	    return resetPassword(true, username, true, code);
+	  }
+
 
   public boolean resetPassword(UserInfoInterface userInfo, String sUserId) {
     if(userInfo == null || !(userInfo.isOrgAdmin() || userInfo.isSysAdmin())) {
@@ -2568,8 +2573,11 @@ public class UserManagerBean implements UserManager {
     return resetPassword(false, sUserId);
   }
 
-
   private boolean resetPassword(boolean isUserName, String user) {
+	  return resetPassword(isUserName, user, false, null);
+  }
+  
+  private boolean resetPassword(boolean isUserName, String user, boolean sendCodeOnly, String code) {
     if(!Const.bUSE_EMAIL) return false; // dont reset if no email since password is sent by email!! 
 
     boolean result = false;
@@ -2605,7 +2613,7 @@ public class UserManagerBean implements UserManager {
       rs.close();
       pst.close();
 
-      if(userFound) {
+      if(userFound && !sendCodeOnly) {
         Logger.debug("ADMIN", this, "resetPassword", "User email found. Generating new password.");
         // Generate a new dummy password...
         password =  RandomStringUtils.random(8, true, true);
@@ -2633,11 +2641,11 @@ public class UserManagerBean implements UserManager {
 
     if(userFound) {
       try {
-        // send email
+         // send email
         Hashtable<String,String> ht = new Hashtable<String,String>();
-        ht.put("password", password);
+        ht.put("password", sendCodeOnly?code:password);
         ht.put("username", username);
-        Email email = EmailManager.buildEmail(ht, EmailManager.getEmailTemplate(null, "password_reset"));
+        Email email = EmailManager.buildEmail(ht, EmailManager.getEmailTemplate(null, sendCodeOnly?"password_reset_send_code":"password_reset"));
         email.setTo(emailAddress);
         if(email.sendMsg()) {
           Logger.info(user, this, "resetPassword", "Notification email sent successfully");

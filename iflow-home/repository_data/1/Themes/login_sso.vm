@@ -21,7 +21,10 @@
     <style type="text/css">
 		p {font-size:1.5em}
 	</style>
-		<form name="dados" method="post" action="${dados.action}" autocomplete="off">
+		<form name="dados" method="post" action="${dados.action}" autocomplete="off" 
+			#if (!$isLoginAvaliadoras)
+				onsubmit="document.dados.login.value=(document.dados.domain.value+document.dados.login.value);"
+			#end>
 			<input type="hidden" name="url" value="${dados.url}"/>
 			<input type="hidden" name="${dados.ufidName}" value="${dados.ufidValue}"/>
 			<input type="hidden" name="source" value="internet"/>
@@ -29,19 +32,24 @@
 			<input type="hidden" name="do_redirect" value="true"/>
 			<input type="hidden" name="url" value="main.jsp"/>
 			<input type="hidden" name="sso" value="false"/>
-		<div style="margin-left:auto;margin-right:auto;width:604px;height:441px">
-			#if (!$isLoginAvaliadoras)
+		<div style="margin-left:auto;margin-right:auto;width:604px;height:550px">
+			#if (false && !$isLoginAvaliadoras)
 			<div>
 				<p>Acesso via Single Sign On</p>
 			    <span style="font-size:1.2em;text-decoration:underline;color:white;position:relative;top:0px"><a href="./saml2/index.jsp?entityprovider=1" class="user_info" style="font-size: 1.2em;">Login Integrado</a></span>
 			</div>
 			#end
 			
-			<div class="lp_login_box" style="margin-top:50px;">
-				<p>Acesso Local</p>
+			<div class="lp_login_box" style="margin-top:50px; background-image: url('/iFlow/PublicFiles/login_bg.gif');">
+				<br/><br/><br/><br/><br/><br/><br/><br/>
 			    <div class="error_msg lp_error_msg" style="margin-top:-10px;height:25px">
 			        #if ($hasError)
 			        	$loginError
+			        #end
+			    </div>
+				<div class="error_msg lp_error_msg" style="margin-top:-10px;height:25px">
+			        #if ($isOverFailureLimit)
+			        	Excedeu o número máximo de tentativas, por favor volte a tentar mais tarde.
 			        #end
 			    </div>
  				<div class="user_info lp_field_label">
@@ -57,16 +65,15 @@
 					<input type="password" name="password" id="password" size="15" maxlength="40"/>
 				</div>
 				<div class="lp_login_button">
-					<input id="link_search_span" class="regular_button_01" type="button" name="filter" value="Login" onClick="document.dados.submit();" />
-				</div>
+					<input id="link_search_span" class="regular_button_01" type="submit" name="filter" value="Login"/>
+				</div
 				
 				#if ($isOverFailureLimit)
 			    </br>
 				<div style="width: 320px; margin: auto;">
-					<img alt="Challenge" id="challenge_kap" src="/iFlow/kaptcha" style="padding-left: 30%;">
 					</br>			
 					<div class="user_info lp_field_label">
-						Kaptcha 
+						 
 					</div>
 					<div class="item lp_field_input">				
 						<input type="text" value="" id="challenge" name="challenge" size="15" maxlength="5">

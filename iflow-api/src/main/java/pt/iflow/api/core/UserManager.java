@@ -428,6 +428,13 @@ public interface UserManager {
     /**
      * Reset user password
      *
+     * @param username
+     */
+    public boolean resetPasswordSendCode(String username, String code);
+
+    /**
+     * Reset user password
+     *
      * @param userInfo
      * @param userId
      */

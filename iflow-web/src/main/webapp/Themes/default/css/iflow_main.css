@@ -984,6 +984,15 @@ overflow:hidden;
   	color: #222222;
   }
   
+  .info_msg_ext {
+    font-size: 1.5em;
+    font-family: sans-serif;
+  	padding-bottom: 1.5em;
+  	padding-left: 2em;
+  	color: #222222;
+  }
+  
+  
   .info_msg a {
   	color: blue;
   	text-decoration: underline;
@@ -2132,7 +2141,7 @@ ul, .itembox {
 .lp_login_box {
     background: #fff url("../../../images/login_bg.gif") no-repeat center 20px ;
    
-    height: 250px;
+    height: 270px;
     margin: auto;
 	padding-top: 20px;
     padding: 20px;

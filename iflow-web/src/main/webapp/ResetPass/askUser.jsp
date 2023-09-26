@@ -30,11 +30,12 @@
 			<div class="rc_header"></div> 
 			<div class="rc_content">
 				<form name="fomulario" id="formulario" action="<%=response.encodeURL("resetPassword") %>" method="post">
+				    <input type="hidden" name="pagename" value="askUser"/>
 					<fieldset class="rp_background">
 						<legend><if:message string="resetPassword.title" /></legend>
-						<%--<div class="info_msg rp_background" style="text-align:left;">
-							<if:message string="register.intro.organization" />
-						</div>--%>
+						<div class="info_msg_ext rp_background" style="text-align:left;">
+							<if:message string="resetPassword.intro.reset" />
+						</div>
 						<c:if test="${not empty error_msg}">
 							<div class="error_msg rp_background">
 								<c:out value="${error_msg}" escapeXml="false"/>
@@ -43,19 +44,18 @@
 					
 						<ol>
 							<if:formInput type="text" name="username" value="" labelkey="resetPassword.label.username" edit="true" required="true" />
-							<if:formInput type="challenge" name="challenge" value="" label="Challenge" edit="true" required="true" />
+							<!--<if:formInput type="challenge" name="challenge" value="" label="Challenge" edit="true" required="true" />-->
 						</ol>
 					</fieldset>
 					<fieldset class="submit rp_background">
-						<input class="regular_button_01" type="submit" name="cancel" value="<if:message string="button.cancel"/>"/>
-						<%--<input class="regular_button_01" type="reset" name="clear" value="<if:message string="button.clear"/>"/>--%>
 						<input class="regular_button_01" type="submit" name="add" value="<if:message string="button.next"/>"/>
+						<input class="regular_button_01" type="submit" name="cancel" value="<if:message string="button.cancel"/>"/>
 					</fieldset>
 				</form>
 			</div> 
 		</div>
 	<div class="lp_footer_nav">
-	  <a class="lp_top_nav_link" style="color:#5D7891;" href="http://www.iknow.pt"><if:message string="iflow.copyright"/></a>
+	  <a class="lp_top_nav_link" style="color:#5D7891;" href="https://www.uniksystem.com"><if:message string="iflow.copyright"/></a>
     </div>
 		
 	</body>

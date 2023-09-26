@@ -38,6 +38,7 @@ public class Const {
 	public static String BACKEND_URL = null;
 	public static String PORTAL_RH_URL=null;
 	public static String PASSWORD_FORMAT= null;
+	public static String PASSWORD_FORMAT_MESSAGE = null;
 	public static String USERNAME_LENGTH = null;
 	public static String PASSWORD_EXPIRATION_TIME = "1000";
 	public static boolean BLOCK_USER_ON_FAILED_ATTEMPTS = false;
@@ -541,6 +542,7 @@ public class Const {
 		PORTAL_RH_URL = Setup.getProperty("PORTAL_RH_URL");
 
 		PASSWORD_FORMAT = Setup.getProperty("PASSWORD_FORMAT");
+		PASSWORD_FORMAT_MESSAGE = Setup.getProperty("PASSWORD_FORMAT_MESSAGE");
 		USERNAME_LENGTH =  Setup.getProperty("USERNAME_LENGTH");
 		PASSWORD_EXPIRATION_TIME = Setup.getProperty("PASSWORD_EXPIRATION_TIME");
 		BLOCK_USER_ON_FAILED_ATTEMPTS= Boolean.parseBoolean(Setup.getProperty("BLOCK_USER_ON_FAILED_ATTEMPTS"));

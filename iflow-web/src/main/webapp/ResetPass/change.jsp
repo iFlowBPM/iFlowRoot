@@ -27,8 +27,12 @@
 				<form name="fomulario" id="formulario" action="<%=response.encodeURL("changePassword") %>" method="post">
 					<fieldset class="rp_background">
 						<legend><if:message string="changePassword.title" /></legend>
-						<div class="info_msg rp_background" style="text-align:left;">
-							<if:message string="changePassword.intro.change" />
+						<div class="info_msg_ext rp_background" style="text-align:left;">
+							<if:message string="changePassword.intro.change" />   
+							<% if (Const.PASSWORD_FORMAT_MESSAGE != null) { %>
+    	  						<%=Const.PASSWORD_FORMAT_MESSAGE%>
+      						<% } %>
+							
 						</div>
 						<c:if test="${not empty error_msg}">
 							<div class="error_msg rp_background">
@@ -43,14 +47,14 @@
 						</ol>
 					</fieldset>
 					<fieldset class="submit rp_background">
-						<input class="regular_button_01" type="submit" name="cancel" value="<if:message string="button.cancel"/>"/>
 						<input class="regular_button_01" type="submit" name="add" value="<if:message string="button.next"/>"/>
+						<input class="regular_button_01" type="submit" name="cancel" value="<if:message string="button.cancel"/>"/>
 					</fieldset>
 				</form>
 			</div> 
 		</div>
 	<div class="lp_footer_nav">
-	  <a class="lp_top_nav_link" style="color:#5D7891;" href="http://www.iknow.pt"><if:message string="iflow.copyright"/></a>
+	  <a class="lp_top_nav_link" style="color:#5D7891;" href="https://www.uniksystem.com"><if:message string="iflow.copyright"/></a>
     </div>
 		
 	</body>

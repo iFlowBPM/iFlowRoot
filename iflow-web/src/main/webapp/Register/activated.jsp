@@ -49,7 +49,7 @@ function Redirect() {
 		</div>
 	</div>
 	<div class="lp_footer_nav">
-	  <a class="lp_top_nav_link" style="color:#5D7891;" href="http://www.infosistema.pt"><if:message string="iflow.copyright"/></a>
+	  <a class="lp_top_nav_link" style="color:#5D7891;" href="https://www.uniksystem.com"><if:message string="iflow.copyright"/></a>
     </div>
 </body>
 </html>
