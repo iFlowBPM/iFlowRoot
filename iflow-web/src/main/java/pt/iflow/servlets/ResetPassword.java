@@ -86,7 +86,7 @@ public class ResetPassword extends HttpServlet {
     	else {
           Messages msg = Messages.getInstance();
           request.setAttribute("error_msg", msg.getString("resetPassword.error.challenge"));
-          request.getRequestDispatcher("/ResetPass/askUser.jsp").forward(request, response);
+          request.getRequestDispatcher("/ResetPass/challenge.jsp").forward(request, response);
           return;    		
     	}
     } else {

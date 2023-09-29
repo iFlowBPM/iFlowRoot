@@ -44,7 +44,7 @@
 						</c:if>
 					
 						<ol>				
-							<if:formInput type="text" name="challenge" value="" label="resetPassword.label.challenge" edit="true" required="true" />
+							<if:formInput type="text" name="challenge" value="" labelkey="resetPassword.label.challenge" edit="true" required="true" />
 						</ol>
 					</fieldset>
 					<fieldset class="submit rp_background">

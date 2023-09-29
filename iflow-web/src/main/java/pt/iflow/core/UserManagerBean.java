@@ -2627,7 +2627,7 @@ public class UserManagerBean implements UserManager {
         db.commit();
         Logger.info("ADMIN", this, "resetPassword", "User password reset successfully");
         result = true;
-      } else {
+      } else if (!userFound) {
         Logger.debug("ADMIN", this, "resetPassword", "User not found");
       }
     }
