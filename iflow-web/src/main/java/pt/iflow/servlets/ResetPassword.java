@@ -73,30 +73,47 @@ public class ResetPassword extends HttpServlet {
     }
 
     String userName = request.getParameter("username");
-    String challenge = request.getParameter("challenge");
+    //String challenge = request.getParameter("challenge");
     String pageName = request.getParameter("pagename");
-        
-    if ("challenge".equals(pageName)) {
-    	String code = (String)request.getSession().getAttribute("challengeGenCode");
-    	if (code != null) code = Utils.decrypt(code);
-    	if (code != null && code.contentEquals(challenge) ) {
-    		BeanFactory.getUserManagerBean().resetPassword(userName);
-            request.getRequestDispatcher("/ResetPass/result.jsp").forward(request, response);    	
+      
+    if ("askUser".equals(pageName) && userName != null) {    
+    	boolean success = BeanFactory.getUserManagerBean().resetPassword(userName);
+    	if (success) {
+    		request.getRequestDispatcher("/ResetPass/result.jsp").forward(request, response);
+    		return;
     	}
     	else {
-          Messages msg = Messages.getInstance();
-          request.setAttribute("error_msg", msg.getString("resetPassword.error.challenge"));
-          request.getRequestDispatcher("/ResetPass/challenge.jsp").forward(request, response);
-          return;    		
+            Messages msg = Messages.getInstance();
+            request.setAttribute("error_msg", msg.getString("resetPassword.error.change"));
+            request.getRequestDispatcher("/ResetPass/askUser.jsp").forward(request, response);
+            return;       		
     	}
-    } else {
-    	String code =  RandomStringUtils.random(8, true, true); 	
-    	BeanFactory.getUserManagerBean().resetPasswordSendCode(userName, code);
-    	request.getSession().setAttribute("challengeGenCode", Utils.encrypt(code));
-    	// TODO: enviar código por email
-        request.getRequestDispatcher("/ResetPass/challenge.jsp?username="+ userName).forward(request, response);    	    
-      return;    	
     }
+
+
+//    
+//    
+//    if ("challenge".equals(pageName)) {
+//    	String code = (String)request.getSession().getAttribute("challengeGenCode");
+//    	if (code != null) code = Utils.decrypt(code);
+//    	if (code != null && code.contentEquals(challenge) ) {
+//    		BeanFactory.getUserManagerBean().resetPassword(userName);
+//            request.getRequestDispatcher("/ResetPass/result.jsp").forward(request, response);    	
+//    	}
+//    	else {
+//          Messages msg = Messages.getInstance();
+//          request.setAttribute("error_msg", msg.getString("resetPassword.error.challenge"));
+//          request.getRequestDispatcher("/ResetPass/challenge.jsp").forward(request, response);
+//          return;    		
+//    	}
+//    } else {
+//    	String code =  RandomStringUtils.random(8, true, true); 	
+//    	BeanFactory.getUserManagerBean().resetPasswordSendCode(userName, code);
+//    	request.getSession().setAttribute("challengeGenCode", Utils.encrypt(code));
+//    	// TODO: enviar código por email
+//        request.getRequestDispatcher("/ResetPass/challenge.jsp?username="+ userName).forward(request, response);    	    
+//      return;    	
+//    }
   }
 
 }

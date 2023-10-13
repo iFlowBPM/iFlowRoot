@@ -36,7 +36,7 @@
 						<ol>
 							<li><if:message string="resetPassword.result.1"/></li>
 							<li><if:message string="resetPassword.result.2"/></li>
-							<li><if:message string="resetPassword.result.3"/></li>
+							<!-- <li><if:message string="resetPassword.result.3"/></li> -->
 						</ol>
 					</fieldset>
 					<fieldset class="submit rp_background">
