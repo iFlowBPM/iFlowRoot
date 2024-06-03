@@ -225,7 +225,7 @@ public class AuthenticationBICServlet extends javax.servlet.http.HttpServlet imp
 
 			    } else {
 			      result.nextUrl = "main.jsp";
-			      result.errorMsg = isBlocked ? "Utilizador bloqueado devido a ter excedido o limite de tentativas" : ui.getError();
+			      result.errorMsg = isBlocked ? "Por favor contacte os serviços do banco ou entidade avaliadora para que procedam ao desbloqueio de utilizador" : ui.getError();
 			      session.setAttribute("login_error", result.errorMsg);
 			    }
 			    PersistSession ps = new PersistSession();
