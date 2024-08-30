@@ -25,7 +25,6 @@
 		<module>iflow-web</module>
 		<module>iflow-blocks</module>
 		<module>iflow-editor</module>
-		<module>iflow-fixtures</module>
 		<module>iflow-home</module>
 		<!--
 		<module>iflow-dist</module>
