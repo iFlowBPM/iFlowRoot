@@ -519,6 +519,65 @@
         <i18n>library.utils.block.gen_xls_sheet</i18n>
     </XmlBlock>
     <XmlBlock>
+        <class>BlockCriarCSV</class>
+        <XmlPort>
+            <name>portIn</name>
+            <description>portIn</description>
+            <in_out>in</in_out>
+            <position>
+                <x>-5</x>
+                <y>30</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portSuccess</name>
+            <description>Success</description>
+            <in_out>out</in_out>
+            <position>
+                <x>102</x>
+                <y>20</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portError</name>
+            <description>Error</description>
+            <in_out>out</in_out>
+            <position>
+                <x>102</x>
+                <y>45</y>
+            </position>
+        </XmlPort>
+        <XmlAttribute>
+            <name>filename</name>
+            <description>File Name (Input String)</description>
+            <value />
+        </XmlAttribute>
+        <XmlAttribute>
+            <name>variable</name>
+            <description>Variable (Output Document)</description>
+            <value />
+        </XmlAttribute>
+        <XmlAttribute>
+            <name>separator</name>
+            <description>Separator (Input String)</description>
+            <value />
+        </XmlAttribute>
+        <XmlAttribute>
+            <name>columnNames</name>
+            <description>Column Names (Input String)</description>
+            <value />
+        </XmlAttribute>
+        <XmlAttribute>
+            <name>columnValues</name>
+            <description>Column Values (Vars separated by ",")</description>
+            <value />
+        </XmlAttribute>
+        <image>bpmn_data_import.png</image>
+        <className>pt.iknow.floweditor.blocks.AlteraAtributosCriarDocumento</className>
+        <description>Create CSV Document</description>
+        <i18n>library.utils.block.gen_csv</i18n>
+    </XmlBlock>
+    <XmlBlock>
         <class>BlockFormTemplate</class>
         <className>pt.iknow.floweditor.blocks.AlteraAtributosFormTemplate</className>
         <image>bpmn_task.png</image>
