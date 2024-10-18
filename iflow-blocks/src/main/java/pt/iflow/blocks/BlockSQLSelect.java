@@ -82,8 +82,8 @@ public class BlockSQLSelect extends BlockSQL {
     }
   }
   
-  // Verifica se foi escolhido resultado unitário
-  private boolean isSingle(UserInfoInterface userInfo, ProcessData procData) {
+  // Verifica se foi escolhido resultado unitario
+  protected boolean isSingle(UserInfoInterface userInfo, ProcessData procData) {
     String singleAttr = this.getAttribute(BlockSQL.sSINGLE).trim();
     try {
       singleAttr = procData.transform(userInfo, singleAttr, true);
@@ -406,7 +406,7 @@ public class BlockSQLSelect extends BlockSQL {
                       value = new Integer(((Number)n).intValue());
                     }
                     else {
-                      value = new Float(((Number)n).floatValue());                    
+                      value = new Double(((Number)n).doubleValue());                    
                     }
 
                     if (bSingle) {
