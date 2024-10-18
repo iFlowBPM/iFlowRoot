@@ -263,6 +263,38 @@ public class SubFlowDataExpander {
   static String[][] retrieveSubflowVarMappings(XmlBlock subFlowBlock) {
     // get the var mapping of subflow
     int size = (subFlowBlock.getXmlAttributeCount() - 1) / 4 - 1; // raio de conta
+    
+    String strAttributes = "";
+    //jcosta: 2024-10-18 -log to check where it failts
+    if (size<0) {
+        XmlAttribute[] attributes = subFlowBlock.getXmlAttribute();
+
+        if (attributes != null) {
+            StringBuilder sb = new StringBuilder();
+
+            for (XmlAttribute attr : attributes) {
+                if (attr != null && attr.getName() != null && attr.getValue() != null) {
+                    if (sb.length() > 0) {
+                        sb.append(", ");
+                    }
+                    sb.append(attr.getName()).append("=").append(attr.getValue());
+                }
+            }
+
+            strAttributes = sb.toString(); // Set the final result to strAttributes
+        }
+        Logger.error(
+        	    "", 
+        	    "SubFlowDataExpander", 
+        	    "retrieveSubflowVarMappings", 
+        	    "Error in var mapping retrieval. Size of var mapping is negative = " + size 
+        	    + " with subFlowBlock.getXmlAttributeCount() = " + subFlowBlock.getXmlAttributeCount() 
+        	    + " with Type - " + subFlowBlock.getType() 
+        	    + " with attributes: [ " + strAttributes + " ]"
+        	);
+
+    	
+    }
 
     String[][] saInVars = new String[size][3];
 
