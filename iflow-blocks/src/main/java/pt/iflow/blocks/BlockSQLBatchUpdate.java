@@ -62,7 +62,8 @@ public class BlockSQLBatchUpdate extends BlockSQL {
     try{
     	sQuery = this.getAttribute(advancedQuery);
     	if (StringUtils.isNotEmpty(sQuery)) {
-        sQuery = procData.transform(userInfo, sQuery, true);
+    		sQuery = processSQLNumberVars(userInfo, procData, sQuery);
+    		sQuery = procData.transform(userInfo, sQuery, true);
     	}
         if (StringUtils.isEmpty(sQuery)) sQuery = null;
     }
@@ -86,7 +87,7 @@ public class BlockSQLBatchUpdate extends BlockSQL {
     
     try{
     	String sSetVars = this.getAttribute(BlockSQL.sSETVARS);
-  	  	// As vars ter√£o que ser interpretadas...
+  	  	// As vars ter„o que ser interpretadas...
       // if(sSetVars.startsWith("\"")) <-- Before "y" + X, X and "y", were allowed
       // Now "y" + X, X, "y", y${X}, ${X} and y, are allowed
       // if sSetVars is "${X}", X cannot be a var
@@ -115,7 +116,7 @@ public class BlockSQLBatchUpdate extends BlockSQL {
     
     try{
      	String sWhereVars = this.getAttribute(BlockSQL.sWHEREVARS);
-     	// As vars ter√£o que ser interpretadas...
+     	// As vars ter„o que ser interpretadas...
       // if(sWhereVars.startsWith("\"")) {
       // Now "y" + X, X, "y", y${X}, ${X} and y, are allowed
       // if sWhereVars is "${X}", X cannot be a var

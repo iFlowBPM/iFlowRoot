@@ -1,14 +1,17 @@
 package pt.iflow.blocks;
 
+import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.List;
-
-import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.lang.StringUtils;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import pt.iflow.api.blocks.Block;
 import pt.iflow.api.blocks.Port;
+import pt.iflow.api.core.ProcessCatalogue;
 import pt.iflow.api.processdata.ProcessData;
+import pt.iflow.api.processtype.FloatDataType;
+import pt.iflow.api.processtype.ProcessDataType;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.UserInfoInterface;
 import pt.iflow.api.utils.Utils;
@@ -211,4 +214,43 @@ public abstract class BlockSQL extends Block {
     return retObj;
   }
 
+  protected String processSQLNumberVars(UserInfoInterface userInfo, ProcessData procData, String sql) {
+	  
+	  ProcessCatalogue procCatalogue = procData.getCatalogue();
+	  
+	  List<String> varNames = procCatalogue.getSimpleVariableNames();
+	  
+      // Loop over all variables in the catalog
+      for ( String varName : varNames) {
+          ProcessDataType varType = procCatalogue.getDataType(varName);
+
+          // Only format 'numeric' variables
+          if (varType instanceof FloatDataType) {
+              // Regex to match patterns like +varName+, +  varName +, +varName (end of string), +  varName (end of string)
+              String regex = "\\+\\s*" + varName + "\\s*\\+?|\\+\\s*" + varName + "\\s*$";
+
+              // Create a pattern and matcher for the regex
+              Pattern pattern = Pattern.compile(regex);
+              Matcher matcher = pattern.matcher(sql);
+
+              // Buffer to build the new SQL with replacements
+              StringBuffer processedSQL = new StringBuffer();
+
+              // Replace all matches in the SQL string
+              while (matcher.find()) {
+                  // Format the double value to 5 decimal places
+                  String formattedVar = "(new DecimalFormat(\"#.#####\")).format("+varName+")";
+
+                  // Reinsert + signs and replace the matched pattern
+                  String replacement = matcher.group(1) + formattedVar + (matcher.group(2) != null ? matcher.group(2) : "");
+                  matcher.appendReplacement(processedSQL, replacement);
+              }
+              matcher.appendTail(processedSQL);
+
+              // Update the sql with the processed string
+              sql = processedSQL.toString();
+          }
+      }
+      return sql;
+  }
 }

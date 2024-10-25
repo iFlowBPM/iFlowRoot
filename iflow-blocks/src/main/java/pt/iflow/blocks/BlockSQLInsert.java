@@ -38,6 +38,7 @@ public class BlockSQLInsert extends BlockSQL {
         sQuery = getAttribute("advancedQuery");
         Logger.info(login, this, "after", "INFO: Advance query getAttribute: " + sQuery);
         if (StringUtils.isNotEmpty(sQuery)) {
+          sQuery = processSQLNumberVars(userInfo, procData, sQuery);
           sQuery = procData.transform(userInfo, sQuery, true); 
         }
         if (StringUtils.isEmpty(sQuery)) {            
