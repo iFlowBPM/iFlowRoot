@@ -877,4 +877,63 @@
         <description>Remove element from array</description>
         <i18n>library.dms.block.remove_from_array</i18n>
     </XmlBlock>
+
+    <XmlBlock>
+        <class>BlockResizeDocuments</class>
+        <XmlPort>
+            <name>portIn</name>
+            <description>Entrada</description>
+            <in_out>in</in_out>
+            <position>
+                <x>-5</x>
+                <y>25</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portSuccess</name>
+            <description>Sucesso</description>
+            <in_out>out</in_out>
+            <position>
+                <x>102</x>
+                <y>15</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portEmpty</name>
+            <description>portEmpty</description>
+            <in_out>out</in_out>
+            <position>
+                <x>102</x>
+                <y>25</y>
+            </position>
+        </XmlPort>
+        <XmlPort>
+            <name>portError</name>
+            <description>Erro</description>
+            <in_out>out</in_out>
+            <position>
+                <x>102</x>
+                <y>45</y>
+            </position>
+        </XmlPort>
+        <XmlAttribute>
+            <name>list_docid</name>
+            <description>List with DocIds (Input String Array)</description>
+            <value/>
+        </XmlAttribute>
+        <XmlAttribute>
+            <name>maxWidth</name>
+            <description>Max Width (Input Integer)</description>
+            <value/>
+        </XmlAttribute>
+        <XmlAttribute>
+            <name>maxHeight</name>
+            <description>Max Height(Input Integer)</description>
+            <value/>
+        </XmlAttribute>
+        <image>bpmn_task.png</image>
+        <description>library.utils.block.resize.documents</description>
+        <i18n>library.utils.block.resize.documents</i18n>
+    </XmlBlock>
+
 </XmlLibrary>
