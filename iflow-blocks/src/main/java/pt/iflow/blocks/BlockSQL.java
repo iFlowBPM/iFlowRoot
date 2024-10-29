@@ -251,6 +251,7 @@ public abstract class BlockSQL extends Block {
               sql = processedSQL.toString();
           }
       }
+      Logger.debug((userInfo!=null)?userInfo.getUtilizador():null,this,"processSQLNumberVars","prepared sql = " + sql);
       return sql;
   }
 }

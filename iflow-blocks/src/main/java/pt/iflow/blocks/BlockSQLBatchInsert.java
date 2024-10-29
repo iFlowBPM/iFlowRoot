@@ -88,7 +88,7 @@ public class BlockSQLBatchInsert extends BlockSQL {
     
     String sVars = this.getAttribute(BlockSQL.sVARS);
 	try {
-		// As vars terão que ser interpretadas...
+		// As vars terao que ser interpretadas...
       // if(sVars.startsWith("\"")) <-- Before "y" + X, X and "y", were admited
       // Now "y" + X, X, "y", y${X}, ${X} and y, are admited
       // if sVars is "${X}", X cannot be a var

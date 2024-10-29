@@ -62,7 +62,9 @@ public class BlockSQLUpdate extends BlockSQL {
     try {
         sQuery = getAttribute("advancedQuery");
         if (StringUtils.isNotEmpty(sQuery)) {
+          Logger.debug(userInfo.getUtilizador(),this,"processSQLNumberVars","before preparing sql = " + sQuery);
           sQuery = processSQLNumberVars(userInfo, procData, sQuery);
+          Logger.debug(userInfo.getUtilizador(),this,"processSQLNumberVars","after preparing sql = " + sQuery);
           sQuery = procData.transform(userInfo, sQuery, true); 
         }
         if (StringUtils.isEmpty(sQuery)) {
