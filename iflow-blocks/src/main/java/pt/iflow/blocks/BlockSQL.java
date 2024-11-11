@@ -227,7 +227,9 @@ public abstract class BlockSQL extends Block {
           // Only format 'numeric' variables
           if (varType instanceof FloatDataType) {
               // Regex to match patterns like +varName+, +  varName +, +varName (end of string), +  varName (end of string)
-              String regex = "\\+\\s*" + varName + "\\s*\\+?|\\+\\s*" + varName + "\\s*$";
+              //String regex = "(\\+\\s*)" + varName + "(\\s*\\+?)|(\\+\\s*)" + varName + "(\\s*$)";
+              // with word boundaries
+        	  String regex = "(\\+\\s*)\\b" + varName + "\\b(\\s*\\+?)|(\\+\\s*)\\b" + varName + "\\b(\\s*$)";
 
               // Create a pattern and matcher for the regex
               Pattern pattern = Pattern.compile(regex);
@@ -239,7 +241,7 @@ public abstract class BlockSQL extends Block {
               // Replace all matches in the SQL string
               while (matcher.find()) {
                   // Format the double value to 5 decimal places
-                  String formattedVar = "(new DecimalFormat(\"#.#####\")).format("+varName+")";
+                  String formattedVar = "(new java.text.DecimalFormat(\"#.#####\")).format("+varName+")";
 
                   // Reinsert + signs and replace the matched pattern
                   String replacement = matcher.group(1) + formattedVar + (matcher.group(2) != null ? matcher.group(2) : "");
