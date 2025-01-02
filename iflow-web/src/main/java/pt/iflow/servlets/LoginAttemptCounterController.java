@@ -79,6 +79,20 @@ public class LoginAttemptCounterController {
 
         return false;
     }
+
+    public static void resetFailedAttempts(ServletContext sc, ServletRequest req) throws UnknownHostException {
+        HashMap<InetAddress, LoginAttemptCounter> map = (HashMap<InetAddress, LoginAttemptCounter>) sc.getAttribute(LOGIN_ATTEMPT_COUNTER_MAP_NAME);
+        if (map == null || !(map instanceof HashMap<?, ?>))
+            return;
+
+        LoginAttemptCounter lc = map.get(InetAddress.getByName(req.getLocalAddr()));
+        if (lc == null)
+            return;
+
+        lc.setFailedAttempt(0);
+        map.put(lc.getAddressAttempt(), lc);
+        sc.setAttribute(LOGIN_ATTEMPT_COUNTER_MAP_NAME, map);
+    }
     
     public static Boolean isBlocked(HttpServletRequest request) {
     	return BeanFactory.getUserManagerBean().isUserBlocked(request.getParameter("login"));

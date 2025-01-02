@@ -571,13 +571,16 @@
   
 	
   for (int i = 0; i < alActivities.size(); i++) {
-    a = alActivities.get(i);
+        a = alActivities.get(i);
+
+        ProcessHeader header = new ProcessHeader(a.flowid, a.pid, a.subpid);
+        ProcessData procdata = pm.getProcessData(userInfo, header);
  
 	    String readStyle = "";
 	    if (!a.isRead()) {
 	      readStyle = "style='font-weight:bold;'";
 	    }
-    stmp = "<a " + readStyle + "href=\"javascript:hidePopup(); open_process(2, " + a.flowid + ", '"
+        stmp = "<a " + readStyle + "href=\"javascript:hidePopup(); open_process(2, " + a.flowid + ", '"
         + response.encodeURL(a.url.substring(0, a.url.indexOf("?"))) + "', 'flowid=" + a.flowid + "&pid=" + a.pid
         + "&subpid=" + a.subpid + "')\">";
 	    stmp2 = "</a>";
@@ -609,7 +612,7 @@
 	    	stmp4="";
 	    
 	  	//Data e Hora
-  		String sDataHora = "" + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Timestamp(a.created.getTime()));
+  		String sDataHora = "" + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Timestamp(procdata.getCreationDate().getTime()));
   		actividade.add(stmp + sDataHora + stmp2);
 
 	    //task values
@@ -626,7 +629,7 @@
         
         //days
         Timestamp tsNow = new Timestamp((new java.util.Date()).getTime());
-        String sDias = "" + (tsNow.getTime()-new Timestamp(a.created.getTime()).getTime())/86400000;
+        String sDias = "" + (tsNow.getTime()-new Timestamp(procdata.getCreationDate().getTime()).getTime())/86400000;
     	actividade.add(stmp + sDias + stmp2);
     			
 	    actividade.add(fm.getFolderColor(a.getFolderid(), folders));
@@ -1048,7 +1051,7 @@ jscolor.bind();
 		  		<td style="text-align:left;width:8px;background-color:white;height:8px;"></td>
 	      	    <td style="width:150px;" ><span style="padding-left:5px;">&nbsp;</span></td>
 		 <%} %>
-      	  </tr> 
+      	  </tr>
 	  <% } %>
 	</table>
 	<%}%>

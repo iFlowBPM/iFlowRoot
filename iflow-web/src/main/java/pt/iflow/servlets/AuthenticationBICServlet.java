@@ -283,12 +283,14 @@ public class AuthenticationBICServlet extends javax.servlet.http.HttpServlet imp
 	      sessionPassword = ServletUtils.newCookie(Const.SESSION_COOKIE_PASSWORD, Utils.encrypt(password));
 	      response.addCookie(sessionUsername);
 	      response.addCookie(sessionPassword);      
-	    }    	
+	    }
 
-	    if (result.isAuth)
-	    	SynchronizerTokenController.register(getServletContext(), login);
-	    else
-	    	LoginAttemptCounterController.markFailedAttempt(getServletContext(), request);
+		if (result.isAuth) {
+			SynchronizerTokenController.register(getServletContext(), login);
+		  	LoginAttemptCounterController.resetFailedAttempts(getServletContext(), request);
+		}else {
+			LoginAttemptCounterController.markFailedAttempt(getServletContext(), request);
+		}
 	    
 	    // used in ibox login
 	    if(StringUtils.equals(source, "assync") && result.isAuth) {

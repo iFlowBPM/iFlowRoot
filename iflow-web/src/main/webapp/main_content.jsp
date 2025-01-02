@@ -447,6 +447,9 @@ function cleanFilter(){
 	for (int i=0,j=0; i < alAct.size() && j < nNEWEST_LIMIT; i++) {
 		a = alAct.get((i));
 
+		ProcessHeader header = new ProcessHeader(a.flowid, a.pid, a.subpid);
+		ProcessData procdata = pm.getProcessData(userInfo, header);
+
 		// build hashmap to be able to display things properly
 		Map<String,String> hm = new HashMap<String,String>();
 
@@ -490,8 +493,8 @@ function cleanFilter(){
 		String sDesc = a.description;
 		String sCreated = DateUtility.formatTimestamp(userInfo, a.created);
 		String sDuration = Utils.getDuration(new Timestamp(a.created.getTime()), tsNow);
-		String sDias = "" + (tsNow.getTime()-new Timestamp(a.created.getTime()).getTime())/86400000;
-		String sDataHora = "" + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Timestamp(a.created.getTime()));
+		String sDias = "" + (tsNow.getTime()-new Timestamp(procdata.getCreationDate().getTime()).getTime())/86400000;
+		String sDataHora = "" + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Timestamp(procdata.getCreationDate().getTime()));
 		String sUri = "";
 		if (a.url != null && StringUtilities.isNotEmpty(a.url)) {
 			if (a.url.indexOf("?") > -1) {

@@ -1,10 +1,12 @@
 package pt.iflow.servlets;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Hashtable;
 
 import javax.servlet.ServletConfig;
@@ -293,10 +295,12 @@ public class AuthenticationServlet extends javax.servlet.http.HttpServlet implem
       response.addCookie(sessionPassword);      
     }    	
 
-    if (result.isAuth)
-    	SynchronizerTokenController.register(getServletContext(), login);
-    else
-    	LoginAttemptCounterController.markFailedAttempt(getServletContext(), request);
+    if (result.isAuth) {
+        SynchronizerTokenController.register(getServletContext(), login);
+        LoginAttemptCounterController.resetFailedAttempts(getServletContext(), request);
+    }else {
+        LoginAttemptCounterController.markFailedAttempt(getServletContext(), request);
+    }
     
     // used in ibox login
     if(StringUtils.equals(source, "assync") && result.isAuth) {
