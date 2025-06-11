@@ -50,6 +50,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -178,8 +179,8 @@ public class Dispatcher extends HttpServlet {
 
   public void init() throws ServletException {
 	  
-	String chavePalavraPasse = Dispatcher.class.getName();
-	String chaveSalt = String.valueOf(serialVersionUID);
+	String chavePalavraPasse = "pt.iflow.servlets.Dispatcher"; //Dispatcher.class.getName();
+	String chaveSalt = String.valueOf(-3446835831907606721L); //String.valueOf(serialVersionUID);
 	Integer chaveIteration = 65536;
 	Integer chaveLenght = 128;
   
@@ -214,9 +215,12 @@ public class Dispatcher extends HttpServlet {
     response.getWriter().println("Dispatcher is online");
   }
 
-  private void sendData(HttpServletResponse response, RepositoryFile repFile) throws IOException 
-  {  
-	  sendData(response, repFile.getResouceData());
+  private void sendData(HttpServletResponse response, RepositoryFile repFile) throws IOException {
+    OutputStream out = response.getOutputStream();
+    response.setContentLength(repFile.getSize());
+    repFile.writeToStream(out);
+    out.flush();
+    out.close();
   }
   
   private void sendData(HttpServletResponse response, byte[] data) throws IOException 
@@ -224,11 +228,12 @@ public class Dispatcher extends HttpServlet {
     if (null == response || null == data)
       return;
 
-//	CipherOutputStream out = new CipherOutputStream(response.getOutputStream(), cipherOut);
-//    response.setContentLength(data.length);
-//    out.write(data);
-//    out.flush();
-//    out.close();
+	//CipherOutputStream out = new CipherOutputStream(response.getOutputStream(), cipherOut);
+	ServletOutputStream out = response.getOutputStream();
+    response.setContentLength(data.length);
+    out.write(data);
+    out.flush();
+    out.close();
   }
 
   

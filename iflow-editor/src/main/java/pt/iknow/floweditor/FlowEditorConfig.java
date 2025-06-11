@@ -37,7 +37,7 @@ import pt.iknow.utils.StringUtilities;
 @XmlRootElement(name = "flow-editor-config")
 public class FlowEditorConfig {
 
-	transient public final static String CONFIG_DIR = System.getProperty("user.home") + File.separator + ".floweditor"; //$NON-NLS-1$ //$NON-NLS-2$
+	transient public final static String CONFIG_DIR = System.getProperty("user.home") + File.separator + ".floweditorpp"; //$NON-NLS-1$ //$NON-NLS-2$
 	transient public final static String CONFIG_FILE = "config.xml"; //$NON-NLS-1$
 	transient public final static String CONFIG_FILE_ENCODING = "UTF-8"; //$NON-NLS-1$
 	transient public final static String LETTERS_FILE = "letters.xml"; //$NON-NLS-1$

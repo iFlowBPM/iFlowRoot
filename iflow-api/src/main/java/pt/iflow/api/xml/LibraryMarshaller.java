@@ -3,7 +3,6 @@ package pt.iflow.api.xml;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
@@ -16,10 +15,9 @@ import javax.xml.transform.Source;
 import javax.xml.transform.sax.SAXSource;
 
 import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
 
-import pt.iflow.api.utils.Const;
 import pt.iflow.api.xml.codegen.library.XmlLibrary;
-import pt.iflow.connector.dms.ContentResult;
 
 public class LibraryMarshaller {
 
@@ -48,19 +46,21 @@ public class LibraryMarshaller {
 		InputSource source = null;
 		source = new InputSource(inStream); // guess encoding from file			
 		SAXParserFactory spf = SAXParserFactory.newInstance();
+
+		// Enable namespace awareness
+		spf.setNamespaceAware(true);
+
 		spf.setFeature("http://xml.org/sax/features/external-general-entities", false);
 		spf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
 		spf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-		Source xmlSource = new SAXSource(spf.newSAXParser().getXMLReader(), source );
+		
+		XMLReader xmlReader = spf.newSAXParser().getXMLReader();
+		Source xmlSource = new SAXSource(xmlReader, source);
+		
 		JAXBContext context = JAXBContext.newInstance(XmlLibrary.class);
 		Unmarshaller unmarshaller = context.createUnmarshaller();
-		return (XmlLibrary) unmarshaller.unmarshal(xmlSource);
 		
-		//JAXBContext context = JAXBContext.newInstance(new Class[] { XmlLibrary.class });
-	    //Unmarshaller unmarshaller = context.createUnmarshaller();
-	    
-	    //return (XmlLibrary)unmarshaller.unmarshal(inStream);
-		
+		return (XmlLibrary) unmarshaller.unmarshal(xmlSource);		
 	}
 	
 	

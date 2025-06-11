@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<XmlLibrary xmlns="http://www.iflow.pt/Library" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.iflow.pt/Library ../schemas/xmllibrary.xsd">
+<XmlLibrary xmlns="http://www.iflow.pt/Library" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.iflow.pt/Library ../../../../iflow-api/src/main/schemas/xmllibrary.xsd">
   <name>Administration</name>
   <version>1.0</version>
   <author>iKnow</author>
@@ -35,10 +35,9 @@
             <y>40</y>
         </position>
     </XmlPort>
-    <className>pt.iknow.floweditor.blocks.AlteraAtributosAdminOperationsTerminateProcess</className>
     <image>bpmn_task.png</image>
-    <description><i18n>library.administration.block.terminate_process.desc</i18n></description>
     <color r="0" g="0" b="255" a="127"/>
+    <className>pt.iknow.floweditor.blocks.AlteraAtributosAdminOperationsTerminateProcess</className>
     <i18n>library.administration.block.terminate_process.name</i18n>
   </XmlBlock>
   <XmlBlock>
@@ -70,11 +69,10 @@
             <y>40</y>
         </position>
     </XmlPort>
-    <className>pt.iknow.floweditor.blocks.AlteraAtributosAdminOperationsRedirectProcessToUser</className>
     <image>bpmn_task.png</image>
-    <description><i18n>library.administration.block.redirect_process_to_user.desc</i18n></description>
     <color r="0" g="0" b="255" a="127"/>
-    <i18n>library.administration.block.redirect_process_to_user.name</i18n>
+    <className>pt.iknow.floweditor.blocks.AlteraAtributosAdminOperationsRedirectProcessToUser</className>
+    <i18n>library.administration.block.redirect_process_to_user.desc</i18n>
   </XmlBlock>
   <XmlBlock>
     <class>BlockAdminOperationsUndoProcess</class>
@@ -105,34 +103,13 @@
             <y>40</y>
         </position>
     </XmlPort>
-    <className>pt.iknow.floweditor.blocks.AlteraAtributosAdminOperationsUndoProcess</className>
     <image>bpmn_task.png</image>
-    <description><i18n>library.administration.block.undo_process.desc</i18n></description>
     <color r="0" g="0" b="255" a="127"/>
+    <className>pt.iknow.floweditor.blocks.AlteraAtributosAdminOperationsUndoProcess</className>
     <i18n>library.administration.block.undo_process.name</i18n>
   </XmlBlock>
   <XmlBlock>
     <class>BlockAdminMigrateDocumentToFilesystem</class>
-    <XmlAttribute>
-        <name>batchSize</name>
-        <description>batch size</description>
-        <value />
-    </XmlAttribute>
-    <XmlAttribute>
-        <name>batchLimit</name>
-        <description>batch limit</description>
-        <value />
-    </XmlAttribute>
-    <XmlAttribute>
-        <name>timeLimit</name>
-        <description>time limit</description>
-        <value />
-    </XmlAttribute>
-    <XmlAttribute>
-        <name>startDocId</name>
-        <description>start docid </description>
-        <value />
-    </XmlAttribute>
       <XmlPort>
       <name>portIn</name>
       <description>portIn</description>
@@ -169,8 +146,28 @@
         <y>62</y>
       </position>
     </XmlPort>
+     <XmlAttribute>
+        <name>batchSize</name>
+        <description>batch size</description>
+        <value />
+    </XmlAttribute>
+    <XmlAttribute>
+        <name>batchLimit</name>
+        <description>batch limit</description>
+        <value />
+    </XmlAttribute>
+    <XmlAttribute>
+        <name>timeLimit</name>
+        <description>time limit</description>
+        <value />
+    </XmlAttribute>
+    <XmlAttribute>
+        <name>startDocId</name>
+        <description>start docid </description>
+        <value />
+    </XmlAttribute>
     <image>bpmn_task.png</image>
-    <description><i18n>library.administration.block.migrate_document</i18n></description>    
+    <description>library.administration.block.migrate_document</description>    
     <i18n>library.administration.block.migrate_document</i18n>
   </XmlBlock>
 </XmlLibrary>

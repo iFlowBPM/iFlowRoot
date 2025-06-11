@@ -77,7 +77,7 @@ public class FlowMenusServlet
     {
       ds = Utils.getDataSource();
       db = ds.getConnection();
-      st = db.prepareStatement("select linkid,name,flowid from links_flows where parentid = 0 and organizationid='?'");
+      st = db.prepareStatement("select linkid,name,flowid from links_flows where parentid = 0 and organizationid=?");
       st.setString(1, userInfo.getCompanyID());
       ArrayList<FlowMenusServlet.FlowMenuItem> menuItems = new ArrayList();
       
@@ -93,7 +93,7 @@ public class FlowMenusServlet
         FlowMenusServlet.FlowMenuItem item = new FlowMenusServlet.FlowMenuItem(linkid, name);
         menuItems.add(item);
         
-        st2 = db.prepareStatement("select linkid,name,flowid from links_flows where parentid = ? and organizationid='?'");
+        st2 = db.prepareStatement("select linkid,name,flowid from links_flows where parentid = ? and organizationid=?");
         st2.setInt(1, linkid);
         st2.setString(2, userInfo.getCompanyID());
         rs2 = st2.executeQuery();

@@ -22,13 +22,25 @@ public class Const {
   
   //public static final String IFLOW_HOME = System.getProperty("iflow.home");
   
-  public static final String sIFLOW_HOME = "/userdata/iFlowHome";
-  public static final String IFLOW_HOME = "/userdata/iFlowHome";
- //public static String sIFLOW_HOME = Setup.getProperty("IFLOW_HOME");
+  //public static final String sIFLOW_HOME = "/userdata/iFlowHome";
+  //public static final String IFLOW_HOME = "/userdata/iFlowHome";
+  //public static String sIFLOW_HOME = Setup.getProperty("IFLOW_HOME");
+  public static final String IFLOW_HOME_PROP = "iflow.home"; 
+  public static final String sIFLOW_HOME = System.getProperty(Const.IFLOW_HOME_PROP);
   
-	
   public static final String ENCODING = "UTF-8";
   
+  // Add a check to ensure the property was set.
+  static {
+    if (sIFLOW_HOME == null) {
+      // You can throw an error to get a more descriptive message
+      throw new RuntimeException("System property 'iflow.home' is not set. Please configure it in your Tomcat environment.");
+      // Or log a warning, depending on your application's needs.
+      // System.out.println("WARNING: System property 'iflow.home' is not set.");
+    }
+  }
+  
+ 
   public static int nMODE = Const.nDEVELOPMENT;
   public static final int nDEVELOPMENT = 0;
   public static final int nTEST        = 1;

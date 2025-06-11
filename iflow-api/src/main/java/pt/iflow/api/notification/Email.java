@@ -1,6 +1,7 @@
 package pt.iflow.api.notification;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -32,7 +33,16 @@ import org.apache.commons.lang.StringUtils;
 import pt.iflow.api.processdata.ProcessHeader;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
+import pt.iflow.api.utils.Utils;
 import pt.iflow.connector.document.Document;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import java.util.UUID;
+
+
 
 /**
  * <p>
@@ -197,6 +207,10 @@ public class Email implements Cloneable {
     }
   }
 
+  public List<String> getTo() {
+      return new ArrayList<>(hsTo);
+  }
+  
   /**
    * 
    * @param alcc
@@ -315,21 +329,28 @@ public class Email implements Cloneable {
     return sendMsg(Const.sAPP_EMAIL, to, subject, msgText);
   }
 
+
+  
+  public boolean sendMsg() {
+	  return Boolean.valueOf(sendMsgWithLog(false));
+  }
+  
+  
   /**
    * 
    * @return true if mail was sent correctly, false otherwise
    */
-  public boolean sendMsg() {
-    if(!Const.bUSE_EMAIL) return true;
-    boolean retObj = false;
+  public String sendMsgWithLog(boolean withLog) {
+    if(!Const.bUSE_EMAIL) return "true";
+    String retObj = "false";
 
     try {
 
       StringBuilder sbTo = new StringBuilder();
 
       if (this.bEmailManager) {
-        retObj = EmailManager.setEmail(this);
-        if (retObj) {
+        retObj = String.valueOf(EmailManager.setEmail(this));
+        if ("true".equals(retObj)) {
           Logger.info("", this, "sendMsg", processSignature + "set mail in email manager");
         }
         else {
@@ -417,14 +438,15 @@ public class Email implements Cloneable {
 
         if(emailValidationError) {
           Logger.error(null, this, "sendMsg", processSignature + "Some email addresses are invalid. Returning false.");
-          return false;
+          return "false";
         }
 
         // create some properties and get the default Session
         // Security.setProperty( "ssl.SocketFactory.provider", "pt.iknow.notification.DummySSLSocketFactory");
         Properties props = new Properties();
         Authenticator authenticator = null;
-
+        props.put("mail.protocol.ssl.trust",host);
+        props.put("mail.smtp.ssl.trust",host);
         props.put("mail.smtp.host", host);
         if (port > 0) {
           props.put("mail.smtp.port", String.valueOf(port));
@@ -498,20 +520,26 @@ public class Email implements Cloneable {
         
         msg.setContent(multipart);                             
 
-        //Transport.send(msg);
-        Thread th=new Thread(new Runnable() {
-        	public void run() {
-        		try {
-        			Transport.send(msg);
-        		} catch (MessagingException e) {
-        			Logger.error(null, this, "sendMsg", processSignature + "\n-- pt.iflow.api.notification.Email: Exception handling for mail: ", e);
-        		}
-        	}
-    	});
-        th.start();
+        if (!withLog) {
+	        //Transport.send(msg);
+	        Thread th=new Thread(new Runnable() {
+	        	public void run() {
+	        		try {
+	        			Transport.send(msg);
+	        		} catch (MessagingException e) {
+	        			Logger.error(null, this, "sendMsg", processSignature + "\n-- pt.iflow.api.notification.Email: Exception handling for mail: ", e);
+	        		}
+	        	}
+	    	});
+	        th.start();
+	        
+	        Logger.info("", this, "sendMsg", processSignature + "Mail sent to " + sbTo.toString());
+	        retObj = "true";
+        }
+        else {
+        	return sendEmailAsync(session, msg);
+        }
         
-        Logger.info("", this, "sendMsg", processSignature + "Mail sent to " + sbTo.toString());
-        retObj = true;
       }
     }
     catch (MessagingException mex) {
@@ -557,7 +585,7 @@ public class Email implements Cloneable {
         }
       }
       while ((ex = (MessagingException) ex.getNextException()) != null);
-      retObj = false;
+      retObj = "false";
     } catch(Exception e) {
       Logger.error(null, this, "sendMsg", processSignature + "Error sending email (unspecified) ", e);
     }
@@ -565,6 +593,121 @@ public class Email implements Cloneable {
     return retObj;
   }
 
+  
+  /**
+   * Sends an email asynchronously in a new thread.
+   * 
+   * Generates a unique request ID for tracking the email send request,
+   * then immediately returns this ID to the caller without waiting
+   * for the email sending to complete.
+   * 
+   * The actual email sending is performed in a background thread by
+   * calling the processEmail method with the provided Session, Message,
+   * and generated request ID.
+   * 
+   * @author jcosta
+   * @date 2025-05-23
+   * 
+   * @param session the mail Session to use for sending the email
+   * @param msg the Message object representing the email to be sent
+   * @return a unique request ID (UUID) associated with this email send request
+   */
+
+	  public String sendEmailAsync(Session session, Message msg) {
+	    String requestId = UUID.randomUUID().toString();
+
+	    EmailManager.saveEmailStatus(requestId, EmailStatus.PENDING, null);
+
+	    // Return the requestId immediately to caller
+	    new Thread(() -> {
+	        processEmail(session, msg, requestId);
+	    }).start();
+
+	    return requestId;
+	}
+  
+  /**
+   * Handles the actual sending of the email message using the provided mail Session.
+   * 
+   * Attempts to connect to the SMTP transport, send the message to all recipients,
+   * and log the outcome along with saving the email status.
+   * 
+   * In case of a MessagingException, extracts SMTP error codes and messages (if any),
+   * determines the error type from the database, logs detailed error information,
+   * and saves the failure status.
+   * 
+   * Ensures that the transport is properly closed after the operation,
+   * logging any errors encountered during closing.
+   * 
+   * @author jcosta
+   * @date 2025-05-23
+   * 
+   * @param session the mail Session used to obtain the SMTP transport
+   * @param msg the Message object representing the email to be sent
+   * @param requestId the unique identifier for this email send request, used for logging and status tracking
+   */
+  private void processEmail(Session session, Message msg, String requestId) {
+	    Transport transport = null;
+	    try {
+	        transport = session.getTransport("smtp");
+	        transport.connect();
+	        transport.sendMessage(msg, msg.getAllRecipients());
+
+	        Logger.info("", this, "processEmail", "[" + requestId + "] Email sent to: " 
+	            + java.util.Arrays.toString(msg.getAllRecipients()));
+
+	        EmailManager.saveEmailStatus(
+	        	    requestId,
+	        	    EmailStatus.SENT,
+	        	    null
+	        	);
+
+	    } catch (MessagingException mex) {
+	        String smtpCode = null;
+	        String smtpMessage = null;
+
+	        MessagingException ex = mex;
+	        while (ex != null) {
+	            String errorText = ex.getMessage();
+	            if (errorText != null && errorText.matches("^[0-9]{3}.*")) {
+	                smtpCode = errorText.substring(0, 3);
+	                smtpMessage = errorText.substring(4).trim();
+	                break;
+	            }
+	            else if (errorText != null && errorText.startsWith("Could not connect to SMTP host")) {
+	            	smtpCode = EmailManager.SMTP_CONNECTION_ERROR;
+	            	break;
+	            }
+
+	            Exception next = ex.getNextException();
+	            if (next instanceof MessagingException) {
+	                ex = (MessagingException) next;
+	            } else {
+	                break;
+	            }
+	        }
+
+	        SmtpErrorType errorType = EmailManager.getErrorTypeFromDB(smtpCode);
+	        Logger.error(null, this, "processEmail", "[" + requestId + "] Failed to send email | Code: "
+	            + smtpCode + " | Type: " + errorType.name() + " | Message: " + smtpMessage);
+
+	        EmailManager.saveEmailStatus(
+	            requestId,
+	            EmailStatus.FAILED,
+	            smtpCode
+	        );
+	        
+	    } finally {
+	        if (transport != null) {
+	            try {
+	                transport.close();
+	            } catch (MessagingException e) {
+	                Logger.error(null, this, "processEmail", "[" + requestId + "] Failed to close transport", e);
+	            }
+	        }
+	    }
+	}
+    
   
   protected String getPass() {
     return pass;

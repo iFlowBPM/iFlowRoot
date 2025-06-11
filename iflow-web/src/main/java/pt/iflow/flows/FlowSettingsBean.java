@@ -113,9 +113,7 @@ public class FlowSettingsBean implements FlowSettings {
       }
     
       finally{
-	    	try {if (db != null) db.close(); } catch (SQLException e) {}
 	    	try {if (st != null) st.close(); } catch (SQLException e) {}
-	    	try {if (cst != null) cst.close(); } catch (SQLException e) {}
 	    	try {if (rs != null) rs.close(); } catch (SQLException e) {}    	
       }
       

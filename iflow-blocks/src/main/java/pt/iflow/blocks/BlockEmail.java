@@ -128,6 +128,8 @@ public class BlockEmail extends Block {
         
         List<String> tos = null;
         String to = null;
+        tos = new ArrayList<String>();
+        tos.add(to);
         try {
           to = procData.transform(userInfo, aTo);
           tos = Utils.tokenize(to, EmailManager.sSEPARATOR);
@@ -320,13 +322,7 @@ public class BlockEmail extends Block {
                 email.setAttachment(attachment);
                 email.setCompressAttachment(compress);
                 
-                if (email.sendMsg()) {
-                  logMsg.append("Mail sent To: " + tos + ";");
-                  Logger.info(user,this,"after",procData.getSignature() + "email sent to " + tos);
-                } else {
-                  Logger.error(user,this,"after",procData.getSignature() + "email NOT sent to " + tos);
-                }
-//              }
+                sendMessage(userInfo, procData, email, logMsg);
               outPort = portSuccess;
             } else {
               Logger.error(user,this,"after",procData.getSignature() + "email is null");
@@ -347,6 +343,16 @@ public class BlockEmail extends Block {
     return outPort;
   }
 
+  protected void sendMessage(UserInfoInterface userInfo, ProcessData procData, Email email, StringBuffer logMsg) {
+      if (email.sendMsg()) {
+          logMsg.append("Mail sent To: " + email.getTo() + ";");
+          Logger.info(userInfo.getUtilizador(),this,"after",procData.getSignature() + "email sent to " + email.getTo());
+        } else {
+          Logger.error(userInfo.getUtilizador(),this,"after",procData.getSignature() + "email NOT sent to " + email.getTo());
+        }
+
+  }
+  
   private boolean hasTemplate(String template) {
     if (template == null || template.equals("") || template.equals(_sSELECT) ||
         !template.endsWith(".et")) {

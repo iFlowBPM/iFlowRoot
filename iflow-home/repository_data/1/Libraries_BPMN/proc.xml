@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <XmlLibrary xmlns="http://www.iflow.pt/Library" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xsi:schemaLocation="http://www.iflow.pt/Library ../schemas/xmllibrary.xsd">
+		xsi:schemaLocation="http://www.iflow.pt/Library ../../../../iflow-api/src/main/schemas/xmllibrary.xsd">
   <name>Processes</name>
   <version>1.0</version>
   <author>iKnow</author>
@@ -79,8 +79,8 @@
         <y>45</y>
       </position>
     </XmlPort>
-    <className>pt.iknow.floweditor.blocks.AlteraAtributosPesquisaProcesso</className>
     <image>bpmn_process_search.png</image>
+    <className>pt.iknow.floweditor.blocks.AlteraAtributosPesquisaProcesso</className>
     <description>Search Process</description>
 	<i18n>library.proc.block.search_proc</i18n>
   </XmlBlock>
@@ -230,10 +230,10 @@
         <y>30</y>
       </position>
     </XmlPort>
-    <className>pt.iknow.floweditor.blocks.AlteraAtributosProcDetail</className>
     <image>bpmn_process_detail.png</image>
-    <description>Process Detail</description>
     <color r="0" g="0" b="255" a="127"/>
+    <className>pt.iknow.floweditor.blocks.AlteraAtributosProcDetail</className>
+    <description>Process Detail</description>
 	<i18n>library.proc.block.proc_detail</i18n>
   </XmlBlock>
 </XmlLibrary>

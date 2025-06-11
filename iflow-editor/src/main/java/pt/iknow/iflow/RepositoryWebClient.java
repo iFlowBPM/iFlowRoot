@@ -9,11 +9,26 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.security.AlgorithmParameters;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.InvalidParameterSpecException;
+import java.security.spec.KeySpec;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.StringTokenizer;
 
+import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.ServletException;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
@@ -60,6 +75,45 @@ public class RepositoryWebClient implements RepositoryClient {
 	private FlowRepUrl iFlowURL = null;
 	private final boolean offline;
 
+
+	public static Cipher cipherIn;
+	public static Cipher cipherOut;
+	
+	private void init() throws ServletException {
+		  
+			String chavePalavraPasse = "pt.iflow.servlets.Dispatcher"; //Dispatcher.class.getName();
+			String chaveSalt = String.valueOf(-3446835831907606721L);
+			Integer chaveIteration = 65536;
+			Integer chaveLenght = 128;
+		  
+			try 
+			{
+				KeySpec chaveSpec = new PBEKeySpec(chavePalavraPasse.toCharArray(), chaveSalt.getBytes(), chaveIteration, chaveLenght );
+				byte[] encodedChave;	
+				encodedChave = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1").generateSecret(chaveSpec).getEncoded();
+				SecretKey segredoChave = new SecretKeySpec(encodedChave, "AES");
+				
+				cipherOut = Cipher.getInstance("AES/CBC/PKCS5Padding");
+				cipherOut.init(Cipher.ENCRYPT_MODE, segredoChave);
+				AlgorithmParameters params = cipherOut.getParameters();
+				byte[] iv = params.getParameterSpec(IvParameterSpec.class).getIV();
+				
+				
+				cipherIn = Cipher.getInstance("AES/CBC/PKCS5Padding");
+				cipherIn.init(Cipher.DECRYPT_MODE, segredoChave, new IvParameterSpec(iv));
+				
+			} 
+			catch (InvalidKeySpecException | NoSuchAlgorithmException e) {} 
+			catch (NoSuchPaddingException e) {}
+			catch (InvalidKeyException e) {} 
+			catch (InvalidParameterSpecException e) {} 
+			catch (InvalidAlgorithmParameterException e) {}
+			
+			  
+			  
+		  }
+
+	
 	public RepositoryWebClient(String url, String login, String password, ClassLoader parent, FlowEditorConfig cfg,
 			boolean offline) {
 		this.offline = offline;

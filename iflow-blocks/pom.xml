@@ -19,7 +19,7 @@
 		<dependency>
 			<groupId>pt.iknow.iflow</groupId>
 			<artifactId>iflow-api</artifactId>
-			<version>${iflow.version}</version>
+			<version>4.2.6-R20180704</version>
 		</dependency>
 		<dependency>
 			<groupId>pt.iknow.iflow</groupId>
@@ -187,9 +187,25 @@
 	</dependencies>
 
 	<build>
+		<resources>
+			<resource>
+				<targetPath>pt/iflow/blocks</targetPath>
+				<directory>${basedir}</directory>
+				<includes>
+					<include>RELEASE_NOTES.txt</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.java</include>
+				</includes>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<artifactId>maven-source-plugin</artifactId>
+				<version>3.2.1</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
@@ -199,35 +215,20 @@
 					</execution>
 				</executions>
 			</plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.3.0</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
 		</plugins>
-		<resources>
-     		<resource>
-  				<targetPath>pt/iflow/blocks</targetPath>
-       			<directory>${basedir}</directory>
-				<includes>
-					<include>RELEASE_NOTES.txt</include>
-				</includes>
-     		</resource>
-	        <resource>
-	                <directory>src/main/java</directory>
-	                <includes>
-	                    <include>**/*.java</include>
-	                </includes>
-	        </resource>
-   		</resources>
-   		
 	</build>
 
 	<reporting>
@@ -235,13 +236,13 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>cobertura-maven-plugin</artifactId>
-				<version>2.2</version>
+				<version>2.7</version>
 				<inherited>true</inherited>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>2.2</version>
+				<version>3.1.2</version>
 				<inherited>true</inherited>
 			</plugin>
 		</plugins>

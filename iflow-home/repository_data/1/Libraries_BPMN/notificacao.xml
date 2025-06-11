@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <XmlLibrary xmlns="http://www.iflow.pt/Library" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xsi:schemaLocation="http://www.iflow.pt/Library ../schemas/xmllibrary.xsd">
+		xsi:schemaLocation="http://www.iflow.pt/Library ../../../../iflow-api/src/main/schemas/xmllibrary.xsd">
   <name>Notify</name>
   <version>1.0</version>
   <author>iKnow</author>
@@ -40,6 +40,103 @@
     <className>pt.iknow.floweditor.blocks.AlteraAtributosEmail</className>
     <description>Email</description>
 	<i18n>library.notify.block.email</i18n>
+  </XmlBlock>
+  <XmlBlock>
+    <class>BlockEmailWithLog</class>
+    <XmlPort>
+      <name>portIn</name>
+      <description>Entrada</description>
+      <in_out>in</in_out>
+      <position>
+        <x>-5</x>
+        <y>30</y>
+      </position>
+    </XmlPort>
+    <XmlPort>
+      <name>portSuccess</name>
+      <description>Success</description>
+      <in_out>out</in_out>
+      <position>
+        <x>102</x>
+        <y>20</y>
+      </position>
+    </XmlPort>
+    <XmlPort>
+      <name>portError</name>
+      <description>Error</description>
+      <in_out>out</in_out>
+      <position>
+        <x>102</x>
+        <y>45</y>
+      </position>
+    </XmlPort>
+    <image>bpmn_send_notification.png</image>
+    <className>pt.iknow.floweditor.blocks.AlteraAtributosEmailWithLog</className>
+    <description>Email With Log</description>
+	<i18n>library.notify.block.emailWithLog</i18n>
+  </XmlBlock>
+  <XmlBlock>
+    <class>BlockEmailCheckStatus</class>
+    <XmlPort>
+      <name>portIn</name>
+      <description>Entrada</description>
+      <in_out>in</in_out>
+      <position>
+        <x>-5</x>
+        <y>30</y>
+      </position>
+    </XmlPort>
+    <XmlPort>
+      <name>portSuccess</name>
+      <description>Success</description>
+      <in_out>out</in_out>
+      <position>
+        <x>102</x>
+        <y>20</y>
+      </position>
+    </XmlPort>
+    <XmlPort>
+      <name>portError</name>
+      <description>Error</description>
+      <in_out>out</in_out>
+      <position>
+        <x>102</x>
+        <y>45</y>
+      </position>
+    </XmlPort>
+    <XmlAttribute>
+      <name>requestId</name>
+      <description>(input) Email Request Id</description>
+      <value />
+    </XmlAttribute>    
+    <XmlAttribute>
+      <name>status</name>
+      <description>(output) Email Status</description>
+      <value />
+    </XmlAttribute>    
+    <XmlAttribute>
+      <name>smtpCode</name>
+      <description>(output) Result SMTP Code</description>
+      <value />
+    </XmlAttribute>    
+    <XmlAttribute>
+      <name>smtpMessage</name>
+      <description>(output) Result SMTP Message</description>
+      <value />
+    </XmlAttribute>    
+    <XmlAttribute>
+      <name>errorType</name>
+      <description>(output) Result Type</description>
+      <value />
+    </XmlAttribute>  
+    <XmlAttribute>
+      <name>processedTime</name>
+      <description>(output) Processed Date and Time (Date type)</description>
+      <value />
+    </XmlAttribute>    
+    <image>bpmn_send_notification.png</image>
+    <description>Email Check Status</description>
+	<i18n>library.notify.block.emailCheckStatus</i18n>
   </XmlBlock>
   <XmlBlock>
     <class>BlockEmailPerfil</class>

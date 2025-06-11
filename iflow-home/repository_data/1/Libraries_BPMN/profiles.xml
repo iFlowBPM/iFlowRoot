@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <XmlLibrary xmlns="http://www.iflow.pt/Library" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xsi:schemaLocation="http://www.iflow.pt/Library ../schemas/xmllibrary.xsd">
+		xsi:schemaLocation="http://www.iflow.pt/Library ../../../../iflow-api/src/main/schemas/xmllibrary.xsd">
 	<name>Profiles</name>
 	<version>1.0</version>
 	<author>iKnow</author>
@@ -253,8 +253,8 @@
 				<y>62</y>
 			</position>
 		</XmlPort>
-		<className>pt.iknow.floweditor.blocks.AlteraAtributosIsInProfiles</className>
 		<image>bpmn_profile_info.png</image>
+		<className>pt.iknow.floweditor.blocks.AlteraAtributosIsInProfiles</className>
 		<description>Is In Profiles</description>
 		<i18n>library.profiles.block.is_in_profiles</i18n>
 	</XmlBlock>
@@ -296,8 +296,8 @@
 				<y>62</y>
 			</position>
 		</XmlPort>
-		<className>pt.iknow.floweditor.blocks.AlteraAtributosIsInProfilesText</className>
 		<image>bpmn_profile_info.png</image>
+		<className>pt.iknow.floweditor.blocks.AlteraAtributosIsInProfilesText</className>
 		<description>Is In Profiles Text</description>
 		<i18n>library.profiles.block.is_in_profiles_text</i18n>
 	</XmlBlock>

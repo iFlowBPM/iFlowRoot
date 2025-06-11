@@ -38,6 +38,39 @@
 		<className>pt.iknow.floweditor.blocks.AlteraAtributosEmail</className>
     <description>Email</description>
     
+	<XmlBlock>
+		<class>BlockEmailWithLog</class> 
+		<XmlPort>
+			<name>portIn</name>
+			<description>Entrada</description>
+			<in_out>in</in_out>
+                        <position>
+                            <x>-5</x>
+                            <y>25</y>
+                        </position>
+		</XmlPort>
+		<XmlPort>
+			<name>portSuccess</name>
+			<description>Sucesso</description>
+			<in_out>out</in_out>
+                        <position>
+                            <x>55</x>
+                            <y>10</y>
+                        </position>
+		</XmlPort>
+		<XmlPort>
+			<name>portError</name>
+			<description>Erro</description>
+			<in_out>out</in_out>
+                        <position>
+                            <x>55</x>
+                            <y>40</y>
+                        </position>
+		</XmlPort>
+                <image>email.png</image>
+		<className>pt.iknow.floweditor.blocks.AlteraAtributosEmailWithLog</className>
+    <description>Email</description>
+    
 	</XmlBlock>
 	<XmlBlock>
 		<class>BlockEmailPerfil</class> 

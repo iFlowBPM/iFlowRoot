@@ -21,11 +21,9 @@ import org.apache.commons.lang.StringUtils;
  */
 public class Setup {
     
-    //private static final String IFLOW_HOME = System.getProperty("iflow.home");
-	
-	
-	private static String IFLOW_HOME = "/userdata/iFlowHome";
-	
+    //private static final String IFLOW_HOME;
+	//private static String IFLOW_HOME = "/userdata/iFlowHome";
+    private static final String IFLOW_HOME = System.getProperty(Const.IFLOW_HOME_PROP);
 	
     private static final String MAIN_PROP_FILE = "iflow.properties";
     private static final String AUTH_PROP_FILE = "authentication.properties";
@@ -43,6 +41,7 @@ public class Setup {
     private static String _configHome = "";
     
     static {
+    	//IFLOW_HOME = System.getProperty("iflow.home");
         loadProperties();
      /*   File file = new File(Setup.loadIflowHome());
         if(file != null && file.isDirectory()){

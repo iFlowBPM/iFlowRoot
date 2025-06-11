@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 	<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by jmv (.) -->
 
-<XmlLibrary xmlns="http://www.iflow.pt/Library" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xsi:schemaLocation="http://www.iflow.pt/Library ../schemas/xmllibrary.xsd">
+<XmlLibrary xmlns="http://www.iflow.pt/Library" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<name>Basic</name>
 	<version>1.0</version>
 	<author>iKnow</author>
@@ -23,8 +22,8 @@
 		<image>bpmn_start.png</image>
 		<className>pt.iknow.floweditor.blocks.AlteraAtributosStart</className>
 		<description>Start</description>
-		<i18n>library.basic.block.start</i18n>
 		<automatic>true</automatic>
+		<i18n>library.basic.block.start</i18n>
 	</XmlBlock>
 	<XmlBlock>
 		<class>BlockEnd</class>
@@ -95,14 +94,13 @@
         <y>45</y>
       </position>
     </XmlPort>
-    <className>pt.iknow.floweditor.blocks.AlteraAtributosBeanShell</className>
     <image>bpmn_task.png</image>
+    <className>pt.iknow.floweditor.blocks.AlteraAtributosBeanShell</className>
     <description>Task</description>
     <i18n>library.utils.block.bsh</i18n>
   </XmlBlock>
   <XmlBlock>
     <class>BlockSubFlow</class>
-    <className>pt.iknow.floweditor.blocks.AlteraAtributosSubFlow</className>
     <XmlPort>
       <name>portIn</name>
       <description>Entrada</description>
@@ -122,6 +120,7 @@
       </position>
     </XmlPort>
     <image>bpmn_subprocess.png</image>
+    <className>pt.iknow.floweditor.blocks.AlteraAtributosSubFlow</className>
     <description>Subprocess</description>
     <i18n>library.utils.block.subflow</i18n>
   </XmlBlock>

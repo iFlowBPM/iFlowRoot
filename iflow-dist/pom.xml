@@ -390,10 +390,10 @@
 		</resources>
 	</build>
 	<pluginRepositories>
-		<pluginRepository>
-			<id>tlc</id>
-			<name>TLC Repository</name>
-			<url>http://commons.ucalgary.ca/pub/m2</url>
-		</pluginRepository>
+	    <pluginRepository>
+	        <id>tlc</id>
+	        <name>TLC Repository</name>
+	        <url>https://repo.maven.apache.org/maven2</url>
+	    </pluginRepository>
 	</pluginRepositories>
 </project>

@@ -60,7 +60,8 @@ public class EmailManager extends Thread {
   private static final String INSERT_DIRTY_EMAIL = "EmailManager.INSERT_DIRTY_EMAIL";
   private static final String UPDATE_EMAIL_TRIES = "EmailManager.UPDATE_EMAIL_TRIES";
   private static final String INSERT_EMAIL = "EmailManager.INSERT_EMAIL";
-
+  private static final String UPDATE_EMAIL_REQUEST_LOG = "EmailManager.UPDATE_EMAIL_REQUEST_LOG";
+  private static final String INSERT_EMAIL_REQUEST_LOG = "EmailManager.INSERT_EMAIL_REQUEST_LOG";
   
   
   
@@ -85,6 +86,10 @@ public class EmailManager extends Thread {
   
   // One minute
   private static final long TIME_INTERVAL_UNIT = 60000L;
+
+  // only codes existing in the database
+  public static final String DEFAULT_ERROR_CODE = "999";
+  public static final String SMTP_CONNECTION_ERROR = "901";
 
   static {
     restartManager();
@@ -739,5 +744,189 @@ public class EmailManager extends Thread {
     return modificationEvent;
   }
   
+  /**
+   * Retrieves the error type associated with a given SMTP error code from the database.
+   * 
+   * Queries the "smtp_error_codes" table to find a matching error_type for the provided
+   * SMTP error code. If the code is not found or any exception occurs, returns "unknown".
+   * 
+   * Properly manages database resources and logs any errors encountered during the operation.
+   * 
+   * @author jcosta
+   * @date 2025-05-23
+   * 
+   * @param smtpCode the SMTP error code to look up (e.g., "550")
+   * @return the corresponding error type from the database, or "unknown" if not found or on error
+   */
+  public static SmtpErrorType getErrorTypeFromDB(String smtpCode) {
+	    if (smtpCode == null) return SmtpErrorType.UNKNOWN;
 
+	    DataSource ds = null;
+	    Connection db = null;
+	    PreparedStatement pst = null;
+	    ResultSet rs = null;
+
+	    SmtpErrorType errorType = SmtpErrorType.UNKNOWN;
+
+	    try {
+	        String query = "SELECT error_type FROM smtp_error_codes WHERE error_code = ?";
+	        ds = Utils.getDataSource();
+	        db = ds.getConnection();
+	        db.setAutoCommit(true);
+
+	        pst = db.prepareStatement(query);
+	        pst.setString(1, smtpCode);
+	        rs = pst.executeQuery();
+
+	        if (rs.next()) {
+	            String dbValue = rs.getString("error_type");
+	            errorType = SmtpErrorType.fromDbValue(dbValue);
+	        }
+	    } catch (Exception e) {
+	        Logger.error(null, "EmailManager", "getErrorTypeFromDB", "could not get email type from db", e);
+	    } finally {
+	        try {
+	            if (pst != null) pst.close();
+	        } catch (Exception ignore) {}
+	        DatabaseInterface.closeResources(db, pst, rs);
+	    }
+
+	    return errorType;
+	}
+
+  /**
+   * Saves the status of an email send request into the email_request_log database table.
+   * 
+   * Inserts a new record with the given request ID, status, SMTP code, SMTP message,
+   * error type, and the current timestamp as the processed time.
+   * 
+   * Returns true if the insertion is successful, false otherwise.
+   * Properly manages database resources and logs any exceptions encountered.
+   * 
+   * @author jcosta
+   * @date 2025-05-23
+   * 
+   * @param requestId the unique identifier of the email send request
+   * @param status the status of the email request (e.g., "sent", "failed")
+   * @param code the SMTP response code, if any (nullable)
+   * @param message the SMTP response message, if any (nullable)
+   * @param type the error type derived from the SMTP code, if any (nullable)
+   * @return true if the status was saved successfully, false otherwise
+   */
+  public static void saveEmailStatus(
+		    String requestId,
+		    EmailStatus status,
+		    String smtpCode
+		) {
+		    DataSource ds = null;
+		    Connection db = null;
+		    PreparedStatement pst = null;
+		    ResultSet rs = null;
+
+		    try {
+		        ds = Utils.getDataSource();
+		        db = ds.getConnection();
+
+		        // 1. Check if a record with the given requestId already exists
+		        String checkSql = "SELECT 1 FROM email_request_log WHERE request_id = ?";
+		        pst = db.prepareStatement(checkSql);
+		        pst.setString(1, requestId);
+		        rs = pst.executeQuery();
+
+		        boolean exists = rs.next();
+
+		        rs.close();
+		        pst.close();
+
+		        
+		        /*
+		         * Error code may be null or one of the existing smtp_errors_codes. iF not use default
+		         */
+		        String errorCode = DEFAULT_ERROR_CODE;
+		        if (smtpCode == null) {
+		        	errorCode = null;
+		        }
+		        else {
+			        // check if smtp code is registered. if not set unknow
+			        // 1. Check if a record with the given requestId already exists
+			        String checkCode = "SELECT 1 FROM smtp_error_codes WHERE error_code = ?";
+			        pst = db.prepareStatement(checkCode);
+			        pst.setString(1, smtpCode);
+			        rs = pst.executeQuery();
+
+			        boolean codeExists = rs.next();
+
+			        rs.close();
+			        pst.close();
+			        if (codeExists) errorCode = smtpCode;
+		        }
+		       		         
+		        if (exists) {
+		            // 2. If it exists, perform an update
+		            String updateSql = DBQueryManager.getQuery(EmailManager.UPDATE_EMAIL_REQUEST_LOG);
+		            pst = db.prepareStatement(updateSql);
+		            pst.setString(1, status.getDbValue());
+		            pst.setString(2, errorCode);
+		            pst.setString(3, requestId);
+		            pst.executeUpdate();
+		        } else {
+		        	// INSERT_EMAIL_REQUEST_LOG
+		            // 3. If it doesn't exist, perform an insert
+		            String insertSql = DBQueryManager.getQuery(EmailManager.INSERT_EMAIL_REQUEST_LOG);
+		            pst = db.prepareStatement(insertSql);
+		            pst.setString(1, requestId);
+		            pst.setString(2, status.getDbValue());
+		            pst.setString(3, errorCode);
+		            pst.executeUpdate();
+		        }
+
+		    } catch (Exception e) {
+		        Logger.error(null, "EmailManager", "saveEmailStatus", "Failed to save email status", e);
+		    } finally {
+		        DatabaseInterface.closeResources(db, pst, rs);
+		    }
+		}
+
+  /**
+   * Retrieves the status of an email send request from the email_request_log table.
+   *
+   * @param requestId the unique identifier of the email send request
+   * @return an EmailStatusResult object containing the status info, or null if not found
+   */
+  public static EmailStatusResult getEmailStatusByRequestId(String requestId) {
+      DataSource ds = null;
+      Connection db = null;
+      PreparedStatement pst = null;
+      ResultSet rs = null;
+
+      try {
+          ds = Utils.getDataSource();
+          db = ds.getConnection();
+
+          String query = "SELECT status, smtp_code, description, error_type, processed_at " +
+                         "FROM email_request_log r " + 
+                         "join smtp_error_codes c on c.error_code = r.smtp_code " + 
+                         "WHERE request_id = ?";
+          pst = db.prepareStatement(query);
+          pst.setString(1, requestId);
+          rs = pst.executeQuery();
+
+          if (rs.next()) {
+              EmailStatusResult result = new EmailStatusResult();
+              result.setStatus(rs.getString("status"));
+              result.setSmtpCode(rs.getString("smtp_code"));
+              result.setSmtpMessage(rs.getString("description"));
+              result.setErrorType(rs.getString("error_type"));
+              result.setProcessedAt(rs.getTimestamp("processed_at"));
+              return result;
+          }
+
+      } catch (Exception e) {
+          Logger.error(null, "EmailManager", "getEmailStatusByRequestId", "Failed to retrieve email status", e);
+      } finally {
+          DatabaseInterface.closeResources(db, pst, rs);
+      }
+
+      return null;
+  }
 }

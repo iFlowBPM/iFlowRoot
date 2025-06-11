@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <XmlLibrary xmlns="http://www.iflow.pt/Library" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xsi:schemaLocation="http://www.iflow.pt/Library ../schemas/xmllibrary.xsd">
+		xsi:schemaLocation="http://www.iflow.pt/Library ../../../../iflow-api/src/main/schemas/xmllibrary.xsd">
     <name>Utils</name>
     <version>1.0</version>
     <author>iKnow</author>
@@ -579,7 +579,6 @@
     </XmlBlock>
     <XmlBlock>
         <class>BlockFormTemplate</class>
-        <className>pt.iknow.floweditor.blocks.AlteraAtributosFormTemplate</className>
         <image>bpmn_task.png</image>
         <description>FormTemplate</description>
         <i18n>library.utils.block.form_template</i18n>
@@ -644,6 +643,7 @@
             <value />
         </XmlAttribute>
         <image>bpmn_document_info.png</image>
+        <className>pt.iknow.floweditor.blocks.AlteraAtributosFormTemplate</className>
         <description>Doc Info</description>
         <i18n>library.dms.block.doc_info</i18n>
     </XmlBlock>
