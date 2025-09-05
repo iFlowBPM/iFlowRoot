@@ -1002,8 +1002,6 @@ public class BlockData extends Block {
   }    
 
   public static String exportToSpreadSheet(Block abBlock, UserInfoInterface userInfo, String[] asaSheetName, List<List<String>>[] aalaValues, OutputStream psOut) {
-
-
     if (Const.nEXPORT_MODE == Const.nEXPORT_MODE_CSV) {
       return exportToCSV(abBlock, userInfo, asaSheetName, aalaValues, psOut);
     }
@@ -1012,7 +1010,19 @@ public class BlockData extends Block {
         return exportToSpreadSheetJXL(abBlock, userInfo, asaSheetName, aalaValues, psOut);
       }
       else if (Const.nEXCEL_LIBRARY == Const.nEXCEL_LIBRARY_POI) {
-        return exportToSpreadSheetPOI(abBlock, userInfo, asaSheetName, aalaValues, psOut);
+        // Default to XLS, but check for xlsx extension in sheet name
+        boolean isXLSX = false;
+        for (String sheetName : asaSheetName) {
+          if (sheetName != null && sheetName.toLowerCase().endsWith(".xlsx")) {
+            isXLSX = true;
+            break;
+          }
+        }
+        if (isXLSX) {
+          return exportToSpreadSheetPOIXLSX(abBlock, userInfo, asaSheetName, aalaValues, psOut);
+        } else {
+          return exportToSpreadSheetPOI(abBlock, userInfo, asaSheetName, aalaValues, psOut);
+        }
       }
     }
     return null;
@@ -1224,6 +1234,44 @@ public class BlockData extends Block {
     return retObj;
   }
 
+  public static String exportToSpreadSheetPOIXLSX(Block abBlock,
+      UserInfoInterface userInfo, 
+      String[] asaSheetName,
+      List<List<String>>[] aalaValues, 
+      OutputStream psOut) {
+    String retObj = null;
+    try {
+      List<List<String>> alValues = null;
+      List<String> alRow = null;
+      String stmp = null;
+      org.apache.poi.xssf.usermodel.XSSFWorkbook wb = new org.apache.poi.xssf.usermodel.XSSFWorkbook();
+      org.apache.poi.xssf.usermodel.XSSFSheet hSheet = null;
+      org.apache.poi.xssf.usermodel.XSSFRow hRow = null;
+      org.apache.poi.xssf.usermodel.XSSFCell hCell = null;
+      for (int sheet=0; sheet < asaSheetName.length; sheet++) {
+        String sheetName = validatePOISheetName(asaSheetName[sheet]);
+        hSheet = wb.createSheet(sheetName);
+        alValues = aalaValues[sheet];
+        for (int row=0; row < alValues.size(); row++) {
+          hRow = hSheet.createRow(row);
+          alRow = alValues.get(row);
+          for (int col=0; alRow != null && col < alRow.size(); col++) {
+            stmp = alRow.get(col);
+            if (stmp == null) stmp = "";
+            hCell = hRow.createCell(col, org.apache.poi.ss.usermodel.CellType.STRING);
+            hCell.setCellValue(stmp);
+          }
+        }
+      }
+      wb.write(psOut);
+      psOut.close();
+    } catch (Exception e) {
+      Logger.error(userInfo.getUtilizador(), abBlock, "exportToExcelPOIXLSX", 
+          "caught exception: " + e.getMessage(), e);
+      retObj = "Ocorreu um erro ao exportar: " + e.getMessage();
+    }
+    return retObj;
+  }
   
   private static String validatePOISheetName(String origName) {
     // Sheet name cannot be blank, greater than 31 chars, or contain any of /\*?[]

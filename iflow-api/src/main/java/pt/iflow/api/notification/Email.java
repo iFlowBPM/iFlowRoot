@@ -1,13 +1,13 @@
 package pt.iflow.api.notification;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -33,14 +33,7 @@ import org.apache.commons.lang.StringUtils;
 import pt.iflow.api.processdata.ProcessHeader;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
-import pt.iflow.api.utils.Utils;
 import pt.iflow.connector.document.Document;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
-import java.util.UUID;
 
 
 
@@ -64,7 +57,8 @@ import java.util.UUID;
 
 public class Email implements Cloneable {
 
-  String id = null;
+  static final String X_REQUEST_ID = "X-RequestId";
+String id = null;
   String host = "";
   int port = -1;
   String user = "";
@@ -348,7 +342,7 @@ public class Email implements Cloneable {
 
       StringBuilder sbTo = new StringBuilder();
 
-      if (this.bEmailManager) {
+      if (this.bEmailManager && !withLog) {
         retObj = String.valueOf(EmailManager.setEmail(this));
         if ("true".equals(retObj)) {
           Logger.info("", this, "sendMsg", processSignature + "set mail in email manager");
@@ -594,6 +588,33 @@ public class Email implements Cloneable {
   }
 
   
+  public static String[] getToEmailStringsSafe(MimeMessage msg) {
+	    try {
+	        Address[] toAddresses = msg.getRecipients(Message.RecipientType.TO);
+
+	        if (toAddresses == null || toAddresses.length == 0) {
+	            return new String[0];
+	        }
+
+	        List<String> emailList = new ArrayList<>();
+
+	        for (Address addr : toAddresses) {
+	            if (addr != null) {
+	                String email = addr.toString();
+	                if (email != null && !email.trim().isEmpty()) {
+	                    emailList.add(email.trim());
+	                }
+	            }
+	        }
+
+	        return emailList.toArray(new String[0]);
+	    } catch (MessagingException e) {
+	        // Log the error and return an empty array
+	        System.err.println("Failed to extract TO addresses: " + e.getMessage());
+	        return new String[0];
+	    }
+	}
+  
   /**
    * Sends an email asynchronously in a new thread.
    * 
@@ -613,11 +634,11 @@ public class Email implements Cloneable {
    * @return a unique request ID (UUID) associated with this email send request
    */
 
-	  public String sendEmailAsync(Session session, Message msg) {
+	  public String sendEmailAsync(Session session, MimeMessage msg) {
 	    String requestId = UUID.randomUUID().toString();
 
-	    EmailManager.saveEmailStatus(requestId, EmailStatus.PENDING, null);
-
+	    EmailManager.saveEmailStatus(requestId, EmailStatus.PENDING, null, getToEmailStringsSafe(msg), null, false);
+	    
 	    // Return the requestId immediately to caller
 	    new Thread(() -> {
 	        processEmail(session, msg, requestId);
@@ -646,22 +667,16 @@ public class Email implements Cloneable {
    * @param msg the Message object representing the email to be sent
    * @param requestId the unique identifier for this email send request, used for logging and status tracking
    */
-  private void processEmail(Session session, Message msg, String requestId) {
-	    Transport transport = null;
+  private void processEmail(Session session, MimeMessage msg, String requestId) {
+//	    Transport transport = null;
 	    try {
-	        transport = session.getTransport("smtp");
-	        transport.connect();
-	        transport.sendMessage(msg, msg.getAllRecipients());
+	    	System.setProperty("mail.debug", "true");
+	        Transport.send(msg);
 
-	        Logger.info("", this, "processEmail", "[" + requestId + "] Email sent to: " 
-	            + java.util.Arrays.toString(msg.getAllRecipients()));
-
-	        EmailManager.saveEmailStatus(
-	        	    requestId,
-	        	    EmailStatus.SENT,
-	        	    null
-	        	);
-
+		    EmailManager.saveEmailStatus(requestId, EmailStatus.SENT,  EmailManager.DEFAULT_PENDING_CODE, 
+		    		getToEmailStringsSafe(msg), null, false);
+		    Logger.debug("", this, "processEmail", "[" + requestId + "] Email sent to: " 
+		        	+ java.util.Arrays.toString(getToEmailStringsSafe(msg)));
 	    } catch (MessagingException mex) {
 	        String smtpCode = null;
 	        String smtpMessage = null;
@@ -691,24 +706,45 @@ public class Email implements Cloneable {
 	        Logger.error(null, this, "processEmail", "[" + requestId + "] Failed to send email | Code: "
 	            + smtpCode + " | Type: " + errorType.name() + " | Message: " + smtpMessage);
 
-	        EmailManager.saveEmailStatus(
-	            requestId,
-	            EmailStatus.FAILED,
-	            smtpCode
-	        );
+			EmailManager.saveEmailStatus(
+			    requestId,
+			    EmailStatus.FAILED,
+			    smtpCode,
+			    getToEmailStringsSafe(msg), 
+			    null,
+			    true
+			);
 	        
-	    } finally {
-	        if (transport != null) {
-	            try {
-	                transport.close();
-	            } catch (MessagingException e) {
-	                Logger.error(null, this, "processEmail", "[" + requestId + "] Failed to close transport", e);
-	            }
-	        }
+		} catch (Exception e) {
+	    	Logger.error(null, this, "processEmail", "[" + requestId + "] failed to set tracking id", e);	
+		}
+	    finally {
+//	        if (transport != null) {
+//	            try {
+//	                transport.close();
+//	            } catch (MessagingException e) {
+//	                Logger.error(null, this, "processEmail", "[" + requestId + "] Failed to close transport", e);
+//	            }
+//	        }
 	    }
 	}
     
-  
+
+//	public void setTrackingMessageId(MimeMessage message, String trackingId) throws Exception {
+//	    String senderEmail = ((InternetAddress) message.getFrom()[0]).getAddress();
+//	
+//	    String domain = "yourdomain.com"; // fallback
+//	    int atIndex = senderEmail.indexOf('@');
+//	    if (atIndex != -1 && atIndex < senderEmail.length() - 1) {
+//	        domain = senderEmail.substring(atIndex + 1);
+//	    }
+//	
+//	    String messageId = "<" + trackingId + "@" + domain + ">";
+//	    message.setHeader("Message-ID", messageId);
+//	    message.saveChanges();
+//	    Logger.debug("", this, "setTrackingMessageId", "setTrackingMessageId=" + messageId);
+//	}
+
   protected String getPass() {
     return pass;
   }

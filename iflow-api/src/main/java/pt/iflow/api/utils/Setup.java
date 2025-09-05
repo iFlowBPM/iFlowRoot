@@ -318,4 +318,11 @@ public class Setup {
 		return path;
 
 	}
+
+	public static boolean getPropertyBoolean(String key, boolean mailLogScannerEnabled) {
+		if (_pMainProperties.containsKey(key)) {
+			return Boolean.parseBoolean(_pMainProperties.getProperty(key));
+		}
+		return false;
+	}
 }

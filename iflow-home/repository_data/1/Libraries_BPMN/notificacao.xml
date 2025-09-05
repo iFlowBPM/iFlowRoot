@@ -88,20 +88,29 @@
     </XmlPort>
     <XmlPort>
       <name>portSuccess</name>
-      <description>Success</description>
+      <description>portSuccess</description>
       <in_out>out</in_out>
       <position>
-        <x>102</x>
-        <y>20</y>
+        <x>105</x>
+        <y>10</y>
+      </position>
+    </XmlPort>
+    <XmlPort>
+      <name>portEmpty</name>
+      <description>portEmpty</description>
+      <in_out>out</in_out>
+      <position>
+        <x>105</x>
+        <y>30</y>
       </position>
     </XmlPort>
     <XmlPort>
       <name>portError</name>
-      <description>Error</description>
+      <description>portError</description>
       <in_out>out</in_out>
       <position>
-        <x>102</x>
-        <y>45</y>
+        <x>105</x>
+        <y>50</y>
       </position>
     </XmlPort>
     <XmlAttribute>
@@ -136,7 +145,7 @@
     </XmlAttribute>    
     <image>bpmn_send_notification.png</image>
     <description>Email Check Status</description>
-	<i18n>library.notify.block.emailCheckStatus</i18n>
+	<i18n>library.notify.block.emailCheckLog</i18n>
   </XmlBlock>
   <XmlBlock>
     <class>BlockEmailPerfil</class>

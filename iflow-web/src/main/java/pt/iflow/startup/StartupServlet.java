@@ -22,6 +22,7 @@ import pt.iflow.api.cluster.SharedObjectRefreshManager;
 import pt.iflow.api.core.BeanFactory;
 import pt.iflow.api.events.EventManager;
 import pt.iflow.api.licensing.LicenseServiceFactory;
+import pt.iflow.api.notification.MailLogManager;
 import pt.iflow.api.utils.Const;
 import pt.iflow.api.utils.Logger;
 import pt.iflow.api.utils.UserInfoInterface;
@@ -191,6 +192,18 @@ public class StartupServlet extends HttpServlet {
     JobManager.startManager();
     Logger.warning("", this, "", "StartupServlet: JobManager started");
 
+    if (Const.MAIL_LOG_SCANNER_ENABLED) {
+	  Logger.warning("", this, "", "StartupServlet: Starting MailLogManager");
+	  MailLogManager.startManager();
+	  Logger.warning("", this, "", "StartupServlet: MailLogManager started");
+	} else {
+	  Logger.warning("", this, "", "StartupServlet: MailLogManager not enabled");
+	}
+    
+    Logger.warning("", this, "", "StartupServlet: Starting MailLogManager");
+    MailLogManager.startManager();
+    Logger.warning("", this, "", "StartupServlet: MailLogManager started");
+    
     if(Const.CLUSTER_ENABLED){
     	  Timer timer = new Timer();
     	  timer.schedule(new ListenersAutoRefresh(), Const.BEAT_ACTIVE_TIME*1000, Const.BEAT_ACTIVE_TIME*1000);    	  

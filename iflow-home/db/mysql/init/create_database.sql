@@ -1935,25 +1935,21 @@ CREATE TABLE `iflow`.`application_log` (
   `value` VARCHAR(2000) NOT NULL,
   PRIMARY KEY (`id`));
   
+
 CREATE TABLE smtp_error_codes (
     error_code VARCHAR(3) PRIMARY KEY,
-   error_type VARCHAR(20) CHECK (error_type IN ('success', 'temporary_failure', 'permanent_failure','hard_failure')),
+    error_type VARCHAR(20) CHECK (error_type IN ('pending', 'success', 'temporary_failure', 'permanent_failure', 'hard_failure')),
     description TEXT
 );
 
-CREATE TABLE `smtp_error_codes` (
-  `error_code` varchar(3) PRIMARY KEY,
-  `error_type` varchar(20) NOT NULL;
-  `description` text NOT NULL,
-  CONSTRAINT `chk_error_type` CHECK (`error_type` in ('success','temporary_failure','permanent_failure','hard_failure'))
-);
+INSERT INTO smtp_error_codes VALUES ('150', 'pending', 'Deliveded to local SMTP.');
 
 -- success / Informativo
 INSERT INTO smtp_error_codes VALUES ('211', 'success', 'Informação do servidor disponível.');
 INSERT INTO smtp_error_codes VALUES ('214', 'success', 'Ajuda disponível no servidor.');
 INSERT INTO smtp_error_codes VALUES ('220', 'success', 'O servidor de e-mail está pronto para receber ligações.');
 INSERT INTO smtp_error_codes VALUES ('221', 'success', 'A ligação com o servidor de e-mail foi encerrada.');
-INSERT INTO smtp_error_codes VALUES ('250', 'success', 'O e-mail foi enviado com success.');
+INSERT INTO smtp_error_codes VALUES ('250', 'success', 'O e-mail foi enviado com sucesso.');
 INSERT INTO smtp_error_codes VALUES ('251', 'success', 'O destinatário não é local, mas o e-mail foi redirecionado.');
 INSERT INTO smtp_error_codes VALUES ('252', 'success', 'Não foi possível confirmar o destinatário, mas o e-mail será enviado.');
 INSERT INTO smtp_error_codes VALUES ('354', 'success', 'Pode escrever a mensagem agora. Termine com um ponto numa nova linha.');
@@ -1979,13 +1975,23 @@ INSERT INTO smtp_error_codes VALUES ('554', 'permanent_failure', 'O e-mail foi r
 INSERT INTO smtp_error_codes VALUES ('901', 'hard_failure', 'Não foi possível comunicar com o servidor SMTP.');
 INSERT INTO smtp_error_codes VALUES ('999', 'hard_failure', 'Código Inexistente.');
 
+INSERT INTO smtp_error_codes VALUES ('544', 'permanent_failure', 'Host ou nome de domínio não encontrado. Erro no serviço de nomes para o domínio especificado.');
+INSERT INTO smtp_error_codes VALUES ('400', 'permanent_failure', 'Erro temporário indefinido. O servidor de destino pode estar inacessível.');
+INSERT INTO smtp_error_codes VALUES ('441', 'permanent_failure', 'Erro temporário indefinido. O servidor de destino pode estar inacessível.');
+
+
+
 
 CREATE TABLE email_request_log (
-    request_id VARCHAR(36) PRIMARY KEY,
-    status VARCHAR(10) CHECK (status IN ('pending', 'sent','failed')),
+    request_id VARCHAR(36),
+    to_address VARCHAR(255),
+    status VARCHAR(10) CHECK (status IN ('pending', 'sent', 'failed')),
     smtp_code VARCHAR(3),
     requested_at TIMESTAMP,
     processed_at TIMESTAMP,
+    queue_id VARCHAR(20),
+    locked int(1),
+    CONSTRAINT email_request_log_pkey PRIMARY KEY (request_id, to_address),
     CONSTRAINT fk_smtp_code FOREIGN KEY (smtp_code)
         REFERENCES smtp_error_codes(error_code)
 );

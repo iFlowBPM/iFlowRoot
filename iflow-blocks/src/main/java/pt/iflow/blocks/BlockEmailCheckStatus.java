@@ -132,23 +132,39 @@ public class BlockEmailCheckStatus extends Block {
     
     // here we have a non empty requestId 
     try {   	
-    	EmailStatusResult result = EmailManager.getEmailStatusByRequestId(requestId);
+    	EmailStatusResult result = EmailManager.getEmailStatusByRequestId(requestId, null);
     	
     	if (result != null) {
     		if (result.getStatus() != null && status != null) {
-    			procData.parseAndSet(status, result.getStatus());
+    			try {procData.parseAndSet(status, result.getStatus());} catch (Exception e) {
+					Logger.error(login, this, "after", 
+		    	          procData.getSignature() + "Error while parsing status: " + e.getMessage(), e);
+				}
     		}
     		if (result.getSmtpCode() != null && smtpCode != null) {
-    			procData.parseAndSet(smtpCode, result.getSmtpCode());
+    			try {procData.parseAndSet(smtpCode, result.getSmtpCode());} catch (Exception e) {
+    				procData.parseAndSet(smtpCode, result.getSmtpCode());
+    									Logger.error(login, this, "after", 
+		    	          procData.getSignature() + "Error while parsing smtpCode: " + e.getMessage(), e);
+    			}
     		}
     		if (result.getSmtpMessage() != null && smtpMessage != null) {
-    			procData.parseAndSet(smtpMessage, result.getSmtpMessage());
+    			try{procData.parseAndSet(smtpMessage, result.getSmtpMessage()); } catch (Exception e) {				
+					Logger.error(login, this, "after", 
+		    	          procData.getSignature() + "Error while parsing smtpMessage: " + e.getMessage(), e);
+				}
     		}
     		if (result.getErrorType() != null && errorType != null) {
-    			procData.parseAndSet(errorType, result.getErrorType());
+    			try{procData.parseAndSet(errorType, result.getErrorType());} catch (Exception e) {
+    				Logger.error(login, this, "after", 
+		    	          procData.getSignature() + "Error while parsing errorType: " + e.getMessage(), e);
+    			}
     		}
     		if (result.getProcessedAt() != null  && processedTime != null) {
-    			procData.parseAndSet(processedTime, new DateDataType().format(result.getProcessedAt()));
+    			try{procData.parseAndSet(processedTime, new DateDataType().format(result.getProcessedAt()));} catch (Exception e) {
+					Logger.error(login, this, "after", 
+		    	          procData.getSignature() + "Error while parsing processedTime: " + e.getMessage(), e);
+				}
     		}
         	outPort = portSuccess;
         	return outPort;

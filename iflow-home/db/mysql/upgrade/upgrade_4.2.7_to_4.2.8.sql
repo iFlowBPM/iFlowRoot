@@ -1,10 +1,12 @@
 CREATE TABLE smtp_error_codes (
     error_code VARCHAR(3) PRIMARY KEY,
-   error_type VARCHAR(20) CHECK (error_type IN ('success', 'temporary_failure', 'permanent_failure')),
+   error_type VARCHAR(20) CHECK (error_type IN ('pending', 'success', 'temporary_failure', 'permanent_failure')),
     description TEXT
 );
 
 -- success / Informativo
+INSERT INTO smtp_error_codes VALUES ('150', 'pending', 'Deliveded to local SMTP.');
+
 INSERT INTO smtp_error_codes VALUES ('211', 'success', 'Informação do servidor disponível.');
 INSERT INTO smtp_error_codes VALUES ('214', 'success', 'Ajuda disponível no servidor.');
 INSERT INTO smtp_error_codes VALUES ('220', 'success', 'O servidor de e-mail está pronto para receber ligações.');

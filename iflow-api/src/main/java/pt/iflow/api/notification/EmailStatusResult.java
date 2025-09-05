@@ -8,6 +8,8 @@ public class EmailStatusResult {
     private String smtpMessage;
     private String errorType;
     private Timestamp processedAt;
+    private String queueId;
+    private String toAddress;
 
     // Getters and Setters
     public String getStatus() { return status; }
@@ -24,4 +26,10 @@ public class EmailStatusResult {
 
     public Timestamp getProcessedAt() { return processedAt; }
     public void setProcessedAt(Timestamp processedAt) { this.processedAt = processedAt; }
+    
+    public String getQueueId() { return queueId; }
+    public void setQueueId(String queueId) { this.queueId = queueId; }
+    
+    public String getToAddress() { return toAddress; }
+    public void setToAddress(String toAddress) { this.toAddress = toAddress;}
 }

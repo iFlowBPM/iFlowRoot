@@ -75,7 +75,14 @@ public class Const {
   public static int PROFILESYNC_THREAD_CICLE = -1;
   public static boolean PROFILESYNC_ON = false;
   public static String PROFILESYNC_ORGID = "1";
-
+  
+  public static boolean MAIL_LOG_SCANNER_ENABLED = false;
+  public static String MAIL_LOG_FORMAT = "MMM d HH:mm:ss yyyy"; // default format for mail logs
+  public static String MAIL_LOG_TIMEZONE = "Europe/Lisbon"; // default timezone for mail logs
+  public static int MAIL_LOG_THREAD_CICLE = -1;
+  public static String MAIL_LOG_FILE = "/var/log/maillog"; // default log file for mail logs 
+  public static String MAIL_LOG_CHECKPOINT_FILE = "/var/lib/iflow/maillog.checkpoint"; // default checkpoint file for mail logs
+  
   public static String sMAIL_ADM_ERROR_NOTIFY = null;
   public static String sMAIL_SERVER = null;
   public static int nMAIL_PORT = 25;
@@ -473,6 +480,20 @@ public class Const {
     DB_TYPE = Setup.getProperty("DB_TYPE");
 
     EVENT_THREAD_CICLE = Setup.getPropertyInt("EVENT_THREAD_CICLE");
+    
+    MAIL_LOG_SCANNER_ENABLED = Setup.getPropertyBoolean("MAIL_LOG_SCANNER_ENABLED", MAIL_LOG_SCANNER_ENABLED);
+    MAIL_LOG_FORMAT = Setup.getProperty("MAIL_LOG_FORMAT", MAIL_LOG_FORMAT);
+    MAIL_LOG_TIMEZONE = Setup.getProperty("MAIL_LOG_TIMEZONE", MAIL_LOG_TIMEZONE);
+    MAIL_LOG_THREAD_CICLE = Setup.getPropertyInt("MAIL_LOG_THREAD_CICLE"); // default 5 minutes
+    if (MAIL_LOG_THREAD_CICLE == -1) {
+	  MAIL_LOG_THREAD_CICLE = 10 * 1000; // default 10 seconds
+	}    
+    stmp = Setup.getProperty("MAIL_LOG_FILE");
+    if (stmp != null && !"".equals(stmp.trim())) {
+      Const.MAIL_LOG_FILE = stmp;
+    }
+    MAIL_LOG_CHECKPOINT_FILE = Setup.getProperty("MAIL_LOG_CHECKPOINT_FILE", MAIL_LOG_CHECKPOINT_FILE);
+    
     DELEGATION_THREAD_CICLE = Setup.getPropertyInt("DELEGATION_THREAD_CICLE");
     PROFILESYNC_THREAD_CICLE = Setup.getPropertyInt("PROFILESYNC_THREAD_CICLE");
     PROFILESYNC_ON = false;

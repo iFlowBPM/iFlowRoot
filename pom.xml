@@ -7,7 +7,7 @@
 		<name>Infosistema, S.A.</name>
 		<url>http://www.infosistema.pt/</url>
 	</organization>
-	<version>4.2.2</version>
+	<version>4.2.6-R20180704</version>
 	<description>iFlow</description>
 	<url>http://www.iflow.pt</url>
 	<inceptionYear>2005</inceptionYear>
@@ -45,6 +45,7 @@
 
 		<!-- NOTE: don't forget to change in iflow-applet -->
 		<crypto-api.version>1.0.3</crypto-api.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<!-- NOTE: when versions change, make sure that iflow-applet versions are 
