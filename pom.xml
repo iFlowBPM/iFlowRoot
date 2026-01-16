@@ -338,26 +338,30 @@
 				<artifactId>mozilla-interfaces</artifactId>
 				<version>1.9.0.3</version>
 			</dependency>
-			<dependency>
-				<groupId>org.apache.poi</groupId>
-				<artifactId>poi</artifactId>
-				<version>3.17</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.poi</groupId>
-				<artifactId>poi-ooxml</artifactId>
-				<version>3.17</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.poi</groupId>
-				<artifactId>poi-ooxml-schemas</artifactId>
-				<version>3.17</version>
-			</dependency>
+		    <dependency>
+		        <groupId>org.apache.poi</groupId>
+		        <artifactId>poi</artifactId>
+		        <version>3.17</version>
+		    </dependency>
+		    <dependency>
+		        <groupId>org.apache.poi</groupId>
+		        <artifactId>poi-ooxml</artifactId>
+		        <version>3.17</version>
+		    </dependency>
+		    <dependency>
+		        <groupId>org.apache.poi</groupId>
+		        <artifactId>poi-ooxml-schemas</artifactId>
+		        <version>3.17</version>
+		    </dependency>
 			<dependency>
 				<groupId>org.apache.xmlbeans</groupId>
 				<artifactId>xmlbeans</artifactId>
 				<version>2.4.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-compress</artifactId>
+				<version>1.18</version>
 			</dependency>
 			<dependency>
 				<groupId>hivemind</groupId>
@@ -542,7 +546,6 @@
 				<version>2.2.16</version>
 				<scope>provided</scope>
 			</dependency>
-
 
 
 			<!-- Dependencias externas -->

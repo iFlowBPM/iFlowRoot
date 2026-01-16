@@ -70,7 +70,12 @@ public class MailLogManager extends Thread {
         final int[] savedStatuses = {0};
         final int[] updatedCheckpoints = {0};
         final String[] lastTimestampWrapper = new String[] { lastTimestamp };
-        try (Stream<String> lines = Files.lines(Paths.get(LOG_FILE))) {
+        java.nio.file.Path logPath = Paths.get(LOG_FILE);
+        if (!Files.exists(logPath)) {
+            Logger.warning("system", this, "scanAndProcess", "[MailLogManager] Log file does not exist: " + LOG_FILE);
+            return;
+        }
+        try (Stream<String> lines = Files.lines(logPath)) {
             lines.map(String::trim)
                  .filter(line -> shouldProcess(line, lastDate))
                  .forEach(line -> {

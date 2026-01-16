@@ -1010,20 +1010,11 @@ public class BlockData extends Block {
         return exportToSpreadSheetJXL(abBlock, userInfo, asaSheetName, aalaValues, psOut);
       }
       else if (Const.nEXCEL_LIBRARY == Const.nEXCEL_LIBRARY_POI) {
-        // Default to XLS, but check for xlsx extension in sheet name
-        boolean isXLSX = false;
-        for (String sheetName : asaSheetName) {
-          if (sheetName != null && sheetName.toLowerCase().endsWith(".xlsx")) {
-            isXLSX = true;
-            break;
-          }
-        }
-        if (isXLSX) {
-          return exportToSpreadSheetPOIXLSX(abBlock, userInfo, asaSheetName, aalaValues, psOut);
-        } else {
-          return exportToSpreadSheetPOI(abBlock, userInfo, asaSheetName, aalaValues, psOut);
-        }
+        return exportToSpreadSheetPOI(abBlock, userInfo, asaSheetName, aalaValues, psOut);
       }
+    }
+    else if (Const.nEXPORT_MODE == Const.nEXPORT_MODE_XLSX) {
+      return exportToSpreadSheetPOIXLSX(abBlock, userInfo, asaSheetName, aalaValues, psOut);
     }
     return null;
   }
@@ -1258,7 +1249,8 @@ public class BlockData extends Block {
           for (int col=0; alRow != null && col < alRow.size(); col++) {
             stmp = alRow.get(col);
             if (stmp == null) stmp = "";
-            hCell = hRow.createCell(col, org.apache.poi.ss.usermodel.CellType.STRING);
+            hCell = hRow.createCell(col);
+            hCell.setCellType(org.apache.poi.ss.usermodel.CellType.STRING);
             hCell.setCellValue(stmp);
           }
         }

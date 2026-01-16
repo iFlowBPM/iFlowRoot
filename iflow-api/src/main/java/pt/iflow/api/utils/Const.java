@@ -50,6 +50,7 @@ public class Const {
 
   public static final int nEXPORT_MODE_CSV = 0;
   public static final int nEXPORT_MODE_EXCEL = 1;
+  public static final int nEXPORT_MODE_XLSX = 2;
   
   public static final int nEXCEL_LIBRARY_JXL = 0;
   public static final int nEXCEL_LIBRARY_POI = 1;
@@ -629,6 +630,9 @@ public class Const {
     if (stmp != null && stmp.equalsIgnoreCase("csv")) {
       nEXPORT_MODE = nEXPORT_MODE_CSV;
     }
+    else if (stmp != null && stmp.equalsIgnoreCase("xlsx")) {
+	  nEXPORT_MODE = nEXPORT_MODE_XLSX;
+	}
 
     stmp = Setup.getProperty("DEFAULT_LOCALE");
     if (stmp != null && ALLOWED_LOCALES.contains(stmp)) {
