@@ -133,9 +133,17 @@ public class MailLogManager extends Thread {
         try {
             String[] parts = line.trim().split("\\s+", 4);  // ensure multiple spaces are handled
             if (parts.length >= 3) {
-                String nowYear = String.valueOf(java.time.Year.now().getValue());
-                String fullDate = String.format("%s %s %s %s", parts[0], parts[1], parts[2], nowYear);
+                int currentYear = java.time.Year.now().getValue();
+                String fullDate = String.format("%s %s %s %s", parts[0], parts[1], parts[2], currentYear);
                 Date date = LOG_DATE_FORMAT.parse(fullDate);
+
+                // Se a data está no futuro, provavelmente é do ano anterior
+                Date now = new Date();
+                if (date.after(now)) {
+                    fullDate = String.format("%s %s %s %s", parts[0], parts[1], parts[2], currentYear - 1);
+                    date = LOG_DATE_FORMAT.parse(fullDate);
+                }
+
                 return String.valueOf(date.getTime());
             }
         } catch (ParseException e) {
