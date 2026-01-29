@@ -8,12 +8,16 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import pt.iflow.api.blocks.Block;
+import pt.iflow.api.utils.Const;
 import pt.iflow.api.blocks.Port;
 import pt.iflow.api.core.BeanFactory;
 import pt.iflow.api.documents.DocumentData;
@@ -95,27 +99,32 @@ public class BlockCriarXlsInSheet extends Block {
             logMsg.append("Unable to export: " + sError);
             Logger.warning(login, this, "after", "Unable to export: " + sError);
           } else {
-        	//get newly created sheet
+        	//get newly created sheet - use WorkbookFactory to auto-detect format
         	InputStream is = new ByteArrayInputStream(out.toByteArray());
-        	HSSFWorkbook wb = new HSSFWorkbook(is);  
-        	HSSFSheet createdSheet = wb.getSheetAt(0);          	
+        	Workbook wb = WorkbookFactory.create(is);
+        	Sheet createdSheet = wb.getSheetAt(0);
         	//open document as workbook
-        	HSSFWorkbook oldWb=null;
+        	Workbook oldWb = null;
         	try{
 	        	Integer docid = Integer.parseInt( "" + variable.getItemValue(variable.size()-1));
 	        	Document oldDocument = BeanFactory.getDocumentsBean().getDocument(userInfo, procData, docid);
 	        	InputStream oldIs = new ByteArrayInputStream(oldDocument.getContent());
-	        	oldWb = new HSSFWorkbook(oldIs);    
+	        	oldWb = WorkbookFactory.create(oldIs);
         	} catch (Exception e) {
-        		oldWb = new HSSFWorkbook();
+        		// Create new workbook based on export mode
+        		if (Const.nEXPORT_MODE == Const.nEXPORT_MODE_XLSX) {
+        			oldWb = new XSSFWorkbook();
+        		} else {
+        			oldWb = new HSSFWorkbook();
+        		}
         	}
-        	
+
         	//add new sheet content
-        	HSSFSheet tempSheet = oldWb.createSheet(sheetname);
+        	Sheet tempSheet = oldWb.createSheet(sheetname);
         	for (int row=0; row<= createdSheet.getLastRowNum(); row++){
-        		HSSFRow auxRow = tempSheet.createRow(row);
+        		Row auxRow = tempSheet.createRow(row);
         		for(short cell=0; cell <= createdSheet.getRow(row).getLastCellNum(); cell++){
-        			HSSFCell auxCell = auxRow.createCell(cell);
+        			Cell auxCell = auxRow.createCell(cell);
         			if(createdSheet.getRow(row).getCell(cell)==null)
         				auxCell.setCellValue( "" );
         			else
