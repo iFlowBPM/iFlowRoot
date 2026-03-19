@@ -1942,7 +1942,7 @@ CREATE TABLE smtp_error_codes (
     description TEXT
 );
 
-INSERT INTO smtp_error_codes VALUES ('150', 'pending', 'Deliveded to local SMTP.');
+INSERT INTO smtp_error_codes VALUES ('150', 'pending', 'Delivered to local SMTP.');
 
 -- success / Informativo
 INSERT INTO smtp_error_codes VALUES ('211', 'success', 'Informação do servidor disponível.');
@@ -1983,14 +1983,14 @@ INSERT INTO smtp_error_codes VALUES ('441', 'permanent_failure', 'Erro temporár
 
 
 CREATE TABLE email_request_log (
-    request_id VARCHAR(36),
-    to_address VARCHAR(255),
+    request_id VARCHAR(36) NOT NULL,
+    to_address VARCHAR(255) NOT NULL DEFAULT '',
     status VARCHAR(10) CHECK (status IN ('pending', 'sent', 'failed')),
     smtp_code VARCHAR(3),
     requested_at TIMESTAMP,
     processed_at TIMESTAMP,
     queue_id VARCHAR(20),
-    locked int(1),
+    locked int(1) DEFAULT 0,
     CONSTRAINT email_request_log_pkey PRIMARY KEY (request_id, to_address),
     CONSTRAINT fk_smtp_code FOREIGN KEY (smtp_code)
         REFERENCES smtp_error_codes(error_code)

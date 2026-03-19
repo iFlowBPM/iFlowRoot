@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
 import pt.iflow.api.utils.Const;
+import pt.iflow.api.utils.Logger;
 
 class LogCheckpoint {
     private static final String CHECKPOINT_FILE = Const.MAIL_LOG_CHECKPOINT_FILE;
@@ -19,7 +20,7 @@ class LogCheckpoint {
                 byte[] bytes = Files.readAllBytes(path);
                 return new String(bytes, StandardCharsets.UTF_8).trim();
             } catch (IOException e) {
-                e.printStackTrace();
+                Logger.error("system", "LogCheckpoint", "loadLastTimestamp", "Failed to load checkpoint file: " + e.getMessage(), e);
             }
         }
         return null;
@@ -36,7 +37,7 @@ class LogCheckpoint {
                         StandardOpenOption.CREATE,
                         StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.error("system", "LogCheckpoint", "saveLastTimestamp", "Failed to save checkpoint file: " + e.getMessage(), e);
         }
     }
 }

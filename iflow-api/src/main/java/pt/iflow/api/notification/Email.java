@@ -1,7 +1,6 @@
 package pt.iflow.api.notification;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -58,7 +57,7 @@ import pt.iflow.connector.document.Document;
 public class Email implements Cloneable {
 
   static final String X_REQUEST_ID = "X-RequestId";
-String id = null;
+  String id = null;
   String host = "";
   int port = -1;
   String user = "";
@@ -446,8 +445,7 @@ String id = null;
           props.put("mail.smtp.port", String.valueOf(port));
         }
         props.put("mail.smtp.starttls.enable", getStartTls());
-        props.put("mail.debug", "true");
-        // if (debug) props.put("mail.debug", "false");
+        if (debug) props.put("mail.debug", "true");
 
         props.put("mail.smtp.auth", getAuth());
         authenticator = new SMTPAuthenticator(getUser(), getPass());
@@ -609,8 +607,7 @@ String id = null;
 
 	        return emailList.toArray(new String[0]);
 	    } catch (MessagingException e) {
-	        // Log the error and return an empty array
-	        System.err.println("Failed to extract TO addresses: " + e.getMessage());
+	        Logger.error(null, "Email", "getToEmailStringsSafe", "Failed to extract TO addresses: " + e.getMessage(), e);
 	        return new String[0];
 	    }
 	}
@@ -650,33 +647,23 @@ String id = null;
   /**
    * Handles the actual sending of the email message using the provided mail Session.
    * 
-   * Attempts to connect to the SMTP transport, send the message to all recipients,
-   * and log the outcome along with saving the email status.
-   * 
-   * In case of a MessagingException, extracts SMTP error codes and messages (if any),
-   * determines the error type from the database, logs detailed error information,
-   * and saves the failure status.
-   * 
-   * Ensures that the transport is properly closed after the operation,
-   * logging any errors encountered during closing.
-   * 
-   * @author jcosta
-   * @date 2025-05-23
-   * 
-   * @param session the mail Session used to obtain the SMTP transport
-   * @param msg the Message object representing the email to be sent
-   * @param requestId the unique identifier for this email send request, used for logging and status tracking
+   * Sends the email via Transport.send() and saves the email status.
+   * On success, saves status SENT with pending SMTP code (150).
+   * On MessagingException, extracts SMTP error codes and saves failure status.
+   *
+   * @param session the mail Session (used by Transport.send internally)
+   * @param msg the MimeMessage to send
+   * @param requestId unique identifier for status tracking
    */
   private void processEmail(Session session, MimeMessage msg, String requestId) {
-//	    Transport transport = null;
 	    try {
-	    	System.setProperty("mail.debug", "true");
 	        Transport.send(msg);
 
-		    EmailManager.saveEmailStatus(requestId, EmailStatus.SENT,  EmailManager.DEFAULT_PENDING_CODE, 
-		    		getToEmailStringsSafe(msg), null, false);
-		    Logger.debug("", this, "processEmail", "[" + requestId + "] Email sent to: " 
-		        	+ java.util.Arrays.toString(getToEmailStringsSafe(msg)));
+		    String[] toAddresses = getToEmailStringsSafe(msg);
+		    EmailManager.saveEmailStatus(requestId, EmailStatus.SENT,  EmailManager.DEFAULT_PENDING_CODE,
+		    		toAddresses, null, false);
+		    Logger.debug("", this, "processEmail", "[" + requestId + "] Email sent to: "
+		        	+ java.util.Arrays.toString(toAddresses));
 	    } catch (MessagingException mex) {
 	        String smtpCode = null;
 	        String smtpMessage = null;
@@ -716,34 +703,10 @@ String id = null;
 			);
 	        
 		} catch (Exception e) {
-	    	Logger.error(null, this, "processEmail", "[" + requestId + "] failed to set tracking id", e);	
+	    	Logger.error(null, this, "processEmail", "[" + requestId + "] failed to set tracking id", e);
 		}
-	    finally {
-//	        if (transport != null) {
-//	            try {
-//	                transport.close();
-//	            } catch (MessagingException e) {
-//	                Logger.error(null, this, "processEmail", "[" + requestId + "] Failed to close transport", e);
-//	            }
-//	        }
-	    }
 	}
-    
 
-//	public void setTrackingMessageId(MimeMessage message, String trackingId) throws Exception {
-//	    String senderEmail = ((InternetAddress) message.getFrom()[0]).getAddress();
-//	
-//	    String domain = "yourdomain.com"; // fallback
-//	    int atIndex = senderEmail.indexOf('@');
-//	    if (atIndex != -1 && atIndex < senderEmail.length() - 1) {
-//	        domain = senderEmail.substring(atIndex + 1);
-//	    }
-//	
-//	    String messageId = "<" + trackingId + "@" + domain + ">";
-//	    message.setHeader("Message-ID", messageId);
-//	    message.saveChanges();
-//	    Logger.debug("", this, "setTrackingMessageId", "setTrackingMessageId=" + messageId);
-//	}
 
   protected String getPass() {
     return pass;

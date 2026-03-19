@@ -143,8 +143,7 @@ public class BlockEmailCheckStatus extends Block {
     		}
     		if (result.getSmtpCode() != null && smtpCode != null) {
     			try {procData.parseAndSet(smtpCode, result.getSmtpCode());} catch (Exception e) {
-    				procData.parseAndSet(smtpCode, result.getSmtpCode());
-    									Logger.error(login, this, "after", 
+					Logger.error(login, this, "after",
 		    	          procData.getSignature() + "Error while parsing smtpCode: " + e.getMessage(), e);
     			}
     		}

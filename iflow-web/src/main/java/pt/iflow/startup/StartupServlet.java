@@ -200,10 +200,6 @@ public class StartupServlet extends HttpServlet {
 	  Logger.warning("", this, "", "StartupServlet: MailLogManager not enabled");
 	}
     
-    Logger.warning("", this, "", "StartupServlet: Starting MailLogManager");
-    MailLogManager.startManager();
-    Logger.warning("", this, "", "StartupServlet: MailLogManager started");
-    
     if(Const.CLUSTER_ENABLED){
     	  Timer timer = new Timer();
     	  timer.schedule(new ListenersAutoRefresh(), Const.BEAT_ACTIVE_TIME*1000, Const.BEAT_ACTIVE_TIME*1000);    	  

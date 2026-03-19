@@ -91,11 +91,6 @@ public class EmailManager extends Thread {
   public static final String DEFAULT_SUCCESS_CODE = "250";
   public static final String DEFAULT_ERROR_CODE = "999";
   public static final String SMTP_CONNECTION_ERROR = "901";
-  
-  private MailLogManager postfixLogScanner;
-  private Thread postfixLogScannerThread;
- 
-  
 
   static {
     restartManager();
@@ -852,108 +847,112 @@ public class EmailManager extends Thread {
 
 		  List<String> toAddressList = new ArrayList<>();
 
-		  if (toAddresses == null || toAddresses.length == 0) {
-			  // Add a marker for NULL to_address
-			  toAddressList.add(null);
-		  } else {
+		  if (toAddresses != null && toAddresses.length > 0) {
 			  for (String addr : toAddresses) {
 				  if (addr != null && !addr.trim().isEmpty()) {
-					  toAddressList.add(addr.toString());
+					  toAddressList.add(addr.trim());
 				  }
 			  }
 		  }
+		  if (toAddressList.isEmpty()) {
+			  toAddressList.add("");
+		  }
+
+		  // Resolve error code once (same for all addresses)
+		  String errorCode = resolveErrorCode(db, smtpCode);
 
 		  for (String toAddress : toAddressList) {
-
-			  // 1. Check if a record with the given requestId already exists
-			  String checkSql = "SELECT 1 FROM email_request_log WHERE request_id = ?";
-			  if (toAddress != null && !toAddress.isEmpty()) {
-				  checkSql += " AND to_address = ?";
-			  }
-			  pst = db.prepareStatement(checkSql);
-			  pst.setString(1, requestId);
-			  if (toAddress != null && !toAddress.isEmpty()) {
-				  pst.setString(2, toAddress);
-			  }
-			  rs = pst.executeQuery();
-
-			  boolean requestExists = rs.next();
-
-			  rs.close();
-			  pst.close();
-
-
-			  /*
-			   * Error code may be null or one of the existing smtp_errors_codes. iF not use default
-			   */
-			  String errorCode = DEFAULT_ERROR_CODE;
-			  if (smtpCode == null) {
-				  errorCode = null;
-			  }
-			  else {
-				  // check if smtp code is registered. if not set unknow
-				  // 1. Check if a record with the given requestId already exists
-				  String checkCode = "SELECT 1 FROM smtp_error_codes WHERE error_code = ?";
-				  pst = db.prepareStatement(checkCode);
-				  pst.setString(1, smtpCode);
-				  rs = pst.executeQuery();
-
-				  boolean codeExists = rs.next();
-
-				  rs.close();
-				  pst.close();
-				  if (codeExists) errorCode = smtpCode;
-			  }
-
-			  if (requestExists && requestId != null) {
-				  // 2. If it exists, perform an update
-				  String updateSql = DBQueryManager.getQuery(EmailManager.UPDATE_EMAIL_REQUEST_LOG_BY_REQUESTID);
-
-				  Logger.debug(null, "EmailManager", "saveEmailStatus", "[DEBUG] updateSql: " + updateSql + ", status: " + status.getDbValue() + ", errorCode: " + errorCode + ", lock: " + lock + ", requestId: " + requestId + ", toAddress: " + toAddress);
-				  pst = db.prepareStatement(updateSql);
-				  pst.setString(1, status.getDbValue());
-				  pst.setString(2, errorCode);
-				  pst.setInt(3, lock ? 1 : 0);
-				  pst.setString(4, requestId);
-				  pst.setString(5, toAddress);					  
-				  pst.executeUpdate();
-
-			  } else if ( requestId != null) {
-				  if (DEFAULT_ERROR_CODE.equals(errorCode)) {
-					  // If the error code is not registered, use the default pending code
-					  errorCode = DEFAULT_PENDING_CODE;
+			  try {
+				  // Check if a record with the given requestId already exists
+				  boolean requestExists = false;
+				  if (requestId != null) {
+					  String checkSql = "SELECT 1 FROM email_request_log WHERE request_id = ?";
+					  if (toAddress != null && !toAddress.isEmpty()) {
+						  checkSql += " AND to_address = ?";
+					  }
+					  pst = db.prepareStatement(checkSql);
+					  pst.setString(1, requestId);
+					  if (toAddress != null && !toAddress.isEmpty()) {
+						  pst.setString(2, toAddress);
+					  }
+					  rs = pst.executeQuery();
+					  requestExists = rs.next();
+					  rs.close(); rs = null;
+					  pst.close(); pst = null;
 				  }
-				  // INSERT_EMAIL_REQUEST_LOG
-				  // 3. If it doesn't exist, perform an insert
-				  String insertSql = DBQueryManager.getQuery(EmailManager.INSERT_EMAIL_REQUEST_LOG);
-				  pst = db.prepareStatement(insertSql);
-				  pst.setString(1, requestId);
-				  pst.setString(2, status.getDbValue());
-				  pst.setString(3, errorCode);
-				  pst.setString(4, queueId);
-				  pst.setString(5, toAddress);
-				  pst.executeUpdate();
-				
-			  } else if (queueId != null) {
-				  // 2. If it exists, perform an update
-				  String updateSql = DBQueryManager.getQuery(EmailManager.UPDATE_EMAIL_REQUEST_LOG_BY_QUEUEID);
 
-				  Logger.debug(null, "EmailManager", "saveEmailStatus", "[DEBUG] updateSql: " + updateSql + ", status: " + status.getDbValue() + ", errorCode: " + errorCode + ", lock: " + lock + ", queueId: " + queueId + ", toAddress: " + toAddress);
-				  pst = db.prepareStatement(updateSql);
-				  pst.setString(1, status.getDbValue());
-				  pst.setString(2, errorCode);
-				  pst.setInt(3, lock ? 1 : 0);
-				  pst.setString(4, queueId);
-				  pst.setString(5, toAddress);					  
-				  pst.executeUpdate();
+				  if (requestExists && requestId != null) {
+					  String updateSql = DBQueryManager.getQuery(EmailManager.UPDATE_EMAIL_REQUEST_LOG_BY_REQUESTID);
+					  Logger.debug(null, "EmailManager", "saveEmailStatus", "Updating by requestId: " + requestId + ", toAddress: " + toAddress + ", status: " + status.getDbValue() + ", errorCode: " + errorCode);
+					  pst = db.prepareStatement(updateSql);
+					  pst.setString(1, status.getDbValue());
+					  pst.setString(2, errorCode);
+					  pst.setInt(3, lock ? 1 : 0);
+					  pst.setString(4, requestId);
+					  pst.setString(5, toAddress);
+					  pst.executeUpdate();
+					  pst.close(); pst = null;
+
+				  } else if (requestId != null) {
+					  String insertCode = DEFAULT_ERROR_CODE.equals(errorCode) ? DEFAULT_PENDING_CODE : errorCode;
+					  String insertSql = DBQueryManager.getQuery(EmailManager.INSERT_EMAIL_REQUEST_LOG);
+					  pst = db.prepareStatement(insertSql);
+					  pst.setString(1, requestId);
+					  pst.setString(2, status.getDbValue());
+					  pst.setString(3, insertCode);
+					  pst.setString(4, queueId);
+					  pst.setString(5, toAddress);
+					  pst.executeUpdate();
+					  pst.close(); pst = null;
+
+				  } else if (queueId != null) {
+					  String updateSql = DBQueryManager.getQuery(EmailManager.UPDATE_EMAIL_REQUEST_LOG_BY_QUEUEID);
+					  Logger.debug(null, "EmailManager", "saveEmailStatus", "Updating by queueId: " + queueId + ", toAddress: " + toAddress + ", status: " + status.getDbValue() + ", errorCode: " + errorCode);
+					  pst = db.prepareStatement(updateSql);
+					  pst.setString(1, status.getDbValue());
+					  pst.setString(2, errorCode);
+					  pst.setInt(3, lock ? 1 : 0);
+					  pst.setString(4, queueId);
+					  pst.setString(5, toAddress);
+					  pst.executeUpdate();
+					  pst.close(); pst = null;
+				  }
+			  } finally {
+				  if (rs != null) { try { rs.close(); } catch (Exception ignore) {} rs = null; }
+				  if (pst != null) { try { pst.close(); } catch (Exception ignore) {} pst = null; }
 			  }
 		  }
 
 	  } catch (Exception e) {
 		  Logger.error(null, "EmailManager", "saveEmailStatus", "Failed to save email status", e);
 	  } finally {
-		  DatabaseInterface.closeResources(db, pst, rs);
+		  if (rs != null) { try { rs.close(); } catch (Exception ignore) {} }
+		  if (pst != null) { try { pst.close(); } catch (Exception ignore) {} }
+		  DatabaseInterface.closeResources(db, null, null);
 	  }
+  }
+
+  private static String resolveErrorCode(Connection db, String smtpCode) {
+	  if (smtpCode == null) {
+		  return null;
+	  }
+	  PreparedStatement pst = null;
+	  ResultSet rs = null;
+	  try {
+		  String checkCode = "SELECT 1 FROM smtp_error_codes WHERE error_code = ?";
+		  pst = db.prepareStatement(checkCode);
+		  pst.setString(1, smtpCode);
+		  rs = pst.executeQuery();
+		  if (rs.next()) {
+			  return smtpCode;
+		  }
+	  } catch (Exception e) {
+		  Logger.error(null, "EmailManager", "resolveErrorCode", "Failed to check error code: " + smtpCode, e);
+	  } finally {
+		  if (rs != null) { try { rs.close(); } catch (Exception ignore) {} }
+		  if (pst != null) { try { pst.close(); } catch (Exception ignore) {} }
+	  }
+	  return DEFAULT_ERROR_CODE;
   }
 
   /**
@@ -972,9 +971,9 @@ public class EmailManager extends Thread {
           ds = Utils.getDataSource();
           db = ds.getConnection();
 
-          String query = "SELECT status, smtp_code, description, error_type, processed_at, to_address, queue_id " +
-                         "FROM email_request_log r " + 
-                         "join smtp_error_codes c on c.error_code = r.smtp_code " + 
+          String query = "SELECT status, r.smtp_code, c.description, c.error_type, processed_at, to_address, queue_id " +
+                         "FROM email_request_log r " +
+                         "LEFT JOIN smtp_error_codes c ON c.error_code = r.smtp_code " +
                          "WHERE request_id = ?";
           if (toAddress != null && !toAddress.isEmpty()) {
         	  query += " AND to_address = ?";

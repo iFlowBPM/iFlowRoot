@@ -319,10 +319,10 @@ public class Setup {
 
 	}
 
-	public static boolean getPropertyBoolean(String key, boolean mailLogScannerEnabled) {
+	public static boolean getPropertyBoolean(String key, boolean defaultValue) {
 		if (_pMainProperties.containsKey(key)) {
 			return Boolean.parseBoolean(_pMainProperties.getProperty(key));
 		}
-		return false;
+		return defaultValue;
 	}
 }
