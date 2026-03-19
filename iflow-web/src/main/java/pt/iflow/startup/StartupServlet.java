@@ -116,6 +116,10 @@ public class StartupServlet extends HttpServlet {
     Logger.warning("", this, "", "StartupServlet: Stopping SharedObjectRefreshManager");
     SharedObjectRefreshManager.getInstance().stopManager();
     Logger.warning("", this, "", "StartupServlet: SharedObjectRefreshManager stopped");
+
+    Logger.warning("", this, "", "StartupServlet: Stopping MailLogManager");
+    MailLogManager.stopManager();
+    Logger.warning("", this, "", "StartupServlet: MailLogManager stopped");
   }
 
 

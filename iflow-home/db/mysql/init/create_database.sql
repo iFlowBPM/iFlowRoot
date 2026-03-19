@@ -1973,6 +1973,7 @@ INSERT INTO smtp_error_codes VALUES ('553', 'permanent_failure', 'O endereço de
 INSERT INTO smtp_error_codes VALUES ('554', 'permanent_failure', 'O e-mail foi rejeitado. Pode ter sido considerado spam.');
 
 INSERT INTO smtp_error_codes VALUES ('901', 'hard_failure', 'Não foi possível comunicar com o servidor SMTP.');
+INSERT INTO smtp_error_codes VALUES ('902', 'hard_failure', 'Delivery expired - tempo de vida na fila excedido.');
 INSERT INTO smtp_error_codes VALUES ('999', 'hard_failure', 'Código Inexistente.');
 
 INSERT INTO smtp_error_codes VALUES ('544', 'permanent_failure', 'Host ou nome de domínio não encontrado. Erro no serviço de nomes para o domínio especificado.');

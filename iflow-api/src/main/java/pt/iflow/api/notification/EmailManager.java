@@ -63,7 +63,10 @@ public class EmailManager extends Thread {
   private static final String UPDATE_EMAIL_REQUEST_LOG_BY_REQUESTID = "EmailManager.UPDATE_EMAIL_REQUEST_LOG_BY_REQUESTID";
   private static final String UPDATE_EMAIL_REQUEST_LOG_BY_QUEUEID = "EmailManager.UPDATE_EMAIL_REQUEST_LOG_BY_QUEUEID";  
   private static final String INSERT_EMAIL_REQUEST_LOG = "EmailManager.INSERT_EMAIL_REQUEST_LOG";
-  
+  private static final String COUNT_STALE_150 = "EmailManager.COUNT_STALE_150";
+
+  public static final String SMTP_EXPIRED_CODE = "902";
+
   private static EmailManager _em = null;
 
   private boolean _bStop = false;
@@ -1004,5 +1007,39 @@ public class EmailManager extends Thread {
       }
 
       return null;
+  }
+
+  public static int countStale150Records(java.sql.Timestamp thresholdTimestamp) {
+      DataSource ds = null;
+      Connection db = null;
+      PreparedStatement pst = null;
+      ResultSet rs = null;
+
+      try {
+          String query = DBQueryManager.getQuery(EmailManager.COUNT_STALE_150);
+          if (query == null) {
+              Logger.warning(null, "EmailManager", "countStale150Records",
+                      "Query not found: " + COUNT_STALE_150);
+              return -1;
+          }
+          ds = Utils.getDataSource();
+          db = ds.getConnection();
+          db.setAutoCommit(true);
+
+          pst = db.prepareStatement(query);
+          pst.setTimestamp(1, thresholdTimestamp);
+          rs = pst.executeQuery();
+
+          if (rs.next()) {
+              return rs.getInt(1);
+          }
+      } catch (Exception e) {
+          Logger.error(null, "EmailManager", "countStale150Records",
+                  "Failed to count stale 150 records", e);
+      } finally {
+          DatabaseInterface.closeResources(db, pst, rs);
+      }
+
+      return -1;
   }
 }

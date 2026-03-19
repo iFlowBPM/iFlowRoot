@@ -83,7 +83,10 @@ public class Const {
   public static int MAIL_LOG_THREAD_CICLE = -1;
   public static String MAIL_LOG_FILE = "/var/log/maillog"; // default log file for mail logs 
   public static String MAIL_LOG_CHECKPOINT_FILE = "/var/lib/iflow/maillog.checkpoint"; // default checkpoint file for mail logs
-  
+  public static int MAIL_LOG_STALE_THRESHOLD_MINUTES = 30;
+  public static int MAIL_LOG_STALE_ALERT_THRESHOLD = 10;
+  public static int MAIL_LOG_STALE_ALERT_COOLDOWN_MINUTES = 15;
+
   public static String sMAIL_ADM_ERROR_NOTIFY = null;
   public static String sMAIL_SERVER = null;
   public static int nMAIL_PORT = 25;
@@ -494,7 +497,19 @@ public class Const {
       Const.MAIL_LOG_FILE = stmp;
     }
     MAIL_LOG_CHECKPOINT_FILE = Setup.getProperty("MAIL_LOG_CHECKPOINT_FILE", MAIL_LOG_CHECKPOINT_FILE);
-    
+    MAIL_LOG_STALE_THRESHOLD_MINUTES = Setup.getPropertyInt("MAIL_LOG_STALE_THRESHOLD_MINUTES");
+    if (MAIL_LOG_STALE_THRESHOLD_MINUTES == -1) {
+      MAIL_LOG_STALE_THRESHOLD_MINUTES = 30;
+    }
+    MAIL_LOG_STALE_ALERT_THRESHOLD = Setup.getPropertyInt("MAIL_LOG_STALE_ALERT_THRESHOLD");
+    if (MAIL_LOG_STALE_ALERT_THRESHOLD == -1) {
+      MAIL_LOG_STALE_ALERT_THRESHOLD = 10;
+    }
+    MAIL_LOG_STALE_ALERT_COOLDOWN_MINUTES = Setup.getPropertyInt("MAIL_LOG_STALE_ALERT_COOLDOWN_MINUTES");
+    if (MAIL_LOG_STALE_ALERT_COOLDOWN_MINUTES == -1) {
+      MAIL_LOG_STALE_ALERT_COOLDOWN_MINUTES = 15;
+    }
+
     DELEGATION_THREAD_CICLE = Setup.getPropertyInt("DELEGATION_THREAD_CICLE");
     PROFILESYNC_THREAD_CICLE = Setup.getPropertyInt("PROFILESYNC_THREAD_CICLE");
     PROFILESYNC_ON = false;

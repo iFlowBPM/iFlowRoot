@@ -1,5 +1,7 @@
 package pt.iflow.api.notification;
 
+import java.util.regex.Pattern;
+
 import junit.framework.TestCase;
 
 public class MailLogManagerTest extends TestCase {
@@ -79,6 +81,23 @@ public class MailLogManagerTest extends TestCase {
     public void testExtractSmtpCodeNoMatch() {
         String line = "Jul 29 14:20:31 some random line";
         assertNull(manager.extractSmtpCode(line));
+    }
+
+    public void testExtractSmtpCodeExpiredNotMatched() {
+        // status=expired should NOT be matched by extractSmtpCode (handled separately)
+        String line = "Jul 29 14:20:31 postfix/qmgr[1234]: ABC123: from=<sender@example.com>, status=expired, returned to sender";
+        assertNull(manager.extractSmtpCode(line));
+    }
+
+    public void testExpiredStatusPattern() {
+        Pattern pattern = Pattern.compile("status=expired\\b");
+        String expiredLine = "Jul 29 14:20:31 postfix/qmgr[1234]: ABC123: to=<user@example.com>, status=expired, returned to sender";
+        String sentLine = "Jul 29 14:20:31 postfix/smtp[1234]: ABC123: to=<user@example.com> status=sent (250 Ok)";
+        String bouncedLine = "Jul 29 14:20:31 postfix/smtp[1234]: ABC123: to=<user@example.com> status=bounced (550 User unknown)";
+
+        assertTrue(pattern.matcher(expiredLine).find());
+        assertFalse(pattern.matcher(sentLine).find());
+        assertFalse(pattern.matcher(bouncedLine).find());
     }
 
     public void testExtractTimestamp() {
