@@ -197,9 +197,13 @@ public class StartupServlet extends HttpServlet {
     Logger.warning("", this, "", "StartupServlet: JobManager started");
 
     if (Const.MAIL_LOG_SCANNER_ENABLED) {
-	  Logger.warning("", this, "", "StartupServlet: Starting MailLogManager");
-	  MailLogManager.startManager();
-	  Logger.warning("", this, "", "StartupServlet: MailLogManager started");
+	  try {
+	    Logger.warning("", this, "", "StartupServlet: Starting MailLogManager");
+	    MailLogManager.startManager();
+	    Logger.warning("", this, "", "StartupServlet: MailLogManager started");
+	  } catch (Throwable t) {
+	    Logger.error("", this, "init", "Failed to start MailLogManager (non-fatal): " + t.getMessage());
+	  }
 	} else {
 	  Logger.warning("", this, "", "StartupServlet: MailLogManager not enabled");
 	}
