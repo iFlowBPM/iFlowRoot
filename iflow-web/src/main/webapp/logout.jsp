@@ -15,7 +15,7 @@ if(null != userInfo) {
 session.invalidate();
 
 long ts = System.currentTimeMillis();
-response.addCookie(ServletUtils.newCookie(Const.SESSION_COOKIE_PASSWORD,""));
+response.addCookie(ServletUtils.newCookie(Const.SESSION_COOKIE_CHAVE,""));
 
 ServletUtils.sendEncodeRedirect(response, "login.jsp?ts="+ts);
 %>
