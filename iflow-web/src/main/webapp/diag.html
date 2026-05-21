@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<title>iFlow - Diagnóstico de Browser</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: Verdana, Arial, sans-serif; font-size: 14px; margin: 0; padding: 14px; color: #222; background: #f0f2f5; }
+  h1 { font-size: 20px; color: #1E5B78; margin: 0 0 6px 0; }
+  h2 { margin: 0 0 8px 0; font-size: 15px; color: #1E5B78; }
+  .row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .session { background: #1E5B78; color: white; padding: 6px 14px; font-size: 15px; font-weight: bold; display: inline-block; border-radius: 4px; }
+
+  /* INSTRUÇÕES - primeira coisa visível */
+  .instructions { background: #fff8e1; border: 3px solid #f9a825; padding: 16px 20px; margin: 12px 0; border-radius: 6px; font-size: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+  .instructions .title { font-size: 18px; font-weight: bold; color: #e65100; margin-bottom: 10px; }
+  .instructions .what { margin: 10px 0; line-height: 1.5; }
+  .instructions .step { margin: 8px 0; padding-left: 28px; position: relative; line-height: 1.4; }
+  .instructions .step .num { position: absolute; left: 0; top: 0; background: #e65100; color: white; width: 22px; height: 22px; border-radius: 50%; text-align: center; font-weight: bold; font-size: 13px; line-height: 22px; }
+  .instructions .progress { background: #1E5B78; color: white; padding: 10px 16px; margin-top: 12px; border-radius: 4px; font-size: 16px; font-weight: bold; text-align: center; }
+  .instructions .progress .count { font-size: 24px; }
+
+  /* Banner de PRONTO (aparece depois dos cliques) */
+  .ready-banner { display: none; background: #28a745; color: white; padding: 14px 20px; margin: 12px 0; border-radius: 6px; font-size: 17px; font-weight: bold; text-align: center; box-shadow: 0 2px 8px rgba(40,167,69,0.4); }
+  .ready-banner .arrow { font-size: 22px; }
+
+  /* Caixa de resultados - escondida até todos os cliques */
+  .results-card { display: none; background: white; border: 3px solid #1E5B78; padding: 14px; margin: 12px 0; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+  .results-card .head { background: #1E5B78; color: white; padding: 8px 12px; margin: -14px -14px 12px -14px; border-radius: 3px 3px 0 0; font-weight: bold; font-size: 16px; }
+  .results-card table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .results-card td { padding: 4px 8px; border-bottom: 1px solid #eee; vertical-align: top; }
+  .results-card td.lbl { font-weight: bold; color: #555; width: 30%; white-space: nowrap; }
+  .results-card td.val { font-family: Consolas, monospace; word-break: break-word; }
+  .results-card .test-line { padding: 4px 8px; border-bottom: 1px solid #eee; font-family: Consolas, monospace; font-size: 13px; }
+  .results-card .test-line.ok { background: #e8f5e9; color: #155724; }
+  .results-card .test-line.fail { background: #fde7e9; color: #721c24; }
+  .results-card .test-line.pending { background: #f5f5f5; color: #666; }
+  .results-card .summary-line { font-size: 16px; font-weight: bold; padding: 8px 12px; margin-top: 8px; text-align: center; border-radius: 4px; }
+  .results-card .summary-line.ok { background: #d4edda; color: #155724; }
+  .results-card .summary-line.fail { background: #f8d7da; color: #721c24; }
+  .results-card .summary-line.pending { background: #eee; color: #555; }
+
+  .copy-btn { font-size: 17px; padding: 12px 24px; font-weight: bold; cursor: pointer; background: #28a745; color: white; border: none; border-radius: 4px; margin-top: 12px; }
+  .copy-btn:hover { background: #1e7e34; }
+  .copy-btn:focus { outline: 3px solid #ffd966; }
+  .copy-feedback { margin-left: 10px; color: #155724; font-weight: bold; }
+
+  .test { background: white; border: 1px solid #bbb; padding: 12px; margin: 8px 0; border-radius: 4px; }
+  .test .btn { font-size: 16px; padding: 10px 20px; font-weight: bold; cursor: pointer; background: #03679e; color: white; border: 1px solid #03679e; border-radius: 4px; text-decoration: none; display: inline-block; }
+  .test .btn:hover { background: #04527d; }
+  .test .btn:focus { outline: 3px solid #ffd966; }
+  .test .btn.done { background: #6c757d; border-color: #6c757d; }
+  .result { margin-top: 8px; font-size: 14px; font-weight: bold; padding: 6px 10px; border-radius: 4px; }
+  .pending { background: #eaeaea; color: #555; }
+  .ok { background: #d4edda; color: #155724; border: 1px solid #28a745; }
+  .fail { background: #f8d7da; color: #721c24; border: 1px solid #dc3545; }
+
+  .info-dump { background: #fafafa; border: 1px solid #ccc; padding: 10px; margin: 10px 0; font-family: Consolas, monospace; font-size: 11px; white-space: pre-wrap; word-break: break-all; border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<!-- Inline probe: if inline script is blocked (CSP, extension) this global never appears -->
+<script>window.__inlineProbe = 'inline-script-executed-' + Date.now();</script>
+
+<div class="row">
+  <h1>iFlow &mdash; Diagnóstico do Browser</h1>
+  <div class="session">Sessão: <span id="sessionId">-</span></div>
+</div>
+<div style="font-size:12px;color:#666;margin-bottom:8px"><span id="dateTime">-</span></div>
+
+<!-- ============================================== -->
+<!-- INSTRUÇÕES - primeira coisa visível             -->
+<!-- ============================================== -->
+<div class="instructions" id="instructions">
+  <div class="title">O que tem de fazer</div>
+  <div class="what">
+    Esta página vai testar se o seu browser está a responder correctamente aos botões.
+  </div>
+
+  <div class="step"><span class="num">1</span>
+    Carregue <b>UMA VEZ</b> em cada um dos quatro botões azuis na página
+    (Teste 1, Teste 2, Teste 3 e Teste 4). Pode demorar o tempo que precisar.
+  </div>
+  <div class="step"><span class="num">2</span>
+    Quando tiver clicado nos quatro botões, os resultados aparecem aqui em cima
+    e basta carregar no botão verde <b>"Copiar resultados"</b>, colar num email
+    com <b>Ctrl+V</b> e enviar.
+  </div>
+
+  <div class="progress" id="progressBox">
+    Botões clicados: <span class="count" id="progressCount">0</span> de 4
+  </div>
+</div>
+
+<!-- Banner PRONTO -->
+<div class="ready-banner" id="readyBanner">
+  <span class="arrow">&#x2193;</span> PRONTO &mdash; carregue no botão verde "Copiar resultados" em baixo, cole num email com Ctrl+V e envie.
+</div>
+
+<!-- ============================================== -->
+<!-- RESULTADOS - escondido até concluir os cliques  -->
+<!-- ============================================== -->
+<div class="results-card" id="resultsCard">
+  <div class="head">RESULTADOS</div>
+
+  <div id="summaryLine" class="summary-line pending">A consolidar resultados...</div>
+
+  <div style="margin-top:10px">
+    <div class="test-line pending" id="sr1">Teste 1 (onclick inline)............: a aguardar</div>
+    <div class="test-line pending" id="sr2">Teste 2 (addEventListener)..........: a aguardar</div>
+    <div class="test-line pending" id="sr3">Teste 3 (form submit como iFlow)....: a aguardar</div>
+    <div class="test-line pending" id="sr4">Teste 4 (link javascript:)..........: a aguardar</div>
+    <div class="test-line pending" id="sr5">Teste 5 (click() programatico)......: a aguardar</div>
+    <div class="test-line pending" id="sr6">Teste 6 (dispatchEvent).............: a aguardar</div>
+  </div>
+
+  <table style="margin-top:12px">
+    <tr><td class="lbl">Sessao</td><td class="val" id="trSession">-</td></tr>
+    <tr><td class="lbl">Data/hora</td><td class="val" id="trDate">-</td></tr>
+    <tr><td class="lbl">Browser</td><td class="val" id="trBrowser">-</td></tr>
+    <tr><td class="lbl">Plataforma</td><td class="val" id="trPlatform">-</td></tr>
+    <tr><td class="lbl">URL / iframe</td><td class="val" id="trUrl">-</td></tr>
+    <tr><td class="lbl">Inline JS</td><td class="val" id="trInline">-</td></tr>
+    <tr><td class="lbl">Cookies / Storage</td><td class="val" id="trCookies">-</td></tr>
+    <tr><td class="lbl">chrome.runtime</td><td class="val" id="trChrome">-</td></tr>
+    <tr><td class="lbl">CSP meta</td><td class="val" id="trCsp">-</td></tr>
+    <tr><td class="lbl">Recursos iFlow</td><td class="val" id="trResources">a testar...</td></tr>
+    <tr><td class="lbl">Globals iFlow</td><td class="val" id="trGlobals">-</td></tr>
+  </table>
+
+  <button class="copy-btn" id="copyBtn" type="button">Copiar resultados</button>
+  <span id="copyFeedback" class="copy-feedback"></span>
+</div>
+
+<!-- TEST 1 -->
+<div class="test" id="test1box">
+  <h2>Teste 1</h2>
+  <button class="btn" id="btn1" onclick="pass(1,'onclick inline disparou'); this.classList.add('done'); this.textContent='Teste 1 — clicado';">Carregar aqui (Teste 1)</button>
+  <div id="r1" class="result pending">Aguardando clique...</div>
+</div>
+
+<!-- TEST 2 -->
+<div class="test" id="test2box">
+  <h2>Teste 2</h2>
+  <button class="btn" id="btn2">Carregar aqui (Teste 2)</button>
+  <div id="r2" class="result pending">Aguardando clique...</div>
+</div>
+
+<!-- TEST 3 -->
+<div class="test" id="test3box">
+  <h2>Teste 3</h2>
+  <iframe name="t3sink" style="display:none" title="sink"></iframe>
+  <form name="dados" id="t3form" target="t3sink" action="javascript:void(0)"
+        onsubmit="pass(3,'form submit disparou'); return false;">
+    <button type="submit" class="btn" id="btn3"
+            onclick="window.__t3clicked = Date.now(); this.classList.add('done'); this.textContent='Teste 3 — clicado';">Carregar aqui (Teste 3)</button>
+  </form>
+  <div id="r3" class="result pending">Aguardando clique...</div>
+</div>
+
+<!-- TEST 4 -->
+<div class="test" id="test4box">
+  <h2>Teste 4</h2>
+  <a class="btn" id="btn4" href="javascript:pass(4,'link javascript: disparou')">Carregar aqui (Teste 4)</a>
+  <div id="r4" class="result pending">Aguardando clique...</div>
+</div>
+
+<!-- Info dump (debug) -->
+<details style="margin:10px 0">
+  <summary style="cursor:pointer;color:#666;font-size:12px">Informação técnica detalhada (opcional)</summary>
+  <div id="info" class="info-dump">A recolher...</div>
+</details>
+
+<script>
+(function(){
+  var startTime = Date.now();
+  var sessionId = startTime.toString().slice(-7);
+  var results = {};
+  var TOTAL_TESTS = 6;
+  var snapshot = {};
+
+  document.getElementById('sessionId').textContent = sessionId;
+  document.getElementById('dateTime').textContent = new Date().toString();
+  document.getElementById('trSession').textContent = sessionId;
+  document.getElementById('trDate').textContent = new Date().toString();
+
+  var TEST_NAMES = {
+    1: 'Teste 1 (onclick inline)',
+    2: 'Teste 2 (addEventListener)',
+    3: 'Teste 3 (form submit como iFlow)',
+    4: 'Teste 4 (link javascript:)',
+    5: 'Teste 5 (click() programatico)',
+    6: 'Teste 6 (dispatchEvent)'
+  };
+
+  function setSummaryLine(n, status, msg) {
+    var el = document.getElementById('sr' + n);
+    if (!el) return;
+    var pad = function(s, len){ while (s.length < len) s += '.'; return s; };
+    var name = TEST_NAMES[n];
+    var prefix = pad(name, 40);
+    el.className = 'test-line ' + status;
+    var label = status === 'ok' ? 'PASSOU' : (status === 'fail' ? 'FALHOU' : 'a aguardar');
+    el.textContent = prefix + ': ' + label + (msg ? ' - ' + msg : '');
+  }
+
+  function updateProgressAndMaybeReveal() {
+    // Conta cliques do utilizador (testes 1-4)
+    var userClicks = 0;
+    [1,2,3,4].forEach(function(n){ if (results[n]) userClicks++; });
+    document.getElementById('progressCount').textContent = userClicks;
+
+    if (userClicks === 4) {
+      // Aguarda os automáticos terminarem antes de revelar (até 9s após start)
+      tryReveal();
+    }
+  }
+
+  function tryReveal() {
+    var allDone = true;
+    for (var i = 1; i <= 6; i++) {
+      if (!results[i]) { allDone = false; break; }
+    }
+    if (allDone) {
+      revealResults();
+    } else {
+      setTimeout(tryReveal, 250);
+    }
+  }
+
+  var revealed = false;
+  function revealResults() {
+    if (revealed) return;
+    revealed = true;
+    document.getElementById('instructions').style.display = 'none';
+    document.getElementById('readyBanner').style.display = 'block';
+    document.getElementById('resultsCard').style.display = 'block';
+    // Refresh info one more time
+    gatherInfo();
+    updateSummary();
+    // Scroll para o topo para o cliente ver
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  window.pass = function(n, msg) {
+    if (results[n]) return;
+    results[n] = { ok: true, msg: msg, t: Date.now() - startTime };
+    var el = document.getElementById('r' + n);
+    if (el) {
+      el.className = 'result ok';
+      el.textContent = 'PASSOU: ' + msg + '  (' + results[n].t + ' ms após abertura)';
+    }
+    setSummaryLine(n, 'ok', msg);
+    updateSummary();
+    updateProgressAndMaybeReveal();
+  };
+
+  window.fail = function(n, msg) {
+    if (results[n]) return;
+    results[n] = { ok: false, msg: msg, t: Date.now() - startTime };
+    var el = document.getElementById('r' + n);
+    if (el) {
+      el.className = 'result fail';
+      el.textContent = 'FALHOU: ' + msg;
+    }
+    setSummaryLine(n, 'fail', msg);
+    updateSummary();
+    updateProgressAndMaybeReveal();
+  };
+
+  function updateSummary() {
+    var done = 0, okCount = 0, failCount = 0;
+    for (var k in results) {
+      done++;
+      if (results[k].ok) okCount++;
+      else failCount++;
+    }
+    var s = document.getElementById('summaryLine');
+    if (done < TOTAL_TESTS) {
+      s.className = 'summary-line pending';
+      s.textContent = 'Progresso: ' + done + ' / ' + TOTAL_TESTS;
+    } else if (failCount === 0) {
+      s.className = 'summary-line ok';
+      s.textContent = 'TODOS OS TESTES PASSARAM (' + okCount + '/' + TOTAL_TESTS + ')';
+    } else {
+      s.className = 'summary-line fail';
+      s.textContent = 'PROBLEMA DETECTADO: ' + failCount + ' falha(s), ' + okCount + ' OK';
+    }
+  }
+
+  // Atalhos visuais: marcar botões clicados (1, 4 não precisam — feito no onclick)
+  document.getElementById('btn2').addEventListener('click', function(){
+    this.classList.add('done');
+    this.textContent = 'Teste 2 — clicado';
+  });
+  document.getElementById('btn4').addEventListener('click', function(){
+    this.classList.add('done');
+    this.textContent = 'Teste 4 — clicado';
+  });
+
+  // TEST 2: addEventListener (registar handler real do teste)
+  try {
+    document.getElementById('btn2').addEventListener('click', function(){
+      pass(2, 'addEventListener click disparou');
+    });
+  } catch(e) {
+    fail(2, 'erro a registar listener: ' + e.message);
+  }
+
+  // TEST 3: detect if click landed but submit was blocked
+  var t3check = setInterval(function(){
+    if (window.__t3clicked && !results[3]) {
+      var delta = Date.now() - window.__t3clicked;
+      if (delta > 500) {
+        fail(3, 'onclick chegou mas form NAO submeteu (submit bloqueado, +' + delta + 'ms)');
+        clearInterval(t3check);
+      }
+    } else if (results[3]) {
+      clearInterval(t3check);
+    }
+  }, 250);
+
+  // TESTS 5 e 6: correm sincronamente (click e dispatchEvent sao sincronos no DOM)
+  function runAutoTests() {
+    // Test 5
+    try {
+      var b5 = document.createElement('button');
+      b5.type = 'button';
+      b5.style.position = 'absolute';
+      b5.style.left = '-9999px';
+      document.body.appendChild(b5);
+      var fired5 = false;
+      b5.addEventListener('click', function(){ fired5 = true; });
+      b5.click();
+      if (fired5) pass(5, 'b.click() programatico disparou listener');
+      else fail(5, 'b.click() NAO disparou listener (eventos sintetizados bloqueados)');
+      document.body.removeChild(b5);
+    } catch(e) { fail(5, 'excepcao: ' + e.message); }
+
+    // Test 6
+    try {
+      var b6 = document.createElement('button');
+      b6.type = 'button';
+      b6.style.position = 'absolute';
+      b6.style.left = '-9999px';
+      document.body.appendChild(b6);
+      var fired6 = false;
+      b6.addEventListener('click', function(ev){ fired6 = true; });
+      var ev = new MouseEvent('click', { bubbles: true, cancelable: true, view: window });
+      b6.dispatchEvent(ev);
+      if (fired6) pass(6, 'dispatchEvent(MouseEvent) disparou');
+      else fail(6, 'dispatchEvent NAO entregou o evento');
+      document.body.removeChild(b6);
+    } catch(e) { fail(6, 'excepcao: ' + e.message); }
+  }
+  // Corre no proximo tick para garantir DOM pronto
+  setTimeout(runAutoTests, 0);
+
+  // --- Recolher info ---
+  function detectBrowser() {
+    var ua = navigator.userAgent;
+    var m;
+    if ((m = ua.match(/Edg\/(\S+)/))) return 'Edge ' + m[1];
+    if ((m = ua.match(/Chrome\/(\S+)/))) return 'Chrome ' + m[1];
+    if ((m = ua.match(/Firefox\/(\S+)/))) return 'Firefox ' + m[1];
+    if (ua.indexOf('Safari') >= 0) return 'Safari';
+    return 'desconhecido';
+  }
+
+  function gatherInfo() {
+    snapshot.session = sessionId;
+    snapshot.date = new Date().toString();
+    snapshot.browser = detectBrowser();
+    snapshot.platform = navigator.platform + ' / ' + (navigator.userAgentData && navigator.userAgentData.platform ? navigator.userAgentData.platform : 'n/d');
+    snapshot.url = location.href;
+    snapshot.iframe = (window !== window.top);
+    snapshot.userAgent = navigator.userAgent;
+    snapshot.referrer = document.referrer || '(vazio)';
+    snapshot.languages = (navigator.languages || [navigator.language]).join(', ');
+    snapshot.online = navigator.onLine;
+    snapshot.cookiesEnabled = navigator.cookieEnabled;
+    snapshot.screen = screen.width + 'x' + screen.height + ' @ DPR ' + window.devicePixelRatio;
+    snapshot.window = window.innerWidth + 'x' + window.innerHeight;
+    snapshot.touch = ('ontouchstart' in window);
+
+    snapshot.inlineProbe = !!window.__inlineProbe;
+
+    try { localStorage.setItem('__t','1'); localStorage.removeItem('__t'); snapshot.localStorage = true; }
+    catch(e) { snapshot.localStorage = false; snapshot.localStorageErr = e.message; }
+    try { sessionStorage.setItem('__t','1'); sessionStorage.removeItem('__t'); snapshot.sessionStorage = true; }
+    catch(e) { snapshot.sessionStorage = false; }
+    try { document.cookie = '__t=1;path=/'; snapshot.cookieWrite = /__t=1/.test(document.cookie); }
+    catch(e) { snapshot.cookieWrite = false; }
+
+    snapshot.windowChrome = typeof window.chrome;
+    snapshot.chromeRuntime = !!(window.chrome && window.chrome.runtime);
+
+    try {
+      var meta = document.querySelectorAll('meta[http-equiv]');
+      var csp = [];
+      for (var i=0; i<meta.length; i++) {
+        if (/content-security-policy/i.test(meta[i].getAttribute('http-equiv') || '')) {
+          csp.push(meta[i].getAttribute('content'));
+        }
+      }
+      snapshot.csp = csp.length ? csp.join(' | ') : '(nenhuma)';
+    } catch(e) { snapshot.csp = 'erro'; }
+
+    snapshot.globals = {
+      mootools: typeof window.$defined,
+      CheckEmptyFields: typeof window.CheckEmptyFields,
+      disableForm: typeof window.disableForm,
+      YAHOO: typeof window.YAHOO,
+      anchorsCount: document.anchors ? document.anchors.length : 'n/d'
+    };
+
+    document.getElementById('trBrowser').textContent = snapshot.browser + ' / ' + snapshot.userAgent;
+    document.getElementById('trPlatform').textContent = snapshot.platform;
+    document.getElementById('trUrl').textContent = snapshot.url + ' (iframe=' + snapshot.iframe + ')';
+    document.getElementById('trInline').textContent = snapshot.inlineProbe ? 'OK (executou)' : 'NAO EXECUTOU (CSP/extensao bloqueia)';
+    document.getElementById('trCookies').textContent = 'cookies=' + snapshot.cookiesEnabled + ' / write=' + snapshot.cookieWrite + ' / localStorage=' + snapshot.localStorage + ' / sessionStorage=' + snapshot.sessionStorage;
+    document.getElementById('trChrome').textContent = snapshot.chromeRuntime ? 'PRESENTE (extensao a injectar)' : 'ausente';
+    document.getElementById('trCsp').textContent = snapshot.csp;
+    document.getElementById('trGlobals').textContent =
+      'mootools=' + snapshot.globals.mootools +
+      ', CheckEmptyFields=' + snapshot.globals.CheckEmptyFields +
+      ', disableForm=' + snapshot.globals.disableForm +
+      ', YAHOO=' + snapshot.globals.YAHOO +
+      ', anchors=' + snapshot.globals.anchorsCount;
+
+    var lines = [];
+    for (var k in snapshot) {
+      var v = snapshot[k];
+      if (typeof v === 'object') v = JSON.stringify(v);
+      var key = (k + '                    ').substring(0,20);
+      lines.push(key + ': ' + v);
+    }
+    document.getElementById('info').textContent = lines.join('\n');
+  }
+
+  function loadScript(src, key) {
+    return new Promise(function(resolve){
+      var s = document.createElement('script');
+      var done = false;
+      s.onload = function(){ if (!done) { done = true; resolve({key: key, ok: true, src: src}); } };
+      s.onerror = function(){ if (!done) { done = true; resolve({key: key, ok: false, src: src}); } };
+      setTimeout(function(){ if (!done) { done = true; resolve({key: key, ok: false, src: src, timeout: true}); } }, 6000);
+      s.src = src;
+      document.head.appendChild(s);
+    });
+  }
+
+  function testResources() {
+    var base = '/iFlow/javascript/';
+    var scripts = [
+      ['mootools.js', 'mootools'],
+      ['FormFunctions.js', 'FormFunctions'],
+      ['iflow_main.js', 'iflow_main'],
+      ['yahoo/yahoo-dom-event/yahoo-dom-event.js', 'yahoo'],
+      ['ajax_processing.js', 'ajax_processing']
+    ];
+    Promise.all(scripts.map(function(s){ return loadScript(base + s[0], s[1]); })).then(function(rs){
+      var labels = [];
+      rs.forEach(function(r){
+        labels.push((r.ok ? 'OK' : 'FAIL') + ' ' + r.key);
+      });
+      snapshot.resources = labels.join(', ');
+      document.getElementById('trResources').textContent = snapshot.resources;
+      gatherInfo();
+    });
+  }
+
+  function buildCopyText() {
+    var lines = [];
+    lines.push('=== iFlow Diagnostico - Sessao ' + sessionId + ' ===');
+    lines.push('Data: ' + new Date().toString());
+    lines.push('');
+    lines.push('--- Resultados dos testes ---');
+    for (var n = 1; n <= TOTAL_TESTS; n++) {
+      var r = results[n];
+      var line = TEST_NAMES[n] + ': ';
+      if (!r) line += 'PENDENTE';
+      else line += (r.ok ? 'PASSOU' : 'FALHOU') + ' - ' + r.msg;
+      lines.push(line);
+    }
+    lines.push('');
+    lines.push('--- Ambiente ---');
+    lines.push('Browser:        ' + snapshot.browser);
+    lines.push('User-Agent:     ' + snapshot.userAgent);
+    lines.push('Plataforma:     ' + snapshot.platform);
+    lines.push('URL:            ' + snapshot.url);
+    lines.push('Em iframe:      ' + snapshot.iframe);
+    lines.push('Idiomas:        ' + snapshot.languages);
+    lines.push('Ecra:           ' + snapshot.screen);
+    lines.push('Janela:         ' + snapshot.window);
+    lines.push('Inline JS:      ' + (snapshot.inlineProbe ? 'OK' : 'BLOQUEADO'));
+    lines.push('CookiesEnabled: ' + snapshot.cookiesEnabled);
+    lines.push('CookieWrite:    ' + snapshot.cookieWrite);
+    lines.push('localStorage:   ' + snapshot.localStorage);
+    lines.push('sessionStorage: ' + snapshot.sessionStorage);
+    lines.push('chrome.runtime: ' + (snapshot.chromeRuntime ? 'PRESENTE' : 'ausente'));
+    lines.push('CSP meta:       ' + snapshot.csp);
+    lines.push('Recursos iFlow: ' + (snapshot.resources || 'a testar'));
+    lines.push('Globals iFlow:  ' + JSON.stringify(snapshot.globals));
+    return lines.join('\n');
+  }
+
+  document.getElementById('copyBtn').addEventListener('click', function(){
+    var txt = buildCopyText();
+    var fb = document.getElementById('copyFeedback');
+    var done = function(ok){
+      fb.textContent = ok ? 'COPIADO! Cole no email com Ctrl+V.' : 'Não consegui copiar. Seleccione manualmente o texto abaixo.';
+      if (!ok) {
+        var ta = document.createElement('textarea');
+        ta.value = txt;
+        ta.style.width = '100%';
+        ta.style.height = '200px';
+        document.getElementById('resultsCard').appendChild(ta);
+        ta.select();
+      }
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).then(function(){ done(true); }, function(){
+        try {
+          var ta = document.createElement('textarea');
+          ta.value = txt;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          done(true);
+        } catch(e) { done(false); }
+      });
+    } else {
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = txt;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        done(true);
+      } catch(e) { done(false); }
+    }
+  });
+
+  gatherInfo();
+  testResources();
+})();
+</script>
+
+</body>
+</html>
