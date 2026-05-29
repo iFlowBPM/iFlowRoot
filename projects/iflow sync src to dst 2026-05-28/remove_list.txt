@@ -1,0 +1,13 @@
+WEB-INF/classes/pt/iflow/blocks/BlockData$1.class
+WEB-INF/classes/pt/iflow/blocks/BlockData$CSVAdapter.class
+WEB-INF/classes/pt/iflow/blocks/BlockData$DataAdapter.class
+WEB-INF/classes/pt/iflow/blocks/BlockData$HSSFAdapter.class
+WEB-INF/classes/pt/iflow/blocks/BlockData$ODSAdapter.class
+WEB-INF/classes/pt/iflow/blocks/BlockData$UnclosableInputStream.class
+WEB-INF/classes/pt/iflow/blocks/BlockData$XLSXAdapter.class
+WEB-INF/classes/pt/iflow/blocks/BlockData.class
+WEB-INF/classes/pt/iflow/blocks/BlockSendSMS$1.class
+WEB-INF/classes/pt/iflow/blocks/BlockSendSMS.class
+WEB-INF/lib/jersey-servlet-1.14.jar
+bankinter.png
+teste.html

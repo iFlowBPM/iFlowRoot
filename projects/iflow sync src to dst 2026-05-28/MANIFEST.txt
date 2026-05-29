@@ -1,0 +1,52 @@
+iFlow Sync Package - 2026-05-28
+===============================
+Source:      20.166.233.15 (P17006A-PRD) :/userdata/tomcat/webapps/iFlow
+Destination: 52.155.163.178 (P15045A-PRD) :/userdata/tomcat/webapps/iFlow
+
+## Sumario das operacoes
+  Copiar (only-in-src):     6 ficheiros  (apos exclusoes *.css~, *.bck, *_OLD.css)
+  Substituir (different):   5 ficheiros
+  Total payload.tar.gz:    11 ficheiros
+  Remover (only-in-dst):   13 ficheiros
+  Iguais (skipped):      1392 ficheiros
+
+## Exclusoes aplicadas no diff
+  Pastas:    logs/, work/, temp/, cache/
+  Ficheiros: *.log, *.log.*, *.gz, path.properties
+  Lixo:      *.css~, *.bck, *_OLD.css (decisao do operador)
+
+## Ficheiros no payload.tar.gz (SHA256 da SRC)
+  f7d917d038b136702461e3dbd5f83dd9946b664398d88f090284447b8e00fbba  WEB-INF/lib/batik-js-1.7.jar
+  e66ae5343f8213f8f64c5fe4a5a1af64329531dba57ea41dfa911876e2fca5c7  WEB-INF/lib/crypto-api-1.0.3.jar
+  ff71bd27b36816889324de58ecf642532e5c9934c1dca2cfea0cbb2f393ec2cb  WEB-INF/lib/curvesapi-1.04.jar
+  52b07ea44f7c7a4fc1caae422a1795273f00b0b473bb555e4adb5fc8f1543c17  WEB-INF/lib/jersey-servlet-1.17.jar
+  5f90349a1176372fd28295a13c965b56f63eb86c47e39cf30318f087e082f1de  bkcf.png
+  06577e25f76499a55d66e76e95e42637af8f270ef38ad69eb26821fe1d18d572  universo.png
+  a64f1d9774aa5f02221bbee77e6abc803f180b6a71c99c176b22fa30049a88f0  Themes/default/css/iflow_main.css
+  5db5634f44bc5bbc0e5b37a8c4cdc94837e7ae9e278a81d982e0d6da7cfee85d  WEB-INF/lib/iflow-api-4.2.6-R20180704.jar
+  4e308c42c940a17c386f0c021b5bb1f89a0a5a00e0f1ad6fd8270b2bc9a8aa40  WEB-INF/lib/iflow-blocks-4.2.6-R20180704.jar
+  bdd2191198dfe58fda6d45261c727540eba7d84f961831ce676d2f7a29eb07d9  WEB-INF/lib/iflow-web-4.2.6-R20180704.jar
+  45e7834567783d40537b7cdb6b1540dd57594505fa20b6bfc27a3e6134e39cba  process_load.jsp
+
+## Diffs de ficheiros texto (em diffs/)
+  diffs/iflow_main.css.diff     -- mudanca de cor #f76600 (laranja) -> #01B21B (verde)
+                                   em .tab_button_span_pressed e #top_logout_link
+  diffs/process_load.jsp.diff   -- hardening de seguranca: sanitiza process_url
+                                   removendo http://, https://, // antes do redirect
+                                   (prevencao de open redirect)
+  diffs/teste.html.removed      -- conteudo do teste.html (0 bytes, vazio) que sera removido
+
+## Ficheiros a remover do destino
+  WEB-INF/classes/pt/iflow/blocks/BlockData$1.class
+  WEB-INF/classes/pt/iflow/blocks/BlockData$CSVAdapter.class
+  WEB-INF/classes/pt/iflow/blocks/BlockData$DataAdapter.class
+  WEB-INF/classes/pt/iflow/blocks/BlockData$HSSFAdapter.class
+  WEB-INF/classes/pt/iflow/blocks/BlockData$ODSAdapter.class
+  WEB-INF/classes/pt/iflow/blocks/BlockData$UnclosableInputStream.class
+  WEB-INF/classes/pt/iflow/blocks/BlockData$XLSXAdapter.class
+  WEB-INF/classes/pt/iflow/blocks/BlockData.class
+  WEB-INF/classes/pt/iflow/blocks/BlockSendSMS$1.class
+  WEB-INF/classes/pt/iflow/blocks/BlockSendSMS.class
+  WEB-INF/lib/jersey-servlet-1.14.jar
+  bankinter.png
+  teste.html

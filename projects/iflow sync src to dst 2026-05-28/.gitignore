@@ -1,0 +1,12 @@
+# Intermediate files (regenerable from src/dst inventories)
+paths_src.txt
+paths_dst.txt
+ph_src.tsv
+ph_dst.tsv
+*.err
+
+# Debug copy pulled to inspect class contents
+iflow-blocks-4.2.6-R20180704.jar
+
+# Duplicate: also inside iflow-sync-2026-05-28.tar.gz
+payload.tar.gz
